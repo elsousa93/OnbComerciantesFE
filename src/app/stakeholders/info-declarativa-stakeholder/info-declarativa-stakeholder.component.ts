@@ -1,17 +1,12 @@
-import { Component, OnInit, Inject, AfterViewInit, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
+import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { IStakeholders, StakeholdersCompleteInformation } from '../IStakeholders.interface'
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { FormBuilder } from '@angular/forms';
 import { EventEmitter, Output } from '@angular/core';
-import { CountryInformation } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { StakeholderService } from '../stakeholder.service';
-import { Configuration, configurationToken } from 'src/app/configuration';
-import { infoDeclarativaForm, validPhoneNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
-import { LoggerService } from 'src/app/logger.service';
 import { IPep, KindPep } from 'src/app/pep/IPep.interface';
 import { PepComponent } from '../../pep/pep.component';
 import { Observable, of } from 'rxjs';
@@ -29,9 +24,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   private baseUrl: string;
 
   callingCodeStakeholder?: string = "";
-
   displayValueSearch = '';
-
   submissionStakeholders: IStakeholders[] = [];
   submissionId: string;
   processNumber: string;
@@ -41,12 +34,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
   stakeholders: IStakeholders[] = [];
   displayedColumns: string[] = ['fiscalId', 'shortName', 'identificationDocumentId', 'elegible', 'valid'];
-
-  selectedStakeholder = {
-
-  } as IStakeholders;
-
-
+  selectedStakeholder = {} as IStakeholders;
   returned: string;
   currentIdx: number = 0;
   infoStakeholders: FormGroup;
@@ -69,15 +57,13 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   ngAfterViewInit() {
   }
 
-  constructor(private logger: LoggerService, private formBuilder: FormBuilder, http: HttpClient, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService) {
-    //this.ngOnInit();
+  constructor(private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService) {
     this.infoStakeholders = this.formBuilder.group({
       contacts: this.formBuilder.group({
       }),
       pep: this.formBuilder.group({
       })
     });
-
   }
 
   ngOnInit(): void {
@@ -117,7 +103,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     if (stake.email != '' && stake.email != null) {
       contacts.get("email").setValue(stake.email);
     }
-    
+
     var pep = this.infoStakeholders.controls["pep"];
     if (stake.pep != undefined || stake.pep != null) {
       if (stake.pep.kind.toLowerCase() === KindPep.PEP && stake.pep.pepSince != '0001-01-01') {
@@ -128,13 +114,11 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       } else if (stake.pep.kind.toLowerCase() === KindPep.FAMILY && stake.pep.degreeOfRelatedness != null && stake.pep.degreeOfRelatedness != '') {
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
         this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepFamiliarOf' } });
-        //pep.get("pepType").setValue("RFAM"); // O Cliente é familiar de uma pessoa politicamente exposta "pepRelations"
         pep.get("pepFamilyRelation").setValue(stake.pep?.degreeOfRelatedness);
       } else if (stake.pep.kind.toLowerCase() === KindPep.BUSINESS) {
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
         this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepRelations' } });
-        //pep.get("pepType").setValue("RSOC"); // O Cliente mantém estreitas relações de natureza societária ou comercial com uma pessoa politicamente exposta.
         pep.get("pepTypeOfRelation").setValue(stake.pep?.businessPartnership);
       } else if (stake.pep.kind.toLowerCase() === KindPep.PEP && stake.pep.pepSince == '0001-01-01') {
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
@@ -152,13 +136,12 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   }
 
   submit() {
-    console.log("FORM QUANDO DAMOS SUBMIT ", this.infoStakeholders);
 
-    if (this.infoStakeholders.valid) { 
+    if (this.infoStakeholders.valid) {
       var contacts = this.infoStakeholders.get("contacts");
 
       if (contacts.get("phone").value) {
-        if (this.currentStakeholder.stakeholderAcquiring.phone1 === null){
+        if (this.currentStakeholder.stakeholderAcquiring.phone1 === null) {
           this.currentStakeholder.stakeholderAcquiring.phone1 = {};
         }
         this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = contacts.get("phone").get("countryCode").value;
@@ -170,7 +153,6 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       }
 
       var pep = this.infoStakeholders.get("pep");
-      //this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
 
       if (pep.get("pep12months").value == "true") {
         this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
@@ -196,19 +178,15 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
         this.currentStakeholder.stakeholderAcquiring.pep = null;
       }
 
-      console.log('Valores do stakeholder ', this.currentStakeholder.stakeholderAcquiring);
-
       this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
         if (this.currentIdx < (this.stakesLength - 1)) {
           this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder.stakeholderAcquiring, idx: this.currentIdx }));
-          console.log("Stakeholder atualizado ", result);
         } else {
           this.data.updateData(false, 6, 3);
           this.route.navigate(['info-declarativa-lojas']);
         }
       });
     }
-
   }
 
   getStakesListLength(value) {

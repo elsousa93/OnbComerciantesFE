@@ -15,24 +15,28 @@
         <div class="row ms-0 me-0">
           <div class="col-6 ms-0 me-0 ps-0 pe-5">
             <p class="titulo-form-simples mt-0">{{'searches.processNumber'|translate}}</p><input id="text8" name="text5"
-            type="number" (keypress)="numericOnly($event)" class="form-control campo_form" formControlName="processNumber">
+              type="number" (keypress)="numericOnly($event)" class="form-control campo_form"
+              formControlName="processNumber">
             <p class="titulo-form-simples">{{'searches.state'|translate}}</p>
             <select id="select1" disabled class="form-select  campo_form" formControlName="state">
               <option selected value="">{{ 'homepage.' + queueName|translate}}</option>
             </select>
-            <p class="titulo-form-simples mb-1">{{'searches.orderDateFrom'|translate|uppercase}}</p><input id="text1" (change)="callEndDate()"
-              name="text1" type="date" [max]="date" class="form-control campo_form" formControlName="processDateStart">
+            <p class="titulo-form-simples mb-1">{{'searches.orderDateFrom'|translate|uppercase}}</p><input id="text1"
+              (change)="callEndDate()" name="text1" type="date" [max]="date" class="form-control campo_form"
+              formControlName="processDateStart">
             <p class="titulo-form-simples"></p>
           </div>
           <div class="col-6 ms-0 me-0 ps-0 pe-5">
-            <p class="titulo-form-simples mt-0">{{'searches.documentType'|translate}}</p><select class="form-select campo-form-select" id="documentType" value="" formControlName="documentType">
-              <option value=""></option>      
-            <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
-              {{docType.description}}
-            </option>
+            <p class="titulo-form-simples mt-0">{{'searches.documentType'|translate}}</p><select
+              class="form-select campo-form-select" id="documentType" value="" formControlName="documentType">
+              <option value=""></option>
+              <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
+                {{docType.description}}
+              </option>
             </select>
             <p class="titulo-form-simples">{{'searches.documentNumber'|translate}}</p><input id="text3" name="text3"
-            type="number" (keypress)="numericOnly($event)" class="form-control campo_form" formControlName="documentNumber">
+              type="number" (keypress)="numericOnly($event)" class="form-control campo_form"
+              formControlName="documentNumber">
             <p class="titulo-form-simples mb-1">{{'searches.orderDateUntil'|translate|uppercase}}</p><input id="text2"
               name="text2" type="date" [min]="endDate" class="form-control campo_form" formControlName="processDateEnd">
             <p class="titulo-form-simples"></p>
@@ -40,9 +44,6 @@
           <div class="col-12 ms-0 me-0 pb-5 ps-0 pe-0"><button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1"
               wappler-command="editContent">{{'searches.search'|translate|uppercase}}
               &nbsp;<img src="assets/images/search_white.svg" style="height: 30px; vertical-align: bottom;"></button>
-
-            <!-- adicionar um if para aparecer a tabela caso sejam encontrados clientes -->
-
             <mat-table [hidden]="processes.data.length==0" [dataSource]="processes" matSort>
               <!-- Nº Processo Column -->
               <ng-container matColumnDef="processNumber">

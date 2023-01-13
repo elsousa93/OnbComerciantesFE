@@ -1,5 +1,4 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { HttpClient } from '@angular/common/http';
 import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -9,7 +8,6 @@ import { AuthService } from './services/auth.service';
 import { translationLanguages } from './translationLanguages';
 import { LoggerService } from 'src/app/logger.service';
 import { TableInfoService } from './table-info/table-info.service';
-import { HttpMethod } from './enums/enum-data';
 import { environment } from '../environments/environment';
 
 @Component({
@@ -22,8 +20,7 @@ export class AppComponent {
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
-  pageName: string = 'Teste';
-  title = 'app';
+  pageName: string;
 
   isToggle: boolean = true;
   isAutoHide: boolean = false;
@@ -34,9 +31,9 @@ export class AppComponent {
 
   translationLanguages = translationLanguages;
 
-    constructor(private logger: LoggerService, public translate: TranslateService, private http: HttpClient, private cookie: CookieService, private router: Router,
-      changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService, private tableInfo: TableInfoService) {
-      console.log('O AMBIENTE É DE PRODUCAO: ', environment.production);
+  constructor(private logger: LoggerService, public translate: TranslateService, private cookie: CookieService, private router: Router,
+    changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService, private tableInfo: TableInfoService) {
+    console.log('O AMBIENTE É DE PRODUCAO: ', environment.production);
     //ir buscar as linguagens disponiveis. para adicionar uma nova linguagem basta adicionar à lista que se encontra no 'translationLanguages.ts'
     let langs = this.translationLanguages.map(val => {
       return val.abbreviation;
@@ -47,7 +44,7 @@ export class AppComponent {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
-    
+
     crcService.getAccessToken().then(result => {
       this.logger.debug("gerou!!");
       localStorage.setItem("accessToken", result.access_token);
@@ -56,7 +53,6 @@ export class AppComponent {
     authService.hasAuthenticated.subscribe(auth => {
       this.hasAuthenticated = auth;
     });
-
   }
 
   @Input() url: string;
@@ -83,7 +79,7 @@ export class AppComponent {
     this.cookie.set("jwToken", "TokenExemplo")
   }
 
-  updateNavBar(pageNameInput: string){
+  updateNavBar(pageNameInput: string) {
     this.pageName = pageNameInput;
   }
 
@@ -102,11 +98,10 @@ export class AppComponent {
   refresh(): void {
     console.log("User Atual: ", this.authService.GetCurrentUser());
     localStorage.setItem("auth", JSON.stringify(this.authService.GetCurrentUser()));
-      window.location.reload();
+    window.location.reload();
   }
 
   saveAuthState() {
     localStorage.setItem("auth", JSON.stringify(this.authService.GetCurrentUser()));
   }
-
 }

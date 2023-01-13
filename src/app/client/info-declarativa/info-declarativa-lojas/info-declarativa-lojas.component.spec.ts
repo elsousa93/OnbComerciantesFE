@@ -8,9 +8,9 @@ describe('InfoDeclarativaLojasComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InfoDeclarativaLojasComponent ]
+      declarations: [InfoDeclarativaLojasComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

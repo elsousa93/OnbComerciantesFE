@@ -29,8 +29,7 @@ main {
   flex: 1 0 auto;
 }
 
-.logo_topo {
-}
+.logo_topo {}
 
 @media (min-width: 576px) {
 
@@ -127,9 +126,9 @@ main {
     padding-right: 0px
   }
 
-    .menu-footer:hover {
-      color: #c5e8ef
-    }
+  .menu-footer:hover {
+    color: #c5e8ef
+  }
 
   .style14 {
     margin-top: 14px;
@@ -226,21 +225,21 @@ main {
     font-size: 18px
   }
 
-    .botoes_icones_main:active {
-      color: #fff
-    }
+  .botoes_icones_main:active {
+    color: #fff
+  }
 
-    .botoes_icones_main:focus {
-      color: #bfc8d1
-    }
+  .botoes_icones_main:focus {
+    color: #bfc8d1
+  }
 
-    .botoes_icones_main:visited {
-      color: #d6e4f2
-    }
+  .botoes_icones_main:visited {
+    color: #d6e4f2
+  }
 
-    .botoes_icones_main:hover {
-      color: #5098e0
-    }
+  .botoes_icones_main:hover {
+    color: #5098e0
+  }
 
   h1 {
     font-size: 45px;
@@ -416,16 +415,15 @@ main {
   }
 
 
-    .menu-footer:hover {
-      color: #fff
-    }
+  .menu-footer:hover {
+    color: #fff
+  }
 
   .style17 {
     padding-top: 15px
   }
 
-  .offcanvas_escollha {
-  }
+  .offcanvas_escollha {}
 
   .offcanvas-checkboox {
     background-color: #f8fbff;
@@ -460,8 +458,7 @@ main {
     color: #99b6d4
   }
 
-  .logo_footer {
-  }
+  .logo_footer {}
 
   .copyright-footer {
     font-size: 11px;
@@ -515,17 +512,17 @@ main {
   color: #000
 }
 
-  .campo_form:hover {
-    color: #000
-  }
+.campo_form:hover {
+  color: #000
+}
 
-  .campo_form:focus {
-    color: #000
-  }
+.campo_form:focus {
+  color: #000
+}
 
-  .campo_form:visited {
-    color: #000
-  }
+.campo_form:visited {
+  color: #000
+}
 
 .subtitulo_processos {
   font-size: 14px;
@@ -541,21 +538,17 @@ main {
   color: #97aae6
 }
 
-.navbar-text {
-}
+.navbar-text {}
 
-span {
-}
+span {}
 
-.style25 {
-}
+.style25 {}
 
 .style26 {
   font-size: 23px
 }
 
-.style27 {
-}
+.style27 {}
 
 .radio {
   font-size: 18px
@@ -603,15 +596,12 @@ span {
   color: #0dcaf0
 }
 
-.side_menu_texto {
+.side_menu_texto {}
+
+.side_menu_texto:hover {
+  color: #fff
 }
 
-  .side_menu_texto:hover {
-    color: #fff
-  }
+.fundo_expand {}
 
-.fundo_expand {
-}
-
-#btn1 {
-}
+#btn1 {}

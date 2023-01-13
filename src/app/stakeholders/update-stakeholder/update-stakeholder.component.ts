@@ -1,10 +1,9 @@
-import { Component, Inject, OnInit, EventEmitter } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IStakeholders } from '../IStakeholders.interface';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormGroup, FormControl, NgForm, Form, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { Configuration, configurationToken } from 'src/app/configuration';
 //import { DataService } from '../nav-menu-interna/data.service';
 import { LoggerService } from 'src/app/logger.service';
 
@@ -19,64 +18,64 @@ export class UpdateStakeholderComponent implements OnInit {
 
 
   newStake: IStakeholders = {
-  "fiscalId": 0,
+    "fiscalId": 0,
     "identificationDocument": {
-    "identificationDocumentType": "",
-      "identificationDocumentId": "",
-        "identificationDocumentCountry": "",
-          "identificationDocumentValidUntil": ""
-  },
-  "fullName": "it",
-  "contactName": "",
-  "shortName": "",
-  "role": "",
-  "fiscalAddress": {
-    "address": "",
-      "postalCode": "",
-        "postalArea": "",
-          "country": ""
-  },
-  "foreignFiscalInformation": {
-    "issuerCountry": "",
-      "issuanceIndicator": "",
-        "fiscalId": "",
-          "issuanceReason": ""
-  },
-  "isProxy": false,
-    "phone": {
-    "phoneNumber": "",
-      "countryCode": ""
-  },
-  "email": "",
-    "birthDate": "",
-      "pep": {
-    "isPep": false,
-      "pepDetails": {
-      "kind": "",
-      "country": "",
-      "sinceWhen": "",
-      "name": "",
-      "fiscalId": "",
       "identificationDocumentType": "",
       "identificationDocumentId": "",
-      "identificationDocumentValidUntil": "",
-      "address": {
+      "identificationDocumentCountry": "",
+      "identificationDocumentValidUntil": ""
+    },
+    "fullName": "it",
+    "contactName": "",
+    "shortName": "",
+    "role": "",
+    "fiscalAddress": {
       "address": "",
       "postalCode": "",
       "postalArea": "",
-      "country": {
-          "value": ""
-        }
-      }
+      "country": ""
     },
-    "hasFamilityRelationship": true,
+    "foreignFiscalInformation": {
+      "issuerCountry": "",
+      "issuanceIndicator": "",
+      "fiscalId": "",
+      "issuanceReason": ""
+    },
+    "isProxy": false,
+    "phone": {
+      "phoneNumber": "",
+      "countryCode": ""
+    },
+    "email": "",
+    "birthDate": "",
+    "pep": {
+      "isPep": false,
+      "pepDetails": {
+        "kind": "",
+        "country": "",
+        "sinceWhen": "",
+        "name": "",
+        "fiscalId": "",
+        "identificationDocumentType": "",
+        "identificationDocumentId": "",
+        "identificationDocumentValidUntil": "",
+        "address": {
+          "address": "",
+          "postalCode": "",
+          "postalArea": "",
+          "country": {
+            "value": ""
+          }
+        }
+      },
+      "hasFamilityRelationship": true,
       "familyRelationshipKind": "",
-        "hasBusinessRelationship": true,
-          "businessRelationshipKind": "",
-            "relatedPep": {
-      "id": "",
+      "hasBusinessRelationship": true,
+      "businessRelationshipKind": "",
+      "relatedPep": {
+        "id": "",
         "href": ""
-    }
+      }
     }
   } as unknown as IStakeholders
 
@@ -96,12 +95,9 @@ export class UpdateStakeholderComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription;
 
-  constructor(private logger : LoggerService, private router: ActivatedRoute,
-    private http: HttpClient, 
-    private route: Router,  private fb: FormBuilder) {
-    //private data: DataService
-
-    this.ngOnInit();
+  constructor(private logger: LoggerService, private router: ActivatedRoute,
+    private http: HttpClient,
+    private route: Router, private fb: FormBuilder) {
   }
 
   ngOnInit(): void {
@@ -113,11 +109,9 @@ export class UpdateStakeholderComponent implements OnInit {
         this.logger.debug(result);
         this.createForm();
         this.resultToStake(result);
-   
+
       }, error => console.error(error));
   }
-
-
 
   createForm() {
     this.formUpdateStakeholder = this.fb.group({
@@ -142,7 +136,7 @@ export class UpdateStakeholderComponent implements OnInit {
   //Feito de outra forma no submit, para debug
   resultToStake(result) {
     this.newStake = result;
-    
+
     this.formUpdateStakeholder = this.fb.group({
       fullName: this.newStake.fullName,
       documentType: this.newStake.identificationDocument.type,
@@ -150,7 +144,6 @@ export class UpdateStakeholderComponent implements OnInit {
       identificationDocumentId: this.newStake.identificationDocument.number,
       identificationDocumentValidUntil: this.newStake.identificationDocument.expirationDate,
       fiscalId: this.newStake.fiscalId,
-      //roleStakeholder: this.newStake.role,    NÃO SEI QUAL È ESTE CAMPO
       address: this.newStake.fiscalAddress.address,
       postalCode: this.newStake.fiscalAddress.postalCode,
       postalArea: this.newStake.fiscalAddress.postalArea,
@@ -164,27 +157,24 @@ export class UpdateStakeholderComponent implements OnInit {
     const httpOptions = {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     }
-   
+
     this.newStake.fullName = formUpdateStakeholder.fullName;
     this.newStake.identificationDocument.type = formUpdateStakeholder.documentType;
     this.newStake.identificationDocument.country = formUpdateStakeholder.documentCountry;
     this.newStake.identificationDocument.number = formUpdateStakeholder.identificationDocumentId;
     this.newStake.identificationDocument.expirationDate = formUpdateStakeholder.identificationDocumentValidUntil;
     this.newStake.fiscalId = formUpdateStakeholder.fiscalId;
-    //this.newStake.role = formUpdateStakeholder.roleStakeholder;    NAO SEI QUAL É ESTE CAMPO
     this.newStake.fiscalAddress.address = formUpdateStakeholder.streetAdressStakeholder;
     this.newStake.fiscalAddress.postalCode = formUpdateStakeholder.postCodeAdressStakeholder;
     this.newStake.fiscalAddress.postalArea = formUpdateStakeholder.areaBillingAdressStakeholder;
     this.newStake.fiscalAddress.country = formUpdateStakeholder.countryBillingAdressStakeholder;
 
-     this.logger.debug("TESTE");
-    // https:/ / localhost: 7269 / BEStakeholders / EditStakeholderByID / 1000
+    this.logger.debug("TESTE");
     this.http.post<IStakeholders>(this.baseUrl + 'BEStakeholders/EditStakeholderByID/' +
-    this.newStake.fiscalId, this.newStake).subscribe(result => {
-      alert("Atualização efetuada!");
-      this.route.navigate(['stakeholders']);
-    }, error => console.error(error));
-
+      this.newStake.fiscalId, this.newStake).subscribe(result => {
+        alert("Atualização efetuada!");
+        this.route.navigate(['stakeholders']);
+      }, error => console.error(error));
     this.logger.debug("executed edit stake by ID");
   }
 }

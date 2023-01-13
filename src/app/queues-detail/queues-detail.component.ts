@@ -1,20 +1,17 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Configuration, configurationToken } from '../configuration';
 import { DataService } from '../nav-menu-interna/data.service';
-import { ProcessList, ProcessService } from '../process/process.service';
+import { ProcessList } from '../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
 import { QueuesService } from './queues.service';
-import { SimplifiedReference } from '../submission/ISubmission.interface';
 import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 import { ShopDetailsAcquiring, ShopEquipment } from '../store/IStore.interface';
-import { EligibilityAssessment, ExternalState, RiskAssessment, StandardIndustryClassificationChoice, State, StateResultDiscriminatorEnum } from './IQueues.interface';
+import { EligibilityAssessment, RiskAssessment, StandardIndustryClassificationChoice, State, StateResultDiscriminatorEnum } from './IQueues.interface';
 import { PostDocument } from '../submission/document/ISubmission-document';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
-import { queue } from 'jquery';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -55,7 +52,7 @@ export class QueuesDetailComponent implements OnInit {
 
   public riskRequest;
 
-  public checkButton:boolean = false;
+  public checkButton: boolean = false;
 
   stakesList: IStakeholders[] = [];
   shopsList: ShopDetailsAcquiring[] = [];
@@ -73,7 +70,6 @@ export class QueuesDetailComponent implements OnInit {
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
     }
 
-    this.ngOnInit();
     this.logger.debug('Process Id ' + this.processId);
 
     // Preencher os dados da fila de trabalho consoante o processId recebido
@@ -104,8 +100,6 @@ export class QueuesDetailComponent implements OnInit {
 
     this.form.setControl("stakeholdersEligibility", formGroupStakeholdersEligibility);
   }
-
-
 
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
@@ -175,7 +169,7 @@ export class QueuesDetailComponent implements OnInit {
         shopMCC.addControl(shop.id + "", new FormControl(Validators.required));
         this.shopsList.push(shop);
 
-        this.queuesInfo.getProcessShopEquipmentsList(this.processId, shop.id).then(eq => {
+        this.queuesInfo.getShopEquipmentConfigurationsFromProcess(this.processId, shop.id).then(eq => {
           var equipments = eq.result;
 
           var shopEquipmentPromisses = [];
@@ -192,15 +186,12 @@ export class QueuesDetailComponent implements OnInit {
     });
   }
 
-  
-
   loadShopsFromProcess() {
     var context = this;
     var subPromisses = [];
     return new Promise((resolve, reject) => {
       this.queuesInfo.getProcessShopsList(this.processId).then(result => {
         var shops = result.result;
-
         shops.forEach(value => {
           subPromisses.push(context.getShopInfo(this.processId, value.id));
         });
@@ -210,38 +201,6 @@ export class QueuesDetailComponent implements OnInit {
         });
       });
     })
-    
-
-
-    //return new Promise(async (resolve, reject) => {
-    //  await this.queuesInfo.getProcessShopsList(this.processId).then(result => {
-    //    console.log("Loja");
-    //    var shops = result.result;
-    //    shops.forEach(value => {
-    //      // Obter o detalhe das lojas
-    //      this.queuesInfo.getProcessShopDetails(this.processId, value.id).then(res => {
-    //        var shop = res.result;
-    //        this.shopsList.push(shop);
-    //        // Obter os equipamentos das lojas
-    //        this.queuesInfo.getProcessShopEquipmentsList(this.processId, shop.id).then(eq => {
-    //          var equipments = eq.result;
-    //          equipments.forEach(val => {
-    //            // Obter o detalhe dos equipamentos das lojas
-    //            this.queuesInfo.getProcessShopEquipmentDetails(this.processId, shop.id, val.id).then(r => {
-    //              var equipment = r.result;
-    //              this.equipmentList.push(equipment);
-    //            })
-    //          })
-    //        })
-    //      });
-    //    });
-    //    this.logger.debug("lojas do processo: " + shops);
-    //    this.logger.debug("equipamentos das lojas do processo: " + this.equipmentList);
-    //  }).then(after => {
-    //    console.log("Ja acabou");
-    //    resolve(null);
-    //  });
-    //})
   }
 
   fetchStartingInfo() {
@@ -254,7 +213,6 @@ export class QueuesDetailComponent implements OnInit {
 
       })
     })
-    
   }
 
   nextPage() {
@@ -263,7 +221,6 @@ export class QueuesDetailComponent implements OnInit {
       localStorage.setItem('returned', 'edit');
       this.logger.debug('Valor do returned' + localStorage.getItem("returned"));
     }
-
     this.route.navigate(['/client']);
   }
 
@@ -309,7 +266,6 @@ export class QueuesDetailComponent implements OnInit {
     this.logger.debug(this.files);
   }
 
-  
   openFile(/*url: any, imgName: any*/ file: File) {
     let blob = new Blob([file], { type: file.type });
     let url = window.URL.createObjectURL(blob);
@@ -321,10 +277,9 @@ export class QueuesDetailComponent implements OnInit {
       text-align: center;
       border: 3px solid green;
       `);
-
   }
 
-  check(){
+  check() {
     this.checkButton = true;
   }
 
@@ -334,7 +289,6 @@ export class QueuesDetailComponent implements OnInit {
     var queueModel;
     if (this.queueName === 'eligibility') {
       this.state = State.ELIGIBILITY_ASSESSMENT;
-
       queueModel = {} as EligibilityAssessment;
       var observation = this.form.get('observation').value;
       queueModel.type = StateResultDiscriminatorEnum.ELIGIBILITY_ASSESSMENT;
@@ -386,7 +340,6 @@ export class QueuesDetailComponent implements OnInit {
         schemaClassification: []
       }
 
-
       for (const cont in stakeholders.controls) {
         const control = this.form.get("shopsMCC").get(cont);
 
@@ -408,15 +361,12 @@ export class QueuesDetailComponent implements OnInit {
           validUntil: new Date().toISOString(),
           data: {}
         }
-
         context.queuesInfo.postProcessDocuments(document, context.processId, context.state);
       });
     })
 
     this.queuesInfo.postExternalState(this.processId, this.state, queueModel).subscribe(result => {
       console.log("resultado do post external state: ", queueModel);
-      //this.logger.debug("Send external state - Eligibility");
     })
   }
-
 }

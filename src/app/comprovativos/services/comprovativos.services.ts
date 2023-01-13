@@ -1,13 +1,12 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { map, catchError, retryWhen, delay, take } from 'rxjs/operators';
-import { Configuration, configurationToken } from 'src/app/configuration';
 import { APIRequestsService } from '../../apirequests.service';
 import { AppConfigService } from '../../app-config.service';
 import { HttpMethod } from '../../enums/enum-data';
 import { TreatedResponse } from '../../table-info/ITable-info.interface';
-import { PurposeDocument, RequiredDocuments } from '../IComprovativos.interface';
+import { RequiredDocuments } from '../IComprovativos.interface';
 import { HttpUtilService } from './http.services';
 
 
@@ -15,7 +14,7 @@ import { HttpUtilService } from './http.services';
   providedIn: 'root'
 })
 export class ComprovativosService {
-  API_URL:string = '';
+  API_URL: string = '';
   private baseUrl: string;
   private outboundUrl: string;
 
@@ -29,28 +28,27 @@ export class ComprovativosService {
 
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.outboundUrl = configuration.getConfig().outboundUrl;
-
     this.API_URL = this.baseUrl;
-   }
+
+  }
 
   uploadFile(file: File, id: any) {
     const formData: FormData = new FormData();
     formData.append('image', file);
-    return this.http.put( this.API_URL + `ServicesComprovativos/`+ id, formData)
+    return this.http.put(this.API_URL + `ServicesComprovativos/` + id, formData)
       .pipe(map(this.httpUtil.extrairDados))
       .pipe(
         retryWhen(errors => errors.pipe(delay(1000), take(10))),
         catchError(this.httpUtil.processarErros));
   }
 
-  delFile(id: any){
-    return this.http.delete(this.API_URL + `ServicesComprovativos/ServicesComprovativos/`+ id)
-    .pipe(
-      
-      retryWhen(errors => errors.pipe(delay(1000), take(1))),
-      catchError(this.httpUtil.processarErros));
-  }
+  delFile(id: any) {
+    return this.http.delete(this.API_URL + `ServicesComprovativos/ServicesComprovativos/` + id)
+      .pipe(
 
+        retryWhen(errors => errors.pipe(delay(1000), take(1))),
+        catchError(this.httpUtil.processarErros));
+  }
 
   readBase64(file): Promise<any> {
     const reader = new FileReader();
@@ -61,19 +59,16 @@ export class ComprovativosService {
       reader.addEventListener('error', function (event) {
         reject(event);
       }, false);
-
       reader.readAsDataURL(file);
     });
     return future;
   }
 
-  getUnicreDocument(documentReference, format?) {
+  GetDocumentImageOutbound(documentReference, format?) {
     var url = this.outboundUrl + "api/v1/document/" + documentReference + "/image";
-
     return new Promise<any>((resolve, reject) => {
       this.APIRequest.callAPIOutbound(HttpMethod.FETCH, url, "221212", "search", "8812451", "78217").then(res => {
         var document = res;
-
         resolve(document);
       }, resolve => {
         reject(null);
@@ -82,10 +77,8 @@ export class ComprovativosService {
   }
 
   viewDocument(documentReference) {
-
-    this.getUnicreDocument(documentReference).then(res => {
+    this.GetDocumentImageOutbound(documentReference).then(res => {
       var file: File = res;
-
       let blob = new Blob([file], { type: file.type });
       let url = window.URL.createObjectURL(blob);
 
@@ -96,14 +89,11 @@ export class ComprovativosService {
       text-align: center;
       border: 3px solid green;
       `);
-
     });
-
   }
 
   getRequiredDocuments(submissionID: string) {
     var url = this.baseUrl + 'submission/' + submissionID + '/required-documents';
-
     var response: TreatedResponse<RequiredDocuments> = {};
 
     return new Promise<TreatedResponse<RequiredDocuments>>((resolve, reject) => {
@@ -123,7 +113,4 @@ export class ComprovativosService {
       })
     });
   }
-
-
-
 }

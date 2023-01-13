@@ -22,7 +22,6 @@
       <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
       <div class="row ms-0 me-0">
         <div class="col-9 ms-0 me-0 ps-0 pe-0">
-          <!--Antes: col-6 ms-3 me-3 ps-3 pe-3 e sem as classes lass="col-md-6" e 3 linhas abaixo -->
           <p class="titulo-form-simples">{{'client.typology'|translate|uppercase}}*</p>
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <span class="navbar-text">
@@ -49,7 +48,8 @@
                     <div class="col-5">
                       <p class="titulo-form-simples">{{'searches.documentType'|translate}}:*</p>
                       <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
-                        id="docType" [(ngModel)]="newClient.documentationDeliveryMethod" name="docType" #docType="ngModel">
+                        id="docType" [(ngModel)]="newClient.documentationDeliveryMethod" name="docType"
+                        #docType="ngModel">
                         <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
                           {{docType.description}}
                         </option>
@@ -57,32 +57,37 @@
                     </div>
                     <div class="col-5">
                       <p class="titulo-form-simples">
-                        <!--Nº de documento-->
                         {{'searches.documentNumber'|translate}}:*
                         <span class="titulo-form-error" *ngIf="incorrectCC && isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectCC'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectCCSize && isCC" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectCCSize && isCC"
+                          class="titulo-form-simples-erro">
                           {{'client.incorrectCCSize'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectCCFormat && isCC" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectCCFormat && isCC"
+                          class="titulo-form-simples-erro">
                           {{'client.incorrectCCFormat'|translate}}
                         </span>
                         <span class="titulo-form-error" *ngIf="incorrectNIF && !isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectNIF'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectNIFSize && !isCC" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectNIFSize && !isCC"
+                          class="titulo-form-simples-erro">
                           {{'client.incorrectNIFSize'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectNIPCSize && !isCC" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectNIPCSize && !isCC"
+                          class="titulo-form-simples-erro">
                           {{'client.incorrectNIPCSize'|translate}}
                         </span>
                         <span class="titulo-form-error" *ngIf="incorrectNIPC && !isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectNIPC'|translate}}
                         </span>
                       </p>
-                      <input id="clientId" type="text" (keyup)="checkValidationType(clientId.value)" (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId"
-                        name="clientId" #clientId="ngModel" (ngModelChange)="clearNewForm()" [class]="errorInput" [hidden]="isCC && isNoDataReadable">
+                      <input id="clientId" type="text" (keyup)="checkValidationType(clientId.value)"
+                        (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId" name="clientId"
+                        #clientId="ngModel" (ngModelChange)="clearNewForm()" [class]="errorInput"
+                        [hidden]="isCC && isNoDataReadable">
                     </div>
                   </div>
                 </div>
@@ -93,7 +98,8 @@
                     <div class="col-5">
                       <p class="titulo-form-simples">{{'searches.documentType'|translate}}:*</p>
                       <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
-                        id="documentType" [(ngModel)]="newClient.documentationDeliveryMethod" name="docType" #docType="ngModel">
+                        id="documentType" [(ngModel)]="newClient.documentationDeliveryMethod" name="docType"
+                        #docType="ngModel">
                         <option *ngFor="let docType of ListaDocTypeENI" value={{docType.code}}>
                           {{docType.description}}
                         </option>
@@ -105,41 +111,44 @@
                         <span class="titulo-form-error" *ngIf="incorrectCC && isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectCC'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectCCSize && isCC" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectCCSize && isCC"
+                          class="titulo-form-simples-erro">
                           {{'client.incorrectCCSize'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectCCFormat && isCC" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectCCFormat && isCC"
+                          class="titulo-form-simples-erro">
                           {{'client.incorrectCCFormat'|translate}}
                         </span>
                         <span class="titulo-form-error" *ngIf="incorrectNIF && !isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectNIF'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectNIFSize && !isCC" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectNIFSize && !isCC"
+                          class="titulo-form-simples-erro">
                           {{'client.incorrectNIFSize'|translate}}
                         </span>
-                        <span class="titulo-form-error" *ngIf="incorrectNIPCSize && !isCC" class="titulo-form-simples-erro">
+                        <span class="titulo-form-error" *ngIf="incorrectNIPCSize && !isCC"
+                          class="titulo-form-simples-erro">
                           {{'client.incorrectNIPCSize'|translate}}
                         </span>
                         <span class="titulo-form-error" *ngIf="incorrectNIPC && !isCC" class="titulo-form-simples-erro">
                           {{'client.incorrectNIPC'|translate}}
                         </span>
                       </p>
-                      <input id="clientId" type="text" (keypress)="numericOnly($event)" (keyup)="checkValidationType(clientId.value)" [(ngModel)]="newClient.clientId"
-                        name="clientId" #clientId="ngModel" (ngModelChange)="clearNewForm()" [class]="errorInput" [hidden]="isCC && isNoDataReadable">
-
+                      <input id="clientId" type="text" (keypress)="numericOnly($event)"
+                        (keyup)="checkValidationType(clientId.value)" [(ngModel)]="newClient.clientId" name="clientId"
+                        #clientId="ngModel" (ngModelChange)="clearNewForm()" [class]="errorInput"
+                        [hidden]="isCC && isNoDataReadable">
                     </div>
                   </div>
                 </div>
                 <div *ngIf="isCC" class="offset-1 col-7 me-0 ps-0 pe-0 ms-5" style="margin-left: 13px !important;">
                   <p class="titulo-form-simples mb-3">{{'citizenCard.collectData'|translate}}</p>
-
                   {{'citizenCard.process'|translate}}:*
-
                   <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <span class="navbar-text">
                       <div class="form-check">
                         <input class="form-check-input" required type="radio" [value]=true id="flagAutCol"
-                          name="flagAutCol" (click)="changeDataReadable(true)" checked/>
+                          name="flagAutCol" (click)="changeDataReadable(true)" checked />
                         <label class="form-check-label radio pe-5"
                           for="radio3">{{'generalKeywords.yes'|translate|uppercase}}</label>
                       </div>
@@ -154,7 +163,6 @@
                     </span>
                   </nav>
                 </div>
-
               </div>
               <div *ngIf="isNoDataReadable && isCC" class="pt-2">
                 <div class="titulo-form-simples">
@@ -163,7 +171,6 @@
                 <button class="btn botao_azul_pesquisa" (click)="openModal(template)"
                   type="submit">{{'citizenCard.read'|translate}}</button>
               </div>
-
               <div class="align-self-center col-12 mt-4 ms-0 me-0 pe-0">
                 <nav
                   class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
@@ -180,8 +187,6 @@
               <div *ngIf="notFound">
                 <p class="titulo-form-simples-erro">{{'client.searchError'|translate}}</p>
               </div>
-
-
               <form *ngIf="newClientForm" [formGroup]="newClientForm" name="newClientForm">
                 <div class="row" *ngIf="showENI && !clientNr"><!-- && !isCC-->
                   <div class="col-12 ms-0 me-0 pe-0">
@@ -196,8 +201,8 @@
                             {{'client.incorrectNIFSize'|translate}}
                           </span>
                         </p>
-                        <input name="nif" #nif type="text" (keypress)="numericOnly($event)" (keyup)="validateNIF(nif.value)" id="nif" class="form-control"
-                          formControlName="nif">
+                        <input name="nif" #nif type="text" (keypress)="numericOnly($event)"
+                          (keyup)="validateNIF(nif.value)" id="nif" class="form-control" formControlName="nif">
                       </div>
                       <div class="col-5">
                         <p class="titulo-form-simples">{{'client.name'|translate|uppercase}}:*</p>
@@ -206,7 +211,6 @@
                     </div>
                   </div>
                 </div>
-
                 <div class="col-12 ms-0 me-0 pe-0" *ngIf="!showENI && !clientNr && !isCC">
                   <div class="row">
                     <div class="col-6">
@@ -219,8 +223,8 @@
                           {{'client.incorrectNIPC'|translate}}
                         </span>
                       </p>
-                      <input name="nipc" #nipc type="text" (keypress)="numericOnly($event)" (keyup)="validateNIPC(nipc.value)" id="nipc" class="form-control"
-                        formControlName="nipc">
+                      <input name="nipc" #nipc type="text" (keypress)="numericOnly($event)"
+                        (keyup)="validateNIPC(nipc.value)" id="nipc" class="form-control" formControlName="nipc">
                     </div>
                     <div class="col-6">
                       <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:*</p>
@@ -231,10 +235,9 @@
                 </div>
                 <div class="align-self-center col-12 mt-4 ms-0 me-0 ps-0 pe-0">
                   <span class="navbar-text me-2">
-                    <!--&& !isCC -->
-                    <button *ngIf="!showFoundClient && searchDone && !clientNr" id="btn5a2"
-                            (click)="createNewClient()" class="btn botao_branco" wappler-command="editContent"
-                            [disabled]="!newClientForm.valid || incorrectNIFSize || incorrectNIF || incorrectCC || incorrectCCSize || incorrectCCFormat || incorrectNIPCSize || incorrectNIPC">
+                    <button *ngIf="!showFoundClient && searchDone && !clientNr" id="btn5a2" (click)="createNewClient()"
+                      class="btn botao_branco" wappler-command="editContent"
+                      [disabled]="!newClientForm.valid || incorrectNIFSize || incorrectNIF || incorrectCC || incorrectCCSize || incorrectCCFormat || incorrectNIPCSize || incorrectNIPC">
                       {{'client.add'|translate|uppercase}}&nbsp;
                       <img src="assets/images/person_add_blue.svg" class="img_btn">
                     </button>
@@ -242,9 +245,6 @@
 
                 </div>
               </form>
-
-              <!--Seccao do Modal PIN da Morada-->
-
               <ng-template #template>
                 <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
                   <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
@@ -277,7 +277,6 @@
                               </h5>
                             </span>
                           </nav>
-
                           <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
                             <span class="navbar-text"></span>
                             <span class="navbar-text pb-0 pt-sm-0">
@@ -302,14 +301,10 @@
                     </div>
                   </div>
                 </main>
-
               </ng-template>
-              <!--Fim da Seccao do Modal PIN da Morada-->
             </div>
           </div>
-
           <div *ngIf="okCC">
-
             <div class="row me-0">
               <div class="col">
                 <div class="me-0 ps-0 pe-0 col-7 mb-5">
@@ -322,7 +317,6 @@
                 </div>
               </div>
             </div>
-
             <table class="table table-sm table-light">
               <thead>
                 <tr class="titulo-form-simples">
@@ -368,11 +362,7 @@
       </div>
     </div>
   </div>
-  <!--fim de : col-6 ms-3 me-3 ps-3 pe-3-->
 </div>
-<!--row ends-->
-
-
 <div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0" *ngIf="showFoundClient == true">
   <div class="row me-0 pe-0">
     <div class="col mt-2 ms-0 me-0 pt-4 ps-3 pe-3">
@@ -381,10 +371,10 @@
           <mat-table [dataSource]="clientsMat" class="table-responsive" matSort>
             <ng-container matColumnDef="select">
               <mat-header-cell *matHeaderCellDef>
-
               </mat-header-cell>
               <mat-cell *matCellDef="let client">
-                <input type="radio" name="clientSelected" (click)="aButtons(true, client.client.clientId, client.isClient)">
+                <input type="radio" name="clientSelected"
+                  (click)="aButtons(true, client.client.clientId, client.isClient)">
               </mat-cell>
             </ng-container>
             <ng-container matColumnDef="clientNumber">
@@ -423,52 +413,35 @@
               [ngClass]="{'row-selected': idx === currentIdx}">
             </mat-row>
           </mat-table>
-
           <mat-paginator #paginator [pageSizeOptions]="[3, 10, 20]" showFirstLastButtons>
           </mat-paginator>
-
         </form>
       </div>
     </div>
   </div>
   <hr>
 </div>
-<div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0" >
-
+<div class="offset-1 bg-white col-7 col-10 mb-5 pb-0 pe-0">
   <div class="row">
-
     <div class="col">
-
       <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-
         <span class="navbar-text me-2 align-self-center ms-0 me-0">
-
           <button id="btn5a1"
             class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
             wappler-command="editContent" (click)="close()">
             {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
-
               <img src="assets/images/exit_to_app.svg" style="height: 25px !important;">
-
             </span>
           </button>
-
           <button id="btn5a3" *ngIf="showSeguinte == true"
             class="btn botao_branco center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
             wappler-command="editContent" (click)="obterSelecionado()" [disabled]="!showSeguinte">
             {{'client.add'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
-
               <img src="assets/images/person_add_blue.svg" class="img_btn">
-
             </span>
           </button>
-
         </span>
-
       </nav>
-
     </div>
-
   </div>
-
 </div>

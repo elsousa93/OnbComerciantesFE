@@ -1,4 +1,4 @@
-import { trigger, state, style, transition, animate, animateChild, query } from '@angular/animations';
+import { trigger, state, style, transition, animate } from '@angular/animations';
 
 export const onSideNavChange = trigger('onSideNavChange', [
   state('close',
@@ -12,7 +12,7 @@ export const onSideNavChange = trigger('onSideNavChange', [
       'transform': 'none',
       'visibility': 'visible',
       'display': 'block'
-      
+
     })
   ),
   transition('close => open', animate('1000ms ease-in-out')),
@@ -63,4 +63,3 @@ export const AutoHideLogo = trigger('AutoHideLogo', [
   transition('up => down', animate('400ms ease-in-out')),
   transition('down => up', animate('400ms ease-in-out')),
 ]);
-

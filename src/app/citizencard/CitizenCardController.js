@@ -88,61 +88,6 @@ export function ClearCCFields() {
 
 }
 
-/* function SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
-    gender, height, nationality, expiryDate, nameFather, nameMother,
-    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country) {
-    if (name === "" && cardNumber === "") {
-        $("#HTitleInstructions").css("display", "block");
-    }
-    else {
-        $("#HTitleInstructions").css("display", "none");
-    }
-    if (imgSrc)
-        $("#CCImgDiv").css("display", "block");
-    else
-        $("#CCImgDiv").css("display", "none");
-    document.getElementById("CCImg").src = "data:image/png;base64," + imgSrc;
-    if (cardIsExpired)
-        $("#CCExpiredWarning").css("display", "block");
-    else
-        $("#CCExpiredWarning").css("display", "none");
-    var strCardNumber = "";
-    strCardNumber = String(cardNumber);
-    strCardNumber = strCardNumber.replace(/\s/g, '');
-    $("#CCDivNome").text(name);
-    $("#CCDivID").text(strCardNumber);
-    $("#CCDivNIF").text(nif);
-    $("#CCDivDN").text(birthDate);
-    $("#CCDivMr").text(address);
-    $("#CCDivPostalCode").text(postalCode);
-    $("#CCDivNotes").text(notes);
-    if (notes != null) {
-        var assinatura = "SABE ASSINAR";
-        if (notes.toLowerCase().contains("não sabe assinar") || notes.toLowerCase().contains("não pode assinar")) {
-            assinatura = "NÃO SABE ASSINAR";
-        }
-        $("#CCCanSign").text(assinatura);
-    }
-    else {
-        $("#CCCanSign").text(notes);
-    }
-    // *************** Hiden Fields
-    $("#CCDivNationality").text(nationality);
-    $("#CCDivGender").text(gender);
-    $("#CCDivHeight").text(height);
-    $("#CCDivExpireDate").text(expiryDate);
-    $("#CCDivEmissonDate").text(emissonDate);
-    $("#CCDivFatherName").text(nameFather);
-    $("#CCDivMotherName").text(nameMother);
-    $("#CCDivSSNumber").text(nss);
-    $("#CCDivSNSNumber").text(sns);
-    $("#CCDivEmissonLocal").text(emissonLocal);
-    $("#CCDivPhoto").text(imgSrc);
-    $("#CCDivCountry").text(country);
-    FillWithCCdata();
-    $("#submitDataFromCC").click();
-} */
-
 var BASE_URL = require('../../assets/config/config.json');
 // const BASE_URL = 'http://localhost:12000/BackendPortal'; //FIXME
 
@@ -221,10 +166,7 @@ export function readCCAddress(componentCallback) {
   SetNewCCData = componentCallback;
   ClearCCFields();
   let url = BASE_URL.baseUrlCC + '/api/citizencard/generateccpluginrequestwithaddress';
-  //const processid = $("#CCCallProcessId").text();
-  //if (processid && processid != '') {
-  //    url = url + '?processId=' + processid;
-  //}
+
   autenticacaoGovPT.doOperation(submit,
     {
       minimumVersion: '2.0.23',
@@ -238,10 +180,7 @@ export function readCC(componentCallback) {
   SetNewCCData = componentCallback;
   ClearCCFields();
   let url = BASE_URL.baseUrlCC + '/api/citizencard/generateccpluginrequest';
-  //const processid = $("#CCCallProcessId").text();
-  //if (processid && processid != '') {
-  //    url = url + '?processId=' + processid;
-  //}
+
   autenticacaoGovPT.doOperation(submit,
     {
       minimumVersion: '2.0.23',

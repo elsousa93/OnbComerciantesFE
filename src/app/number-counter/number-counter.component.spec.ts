@@ -8,9 +8,9 @@ describe('NumberCounterComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NumberCounterComponent ]
+      declarations: [NumberCounterComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

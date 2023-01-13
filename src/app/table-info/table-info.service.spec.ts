@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { TableInfoService } from './table-info.service';
 
 describe('TableInfoService', () => {

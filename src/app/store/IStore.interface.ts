@@ -71,7 +71,7 @@ export class ShopDetailsAcquiring {
   equipments: ShopEquipment[]
   pack?: ShopProductPackViewModel
   product?: Product
-  subProduct?: Subproduct 
+  subProduct?: Subproduct
   documents?: ShopDocuments
   id?: string
   contactPerson?: string

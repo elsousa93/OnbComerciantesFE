@@ -8,9 +8,9 @@ describe('PepComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ PepComponent ]
+      declarations: [PepComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

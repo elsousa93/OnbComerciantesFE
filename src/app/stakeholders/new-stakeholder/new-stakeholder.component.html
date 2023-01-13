@@ -2,10 +2,6 @@
   <div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
     <div class="row">
       <div class="row ms-0 me-0" *ngIf="currentStakeholder != null" #selectedBlueDiv id="selectedBlueDiv">
-        <!--<h2 class="text-primary mt-5 ps-0 center-align">
-          <img src="assets/images/group_add_blue.svg"
-            class="img_add">&nbsp;{{'stakeholder.identification'|translate|uppercase}}
-        </h2>-->
         <div class="col-6 ms-0 me-0 ps-0 pe-5">
           <p class="titulo-form-simples mb-1">{{'stakeholder.signature'|translate}}:*</p>
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -26,7 +22,6 @@
             </span>
           </nav>
           <p class="titulo-form-simples mb-1">
-            <!--Pretende efetuar a atualização...-->
             {{'citizenCard.updateData'|translate|uppercase}}*
           </p>
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
@@ -54,7 +49,6 @@
         </div>
         <div class="offset-1 ms-0 me-0 ps-5 pe-0 col-6">
           <p class="titulo-form-simples mb-3">{{'stakeholder.proxy'|translate}}:*</p>
-
           <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <span class="navbar-text">
               <div class="form-check">
@@ -73,13 +67,11 @@
             </span>
           </nav>
         </div>
-        <!--Sem CC-->
         <div class="row" *ngIf="!showYesCC && showNoCC">
           <div class="col-6">
             <div class="row" id="nif">
               <p class="titulo-form-simples">NIF *</p>
-              <input id="fiscalId" class="form-control" type="text" formControlName="NIF"
-              [readonly]="true">
+              <input id="fiscalId" class="form-control" type="text" formControlName="NIF" [readonly]="true">
             </div>
             <div class="row" id="country">
               <p class="titulo-form-simples">{{'stakeholder.country'|translate|uppercase}} *</p>
@@ -99,34 +91,35 @@
             <div class="row ms-0" id="role">
               <p class="titulo-form-simples">{{'stakeholder.role'|translate|uppercase}}</p>
               <select id="roleStakeholder" class="form-select campo-form-select" formControlName="Role"
-                [attr.disabled]="(selectedStakeholderIsFromCRC === true && currentStakeholder.stakeholderAcquiring.fiscalId != null) ? true : null"> <!-- antes era chamado o método canEditRole()-->
+                [attr.disabled]="(selectedStakeholderIsFromCRC === true && currentStakeholder.stakeholderAcquiring.fiscalId != null) ? true : null">
+                <!-- antes era chamado o método canEditRole()-->
                 <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
               </select>
             </div>
             <div class="row ms-0" id="zipcode">
               <p class="titulo-form-simples">{{'stakeholder.postalCode'|translate|uppercase}} *</p>
               <input class="form-control" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode"
-              (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8" [readonly]="returned === 'consult'">
+                (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8"
+                [readonly]="returned === 'consult'">
             </div>
             <div class="row ms-0" id="locale">
               <p class="titulo-form-simples">{{'stakeholder.locale'|translate|uppercase}} *</p>
               <input class="form-control" id="areaBillingAdressStakeholder" type="text" formControlName="Locality"
                 [readonly]="canEditLocality() === false">
             </div>
-
           </div>
         </div>
-        <!--Com CC-->
         <div class="row" *ngIf="showYesCC && !showNoCC">
           <div class="col-6">
             <p class="titulo-form-simples mt-0">NIF</p>
             <input id="fiscalId" class="form-control campo_form" type="text" formControlName="NIF"
-            [readonly]="selectedStakeholderIsFromCRC === true">
+              [readonly]="selectedStakeholderIsFromCRC === true">
           </div>
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.role'|translate|uppercase}}</p>
             <select id="roleStakeholder" class="form-select campo-form-select" formControlName="Role"
-              [attr.disabled]="(selectedStakeholderIsFromCRC === true && currentStakeholder.stakeholderAcquiring.fiscalId != null) ? true : null"> <!-- antes era chamado o método canEditRole()-->
+              [attr.disabled]="(selectedStakeholderIsFromCRC === true && currentStakeholder.stakeholderAcquiring.fiscalId != null) ? true : null">
+              <!-- antes era chamado o método canEditRole()-->
               <option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
             </select>
           </div>
@@ -134,8 +127,8 @@
         <div class="row" *ngIf="showYesCC && !showNoCC">
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentType'|translate}}:*</p>
-              <input readonly name="identificationDocumentType" formControlName="documentType"
-                class="form-control campo_form">
+            <input readonly name="identificationDocumentType" formControlName="documentType"
+              class="form-control campo_form">
           </div>
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>
@@ -161,29 +154,30 @@
         </div>
         <div class="row" *ngIf="showYesCC && !showNoCC">
           <div class="col-6">
-          <p class="titulo-form-simples mt-0">{{'stakeholder.country'|translate|uppercase}}</p>
-          <select id="streetAddressStakeholder" class="form-select campo-form-select" formControlName="Country"
-          (click)="clean()" [attr.disabled]="returned === 'consult' ? true : null">
-            <option *ngFor="let country of countries" value="{{country.code}}">
-              {{country.description}}</option>
-          </select>
-        </div>
-        <div class="col-6">
-          <p class="titulo-form-simples mt-0">{{'stakeholder.locale'|translate|uppercase}}</p>
-          <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text" formControlName="Locality"
-            [readonly]="canEditLocality() === false">
-        </div>
+            <p class="titulo-form-simples mt-0">{{'stakeholder.country'|translate|uppercase}}</p>
+            <select id="streetAddressStakeholder" class="form-select campo-form-select" formControlName="Country"
+              (click)="clean()" [attr.disabled]="returned === 'consult' ? true : null">
+              <option *ngFor="let country of countries" value="{{country.code}}">
+                {{country.description}}</option>
+            </select>
+          </div>
+          <div class="col-6">
+            <p class="titulo-form-simples mt-0">{{'stakeholder.locale'|translate|uppercase}}</p>
+            <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text"
+              formControlName="Locality" [readonly]="canEditLocality() === false">
+          </div>
         </div>
         <div class="row" *ngIf="showYesCC && !showNoCC">
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.postalCode'|translate|uppercase}}</p>
             <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode"
-            (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8" [readonly]="returned === 'consult'">
+              (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8"
+              [readonly]="returned === 'consult'">
           </div>
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.address'|translate|uppercase}}</p>
-            <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text" formControlName="Address"
-              [readonly]="returned === 'consult'">
+            <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text"
+              formControlName="Address" [readonly]="returned === 'consult'">
           </div>
         </div>
       </div>

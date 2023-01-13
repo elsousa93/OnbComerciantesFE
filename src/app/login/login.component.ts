@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Data, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ILogin } from 'src/app/login/ILogin.interface';
 import { AuthService } from '../services/auth.service'
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service'
 import { LoggerService } from 'src/app/logger.service';
 
@@ -17,8 +17,8 @@ export class LoginComponent implements OnInit {
   clientId: number = 12345;
 
   model: ILogin = { userid: "admin", password: "admin@123" }
- 
-  public message: string = ""; 
+
+  public message: string = "";
   public returnUrl: string = "";
   public isLoggedIn: boolean = true;
   public myDate = new Date();
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
     userid: ['', Validators.required],
     password: ['', Validators.required]
   })
-  constructor(private logger : LoggerService, 
+  constructor(private logger: LoggerService,
     private formBuilder: FormBuilder,
     private route: Router,
     private authService: AuthService,
@@ -49,7 +49,6 @@ export class LoginComponent implements OnInit {
     this.logger.debug("ngOnInit")
     if (this.cookie.get("jwToken") === "" || this.cookie.get("jwToken") === "undefined" || this.cookie.get("jwToken") === null) {
       this.cookie.delete("jwToken")
-      //setting the cookie when we recieve from the URL
       this.cookie.set('jwToken', this.router.snapshot.params['tokenid'], {
         expires: this.myDate,
         path: '/',
@@ -101,5 +100,4 @@ export class LoginComponent implements OnInit {
     this.isLoggedIn = false;
     this.route.navigate(['login']);
   }
-
 }

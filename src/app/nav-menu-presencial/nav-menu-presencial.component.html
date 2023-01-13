@@ -2,38 +2,37 @@
   <div class="col pb-0 pt-0">
     <nav class="navbar navbar-expand navbar-widget justify-content-center pb-0 pt-0">
       <div class="navbar-nav ms-auto">
-        <h5 *ngIf="(processNumber!==null && progressImage!==undefined) || returned === 'consult' || returned === 'edit'" class="widget img"><img src="assets/images/pin.svg" style="width: 19px; padding-top: 6px !important;"></h5>
-        <a *ngIf="(processNumber!==null && progressImage!==undefined) || returned === 'consult' || returned === 'edit'" class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;{{processNumber}}</a>
-
-        <a *ngIf="(processNumber!==null && progressImage!==undefined) || returned === 'consult' || returned === 'edit'" class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">|&nbsp;&nbsp;</a>
+        <h5 *ngIf="(processNumber!==null && progressImage!==undefined) || returned === 'consult' || returned === 'edit'"
+          class="widget img"><img src="assets/images/pin.svg" style="width: 19px; padding-top: 6px !important;"></h5>
+        <a *ngIf="(processNumber!==null && progressImage!==undefined) || returned === 'consult' || returned === 'edit'"
+          class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;{{processNumber}}</a>
+        <a *ngIf="(processNumber!==null && progressImage!==undefined) || returned === 'consult' || returned === 'edit'"
+          class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">|&nbsp;&nbsp;</a>
         <h5 class="widget img"><img src="assets/images/user-solid.svg"></h5>
-        <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;{{currentUser.userName}}</a>
-
-        <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">|&nbsp;&nbsp;</a>
-
+        <a
+          class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;{{currentUser.userName}}</a>
+        <a
+          class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">|&nbsp;&nbsp;</a>
         <h5 class="widget img"><img src="assets/images/building-columns-solid.svg"></h5>
-        <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;{{bank}}</a>
-
-        <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">|&nbsp;&nbsp;</a>
-
+        <a
+          class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;{{bank}}</a>
+        <a
+          class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">|&nbsp;&nbsp;</a>
         <h5 class="widget img"><img src="assets/images/thumbtack-solid.svg"></h5>
-        <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;{{currentUser.bankLocation}}</a>
-
-        <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">|&nbsp;&nbsp;</a>
-
+        <a
+          class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;{{currentUser.bankLocation}}</a>
+        <a
+          class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">|&nbsp;&nbsp;</a>
         <h5 class="widget img"><img src="assets/images/calendar-days-solid.svg"></h5>
-        <a class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;{{currentUser.authTime}}</a>
-
-        <a *ngIf="progressImage" class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">|&nbsp;&nbsp;</a>
-        
+        <a
+          class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">&nbsp;{{currentUser.authTime}}</a>
+        <a *ngIf="progressImage"
+          class="nav-item nav-link active texto_status text-light text-start mt-0 mb-0 pt-0 pb-0 ps-2 pe-2">|&nbsp;&nbsp;</a>
         <h5 *ngIf="progressImage"><img [src]="progressImage" style="width:200px; margin-top: 9px"></h5>
       </div>
     </nav>
   </div>
-
 </mat-toolbar>
-
-
 <header class="bg-dark fixed-top">
   <div class="container-fluid">
     <div class="row">
@@ -45,37 +44,41 @@
               <img src="assets/images/bars-solid.svg">
             </button>
           </span>
-          <a  [routerLink]="['/']">
+          <a [routerLink]="['/']">
             <span class="navbar-text text-light">
-              <img src="assets/images/logo_navbar_pres.svg" class="img-fluid ms-4" width="470"
-                >
+              <img src="assets/images/logo_navbar_pres.svg" class="img-fluid ms-4" width="470">
             </span>
           </a>
           <span class="navbar-text text-light ms-auto">
             <form class="d-flex" style="margin-bottom: 0px;">
-              <input class="form-control me-2 form-control-sm" type="search" placeholder="{{'searches.placeholderSearch'|translate}}" [(ngModel)]="processNumberToSearch" 
+              <input class="form-control me-2 form-control-sm" type="search"
+                placeholder="{{'searches.placeholderSearch'|translate}}" [(ngModel)]="processNumberToSearch"
                 aria-label="Search">
-                <button class="btn align-self-center btn-sm mt-0 mb-0 ms-0 me-3 pt-0 pb-0 ps-1 pe-1 text-white-50" type="submit" (click)="openProcess()">
-                  <img src="assets/images/search.svg" class="img_btn">
-                </button>
+              <button class="btn align-self-center btn-sm mt-0 mb-0 ms-0 me-3 pt-0 pb-0 ps-1 pe-1 text-white-50"
+                type="submit" (click)="openProcess()">
+                <img src="assets/images/search.svg" class="img_btn">
+              </button>
             </form>
-          </span><div id="navbar1_collapse">
-            <mat-select #langSelect (selectionChange)="changeLanguage(langSelect.value)" class="navbar-text bg-transparent mt-0 mb-0 ms-0 pt-0 pb-0 d-flex" [value]="translate.currentLang">
+          </span>
+          <div id="navbar1_collapse">
+            <mat-select #langSelect (selectionChange)="changeLanguage(langSelect.value)"
+              class="navbar-text bg-transparent mt-0 mb-0 ms-0 pt-0 pb-0 d-flex" [value]="translate.currentLang">
               <mat-select-trigger>
                 <p class="botao_linguas form-select form-select-lg mt-0 mb-0 pt-0 pb-0">{{currentLanguage.name}}</p>
               </mat-select-trigger>
               <mat-option *ngFor="let lang of translationLanguages" [value]="lang.abbreviation" id="{{lang.imageUrl}}">
                 <p class="img-fluid" style="height: 15px; width: 25px;"> {{lang.name}}</p>
               </mat-option>
-            </mat-select></div>
-            <span class="navbar-text mt-0 mb-0 pt-0 pb-0 ms-0 d-flex" style="margin-bottom: 4px !important;">
-              <button (click)="logout()" id="btn1" class="btn align-self-end pt-3 ps-1 fw-bold text-info"><img src="assets/images/logout.svg" class="img_btn"></button>
+            </mat-select>
+          </div>
+          <span class="navbar-text mt-0 mb-0 pt-0 pb-0 ms-0 d-flex" style="margin-bottom: 4px !important;">
+            <button (click)="logout()" id="btn1" class="btn align-self-end pt-3 ps-1 fw-bold text-info"><img
+                src="assets/images/logout.svg" class="img_btn"></button>
           </span>
         </nav>
       </div>
     </div>
   </div>
   <div class="counter">
-
   </div>
 </header>

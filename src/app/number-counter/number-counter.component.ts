@@ -24,13 +24,13 @@ export class NumberCounterComponent implements OnInit {
     var context = this;
     if (this.speed > this.number)
       this.speed = this.number;
-    
+
 
     const updateCount = () => {
       const target = context.number;
       const count = context.numberDisplay;
       const increment = Math.trunc(target / this.speed);
-     
+
       if (count < target) {
         context.numberDisplay = count + increment;
         setTimeout(updateCount, 1);
@@ -42,6 +42,6 @@ export class NumberCounterComponent implements OnInit {
   }
 
   public numberWithCommas(x) {
-  return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
+    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
   }
 }

@@ -1,30 +1,22 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { Observable, of, Subject, Subscription } from 'rxjs';
+
+import { Component, OnInit, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
+import { NavigationExtras, Router } from '@angular/router';
+import { of, Subject, Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { SubmissionService } from '../../submission/service/submission-service.service';
 import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
-import { docTypeListE, docTypeListP } from '../docType';
-import { IStakeholders, StakeholdersCompleteInformation } from '../IStakeholders.interface';
+import { IStakeholders } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
 import { stakeTypeList } from '../stakeholderType';
 import { TemplateRef, ViewChild } from '@angular/core';
-import { BsModalRef, ModalModule } from 'ngx-bootstrap/modal';
+import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { Configuration, configurationToken } from '../../configuration';
-
 import { readCC } from '../../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../../citizencard/CitizenCardController.js';
 import { ClearCCFields } from '../../citizencard/CitizenCardController.js';
 import { ICCInfo } from '../../citizencard/ICCInfo.interface';
 import { dataCC } from '../../citizencard/dataCC.interface';
-
 import { ReadcardService } from '../../readcard/readcard.service';
-
-import jsPDF from 'jspdf';
-import { BrowserModule } from '@angular/platform-browser';
 import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../../readcard/fileAndDetailsCC.interface';
 import { TableInfoService } from 'src/app/table-info/table-info.service';
@@ -32,9 +24,6 @@ import { UserTypes } from 'src/app/table-info/ITable-info.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Client } from '../../client/Client.interface';
-import { ClientService } from '../../client/client.service';
-import { Address } from '../../pep/IPep.interface';
-import { FocusMonitor } from '@angular/cdk/a11y';
 import { PostDocument } from '../../submission/document/ISubmission-document';
 
 @Component({
@@ -151,12 +140,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.dataCCcontents.documentType = documentType;
     this.dataCCcontents.nifCC = nif;
     this.dataCCcontents.localityCC = postalCode.split(" ").pop();
-
     this.emitSameNIF(of(this.dataCCcontents.nifCC));
-
-    // if (this.dataCCcontents.localityCC == null) {
-    //   this.dataCCcontents.localityCC = '';
-    // }
     this.dataCCcontents.countryCC = countryIssuer;
     this.countryCC = countryIssuer; //HTML
 
@@ -170,7 +154,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     if (this.addressReading == false) {
 
       //Without address
-      console.log("Without Address PDF");
       this.dataCCcontents.addressCC = " ";
       this.dataCCcontents.postalCodeCC = " ";
       this.dataCCcontents.countryCC = " ";
@@ -182,12 +165,10 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       this.readCardService.formatPDF(ccArrayData).then(resolve => {
         this.prettyPDF = resolve;
       });
-      console.log("PRETTY PDF DEPOIS DO SET: ", this.prettyPDF)
 
     } else {
 
       //WITH ADDRESS
-      console.log("With Address PDF");
       this.dataCCcontents.addressCC = address;
       this.dataCCcontents.postalCodeCC = postalCode;
 
@@ -201,20 +182,16 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     }
   }
 
-
-
   UibModal: BsModalRef | undefined;
   ShowSearchResults: boolean;
   SearchDone: boolean;
   ShowAddManual: boolean;
   ValidadeSearchAddIntervenient: boolean;
-  // IntervenientsTableSearch: Array<IClientResult>;
   HasInsolventIntervenients: boolean;
   BlockClientName: boolean;
   BlockNIF: boolean;
   Validations: boolean;
   DisableButtons: boolean;
-  //  DocumentTypes: Array<IRefData>;
   IsInsolventCantPass: boolean;
   CCReaderPresent: boolean;
   CCReaderCCID: number;
@@ -222,25 +199,15 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
 
   @ViewChild('newModal') newModal;
 
-  //-------------- fim do CC ------------
-
 
   submissionId: string;
-  // submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
-
   submissionStakeholders: IStakeholders[] = [];
 
   //Field "stakeholder type" for the search
   ListStakeholderType = stakeTypeList;
   stakeholderType?: string = "";
-
-  //Field "doc type" for the search
-  // ListDocTypeP = docTypeListP;
-  // ListDocTypeE = docTypeListE;
   documentType?: string = "";
-
   stakeholdersToShow: any[] = [];
-
   ngForm!: FormGroup;
   docType?: string = "";
 
@@ -272,7 +239,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   public subscription: Subscription;
 
   public isParticular: boolean = false;
-  // public isParticularSearched: boolean = false;
   public isCC: boolean = false;
   public isNoDataReadable: boolean = true;
 
@@ -304,23 +270,20 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   potentialClientIds: string[] = [];
 
   constructor(private logger: LoggerService, private readCardService: ReadcardService, public modalService: BsModalService,
-    private route: Router, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, 
+    private route: Router, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService,
     private stakeholderService: StakeholderService, private tableInfo: TableInfoService,
-    private submissionDocumentService: SubmissionDocumentService, private rootFormGroup: FormGroupDirective, private clientService: ClientService) {
+    private submissionDocumentService: SubmissionDocumentService, private rootFormGroup: FormGroupDirective) {
 
     this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
       this.ListDocTypeE = result;
-      this.ListDocTypeE = this.ListDocTypeE.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+      this.ListDocTypeE = this.ListDocTypeE.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }), (this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
       this.ListDocTypeP = result;
-      this.ListDocTypeP = this.ListDocTypeP.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+      this.ListDocTypeP = this.ListDocTypeP.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     })));
 
     this.showSameNIFError = false;
     this.initializeForm();
-
-    //this.ngOnInit();
-
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -338,7 +301,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   }
 
   initializeNotFoundForm() {
-    console.log('Não encontrou um stake ');
     switch (this.isParticular) {
       case false:
         let nipc = this.formStakeholderSearch.get("documentType").value === "0502" ?
@@ -357,7 +319,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         this.formNewStakeholder.get("nipc").addValidators(Validators.required);
         this.formNewStakeholder.get("socialDenomination").addValidators(Validators.required);
         this.formNewStakeholder.updateValueAndValidity();
-        console.log('FORM APOS NÃO ENCONTRAR STAKE NIPC', this.formNewStakeholder);
         break;
       case true:
         let nif = this.formStakeholderSearch.get("documentType").value === "0501" ?
@@ -375,15 +336,12 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         this.formNewStakeholder.get("name").addValidators(Validators.required);
         this.formNewStakeholder.get("nif").addValidators(Validators.required);
         this.formNewStakeholder.updateValueAndValidity();
-        console.log('FORM APOS NÃO ENCONTRAR STAKE NIF', this.formNewStakeholder);
         break;
-
     }
     this.foundStakeholders = false;
   }
 
   deactivateNotFoundForm() {
-    console.log('Encontrou um stake ');
     this.foundStakeholders = true;
   }
 
@@ -440,7 +398,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     if (readable === false) {
       this.okCC = readable; //W
     }
-    
+
   }
 
   //Modal que pergunta se tem o PIN da Morada
@@ -453,7 +411,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         this.Window.readCC();
         this.newModal.hide();
       }
-    }); // }.bind(this));
+    });
   }
 
   ngOnInit(): void {
@@ -463,7 +421,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.returned = localStorage.getItem("returned");
     this.data.updateData(false, 2);
 
-
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.setControl('searchStakes', this.formStakeholderSearch);
       this.rootFormGroup.form.setControl('newStakes', this.formNewStakeholder);
@@ -472,8 +429,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         this.formNewStakeholder.disable();
       }
     }
-
-
   }
 
   ngOnDestroy(): void {
@@ -488,8 +443,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   onClickCancel() {
     this.route.navigate(['stakeholders']);
   }
-
-
 
   onClickEdit(fiscalId) {
     this.route.navigate(['/update-stakeholder/', fiscalId]);
@@ -573,9 +526,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.resetSearchStakeholder();
     this.stakeShow = [];
     this.isShown = !this.isShown;
-
     this.stakeShow.push(stake);
-    // GetByid(StakeholderNif, 0)
   }
 
   searchStakeholder() {
@@ -592,7 +543,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
 
     this.emitSameNIF(of(this.stakeholderNumber)); //evento que serve para comparar o NIF inserido com os stakeholders já existentes
 
-    if (this.submissionClient.fiscalId === this.stakeholderNumber) { 
+    if (this.submissionClient.fiscalId === this.stakeholderNumber) {
       this.sameNIPC = true;
       return false;
     }
@@ -604,7 +555,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       this.searchEvent.next(this.stakeholderNumber);
       this.isSearch = true;
     });
-
   }
 
   refreshDiv() {
@@ -621,15 +571,13 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         this.potentialClientIds.push(emittedStakeholder.stakeholder.address.stakeholderNumber);
       }
     });
-    
-    console.log("current stakeholder: ", this.currentStakeholder);
   }
 
   searchResultNotifier(info) {
     if (!info.found) {
       this.initializeNotFoundForm();
     }
-    else { 
+    else {
       this.deactivateNotFoundForm();
       this.stakesList = info.stakesList;
     }
@@ -647,7 +595,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   addStakeholder() {
     this.sameNIPC = false;
     this.showSameNIFError = false;
-    console.log("por adicionar: ", this.currentStakeholder);
     if (this.foundStakeholders && this.dataCCcontents.cardNumberCC == null) {
       this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], this.docType, 'por mudar').then(stakeholder => {
         var stakeholderToInsert = stakeholder.result;
@@ -664,14 +611,14 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         stakeholderToInsert["contacts"] = null;
         stakeholderToInsert["contactName"] = stakeholderToInsert["shortName"];
 
-        if (stakeholderToInsert["identificationDocument"] != null) { 
+        if (stakeholderToInsert["identificationDocument"] != null) {
           stakeholderToInsert["identificationDocument"] = {
             type: stakeholderToInsert["identificationDocument"]["documentType"],
             number: stakeholderToInsert["identificationDocument"]["documentId"],
-            country: stakeholderToInsert["identificationDocument"]["documentIssuer"], 
-            expirationDate: stakeholderToInsert["identificationDocument"]["validUntil"], 
+            country: stakeholderToInsert["identificationDocument"]["documentIssuer"],
+            expirationDate: stakeholderToInsert["identificationDocument"]["validUntil"],
             checkDigit: stakeholderToInsert["identificationDocument"]["checkDigit"],
-          } 
+          }
         }
 
         stakeholderToInsert["potentialClientIds"] = this.potentialClientIds;
@@ -679,7 +626,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         console.log("Stakeholder to insert atualizado: ", stakeholderToInsert);
 
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-          //this.currentStakeholder.id = result["id"];
           stakeholderToInsert.id = result["id"];
           this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
             duration: 4000,
@@ -697,12 +643,11 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       this.addStakeholderWithCC();
     }
     else {
-      console.log("formstakeholder: ", this.formStakeholderSearch);
       var fullName = this.formNewStakeholder.get("name")?.value != '' ? this.formNewStakeholder.get("name")?.value : this.formNewStakeholder.get("socialDenomination")?.value
       var nameArray = fullName.split(" ").filter(element => element);
       var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
       var stakeholderToInsert: IStakeholders = {
-        "fiscalId": this.formNewStakeholder.get("nif")?.value!='' ? this.formNewStakeholder.get("nif")?.value : this.formNewStakeholder.get("nipc")?.value,
+        "fiscalId": this.formNewStakeholder.get("nif")?.value != '' ? this.formNewStakeholder.get("nif")?.value : this.formNewStakeholder.get("nipc")?.value,
         "identificationDocument": {
           "type": this.formStakeholderSearch.get("documentType").value,
           "number": this.formStakeholderSearch.get("documentNumber").value,
@@ -769,7 +714,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       "shortName": shortName,
       "contactName": shortName,
       "identificationDocument": {
-        "type": '0018',           
+        "type": '0018',
         "number": this.dataCCcontents.cardNumberCC,
         "country": this.dataCCcontents.countryCC,
         "expirationDate": new Date(formatedDate).toISOString(),
@@ -785,7 +730,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       "phone2": {},
       "signType": "DigitalCitizenCard"
     }
-    
+
     this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
       stakeholderToInsert.id = result["id"];
       this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {

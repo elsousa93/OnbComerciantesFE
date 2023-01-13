@@ -8,9 +8,9 @@ describe('RepresentationPowerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ RepresentationPowerComponent ]
+      declarations: [RepresentationPowerComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

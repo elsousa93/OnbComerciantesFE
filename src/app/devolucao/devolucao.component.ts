@@ -1,9 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { Configuration, configurationToken } from '../configuration';
 import { DataService } from '../nav-menu-interna/data.service';
 import { BusinessIssueViewModel, ProcessList, ProcessService, SearchProcessHistory } from '../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
@@ -19,7 +17,7 @@ import { DatePipe } from '@angular/common';
 })
 
 
-export class DevolucaoComponent implements OnInit{
+export class DevolucaoComponent implements OnInit {
   form: FormGroup;
 
   public map = new Map();
@@ -33,16 +31,16 @@ export class DevolucaoComponent implements OnInit{
   public issues: BusinessIssueViewModel
   public processHistoryItems: SearchProcessHistory;
 
-  constructor(private logger : LoggerService, private http: HttpClient,
+  constructor(private logger: LoggerService,
     private route: Router, private data: DataService,
     private router: ActivatedRoute, private processService: ProcessService, private clientService: ClientService,
     private stakeholderService: StakeholderService, private storeService: StoreService, private translate: TranslateService, private datePipe: DatePipe) {
 
-    this.logger.debug('Process Id ' + this.processId);  
+    this.logger.debug('Process Id ' + this.processId);
   }
 
   getEntityName(entity: string, id: string) {
-    if (id != null) { 
+    if (id != null) {
       if (entity == 'merchant') {
         this.clientService.GetClientByIdOutbound(id).then(res => {
           return res.legalName;
@@ -69,7 +67,6 @@ export class DevolucaoComponent implements OnInit{
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.historyStream$.next(true);
     this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
-    console.log('Process Id ', this.processId);
     var context = this;
     this.getPageInfo();
     this.logger.debug('Valor do returned ' + localStorage.getItem("returned"));
@@ -84,10 +81,9 @@ export class DevolucaoComponent implements OnInit{
       this.process = result;
       this.processNumber = result.processNumber;
       localStorage.setItem('processNumber', this.processNumber);
-      this.data.updateData(true, 0);  
+      this.data.updateData(true, 0);
       this.processService.getProcessIssuesById(this.processId).subscribe(res => {
         if (res.process.length != 0) { // no caso em que as issues vêm a null está a entrar num erro infinito
-          console.log('ISSUES ', res);
           this.issues = res;
         }
       });
@@ -113,10 +109,9 @@ export class DevolucaoComponent implements OnInit{
       });
     });
   }
-  
+
   nextPage() {
-    this.data.updateData(true, 0);    
+    this.data.updateData(true, 0);
     this.route.navigate(['/clientbyid']);
   }
-
 }

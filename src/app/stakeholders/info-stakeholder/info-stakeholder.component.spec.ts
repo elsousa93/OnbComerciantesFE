@@ -8,9 +8,9 @@ describe('InfoStakeholderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ InfoStakeholderComponent ]
+      declarations: [InfoStakeholderComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

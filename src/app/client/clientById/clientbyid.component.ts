@@ -1,7 +1,6 @@
-import { AfterViewInit, Component, ElementRef, Inject, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { AcquiringClientPost, OutboundClient } from '../Client.interface';
-import { continents, countriesAndContinents } from '../countriesAndContinents';
 import { DocumentSearchType, EconomicActivityInformation, LegalNature, SecondLegalNature } from '../../table-info/ITable-info.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { SubmissionService } from '../../submission/service/submission-service.service'
@@ -12,7 +11,6 @@ import { ClientService } from '../client.service';
 import { CRCService } from '../../CRC/crcservice.service';
 import { CRCProcess } from '../../CRC/crcinterfaces';
 import { DatePipe } from '@angular/common';
-import { Configuration, configurationToken } from 'src/app/configuration';
 import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../../readcard/fileAndDetailsCC.interface';
 import { ClientContext } from './clientById.model';
@@ -24,7 +22,7 @@ import { StakeholderService } from '../../stakeholders/stakeholder.service';
 import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 import { StoreService } from '../../store/store.service';
 import { ShopDetailsAcquiring } from '../../store/IStore.interface';
-import { IStakeholders, OutboundDocument, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
+import { IStakeholders, OutboundDocument } from '../../stakeholders/IStakeholders.interface';
 import { AuthService } from '../../services/auth.service';
 import { ISubmissionDocument } from '../../submission/document/ISubmission-document';
 import { SubmissionPostDocumentTemplate } from '../../submission/ISubmission.interface';
@@ -119,8 +117,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
   isCommercialSociety: boolean = null;
   isCompany: boolean;
-  Countries = countriesAndContinents;
-  Continents = continents;
   checkedContinents = []; // posso manter esta variavel para os continentes selecionados
   countryVal: string;
 
@@ -135,8 +131,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   public currentPage: number;
   public subscription: Subscription;
   public subs: Subscription[] = [];
-
-
 
   returned: string; //variável para saber se estamos a editar um processo
   merchantInfo: any;
@@ -156,7 +150,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   collectCRC: boolean;
   lastExpandedTab: number;
   touchedTabs: boolean[] = new Array<boolean>(3).fill(false);
-    formClientIsValid: boolean = false;
+  formClientIsValid: boolean = false;
   formCountryIsValid: boolean = false;
   countriesListValid: boolean = false;
 
@@ -172,20 +166,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   shortName: string;
   submissionDocs: ISubmissionDocument[] = [];
 
-  initializeTableInfo() {
-    //Chamada à API para obter as naturezas juridicas
-    //this.subs.push(this.tableInfo.GetAllLegalNatures().subscribe(result => {
-    //  this.legalNatureList = result;
-    //  this.logger.debug("FETCH LEGAL NATURES");
-    //  this.logger.debug(result);
-    //  this.logger.debug(this.legalNatureList);
-    //  this.legalNatureList = this.legalNatureList.sort((a, b) => a.description > b.description ? 1 : -1);
-    //}, error => this.logger.error(error)));
-  }
-
   updateBasicForm() {
     this.form.get("clientCharacterizationForm").get("natJuridicaNIFNIPC").setValue(this.NIFNIPC);
-
   }
 
   initializeENI() {
@@ -201,17 +183,12 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
   }
 
-  searchBranch(code) {
-    return this.tableInfo.GetCAEByCode(code).toPromise();
-  }
-
   initializeFormControlOther() {
     this.logger.debug("-------- NIFNIPC --------");
     this.logger.debug("initializeformcontrolother");
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
 
     this.form = new FormGroup({
-      //commercialSociety: new FormControl('false', [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       natJuridicaN1: new FormControl((this.returned != null) ? this.merchantInfo.legalNature : '', [Validators.required]), //sim
       natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo.legalNature2 : ''), //sim
@@ -230,101 +207,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         this.form.controls["natJuridicaN2"].clearValidators();
       this.form.controls["natJuridicaN2"].updateValueAndValidity();
     });
-  }
-
-  initializeFormControlCRC() {
-    this.logger.debug("intializecrcform");
-    this.logger.debug("a");
-    this.crcCode = this.form.get("crcCode").value;
-    this.logger.debug(this.processClient.capitalStock.date);
-    var b = this.datepipe.transform(this.processClient.capitalStock.date, 'MM-dd-yyyy').toString();
-    this.logger.debug("data formatada");
-    var separated = b.split('-');
-    var formatedDate = separated[2] + "-" + separated[0] + "-" + separated[1];
-    this.logger.debug(formatedDate);
-    //var date = formatDate(this.processClient.capitalStock.date, 'MM-dd-yyyy', 'en-US');
-    var branch1 = '';
-
-    this.searchBranch(this.processClient.mainEconomicActivity.split("-")[0])
-      .then((data) => {
-        this.form.get("CAE1Branch").setValue(data.description);
-      });
-
-    if (this.processClient.secondaryEconomicActivity !== null) {
-      this.searchBranch(this.processClient.secondaryEconomicActivity[0].split("-")[0])
-        .then((data) => {
-          this.form.get("CAESecondary1Branch").setValue(data.description);
-        });
-    }
-
-    this.logger.debug("-------- NIFNIPC --------");
-    this.logger.debug(this.NIFNIPC);
-    this.logger.debug(this.form.get("natJuridicaNIFNIPC").value);
-    this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
-
-
-    this.form = new FormGroup({
-      //commercialSociety: new FormControl('true', [Validators.required]), //sim
-      crcCode: new FormControl(this.crcCode, [Validators.required]), //sim
-      natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: true/*, disabled: this.clientExists */ }, [Validators.required]), //sim
-      natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
-      natJuridicaN2: new FormControl({ value: this.client.legalNature2, disabled: true/*, disabled: this.clientExists*/ }), //sim
-      socialDenomination: new FormControl(this.processClient.companyName, Validators.required), //sim
-      CAE1: new FormControl(this.processClient.mainEconomicActivity, Validators.required), //sim
-      CAE1Branch: new FormControl(branch1), //talvez
-      CAESecondary1: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[0] : ''), //sim
-      CAESecondary1Branch: new FormControl(''), //talvez
-      CAESecondary2: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[1] : ''), //sim
-      CAESecondary2Branch: new FormControl(''), //talvez
-      CAESecondary3: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[2] : ''), //sim
-      CAESecondary3Branch: new FormControl(''), //talvez
-      constitutionDate: new FormControl(formatedDate), //sim this.processClient.capitalStock.date + ''
-      country: new FormControl(this.processClient.headquartersAddress.country, Validators.required), //sim
-      location: new FormControl(this.processClient.headquartersAddress.postalArea, Validators.required), //sim
-      ZIPCode: new FormControl(this.processClient.headquartersAddress.postalCode, Validators.required), //sim
-      address: new FormControl(this.processClient.headquartersAddress.address, Validators.required), //sim
-      commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
-      collectCRC: new FormControl(this.collectCRC, [Validators.required])
-    });
-
-
-    this.logger.debug(this.form);
-    this.form.get("CAE1").valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.form.controls["CAE1Branch"].setValidators([Validators.required]);
-      } else {
-        this.form.controls["CAE1Branch"].clearValidators();
-      }
-      this.form.controls["CAE1Branch"].updateValueAndValidity();
-    });
-    this.logger.debug("c");
-    this.form.get("CAESecondary1").valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.form.controls["CAESecondary1Branch"].setValidators([Validators.required]);
-      } else {
-        this.form.controls["CAESecondary1Branch"].clearValidators();
-      }
-      this.form.controls["CAESecondary1Branch"].updateValueAndValidity();
-    });
-    this.logger.debug("d");
-    this.form.get("CAESecondary2").valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.form.controls["CAESecondary2Branch"].setValidators([Validators.required]);
-      } else {
-        this.form.controls["CAESecondary2Branch"].clearValidators();
-      }
-      this.form.controls["CAESecondary2Branch"].updateValueAndValidity();
-    });
-    this.logger.debug("e");
-    this.form.get("CAESecondary3").valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.form.controls["CAESecondary3Branch"].setValidators([Validators.required]);
-      } else {
-        this.form.controls["CAESecondary3Branch"].clearValidators();
-      }
-      this.form.controls["CAESecondary3Branch"].updateValueAndValidity();
-    });
-
   }
 
   constructor(private logger: LoggerService, private datepipe: DatePipe, private formBuilder: FormBuilder,
@@ -387,7 +269,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.submissionExists = true;
     }
 
-    console.log('Form do Clientbyid: ', this.form);
 
     var context = this;
     if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
@@ -398,7 +279,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log('VALOR DO CHARACTERIZATION ', this.clientCharacterizationComponent);
+    console.log('Valor do Characterization: ', this.clientCharacterizationComponent);
 
   }
 
@@ -407,13 +288,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       var context = this;
       return new Promise((resolve, reject) => {
         context.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(function (result) {
-          console.log('GET DA SUBMISSION PROCESS NUMBER ', result);
           context.submissionType = result.result[0].submissionType;
           localStorage.setItem("submissionId", result.result[0].submissionId);
           return result;
         }).then(function (resul) {
           context.clientService.GetClientByIdAcquiring(resul.result[0].submissionId).then(function (res) {
-            console.log('GET DA SUBMISSION PELO ID ', res);
             context.merchantInfo = res;
             return context.merchantInfo;
           }).then(function (r) {
@@ -432,15 +311,12 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     var context = this;
     if (this.returned != null) {
       let promise = await context.getMerchantInfo();
-      console.log('Promise ', promise);
       if (context.merchantInfo.clientId != null) {
         context.isClient = true;
       } else {
         context.isClient = false;
       }
     }
-
-    console.log('VALOR DO IS CLIENT ', this.isClient);
 
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
@@ -500,12 +376,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
           this.clientService.SearchClientByQuery(this.dataCC.nifCC, "0501", "", "").subscribe(res => {
             this.clientService.GetClientByIdOutbound(res[0].merchantId).then(result => {
-              console.log('RESULTADO ', result);
               client.clientId = result.merchantId;
               client.merchantRegistrationId = result.merchantRegistrationId;
-              //client.legalName = result.legalName;
-              //client.commercialName = result.commercialName;
-              //client.shortName = result.shortName;
               if ((this.dataCC.addressCC != " " && this.dataCC.addressCC != null) || (this.dataCC.countryCC != " " && this.dataCC.countryCC != null) || (this.dataCC.localityCC != " " && this.dataCC.localityCC != null) || (this.dataCC.postalCodeCC != " " && this.dataCC.postalCodeCC != null)) {
                 client.headquartersAddress.address = this.dataCC.addressCC;
                 client.headquartersAddress.country = this.dataCC.countryCC;
@@ -571,9 +443,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 doc.receivedAt = this.datepipe.transform(doc.receivedAt, "yyyy-MM-dd");
               });
 
-              //this.getDocumentDescription(this.clientDocs);
               this.fetchDocumentDescriptions();
-              console.log("CLIENTE QUE VAI SER INSERIDO ", clientToInsert);
 
               this.clientContext.clientExists = true;
               this.clientContext.setClient(client);
@@ -637,11 +507,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             this.NIFNIPC = this.dataCC.nifCC;
             this.clientContext.setNIFNIPC(this.dataCC.nifCC);
 
-            //if (this.clientContext.isClient == false) { // !
-            //  this.countriesComponent.getClientContextValues();
-            //}
-            //this.clientCharacterizationComponent.getClientContextValues();
-            //this.updateBasicForm();
             this.createSubmission();
 
           });
@@ -651,7 +516,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
             this.clientService.GetClientByIdOutbound(this.clientId).then(result => {
               var client = result;
-              console.log("pesquisa do cliente: ", result);
 
               var clientToInsert: AcquiringClientPost = {};
               clientToInsert.clientId = client.merchantId;
@@ -676,11 +540,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               clientToInsert.legalNature = client.legalNature;
               clientToInsert.legalNature2 = client.legalNature2;
 
-              if (client.incorporationStatement!=null){
+              if (client.incorporationStatement != null) {
                 clientToInsert.incorporationStatement = {
                   code: client.incorporationStatement.code,
                   validUntil: client.incorporationStatement.validUntil
-                } 
+                }
               }
 
 
@@ -725,9 +589,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 doc.receivedAt = this.datepipe.transform(doc.receivedAt, "yyyy-MM-dd");
               });
 
-              //this.getDocumentDescription(this.clientDocs);
               this.fetchDocumentDescriptions();
-              console.log("CLIENTE QUE VAI SER INSERIDO ", clientToInsert);
 
               this.clientContext.clientExists = true;
               this.clientContext.setClient(clientToInsert);
@@ -785,7 +647,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           this.clientContext.submissionID = localStorage.getItem("submissionId");
           this.clientContext.setClient(result);
           this.clientContext.isClient = this.isClient;
-          
+
           //dados necessários para a pesquisa feita anteriormente
           this.tipologia = result.merchantType;
           this.clientId = result.fiscalId;
@@ -794,7 +656,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           context.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(res => {
             if (res.length > 0) {
               res.forEach(doc => {
-                if (doc.type === '0001') { 
+                if (doc.type === '0001') {
                   context.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(r => {
                     var file = {
                       documentType: '0001',
@@ -829,7 +691,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         });
       }
     } else {
-      //this.clientContext.clientExists = false;
       this.clientContext.isClient = this.isClient;
       if (this.clientContext.isClient) {
         this.formCountryIsValid = true;
@@ -839,16 +700,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.clientContext.setNIFNIPC(this.merchantInfo.fiscalId);
       this.clientContext.tipologia = this.merchantInfo.merchantType;
       this.clientContext.submissionID = localStorage.getItem("submissionId");
-
-
-      console.log('CLIENT CONTEXT ', this.clientContext.isClient);
-      //if (!this.clientContext.isClient) {
-      //  this.countriesComponent.getClientContextValues();
-      //}
-      //this.clientCharacterizationComponent.getClientContextValues();
     }
-
-    //return null;
   }
 
   ngOnDestroy(): void {
@@ -885,63 +737,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     return desc;
   }
 
-
-  searchByCRC() {
-    var crcInserted = this.form.get('crcCode').value;
-    var crcFormat = /(\b\d{4})-(\b\d{4})-(\b\d{4})/i;
-    if (!crcFormat.test(crcInserted)) {
-      this.crcIncorrect = true;
-      this.crcFound = false;
-      return;
-    }
-    this.crcIncorrect = false;
-    this.crcService.getCRC(crcInserted, '001').subscribe(o => {
-      if (o === undefined || o === null) {
-        this.crcNotExists = true;
-        this.crcFound = false;
-      }
-
-      var economicActivity = clientByCRC.economicActivity.main.split('-')[0];
-
-      var clientByCRC = o;
-
-      this.crcFound = true;
-      this.crcNotExists = false;
-      this.errorMsg = '';
-      this.processClient.legalNature = clientByCRC.legalNature;
-      this.processClient.mainEconomicActivity = economicActivity;
-      this.processClient.secondaryEconomicActivity = clientByCRC.economicActivity.secondary;
-
-      this.processClient.fiscalId = clientByCRC.fiscalId;
-      this.processClient.companyName = clientByCRC.companyName;
-
-      this.processClient.capitalStock.date = clientByCRC.capitalStock.date;
-      this.processClient.capitalStock.capital = clientByCRC.capitalStock.amount;
-
-      this.processClient.headquartersAddress.address = clientByCRC.headquartersAddress.fullAddress;
-      this.processClient.headquartersAddress.locality = clientByCRC.headquartersAddress.parish;
-      this.processClient.headquartersAddress.postalCode = clientByCRC.headquartersAddress.postalCode;
-      this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.postalArea;
-      this.processClient.headquartersAddress.country = clientByCRC.headquartersAddress.country;
-
-      this.processClient.expirationDate = clientByCRC.expirationDate;
-      this.processClient.hasOutstandingFacts = clientByCRC.hasOutstandingFacts;
-
-      this.processClient.stakeholders = clientByCRC.stakeholders;
-
-      this.processClient.pdf = clientByCRC.pdf;
-
-      this.processClient.code = clientByCRC.code;
-      this.processClient.requestId = clientByCRC.requestId;
-
-      this.logger.debug("o crc chamou o initialize");
-      this.initializeFormControlCRC();
-    });
-  }
-  getCrcCode() {
-    return this.form.get('crcCode').value;
-  }
-
   onExpand(index: number) {
     this.data.updateData(false, 1, index + 2);
     if (this.lastExpandedTab !== undefined) {
@@ -969,7 +764,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   }
 
   redirectBeginningClient() {
-    //this.data.changeCurrentDataCC(this.dataCC);
     if (!this.historyStream) {
       let navigationExtras: NavigationExtras = {
         state: {
@@ -1002,27 +796,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     }
   }
 
-  GetCountryByZipCode() {
-    var zipcode = this.form.value['ZIPCode'];
-    if (zipcode.length === 8) {
-      var zipCode = zipcode.split('-');
-
-      this.subs.push(this.tableInfo.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
-
-        var addressToShow = address[0];
-
-        this.form.get('address').setValue(addressToShow.address);
-        this.form.get('country').setValue(addressToShow.country);
-        this.form.get('location').setValue(addressToShow.postalArea);
-      }));
-    }
-  }
-
-  GetCAEByCode() {
-    var cae = this.form.value["CAE1"];
-    //var caeResult = this.tableInfo.GetCAEByCode(cae);
-  }
-
   GetLegalNatureByCode(code: string) {
     var legalNature = this.legalNatureList.find(element => {
       if (element.code == code) {
@@ -1044,7 +817,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   }
 
   createSubmission() {
-    if (this.returned != 'consult') { 
+    if (this.returned != 'consult') {
       var context = this;
       var newSubmission = this.clientContext.newSubmission;
       newSubmission.startedAt = new Date().toISOString();
@@ -1067,21 +840,20 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         newSubmission.merchant.documentationDeliveryMethod = 'Portal';
       else
         newSubmission.merchant.documentationDeliveryMethod = 'Mail';
-      
+
 
       if (merchantType === 'corporation' || merchantType === 'Corporate' || merchantType === 'Company')
-        newSubmission.merchant.merchantType = 'Corporate'; 
+        newSubmission.merchant.merchantType = 'Corporate';
       else
-        newSubmission.merchant.merchantType = 'Entrepeneur'; 
+        newSubmission.merchant.merchantType = 'Entrepeneur';
 
       if (this.tipologia === 'Corporate' || this.tipologia === 'Company' || this.tipologia === '01' || this.tipologia === 'corporation')
         newSubmission.merchant.merchantType = 'Corporate';
-        
+
       if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
         newSubmission.merchant.merchantType = 'Entrepeneur';
         var client = this.clientContext.getClient();
 
-        //var stakeholder: IStakeholders = {} as IStakeholders; //Formato a ser enviado à API
         stakeholder.fiscalId = client.fiscalId;
         stakeholder.fullName = client.legalName;
         stakeholder.contactName = client.commercialName;
@@ -1096,7 +868,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           phoneNumber: client.contacts?.phone2?.countryCode
         };
         stakeholder.email = client.contacts.email;
-        console.log("CC Data: ", this.dataCC);
         if (this.dataCC !== undefined && this.dataCC !== null) {
           stakeholder.signType = "DigitalCitizenCard";
           var birthDate = this.clientContext.dataCC.birthdateCC.split(" ");
@@ -1110,18 +881,12 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
         }
         this.clientContext.setStakeholdersToInsert([stakeholder]);
-        //var stakeholderToShow: StakeholdersProcess = {} as StakeholdersProcess; //Formato a ser representado na tabela dos poderes
-        //stakeholderToShow.fiscalId = client.fiscalId;
-        //stakeholderToShow.name = client.legalName;
-
-
-        //this.clientContext.newSubmission = newSubmission;
       }
 
       this.clientContext.newSubmission = newSubmission;
       this.clientContext.setClient(newSubmission.merchant);
 
-      if (!this.submissionExists) { 
+      if (!this.submissionExists) {
         this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
           context.clientContext.submissionID = result.id;
           localStorage.setItem("submissionId", result.id);
@@ -1170,7 +935,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         console.log("resultado: ", res);
       });
 
-      if (!this.updateClient && this.returned == null) { 
+      if (!this.updateClient && this.returned == null) {
         var stakeholder = this.clientContext.newSubmission.stakeholders;
         stakeholder.forEach(function (value, idx) {
           if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
@@ -1231,10 +996,10 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             });
           });
         }
-        
+
       }
 
-      if (!this.updateClient) { 
+      if (!this.updateClient) {
         if (this.clientContext.isClient) {
           this.storeService.getShopsListOutbound(newSubmission.merchant.merchantRegistrationId, "por mudar", "por mudar").subscribe(res => {
             res.forEach(value => {
@@ -1252,8 +1017,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                     bank: r.result.bankingInformation
                   },
                   name: r.result.name,
-                  //productCode: r.product,
-                  //subproductCode: r.subproduct,
                   website: r.result.url,
                   equipments: []
                 }
@@ -1346,79 +1109,32 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   }
 
   formClientCharacterizationIsValid(formCharact) {
-    console.log("formulario: ", formCharact);
 
     if (formCharact.valid) {
       this.formClientIsValid = true;
     }
 
     formCharact.statusChanges.subscribe(res => {
-      console.log("Client Characterization estado: ", res);
       if (res === 'VALID') {
-        console.log("client charac estado valido");
         this.formClientIsValid = true;
       }
       else {
-        console.log("client charact estado invalido");
         this.formClientIsValid = false;
       }
     })
-
-    //this.clientContext.formClientCharacterizationReady.subscribe(ready => {
-    //  console.log("FORM CLIENT CHARACTERIZATION ESTÁ PRONTO");
-    //  if (ready) {
-    //    context.clientCharacterizationComponent.form.statusChanges.subscribe(res => {
-    //      console.log("SOFREU ALTERACOES NO ESTADO: ", res);
-    //      console.log("formulário do client characterization: ", context.clientCharacterizationComponent?.form);
-    //      if (res === 'VALID') {
-    //        this.formClientIsValid = true;
-    //      }
-    //      else
-    //        this.formClientIsValid = false;
-    //    });
-    //  }
-
-    //})
-
-    //this.clientContext.formCountrysReady.subscribe(ready => {
-    //  if (ready) {
-    //    context.countriesComponent.form.statusChanges.subscribe(res => {
-    //      console.log("formulário do countries: ", context.countriesComponent?.form);
-    //      if (res === 'VALID')
-    //        this.formCountryIsValid = true;
-    //      else
-    //        this.formCountryIsValid = false;
-    //    });
-    //  }
-
-    //})
-
-    //this.clientContext.formClientCharacterizationValid?.subscribe(res => {
-    //  if (res !== 'VALID')
-    //    this.formClientIsValid = false;
-    //});
-
-    //this.clientContext.formCountrysValid?.subscribe(res => {
-    //  if (res !== 'VALID')
-    //    this.formCountryIsValid = false;
-    //})
   }
 
   formClientCountryIsValid(formCountry: AbstractControl) {
-    console.log("form country: ", formCountry);
 
     if (formCountry.valid) {
       this.formCountryIsValid = true;
     }
 
     formCountry.statusChanges.subscribe(res => {
-      console.log("client country estado: ", res);
       if (res === 'VALID') {
-        console.log("client country valido");
         this.formCountryIsValid = true;
       }
       else {
-        console.log("client country invalido");
         this.formCountryIsValid = false;
       }
     })

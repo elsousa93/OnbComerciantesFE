@@ -1,11 +1,7 @@
-import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Renderer2 } from '@angular/core';
-import { Component, Inject, Input, OnInit, VERSION, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ActivatedRoute, Route, Router } from '@angular/router';
-import { Subscription, take } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
-import { Configuration, configurationToken } from 'src/app/configuration';
 import { LoggerService } from 'src/app/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -18,7 +14,7 @@ import { ContractPackLanguage } from '../../table-info/ITable-info.interface';
   templateUrl: './pack-contratual.component.html'
 })
 
-export class PackContratualComponent implements OnInit{
+export class PackContratualComponent implements OnInit {
   form: FormGroup;
 
   public map = new Map();
@@ -31,7 +27,7 @@ export class PackContratualComponent implements OnInit{
   public result: any;
 
   // apagar quando tiver com API
-  public docToShow: {nome:string, NIF: string, poderRepresentacao: string, selecao: boolean};
+  public docToShow: { nome: string, NIF: string, poderRepresentacao: string, selecao: boolean };
   files?: File[] = [];
 
   isPaper: boolean = null;
@@ -44,16 +40,15 @@ export class PackContratualComponent implements OnInit{
   @ViewChild('submeterPedidoModal') submeterPedidoModal;
 
   contractLanguage: ContractPackLanguage[];
-  
-  constructor(private logger : LoggerService, private http: HttpClient,
-    private route: Router,
-    private router: ActivatedRoute, private modalService: BsModalService, private translate: TranslateService, private snackBar: MatSnackBar, private tableInfoService: TableInfoService) {
+
+  constructor(private logger: LoggerService,
+    private modalService: BsModalService, private translate: TranslateService, private snackBar: MatSnackBar, private tableInfoService: TableInfoService) {
 
     this.tableInfoService.GetContractualPackLanguage().subscribe(result => {
       this.contractLanguage = result;
     });
-    
-  
+
+
   }
 
   ngOnInit(): void {
@@ -62,10 +57,10 @@ export class PackContratualComponent implements OnInit{
   }
 
   paperSignature(paper: boolean) {
-    this.showTable=true;
+    this.showTable = true;
     this.showObservations = true;
     this.showAnotherButtons = paper;
-    if (paper){
+    if (paper) {
       this.isPaper = true;
     } else {
       this.isPaper = false;
@@ -76,11 +71,11 @@ export class PackContratualComponent implements OnInit{
     this.validatedDocuments = value;
   }
 
-  openAssinaturaDigitalModal(){
+  openAssinaturaDigitalModal() {
     this.assinaturaDigitalModalRef = this.modalService.show(this.assinaturaDigitalModal, { class: 'modal-lg' });
   }
 
-  declineAssinaturaDigital(){
+  declineAssinaturaDigital() {
     this.assinaturaDigitalModalRef?.hide();
     this.showAnotherButtons = true;
   }
@@ -99,7 +94,6 @@ export class PackContratualComponent implements OnInit{
           if (event.target.files && files[i]) {
             var reader = new FileReader();
             reader.onload = (event: any) => {
-              // this.localUrl = event.target.result;
             }
             reader.readAsDataURL(files[i]);
             this.files.push(file);
@@ -110,21 +104,18 @@ export class PackContratualComponent implements OnInit{
           } else {
             alert("Verifique o tipo / tamanho do ficheiro");
           }
-
         }
       }
-
     }
     this.logger.debug(this.files);
 
   }
 
-  openSubmeterPedidoModal(){
+  openSubmeterPedidoModal() {
     this.submeterPedidoModalRef = this.modalService.show(this.submeterPedidoModal, { class: 'modal-lg' });
   }
 
-  declineSubmeterPedido(){
+  declineSubmeterPedido() {
     this.submeterPedidoModalRef?.hide();
   }
-
 }

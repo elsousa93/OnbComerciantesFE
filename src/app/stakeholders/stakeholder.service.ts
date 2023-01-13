@@ -1,6 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Configuration, configurationToken } from '../configuration';
+import { Injectable } from '@angular/core';
 import { IStakeholders } from './IStakeholders.interface';
 import { LoggerService } from 'src/app/logger.service';
 import { HttpMethod } from '../enums/enum-data';
@@ -233,7 +232,6 @@ export class StakeholderService {
         requestResponse.error = null;
         resolve(requestResponse);
       }, error => {
-        console.log("error que deu: ", error);
         requestResponse.result = null;
         requestResponse.error = error;
         reject(requestResponse);

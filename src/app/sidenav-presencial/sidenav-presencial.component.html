@@ -7,7 +7,7 @@
           <a role="button" [routerLink]="['/']" id="anchor">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/home.svg"
-                   class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.home'|translate}} &nbsp;
+                class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.home'|translate}} &nbsp;
             </p>
           </a>
         </div>
@@ -15,27 +15,30 @@
           <a role="button" (click)="hideHistoryTab()" id="anchor">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/folder_open.svg"
-                   class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.openProcess'|translate}} &nbsp;
+                class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.openProcess'|translate}}
+              &nbsp;
             </p>
           </a>
         </div>
         <div *ngIf="userPermissions.ProcessHandling">
           <a id="headingOne3" role="button" data-bs-toggle="collapse" data-bs-target="#collapseOne3"
-             aria-expanded="true" aria-controls="collapseOne3">
+            aria-expanded="true" aria-controls="collapseOne3">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item dropdown-toggle">
               <img src="assets/images/edit_note.svg"
-                   class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.processTreatment'|translate}} &nbsp;
+                class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.processTreatment'|translate}}
+              &nbsp;
             </p>
           </a>
           <div id="collapseOne3" class="submenu accordion-collapse collapse" aria-labelledby="headingOne3"
-               data-bs-parent="#accordion">
+            data-bs-parent="#accordion">
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.EligibilityOpinions">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span (click)="FTSearch('eligibility')" class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                           class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.eligibility'|translate}} &nbsp;
+                        class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.eligibility'|translate}}
+                      &nbsp;
                     </p>
                   </a>
                 </span>
@@ -47,7 +50,8 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                           class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.multipleClients'|translate}} &nbsp;
+                        class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.multipleClients'|translate}}
+                      &nbsp;
                     </p>
                   </a>
                 </span>
@@ -59,7 +63,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                           class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.validation'|translate}}
+                        class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.validation'|translate}}
                       DO &nbsp;
                     </p>
                   </a>
@@ -73,11 +77,11 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                           class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.negotiationAproval'|translate}} &nbsp;
+                        class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.negotiationAproval'|translate}}
+                      &nbsp;
                     </p>
                   </a>
                 </span>
-
               </nav>
             </div>
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.MCCTreatment">
@@ -86,11 +90,11 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                           class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.MCCTreatment'|translate}} &nbsp;
+                        class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.MCCTreatment'|translate}}
+                      &nbsp;
                     </p>
                   </a>
                 </span>
-
               </nav>
             </div>
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.EnrollmentValidation">
@@ -99,11 +103,11 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                           class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.validationSIBS'|translate}} &nbsp;
+                        class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.validationSIBS'|translate}}
+                      &nbsp;
                     </p>
                   </a>
                 </span>
-
               </nav>
             </div>
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.RiskOpinion">
@@ -112,7 +116,8 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                           class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.risk'|translate}} &nbsp;
+                        class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.risk'|translate}}
+                      &nbsp;
                     </p>
                   </a>
                 </span>
@@ -124,7 +129,8 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                           class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.compliance'|translate}} &nbsp;
+                        class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.compliance'|translate}}
+                      &nbsp;
                     </p>
                   </a>
                 </span>
@@ -136,33 +142,27 @@
           <a [routerLink]="['/app-consultas']" role="button">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/search.svg"
-                   class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'searches.title'|translate}}&nbsp;
+                class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'searches.title'|translate}}&nbsp;
             </p>
           </a>
         </div>
         <div class="nav-item">
           <a [routerLink]="['/app-aceitacao']" role="button">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
-              <img src="assets/images/help.svg" class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;FAQS &nbsp;
+              <img src="assets/images/help.svg" class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;FAQS
+              &nbsp;
             </p>
           </a>
         </div>
-        <!--<div class="nav-item">
-    <button (click)="testeAuth()">Teste auth</button>
-  </div>-->
-
       </div>
     </mat-nav-list>
-
   </mat-sidenav>
   <mat-sidenav-content class="animation-sidenav-content" style="padding-bottom:400px">
     <router-outlet></router-outlet>
   </mat-sidenav-content>
-
 </mat-sidenav-container>
-
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
- <div class="modal-dialog">
+  <div class="modal-dialog">
     <div class="modal-content">
       <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0">
         <div class="container-fluid ms-0 me-0 ps-0 pe-0">
@@ -170,7 +170,7 @@
             <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
               <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
                 <span class="navbar-text ms-auto align-self-start">
-                  <h2 class="text-light mt-0 mb-0 ms-0 pt-0 pb-0 ps-0 pe-4"  data-bs-dismiss="modal">x</h2>
+                  <h2 class="text-light mt-0 mb-0 ms-0 pt-0 pb-0 ps-0 pe-4" data-bs-dismiss="modal">x</h2>
                 </span>
               </nav>
             </div>
@@ -192,12 +192,13 @@
                   <span class="navbar-text"></span>
                   <span class="navbar-text pb-0 pt-sm-0"><button id="btn5a"
                       class="btn text-start bg-primary text-light btn-primary boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3"
-                      wappler-command="editContent" data-bs-dismiss="modal">{{'generalKeywords.maintainProcess'|translate|uppercase}}</button></span>
+                      wappler-command="editContent"
+                      data-bs-dismiss="modal">{{'generalKeywords.maintainProcess'|translate|uppercase}}</button></span>
                   <span class="navbar-text pt-0 pb-0"><button id="btn5a1"
                       class="btn text-start text-light btn-primary boto_alerta_modal bg-primary mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3 mb-sm-0"
                       wappler-command="editContent">{{'generalKeywords.confirmDeleteProcess'|translate|uppercase}}</button></span>
                 </nav>
-             </div>
+              </div>
             </div>
           </div>
         </div>

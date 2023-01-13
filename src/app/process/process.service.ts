@@ -1,10 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { APIRequestsService } from '../apirequests.service';
 import { AppConfigService } from '../app-config.service';
 import { BankInformation, Client, Contacts, ForeignFiscalInformation, HeadquartersAddress, ShareCapital } from '../client/Client.interface';
-import { Configuration, configurationToken } from '../configuration';
 import { HttpMethod } from '../enums/enum-data';
 import { ISubmission, SimplifiedReference } from '../submission/ISubmission.interface';
 import { Process } from './process.interface';
@@ -20,23 +19,19 @@ export class ProcessService {
   constructor(private router: ActivatedRoute,
     private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private API: APIRequestsService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
-      this.urlOutbound = configuration.getConfig().outboundUrl;
+    this.urlOutbound = configuration.getConfig().outboundUrl;
   }
 
-   getAllProcessSubmissions(id) : any {
-     return this.http.get<Process[]>(this.baseUrl + 'BEProcess/GetAllProcesses/' + id);
-   }
+  getAllProcessSubmissions(id): any {
+    return this.http.get<Process[]>(this.baseUrl + 'BEProcess/GetAllProcesses/' + id);
+  }
 
-    getAllSuccessSubmissions(id): any {
-      return this.http.get<Process[]>(this.baseUrl + 'BEProcess/GetAllSuccessProcesses/' + id);
-    }
+  getAllSuccessSubmissions(id): any {
+    return this.http.get<Process[]>(this.baseUrl + 'BEProcess/GetAllSuccessProcesses/' + id);
+  }
 
-    getAllIncompletedSubmissions(id): any {
-      return this.http.get<Process[]>(this.baseUrl + 'BEProcess/GetAllIncompletedProcesses/' + id);
-    }
-
-    getSubmissionByID(id): any {
-      return this.http.get<ISubmission>(this.baseUrl + 'BEProcess/GetSubmissionByID/' + id);
+  getAllIncompletedSubmissions(id): any {
+    return this.http.get<Process[]>(this.baseUrl + 'BEProcess/GetAllIncompletedProcesses/' + id);
   }
 
   UpdateProcess(processId: string, processUpdate: UpdateProcess, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string) {
@@ -90,10 +85,6 @@ export class ProcessService {
     return this.http.get<ProcessList>(this.baseUrl + 'process/' + processId);
   }
 
-  getStakeholdersFromProcess(processId: string) {
-    return this.http.get(this.baseUrl + 'process/' + processId + '/stakeholder');
-  }
-
   getStakeholderByIdFromProcess(processId: string, stakeholderId: string) {
     return this.http.get(this.baseUrl + 'process/' + processId + '/stakeholder/' + stakeholderId);
   }
@@ -102,7 +93,7 @@ export class ProcessService {
     return this.http.post(this.baseUrl + 'process/' + processId + '/' + state, update);
   }
 
-  submitDocumentOnProcess(processId: string, state: string, document) {
+  postProcessDocuments(processId: string, state: string, document) {
     return this.http.post(this.baseUrl + 'process/' + processId + '/' + state + '/document', document);
   }
 
@@ -116,7 +107,6 @@ export class ProcessService {
     return this.API.callAPIAcquiring(HttpMethod.GET, url);
   }
 }
-
 export interface BusinessIssueViewModel {
   process?: IssueViewModel[]
   merchant?: MerchantIssueViewModel
@@ -241,7 +231,7 @@ export interface SearchProcessHistory {
   items?: ProcessHistory[]
 }
 
-export interface ProcessHistory{
+export interface ProcessHistory {
   idProcess?: number
   processState?: string
   historyGuid?: string

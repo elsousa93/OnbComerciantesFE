@@ -6,13 +6,13 @@ export interface ISubmissionDocument {
   data: string
 }
 
-export interface SimplifiedDocument{
+export interface SimplifiedDocument {
   id?: string
   href?: string
   type?: string
 }
 
-export interface PostDocument{
+export interface PostDocument {
   documentType?: string
   documentPurpose?: string
   file?: FileDocument

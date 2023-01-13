@@ -8,11 +8,10 @@ describe('AddStoreComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddStoreComponent ]
+      declarations: [AddStoreComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
-
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AddStoreComponent);

@@ -1,8 +1,6 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { distinctUntilChanged, Subscription } from 'rxjs';
-import { Configuration, configurationToken } from 'src/app/configuration';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { DataService } from '../../../nav-menu-interna/data.service';
 import { IStakeholders } from '../../../stakeholders/IStakeholders.interface';
@@ -10,7 +8,7 @@ import { SubmissionService } from '../../../submission/service/submission-servic
 import { LoggerService } from 'src/app/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { SubmissionGet, SubmissionGetTemplate, SubmissionPutTemplate } from 'src/app/submission/ISubmission.interface';
+import { SubmissionGetTemplate } from 'src/app/submission/ISubmission.interface';
 import { ProcessNumberService } from 'src/app/nav-menu-presencial/process-number.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StakeholderService } from 'src/app/stakeholders/stakeholder.service';
@@ -23,7 +21,6 @@ import { ContractPackLanguage } from '../../../table-info/ITable-info.interface'
   styleUrls: ['./info-declarativa-assinatura.component.css']
 })
 export class InfoDeclarativaAssinaturaComponent implements OnInit {
-  private baseUrl: string;
   isVisible: boolean = true;
   stakeholders: IStakeholders[] = [];
   submissionStakeholders: IStakeholders[] = [];
@@ -43,11 +40,10 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   public submissionAnswer: SubmissionGetTemplate;
   public contractLanguage: ContractPackLanguage[];
 
-  constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private http: HttpClient, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService, private tableInfoService: TableInfoService) {
+  constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService, private tableInfoService: TableInfoService) {
     this.submissionId = localStorage.getItem("submissionId");
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
 
-    var context = this;
     this.initializeForm();
 
     this.returned = localStorage.getItem("returned");
@@ -61,7 +57,6 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.updateData(false, 6, 3);
-    //this.initializeForm();
   }
 
   initializeForm() {
@@ -111,15 +106,11 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   choosePaper(paper: boolean) {
     this.isVisible = paper;
     var context = this;
-
     if (!paper) {
       this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
-
         var stakeholders = result.result;
-  
         stakeholders.forEach(function (value, index) {
           context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(res => {
-            console.log("stakeholder adicionado com sucesso");
             context.form.addControl(index + "", new FormControl(null, Validators.required));
             context.submissionStakeholders.push(res);
           }, error => {
@@ -134,7 +125,6 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   sendFinalSubmission() {
     if (this.form.valid) {
       var context = this;
-
       this.submissionStakeholders.forEach((stake, index) => {
         var signType = "";
         if (context.isVisible) {
@@ -144,7 +134,6 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
         }
         stake["signType"] = signType;
         this.stakeholderService.UpdateStakeholder(this.submissionId, stake.id, stake).subscribe(res => {
-          console.log("Stake atualizado ", res);
         });
       });
 
@@ -169,11 +158,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
         this.submissionService.EditSubmission(this.submissionId, submissionToSend).subscribe(result => {
           console.log("Submissão terminada");
         });
-
       });
     }
-
   }
-
-
 }

@@ -12,122 +12,123 @@
       <div class="offset-1 bg-white align-self-center">
         <h4 class="text-primary m-align mt-5 mb-4 ps-0"><img src="assets/images/search_blue.svg"
             style="height: 30px; vertical-align: bottom;">&nbsp;{{'searches.search'|translate|uppercase}}</h4>
-        
-          <div class="row">
+        <div class="row">
           <div class="col-12 ms-0 me-0 ps-5 pe-0">
             <div class="row">
               <div class="col-5">
                 <p class="titulo-form-simples">{{'searches.processNumber'|translate}}</p>
-                <input type="number" (keypress)="numericOnly($event)" name="text5" type="text" class="form-control campo_form" formControlName="processNumber">
+                <input type="number" (keypress)="numericOnly($event)" name="text5" type="text"
+                  class="form-control campo_form" formControlName="processNumber">
               </div>
-          <div class="col-5">
-            <p class="titulo-form-simples">{{'searches.documentType'|translate}}</p>
-            <select class="form-select campo-form-select" id="documentType" value="" formControlName="documentType">
-              <option value=""></option>
-              <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
-                {{docType.description}}
-              </option>
-            </select>
+              <div class="col-5">
+                <p class="titulo-form-simples">{{'searches.documentType'|translate}}</p>
+                <select class="form-select campo-form-select" id="documentType" value="" formControlName="documentType">
+                  <option value=""></option>
+                  <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
+                    {{docType.description}}
+                  </option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-5">
+                <p class="titulo-form-simples">{{'searches.state'|translate}}</p>
+                <select id="select1" class="form-select  campo_form" formControlName="state">
+                  <option value=""></option>
+                  <option value="Incomplete">{{'searches.incompleted'|translate}}</option>
+                  <option value="Ongoing">{{'searches.running'|translate}}</option>
+                  <option value="Completed">{{'searches.completed'|translate}}</option>
+                  <option value="Returned">{{'searches.returned'|translate}}</option>
+                  <option value="Cancelled">{{'searches.cancelled'|translate}}</option>
+                  <option value="ContractAcceptance">{{'searches.contractAcceptance'|translate}}</option>
+                  <option value="StandardIndustryClassificationChoice">{{'homepage.MCCTreatment'|translate}}</option>
+                  <option value="RiskAssessment">{{'homepage.risk'|translate}}</option>
+                  <option value="EligibilityAssessment">{{'homepage.eligibility'|translate}}</option>
+                  <option value="ClientChoice">{{'homepage.multipleClients'|translate}}</option>
+                  <option value="NegotiationApproval">{{'homepage.negotiationAproval'|translate}}</option>
+                  <option value="MerchantRegistration">{{'homepage.validationSIBS'|translate}}</option>
+                  <option value="OperationsEvaluation">{{'homepage.DOValidation'|translate}}</option>
+                  <option value="ComplianceEvaluation">{{'homepage.compliance'|translate}}</option>
+                </select>
+              </div>
+              <div class="col-5">
+                <p class="titulo-form-simples">{{'searches.documentNumber'|translate}}</p>
+                <input type="number" (keypress)="numericOnly($event)" name="text3" type="text"
+                  class="form-control campo_form" formControlName="documentNumber">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-5">
+                <p class="titulo-form-simples">{{'searches.orderDateFrom'|translate|uppercase}}</p>
+                <input id="text1" [max]="date" name="text1" type="date" placeholder="dd-mm-yyyy"
+                  class="form-control campo_form" (change)="callEndDate()" formControlName="processDateStart">
+              </div>
+              <div class="col-5">
+                <p class="titulo-form-simples">{{'searches.orderDateUntil'|translate|uppercase}}</p>
+                <input id="text2" name="text2" type="date" placeholder="dd-mm-yyyy" [min]="endDate"
+                  class="form-control campo_form" formControlName="processDateEnd">
+              </div>
+            </div>
           </div>
         </div>
-        <div class="row">
-          <div class="col-5">
-            <p class="titulo-form-simples">{{'searches.state'|translate}}</p>
-            <select id="select1" class="form-select  campo_form" formControlName="state">
-              <option value=""></option>
-              <option value="Incomplete">{{'searches.incompleted'|translate}}</option>
-              <option value="Ongoing">{{'searches.running'|translate}}</option>
-              <option value="Completed">{{'searches.completed'|translate}}</option>
-              <option value="Returned">{{'searches.returned'|translate}}</option>
-              <option value="Cancelled">{{'searches.cancelled'|translate}}</option>
-              <option value="ContractAcceptance">{{'searches.contractAcceptance'|translate}}</option>
-              <option value="StandardIndustryClassificationChoice">{{'homepage.MCCTreatment'|translate}}</option>
-              <option value="RiskAssessment">{{'homepage.risk'|translate}}</option>
-              <option value="EligibilityAssessment">{{'homepage.eligibility'|translate}}</option>
-              <option value="ClientChoice">{{'homepage.multipleClients'|translate}}</option>
-              <option value="NegotiationApproval">{{'homepage.negotiationAproval'|translate}}</option>
-              <option value="MerchantRegistration">{{'homepage.validationSIBS'|translate}}</option>
-              <option value="OperationsEvaluation">{{'homepage.DOValidation'|translate}}</option>
-              <option value="ComplianceEvaluation">{{'homepage.compliance'|translate}}</option>
-            </select>
-          </div>
-          <div class="col-5">
-            <p class="titulo-form-simples">{{'searches.documentNumber'|translate}}</p>
-            <input type="number" (keypress)="numericOnly($event)" name="text3" type="text" class="form-control campo_form" formControlName="documentNumber">
-          </div>
+        <div class="col-12 ms-0 me-0 pb-5 ps-0 pe-0"><button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1"
+            wappler-command="editContent">{{'searches.search'|translate|uppercase}}
+            &nbsp;<img src="assets/images/search_white.svg" style="height: 30px; vertical-align: bottom;"></button>
+
+          <mat-table [hidden]="processes.data.length==0" [dataSource]="processes" class="table-success" matSort>
+            <!-- Nº Processo Column -->
+            <ng-container matColumnDef="processNumber">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> {{'searches.processNumber'|translate|uppercase}}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+            </ng-container>
+            <!-- NIPC Column -->
+            <ng-container matColumnDef="nipc">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                NIPC
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.nipc}} </mat-cell>
+            </ng-container>
+            <!-- Nome da Empresa Column -->
+            <ng-container matColumnDef="nome">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                {{'searches.companyName'|translate|uppercase}}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.nome}} </mat-cell>
+            </ng-container>
+            <!-- Estado Column -->
+            <ng-container matColumnDef="estado">
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                {{'searches.state'|translate|uppercase}}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row"> {{row.estado}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="abrirProcesso">
+              <mat-header-cell *matHeaderCellDef>
+                {{'searches.openProcess'|translate|uppercase}}
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row"> <img src="assets/images/description.svg" (click)="openProcess(row)"
+                  style="height: 25px !important; vertical-align: sub; cursor: pointer;"> </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let myRowData; columns: displayedColumns"></mat-row>
+          </mat-table>
+          <mat-paginator [hidden]="processes.data.length==0" #paginator>
+          </mat-paginator>
         </div>
-        <div class="row">
-          <div class="col-5">
-            <p class="titulo-form-simples">{{'searches.orderDateFrom'|translate|uppercase}}</p>
-            <input id="text1" [max]="date" name="text1" type="date" placeholder="dd-mm-yyyy" class="form-control campo_form" (change)="callEndDate()"
-              formControlName="processDateStart">
-          </div>
-          <div class="col-5">
-            <p class="titulo-form-simples">{{'searches.orderDateUntil'|translate|uppercase}}</p>
-            <input id="text2" name="text2" type="date" placeholder="dd-mm-yyyy" [min]="endDate" class="form-control campo_form" formControlName="processDateEnd">
-          </div>
+        <div class="col ms-0 ps-0">
+          <hr>
+          <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+            <span class="navbar-text me-2 align-self-center ms-0 me-0">
+              <button [routerLink]="['/']" style="margin-right: 0px !important;" id="btn5a1"
+                class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;
+                <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+              </button>
+            </span>
+          </nav>
         </div>
       </div>
-      </div>
-    
-      <div class="col-12 ms-0 me-0 pb-5 ps-0 pe-0"><button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1"
-          wappler-command="editContent">{{'searches.search'|translate|uppercase}}
-          &nbsp;<img src="assets/images/search_white.svg" style="height: 30px; vertical-align: bottom;"></button>
-        
-        <mat-table [hidden]="processes.data.length==0" [dataSource]="processes" class="table-success" matSort>
-          <!-- Nº Processo Column -->
-          <ng-container matColumnDef="processNumber">
-            <mat-header-cell *matHeaderCellDef mat-sort-header> {{'searches.processNumber'|translate|uppercase}}
-            </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
-          </ng-container>
-          <!-- NIPC Column -->
-          <ng-container matColumnDef="nipc">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>
-              NIPC
-            </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.nipc}} </mat-cell>
-          </ng-container>
-          <!-- Nome da Empresa Column -->
-          <ng-container matColumnDef="nome">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>
-              {{'searches.companyName'|translate|uppercase}}
-            </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.nome}} </mat-cell>
-          </ng-container>
-          <!-- Estado Column -->
-          <ng-container matColumnDef="estado">
-            <mat-header-cell *matHeaderCellDef mat-sort-header>
-              {{'searches.state'|translate|uppercase}}
-            </mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.estado}} </mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="abrirProcesso">
-            <mat-header-cell *matHeaderCellDef>
-              {{'searches.openProcess'|translate|uppercase}}
-            </mat-header-cell>
-            <mat-cell *matCellDef="let row"> <img src="assets/images/description.svg" (click)="openProcess(row)"
-                style="height: 25px !important; vertical-align: sub; cursor: pointer;"> </mat-cell>
-          </ng-container>
-          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-          <mat-row *matRowDef="let myRowData; columns: displayedColumns"></mat-row>
-        </mat-table>
-        <mat-paginator [hidden]="processes.data.length==0" #paginator>
-        </mat-paginator>
-      </div>
-  <div class="col ms-0 ps-0">
-    <hr>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-      <span class="navbar-text me-2 align-self-center ms-0 me-0">
-        <button [routerLink]="['/']" style="margin-right: 0px !important;" id="btn5a1"
-          class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
-          wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;
-          <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
-        </button>
-      </span>
-    </nav>
+    </form>
   </div>
-</div>
-</form>
-</div>
 </div>

@@ -6,11 +6,11 @@
             class="img_add">&nbsp;{{'stores.productSelection'|translate|uppercase}}</h2>
       </div>
       <div class="col-5 ms-0 me-0 ps-5 pe-0">
-        <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">{{'stores.solutionType'|translate}}*
+        <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">
+          {{'stores.solutionType'|translate}}*
         </h5>
         <p class=" mt-0 mb-3 ms-0 ps-0 S" wappler-command="editContent">{{'stores.selectSolutionType'|translate}}*&nbsp;
         </p>
-
         <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5">
           <div *ngFor="let product of products">
             <span class="navbar-text text-primary">
@@ -25,47 +25,45 @@
             </span>
           </div>
         </nav>
-
-        <h5 *ngIf="exists" class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">{{'stores.subProduct'|translate}}*
+        <h5 *ngIf="exists" class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">
+          {{'stores.subProduct'|translate}}*
         </h5>
         <div *ngIf="exists" class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-5">
-          <!--EXISTE-->
-
           <div *ngFor="let subProduct of subProducts">
             <span class="navbar-text text-primary">
               <div class="form-check">
                 <input class="form-check-input" formControlName="subProduct" type="radio"
-                  (click)="chooseSubSolutionAPI(subProduct.name)"
-                  value="{{subProduct.name}}" id="subProduct" name="subProduct">
+                  (click)="chooseSubSolutionAPI(subProduct.name)" value="{{subProduct.name}}" id="subProduct"
+                  name="subProduct">
                 <label class="form-check-label radio pe-5" for="subProduct"
                   wappler-command="editContent"><b>{{subProduct.name}}</b></label>
               </div>
             </span>
           </div>
         </div>
-      
-      <div>
-        <p class="titulo-form-simples" wappler-command="editContent">URL</p><input formControlName="url"
-          (change)="URLFilled(true)" id="url" name="url" type="text" class="form-control campo_form" [pattern]="urlRegex" #url>
-           <div class="alert alert-danger" *ngIf="urlValid.errors?.['pattern']">
+        <div>
+          <p class="titulo-form-simples" wappler-command="editContent">URL</p><input formControlName="url"
+            (change)="URLFilled(true)" id="url" name="url" type="text" class="form-control campo_form"
+            [pattern]="urlRegex" #url>
+          <div class="alert alert-danger" *ngIf="urlValid.errors?.['pattern']">
             {{'errorMessages.invalidUrl'|translate}}
           </div>
           <div class="alert alert-danger" *ngIf="isCardNotPresent &&!isURLFilled">
             {{'errorMessages.isRequired'|translate}}
           </div>
-        <nav *ngIf="!edit"
-          class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
-          <span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
-            <button type="submit" [disabled]="isCardNotPresent && !isURLFilled" id="btn5a2"
-              class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3"
-              wappler-command="editContent">
-              {{'generalKeywords.add'|translate|uppercase}}&nbsp;
-              <img src="assets/images/add.svg" style="height: 25px !important; vertical-align: sub;">
-            </button>
-          </span>
-        </nav>
+          <nav *ngIf="!edit"
+            class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
+            <span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
+              <button type="submit" [disabled]="isCardNotPresent && !isURLFilled" id="btn5a2"
+                class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3"
+                wappler-command="editContent">
+                {{'generalKeywords.add'|translate|uppercase}}&nbsp;
+                <img src="assets/images/add.svg" style="height: 25px !important; vertical-align: sub;">
+              </button>
+            </span>
+          </nav>
+        </div>
       </div>
-    </div>
       <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">
         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
       </div>

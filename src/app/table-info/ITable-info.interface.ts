@@ -20,12 +20,7 @@ export interface Activity {
   subActivities?: SubActivity[]
 }
 
-//export interface SubActivity {
-//  code?: string
-//  description?: string
-//}
-
-export interface EconomicActivityInformation{
+export interface EconomicActivityInformation {
   code: string
   description: string
 }
@@ -44,17 +39,14 @@ export interface LegalNature {
   isCommercialCompany: boolean
   secondaryNatures: SecondLegalNature[]
 }
-
 export interface SecondLegalNature {
   code: string
   description: string
 }
-
 export interface PEPTypes {
   code: string
   description: string
 }
-
 export interface Kinship {
   code: string
   description: string
@@ -99,7 +91,7 @@ export interface SubProduct {
 }
 
 export interface ShopActivity {
-  activityCode: string 
+  activityCode: string
   activityDescription: string
   subActivities: SubActivity[]
 }

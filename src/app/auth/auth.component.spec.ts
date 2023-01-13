@@ -8,9 +8,9 @@ describe('AuthComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AuthComponent ]
+      declarations: [AuthComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

@@ -1,13 +1,9 @@
-import { Component, OnInit, Inject, Output, EventEmitter, Input } from '@angular/core';
-import { FormBuilder, Validators, ReactiveFormsModule, NgForm, FormGroup, FormControl, AbstractControl, FormGroupDirective } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Validators, FormGroup, FormControl, AbstractControl, FormGroupDirective } from '@angular/forms';
 import { IStakeholders } from '../IStakeholders.interface';
-import { Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { TableInfoService } from '../../table-info/table-info.service';
-import { Configuration, configurationToken } from 'src/app/configuration';
-import { infoDeclarativaForm, validEmail, validPhoneNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
-import { LoggerService } from 'src/app/logger.service';
+import { validPhoneNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
 import { CountryInformation } from 'src/app/table-info/ITable-info.interface';
 import { Subscription } from 'rxjs';
 
@@ -34,9 +30,7 @@ export class InfoStakeholderComponent implements OnInit {
 
   @Output() nameEmitter = new EventEmitter<string>();
 
-  constructor(private logger : LoggerService, private formBuilder: FormBuilder, http: HttpClient, private route: Router, private data: DataService, private tableInfo: TableInfoService, private rootFormGroup: FormGroupDirective) {
-
-    //this.ngOnInit();
+  constructor(private data: DataService, private tableInfo: TableInfoService, private rootFormGroup: FormGroupDirective) {
 
     this.tableInfo.GetAllCountries().subscribe(result => {
       this.internationalCallingCodes = result;
@@ -78,11 +72,11 @@ export class InfoStakeholderComponent implements OnInit {
     this.phone = this.formContactos.get("phone");
   }
 
-    get emailValid() {
+  get emailValid() {
     return this.formContactos.get('email');
   }
 
-  changeListElement(string:string,e: any) {
+  changeListElement(string: string, e: any) {
     this.formContactos.get("phone").get("countryCode").setValue(e.target.value);
   }
 

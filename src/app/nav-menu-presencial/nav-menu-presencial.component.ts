@@ -53,7 +53,6 @@ export class NavMenuPresencialComponent implements OnInit {
   @HostBinding('style.--navPosition') public navPosition: string = '0';
 
   prevScrollpos: number = window.pageYOffset;
-
   processNumber: string;
   subscription: Subscription;
   returned: string = "";
@@ -61,9 +60,7 @@ export class NavMenuPresencialComponent implements OnInit {
   currentSubPage: number = 0;
   progressImage: string;
   encodedCode: string;
-
   currentUser: User = {};
-
   translationLanguages = translationLanguages;
   currentLanguage: TranslationLanguage;
   userPermissions: MenuPermissions;
@@ -87,7 +84,7 @@ export class NavMenuPresencialComponent implements OnInit {
     this.authService.currentUser.subscribe(user => {
       this.currentUser = user;
       var a = UserPermissions[this.currentUser.permissions];
-    
+
       this.logger.debug("permissões: " + this.currentUser.permissions);
       this.logger.debug("userPermission tratada: " + a);
       this.userPermissions = getMenuPermissions(a);
@@ -105,28 +102,28 @@ export class NavMenuPresencialComponent implements OnInit {
 
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
 
-      this.dataService.currentPage.subscribe((currentPage) => {
-        this.currentPage = currentPage;
-        if (this.currentPage != 0 && this.currentPage != null) {
-          this.isToggle = false;
-          this.toggleNavEvent.emit(this.isToggle);
-        } else if (this.currentPage == 0 || this.currentPage == null) {
-          this.isToggle = true;
-          this.toggleNavEvent.emit(this.isToggle);
-        }
-        this.updateProgress();
-      });
-      this.dataService.currentSubPage.subscribe((currentSubPage) => {
-        this.currentSubPage = currentSubPage;
-        if (this.currentSubPage != 0 && this.currentPage != null) {
-          this.isToggle = false;
-          this.toggleNavEvent.emit(this.isToggle);
-        } else if (this.currentSubPage == 0 || this.currentSubPage == null) {
-          this.isToggle = true;
-          this.toggleNavEvent.emit(this.isToggle);
-        }
-        this.updateProgress();
-      });    
+    this.dataService.currentPage.subscribe((currentPage) => {
+      this.currentPage = currentPage;
+      if (this.currentPage != 0 && this.currentPage != null) {
+        this.isToggle = false;
+        this.toggleNavEvent.emit(this.isToggle);
+      } else if (this.currentPage == 0 || this.currentPage == null) {
+        this.isToggle = true;
+        this.toggleNavEvent.emit(this.isToggle);
+      }
+      this.updateProgress();
+    });
+    this.dataService.currentSubPage.subscribe((currentSubPage) => {
+      this.currentSubPage = currentSubPage;
+      if (this.currentSubPage != 0 && this.currentPage != null) {
+        this.isToggle = false;
+        this.toggleNavEvent.emit(this.isToggle);
+      } else if (this.currentSubPage == 0 || this.currentSubPage == null) {
+        this.isToggle = true;
+        this.toggleNavEvent.emit(this.isToggle);
+      }
+      this.updateProgress();
+    });
 
     var prevScrollpos = window.pageYOffset;
 
@@ -142,7 +139,7 @@ export class NavMenuPresencialComponent implements OnInit {
   }
 
   updateProgress() {
-    if (localStorage.getItem("returned")!=null) {
+    if (localStorage.getItem("returned") != null) {
       this.returned = localStorage.getItem("returned");
       this.currentPage = 0;
       this.currentSubPage = 0;
@@ -158,7 +155,6 @@ export class NavMenuPresencialComponent implements OnInit {
       this.progressImage = "assets/images/progress_bar/progress_bar_" + progress + ".svg"
       this.logger.debug("New process image" + this.progressImage);
     }
-
   }
 
   toggleEvent() {
@@ -230,16 +226,9 @@ export class NavMenuPresencialComponent implements OnInit {
     });
   }
 
-  testeAuth() {
-    console.log(this.currentUser);
-    console.log(this.userPermissions);
-  }
-
   logout() {
     localStorage.removeItem('auth');
     this.authService.reset();
-    // this.route.navigate(['/logout']);
-
     this.snackBar.open(this.translate.instant('generalKeywords.logout'), '', {
       duration: 4000,
       panelClass: ['snack-bar']
@@ -248,9 +237,6 @@ export class NavMenuPresencialComponent implements OnInit {
 
   login() {
     this.authService.reset();
-
-    console.log("currentUser: ", this.authService.GetCurrentUser());
-
     this.logout();
   }
 }

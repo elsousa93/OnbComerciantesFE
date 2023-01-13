@@ -8,11 +8,8 @@ import { BehaviorSubject } from 'rxjs';
 export class ProcessNumberService {
 
   private dataProcessNumber = new BehaviorSubject('');
-
   processNumber = this.dataProcessNumber.asObservable();
-
   constructor() { }
-
   changeProcessNumber(value: string) {
     this.dataProcessNumber.next(value);
   }

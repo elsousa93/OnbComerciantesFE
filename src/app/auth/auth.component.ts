@@ -1,14 +1,13 @@
-import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { delay, of, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { AuthService } from '../services/auth.service';
 import { Bank } from '../store/IStore.interface';
 import { TableInfoService } from '../table-info/table-info.service';
 import { TokenService } from '../token.service';
 import { User } from '../userPermissions/user';
-import { getMenuPermissions, role, roles, UserPermissions } from '../userPermissions/user-permissions';
+import { role, roles, UserPermissions } from '../userPermissions/user-permissions';
 
 
 @Component({
@@ -27,7 +26,7 @@ export class AuthComponent implements OnInit {
   roles: role[] = roles; //roles é uma const
   banks: Bank[];
 
-  constructor(private token: TokenService, private authService: AuthService, private router: Router, private tableInfo: TableInfoService, private datePipe: DatePipe) { }
+  constructor(private token: TokenService, private authService: AuthService, private router: Router, private tableInfo: TableInfoService) { }
 
   ngOnInit(): void {
     this.generateAuthForm();
@@ -77,12 +76,6 @@ export class AuthComponent implements OnInit {
   }
 
   noToken() {
-    console.log(this.authForm);
-
-    //if (this.authForm.invalid) {
-    //  return;
-    //}
-
     var user: User = {};
 
     user.userName = this.authForm.get('userName').value;
@@ -91,17 +84,17 @@ export class AuthComponent implements OnInit {
     user.permissions = UserPermissions.ADMIN;
     user.authTime = (new Date()).toLocaleString('pt-PT');
     user.token = ''
-   
+
     this.authService.changeUser(user);
 
     console.log("Form da autenticação: " + this.authService);
 
     this.router.navigate(['/']);
-  
+
   }
 
   openDiv: boolean = false;
-  getsToken: any  = null;
+  getsToken: any = null;
   getAccessToken() {
     this.openDiv = true;
     this.getsToken = this.token.getAccessToken();
@@ -122,15 +115,7 @@ export class AuthComponent implements OnInit {
     setTimeout(() => {
       console.log('EXPIRED!!');
       this.logout();
-    },timeout)
-
-    //console.log("TIMEOUT ", timeout);
-    //this.tokenSubscription.unsubscribe();
-    //this.tokenSubscription = of(null).pipe(delay(timeout)).subscribe((expired) => {
-    //  console.log('EXPIRED!!');
-    //  this.logout();
-    //});
-    //console.log('SUBSCRIPTION ', this.tokenSubscription);
+    }, timeout)
   }
 
   logout() {

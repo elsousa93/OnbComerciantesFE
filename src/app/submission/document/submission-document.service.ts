@@ -1,8 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Inject, Injectable } from '@angular/core';
-import { Configuration, configurationToken } from 'src/app/configuration';
+import { Injectable } from '@angular/core';
 import { AppConfigService } from '../../app-config.service';
-import { AuthService } from '../../services/auth.service';
 import { ISubmissionDocument, PostDocument, SimplifiedDocument } from './ISubmission-document';
 
 @Injectable({
@@ -12,7 +10,7 @@ export class SubmissionDocumentService {
   private baseUrl;
   private urlOutbound;
 
-  constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private authService: AuthService) {
+  constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.urlOutbound = configuration.getConfig().outboundUrl;
   }
@@ -27,22 +25,7 @@ export class SubmissionDocumentService {
   }
 
   GetDocumentImage(submissionID: string, documentID: string): any {
-
     var URI = this.baseUrl + 'submission/' + submissionID + '/document/' + documentID + '/image';
-    //return fetch(this.baseUrl + 'submission/' + submissionID + '/document/' + documentID + '/image', {
-    //  method: "GET",
-    //  headers: {
-    //    "Accept": "application/pdf",
-    //    "Content-type": "application/pdf",
-    //    "Authorization": 'Bearer ' + this.authService.GetToken()
-    //  }
-    //});
-    //return this.http.get<any>(this.baseUrl + 'submission/' + submissionID + '/document/' + documentID + '/image', {
-    //  headers: {
-    //    "Accept": "application/pdf",
-    //    "Content-type": "application/pdf"
-    //  }
-    //}); //n sei qual o tipo
 
     //return this.http.get<any>(URI);
     return fetch(URI, {
@@ -82,7 +65,6 @@ export class SubmissionDocumentService {
       HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
     if (AcquiringProcessID !== null)
       HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
-
 
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }

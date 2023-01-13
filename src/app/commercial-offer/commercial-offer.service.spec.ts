@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { CommercialOfferService } from './commercial-offer.service';
 
 describe('CommercialOfferService', () => {

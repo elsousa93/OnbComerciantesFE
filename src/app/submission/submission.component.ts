@@ -1,8 +1,6 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { ISubmission } from './ISubmission.interface';
-import { Configuration, configurationToken } from '../configuration';
 import { LoggerService } from 'src/app/logger.service';
 
 @Component({
@@ -19,37 +17,23 @@ export class SubmissionComponent implements OnInit {
   //Data Source
   public submissionsList: ISubmission[] = [];
 
+  constructor(private logger: LoggerService, private http: HttpClient) {
 
-  constructor(private logger : LoggerService, private router: ActivatedRoute,
-    private http: HttpClient, private route: Router) {
-    this.ngOnInit();
-    
-   
     http.get<ISubmission>(this.baseUrl + 'BESubmission/').subscribe(result => {
       this.submissionsList.push(result); //Recebe um object
       this.isTable = true;
       this.ngOnInit();
     }, error => console.error(error));
 
- 
   }
-  
+
   get listContents(): Array<ISubmission> {
     this.logger.debug((Object as any).values(this.submissionsList));
     return (Object as any).values(this.submissionsList);
   }
 
-
-
-  
-
-  //Converter de Objecto para List - com leitura
-
   ngOnInit(): void {
     this.logger.debug("Submissions List : " + this.submissionsList[0]);
-     // Funciona na consola, mas dá erros 
-     // this.submissionsList.forEach(function (value) {
-     //   this.logger.debug(value); })
-  }
 
+  }
 }
