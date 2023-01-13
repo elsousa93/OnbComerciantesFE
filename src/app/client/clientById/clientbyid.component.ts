@@ -267,10 +267,13 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             context.submissionStakeholders.push(res.result);
           }, error => {
             console.log("Erro a adicionar stakeholder");
+          }).then(r => {
+            context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
           });
         });
-        context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
       }, error => {
+      }).then(res => {
+        context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
       });
 
       this.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(result => {
@@ -282,6 +285,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           });
         }
       });
+
     }
 
     if (this.returned == null) {
