@@ -201,42 +201,6 @@ export class StakeholdersComponent implements OnInit {
     });
   }
 
-  onClickSearch() {
-
-  }
-
-  //When canceling the create new store feature the user must navigate back to store list
-  onClickCancel() {
-    this.route.navigate(['stakeholders']);
-  }
-
-  onClickNew() {
-    let navigationExtras: NavigationExtras = {
-      state: {
-        isCC: this.isCC
-      }
-    };
-    this.route.navigate(['/add-stakeholder'], navigationExtras);
-  }
-
-  onClickEdit(fiscalId) {
-    this.route.navigate(['/update-stakeholder/', fiscalId]);
-  }
-
-  onClickDelete(fiscalId, clientNr) {
-    this.route.navigate(['/add-stakeholder/', fiscalId, clientNr, 'delete']);
-  }
-
-  toggleShow(stake: IStakeholders) {
-    //clear the array
-    this.stakeShow = [];
-    this.isShown = !this.isShown;
-
-    this.stakeShow.push(stake);
-   // GetByid(StakeholderNif, 0)
-       
-  }
-
   selectStakeholder(stakeholder) {
     this.currentStakeholder = stakeholder;
     

@@ -437,23 +437,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.subs.forEach((sub) => sub?.unsubscribe);
   }
 
-  onClickSearch() {
-    this.logger.debug("pesq");
-  }
-
-  //When canceling the create new store feature the user must navigate back to store list
-  onClickCancel() {
-    this.route.navigate(['stakeholders']);
-  }
-
-  onClickEdit(fiscalId) {
-    this.route.navigate(['/update-stakeholder/', fiscalId]);
-  }
-
-  onClickDelete(fiscalId, clientNr) {
-    this.route.navigate(['/add-stakeholder/', fiscalId, clientNr, 'delete']);
-  }
-
   changeListElementStakeType(stakeType, e: any) {
     this.stakeholderType = e.target.value;
     if (this.stakeholderType === 'Particular') {
@@ -522,15 +505,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.formStakeholderSearch.get("documentNumber").setValue("");
     this.formStakeholderSearch.get("documentNumber").updateValueAndValidity();
   }
-
-  toggleShow(stake: IStakeholders) {
-    //clear the array
-    this.resetSearchStakeholder();
-    this.stakeShow = [];
-    this.isShown = !this.isShown;
-    this.stakeShow.push(stake);
-  }
-
+  
   searchStakeholder() {
     this.isSearch = false;
     this.sameNIPC = false;
