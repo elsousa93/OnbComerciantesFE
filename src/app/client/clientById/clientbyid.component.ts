@@ -899,51 +899,52 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             });
           }
 
-        if (context.clientDocs != null) {
-          context.clientDocs.forEach(function (value, idx) {
-            context.documentService.SubmissionPostDocument(submissionID, value).subscribe(result => {
-              console.log("adicionou documento: ", result);
-            });
-          });
-        }
-      }
-
-      if (!this.updateClient) {
-        if (this.clientContext.isClient) {
-          if (newSubmission?.merchant?.merchantRegistrationId != null && newSubmission?.merchant?.merchantRegistrationId != "") {
-            this.storeService.getShopsListOutbound(newSubmission.merchant.merchantRegistrationId, "por mudar", "por mudar").subscribe(res => {
-              res.forEach(value => {
-                this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantRegistrationId, value.shopId, "por mudar", "por mudar").then(r => {
-                  var storeToAdd: ShopDetailsAcquiring = {
-                    activity: r.result.activity,
-                    subActivity: r.result.secondaryActivity,
-                    address: {
-                      address: r.result.address.address,
-                      isInsideShoppingCenter: r.result.address.isInsideShoppingCenter,
-                      shoppingCenter: r.result.address.shoppingCenter,
-                      useMerchantAddress: r.result.address.sameAsMerchantAddress
-                    },
-                    bank: {
-                      bank: r.result.bankingInformation
-                    },
-                    name: r.result.name,
-                    website: r.result.url,
-                    equipments: []
-                  }
-
-                  context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
-
-                  });
-                });
+          if (context.clientDocs != null) {
+            context.clientDocs.forEach(function (value, idx) {
+              context.documentService.SubmissionPostDocument(submissionID, value).subscribe(result => {
+                console.log("adicionou documento: ", result);
               });
             });
           }
         }
-      }
 
-    } else {
-      this.data.updateData(true, 1);
-      this.route.navigate(['/stakeholders']);
+        if (!this.updateClient) {
+          if (this.clientContext.isClient) {
+            if (newSubmission?.merchant?.merchantRegistrationId != null && newSubmission?.merchant?.merchantRegistrationId != "") {
+              this.storeService.getShopsListOutbound(newSubmission.merchant.merchantRegistrationId, "por mudar", "por mudar").subscribe(res => {
+                res.forEach(value => {
+                  this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantRegistrationId, value.shopId, "por mudar", "por mudar").then(r => {
+                    var storeToAdd: ShopDetailsAcquiring = {
+                      activity: r.result.activity,
+                      subActivity: r.result.secondaryActivity,
+                      address: {
+                        address: r.result.address.address,
+                        isInsideShoppingCenter: r.result.address.isInsideShoppingCenter,
+                        shoppingCenter: r.result.address.shoppingCenter,
+                        useMerchantAddress: r.result.address.sameAsMerchantAddress
+                      },
+                      bank: {
+                        bank: r.result.bankingInformation
+                      },
+                      name: r.result.name,
+                      website: r.result.url,
+                      equipments: []
+                    }
+
+                    context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
+
+                    });
+                  });
+                });
+              });
+            }
+          }
+        }
+
+      } else {
+        this.data.updateData(true, 1);
+        this.route.navigate(['/stakeholders']);
+      }
     }
   }
 
