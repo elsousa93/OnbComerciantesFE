@@ -175,7 +175,6 @@ export class ObterPackContratualComponent implements OnInit {
     this.aceitacao.delFile(this.id).subscribe(data => {
       this.logger.debug("DATA: " + data);
       if (data != null) {
-        alert("Ficheiro apagado com sucesso!!");
         this.load();
       }
     },
