@@ -91,11 +91,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     this.loadStakeholdersRoles();
   }
 
-  triggerFalseClick() {
-    let el: HTMLElement = this.selectedBlueDiv.nativeElement;
-    el.click();
-  }
-
   public subs: Subscription[] = [];
 
   constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient, private route: Router, private fb: FormBuilder,
@@ -298,19 +293,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     }, error => console.error("error"));
   }
 
-  getAll() {
-    return this.tableData.GetAllCountries();
-  }
-
-  chooseStakeholder(stake: any) {
-    this.stakeService.getStakeholderByID(stake.stakeholderId, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").subscribe(result => {
-      this.currentStakeholder = result;
-
-    }, error => {
-      this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
-    });
-  }
-
   numericOnly(event): boolean {
     var ASCIICode = (event.which) ? event.which : event.keyCode;
 
@@ -358,10 +340,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       }
       
     }
-  }
-
-  goToStores() {
-    this.route.navigate(['/store-comp']);
   }
 
   canEditLocality() {

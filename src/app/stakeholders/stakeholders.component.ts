@@ -392,17 +392,6 @@ export class StakeholdersComponent implements OnInit {
     this.comprovativoService.viewDocument(documentReference);
   }
 
-  isStakeholderFromCRC(stakeholder) {
-    this.selectedStakeholderIsFromCRC = false;
-    var context = this;
-    this.crcStakeholders?.forEach(function (value, idx) {
-      var stakeholderFromCRC = value;
-      if (stakeholder.fiscalId === stakeholderFromCRC.fiscalId) {
-        context.selectedStakeholderIsFromCRC = true;
-      }
-    });
-  }
-
   emitCanceledSearch(info) {
     this.clickButton = true;
     this.editStakeInfo = null;

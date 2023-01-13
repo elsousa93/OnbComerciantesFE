@@ -22,7 +22,6 @@ import { ClientContext } from '../clientById/clientById.model';
 })
 
 export class ClientCharacterizationComponent implements OnInit {
-  lastSize: number = 14;
   processId: string;
 
   tipologia: string;
@@ -43,7 +42,21 @@ export class ClientCharacterizationComponent implements OnInit {
   crcNotExists: boolean = false;
   crcIncorrect: boolean = false;
   crcMatchNIF: boolean = false;
-  processClient: CRCProcess;
+  processClient: CRCProcess = {
+    capitalStock: {},
+    code: '',
+    companyName: '',
+    mainEconomicActivity: '',
+    secondaryEconomicActivity: [],
+    expirationDate: '',
+    fiscalId: '',
+    hasOutstandingFacts: false,
+    headquartersAddress: {},
+    legalNature: '',
+    pdf: '',
+    requestId: '',
+    stakeholders: []
+  };
   tempClient: any;
   dataCC = null;
   crcCode: string;

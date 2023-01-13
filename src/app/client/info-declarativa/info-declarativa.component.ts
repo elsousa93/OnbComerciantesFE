@@ -53,11 +53,6 @@ export class InfoDeclarativaComponent implements OnInit {
     this.nameEmitter.emit(this.displayValueSearch);
   }
 
-  getValueSearch(val: string) {
-    console.warn("component recebeu: ", val)
-    this.displayValueSearch = val;
-  }
-
   setForm(client: Client) {
     this.newClient = client;
     this.listValue.get("comercialName").setValue(client?.commercialName);

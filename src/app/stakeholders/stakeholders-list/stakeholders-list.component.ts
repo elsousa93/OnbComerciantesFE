@@ -152,7 +152,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
   getSubmissionStakeholders() {
     var context = this;
-    this.getSubmissionStakeholdersTest();
+    this.getSubmissionStakeholdersPromise();
   }
 
   async getSubmissionStakeholdersAux() {
@@ -252,7 +252,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     });
   }
 
-  getSubmissionStakeholdersTest() {
+  getSubmissionStakeholdersPromise() {
     var context = this;
     context.submissionStakeholders = [];
     const promises = [

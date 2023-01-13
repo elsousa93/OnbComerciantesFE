@@ -73,11 +73,6 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     this.processNumber = localStorage.getItem("processNumber");
   }
 
-  getValueSearch(val: string) {
-    console.warn("component recebeu: ", val)
-    this.displayValueSearch = val;
-  }
-
   selectStakeholder(info) {
     if (info != null) {
       this.currentStakeholder = info.stakeholder;

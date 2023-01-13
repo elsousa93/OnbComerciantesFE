@@ -146,40 +146,4 @@ export class StakeholderService {
 
     return this.APIService.callAPIOutbound(HttpMethod.GET, url, "searchId", "searchType", "requestID", "AcquiringUserID");
   }
-
-
-  updateStakeholder(stakeholder: IStakeholders, processReferenceID: string, StakeholderID: string, RequestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string): any {
-
-    var treatedProcessNumber = encodeURIComponent(AcquiringProcessID);
-
-    var URI = this.urlOutbound + "api/v1/process/" + processReferenceID + "/stakeholder/" + StakeholderID;
-
-    var data = new Date();
-
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Request-Id': RequestID,
-        'X-Acquiring-UserId': AcquiringUserID
-      }),
-    }
-
-    if (AcquiringPartnerID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
-    if (AcquiringBranchID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
-    if (AcquiringProcessID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
-
-    this.logger.info(`[Outbound] Updating stakeholder with id ${stakeholder}`);
-    this.logger.debug(`[Outbound] URI used is ${URI}`);
-    this.logger.debug(`[Outbound] Headers used are ${JSON.stringify({
-      "Request-Id": HTTP_OPTIONS.headers.get('Request-Id'),
-      "X-Acquiring-UserId" : HTTP_OPTIONS.headers.get('X-Acquiring-UserId'),
-      "X-Acquiring-PartnerId" : HTTP_OPTIONS.headers.get("X-Acquiring-PartnerId"),
-      "X-Acquiring-BranchId" : HTTP_OPTIONS.headers.get("X-Acquiring-BranchId"),
-      "X-Acquiring-ProcessId" : HTTP_OPTIONS.headers.get("X-Acquiring-ProcessId"),
-    }, null, 2)}`);
-
-    return this.http.put<any>(URI, stakeholder, HTTP_OPTIONS);
-  }
 }

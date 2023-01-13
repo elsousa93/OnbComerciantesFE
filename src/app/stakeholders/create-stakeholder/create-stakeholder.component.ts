@@ -380,10 +380,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     });
   }
 
-  redirectAddStakeholder() {
-    this.route.navigate(['/add-stakeholder/']);
-  }
-
   redirectInfoStakeholder() {
     this.route.navigate(['/add-stakeholder/']);
   }
@@ -505,7 +501,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.formStakeholderSearch.get("documentNumber").setValue("");
     this.formStakeholderSearch.get("documentNumber").updateValueAndValidity();
   }
-  
+
   searchStakeholder() {
     this.isSearch = false;
     this.sameNIPC = false;
