@@ -263,8 +263,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.stakeholderService.GetAllStakeholdersFromSubmission(localStorage.getItem("submissionId")).then(result => {
         var stakeholders = result.result;
         stakeholders.forEach(function (value, index) {
-          context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).subscribe(res => {
-            context.submissionStakeholders.push(res);
+          context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).then(res => {
+            context.submissionStakeholders.push(res.result);
           }, error => {
             console.log("Erro a adicionar stakeholder");
           });
