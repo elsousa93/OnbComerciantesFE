@@ -694,6 +694,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.clientContext.isClient = this.isClient;
       if (this.clientContext.isClient) {
         this.formCountryIsValid = true;
+        this.countriesListValid = true;
       }
       this.clientContext.setMerchantInfo(this.merchantInfo);
       this.clientContext.setClient(this.merchantInfo);
@@ -957,9 +958,16 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           this.submissionStakeholders = [];
           this.clientContext.setStakeholdersToInsert([]);
           this.processClient.stakeholders = [];
-        } else { 
+        } else {
+
+          this.submissionStakeholders.forEach(stake => {
+            var found = context.clientContext.newSubmission.stakeholders.find(val => val.fiscalId === stake.fiscalId);
+            if (found == undefined) {
+              context.stakeholderService.DeleteStakeholder(submissionID, stake.id);
+            }
+          });
+
           stakeholders.forEach(function (value, idx) {
-            var cont = this;
             if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
               if (value.fiscalId !== client.fiscalId) {
                 context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
@@ -980,6 +988,13 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             context.documentService.DeleteDocumentFromSubmission(submissionID, val.id).subscribe(result => { });
           });
         }
+
+        this.submissionDocs.forEach(val => {
+          var found = documents.find(doc => doc.documentType === val.documentType);
+          if (found == undefined) {
+            context.documentService.DeleteDocumentFromSubmission(submissionID, val.id).subscribe(result => { });
+          }
+        });
 
         if (documents.length > 0) {
           documents.forEach(doc => {
