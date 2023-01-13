@@ -159,7 +159,7 @@ export class AddStoreComponent implements OnInit {
       }));
     } else {
       this.clientHasCAE = false;
-      this.subs.push(this.storeService.GetAllShopActivities().subscribe(result => {
+      this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
         this.logger.debug(result);
         this.activities = result;
         this.activities = this.activities.sort((a, b) => a.activityDescription > b.activityDescription ? 1 : -1); //ordenar resposta

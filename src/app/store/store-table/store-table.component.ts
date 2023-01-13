@@ -64,7 +64,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   fetchActivities() {
-    this.subs.push(this.storeService.GetAllShopActivities().subscribe(result => {
+    this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
       this.activities = result;
     }, error => {
 

@@ -277,7 +277,7 @@ export class ClientCharacterizationComponent implements OnInit {
     }
 
     if (this.processClient.secondaryEconomicActivity[2] !== null || this.processClient.secondaryEconomicActivity[2] !== '') {
-      this.searchBranch(this.processClient.secondaryEconomicActivity[2].split("-")[0])
+      this.searchBranch(this.processClient.secondaryEconomicActivity[2]?.split("-")[0])
         .then((data) => {
           this.form.get("CAESecondary3Branch").setValue(data.description);
         });

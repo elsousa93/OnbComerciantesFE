@@ -64,15 +64,6 @@ export class StoreService {
   /////////////
   //ACQUIRING//
   /////////////
-  GetAllShopActivities(): any {
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Accept-Language': this.currentLanguage,
-
-      }),
-    }
-    return this.http.get<ShopActivities[]>(this.baseUrl + 'shop/activity', HTTP_OPTIONS);
-  }
 
   getProcessShopDetails(processId: string, shopId: string) {
     return this.http.get<ShopDetailsAcquiring>(this.baseUrl + 'process/' + processId + '/merchant/' + 'shop/' + shopId);
