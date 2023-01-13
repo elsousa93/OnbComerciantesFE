@@ -17,7 +17,7 @@ export class MainPageComponent implements OnInit {
   mobileQuery: MediaQueryList;
   private _mobileQueryListener: () => void;
 
-  pageName: string = 'Teste';
+  pageName: string = '';
   title = 'app';
 
   isToggle: boolean = true;
@@ -70,5 +70,4 @@ export class MainPageComponent implements OnInit {
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
-
 }

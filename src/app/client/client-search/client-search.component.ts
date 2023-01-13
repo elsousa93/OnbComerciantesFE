@@ -34,7 +34,6 @@ export class ClientSearchComponent implements OnInit {
     var context = this;
     this.clientService.SearchClientByQuery(this.clientID, this.searchType, this.requestID, "por mudar").subscribe(o => {
       var clients = o;
-
       var context2 = this;
 
       context.clientsToShow = [];
@@ -61,7 +60,6 @@ export class ClientSearchComponent implements OnInit {
       }
     }, error => {
       context.foundClients = false;
-
     });
   }
 
@@ -74,5 +72,4 @@ export class ClientSearchComponent implements OnInit {
       idx: idx
     });
   }
-
 }

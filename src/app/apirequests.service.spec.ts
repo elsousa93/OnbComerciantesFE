@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { APIRequestsService } from './apirequests.service';
 
 describe('APIRequestsService', () => {

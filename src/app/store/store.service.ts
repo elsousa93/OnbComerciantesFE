@@ -2,9 +2,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { SimplifiedReference } from '../submission/ISubmission.interface';
 import { Product } from '../commercial-offer/ICommercialOffer.interface';
-
-
-
 import { ShopActivities, ShopDetailsAcquiring, ShopEquipment, ShopsListOutbound } from './IStore.interface';
 import { BehaviorSubject } from 'rxjs';
 import { APIRequestsService } from '../apirequests.service';
@@ -20,14 +17,12 @@ export class StoreService {
   private urlOutbound: string;
 
   currentLanguage: string;
-
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
   constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService,
     private APIService: APIRequestsService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.urlOutbound = configuration.getConfig().outboundUrl;
-
     this.languageStream$.subscribe((val) => {
       this.currentLanguage = val
     });
@@ -61,12 +56,10 @@ export class StoreService {
   }
 
   getShopInfoOutbound(merchantId: string, shopId: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?) {
-
     var URI = this.urlOutbound + 'api/v1/merchant/' + merchantId + '/shop/' + shopId;
 
     return this.APIService.callAPIOutbound(HttpMethod.GET, URI, "searchId", "searchType", "requestId", "acquiringUserId");
   }
-
 
   /////////////
   //ACQUIRING//

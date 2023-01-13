@@ -71,7 +71,6 @@ export function validPhoneAndMobileNumber(control: AbstractControl): ValidationE
 }
 
 export function validEmail(control: AbstractControl): ValidationErrors | null {
-
   let email = control.get("email").value;
 
   if (email != '') {
@@ -83,4 +82,3 @@ export function validEmail(control: AbstractControl): ValidationErrors | null {
     }
   }
 }
-

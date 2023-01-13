@@ -38,7 +38,6 @@ export class InfoStakeholderComponent implements OnInit {
         return a.description.localeCompare(b.description, 'pt-PT');
       }); //ordenar resposta
     });
-
   }
 
   ngOnInit(): void {

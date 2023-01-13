@@ -9,7 +9,6 @@ import { TreatedResponse } from '../../table-info/ITable-info.interface';
 import { RequiredDocuments } from '../IComprovativos.interface';
 import { HttpUtilService } from './http.services';
 
-
 @Injectable({
   providedIn: 'root'
 })

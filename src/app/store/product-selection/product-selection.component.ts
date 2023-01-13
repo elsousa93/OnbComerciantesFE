@@ -10,7 +10,6 @@ import { } from '../store.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum, ProductOutbound } from '../../commercial-offer/ICommercialOffer.interface';
 import { CommercialOfferService } from '../../commercial-offer/commercial-offer.service';
 
-
 @Component({
   selector: 'app-product-selection',
   templateUrl: './product-selection.component.html',
@@ -22,9 +21,7 @@ export class ProductSelectionComponent implements OnInit {
   public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
   public ProductPackKindEnum = ProductPackKindEnum;
-
   public store: ShopDetailsAcquiring = new ShopDetailsAcquiring();
-
   public map: Map<number, boolean>;
   public currentPage: number;
   public subscription: Subscription;
@@ -38,12 +35,10 @@ export class ProductSelectionComponent implements OnInit {
   public isCardNotPresent: boolean = false;
   public isCombinedOffer: boolean = false;
   public isURLFilled: boolean = false;
-
   public products: ProductOutbound[];
   public subProducts;
   public exists = false;
   public urlRegex;
-
   public cardPresent;
   public cardNotPresent;
   public combinedOffer;
@@ -128,8 +123,6 @@ export class ProductSelectionComponent implements OnInit {
     this.store.productCode = this.formStores.get("solutionType").value;
     this.store.subproductCode = this.formStores.get("subProduct").value;
     this.store.website = this.formStores.get("url").value;
-
-
     this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.store).subscribe(result => {
       console.log("Uma nova loja foi adicionada à submissão", result);
     });

@@ -1,8 +1,8 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { IStakeholders, StakeholdersCompleteInformation, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
+import { StakeholdersCompleteInformation, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
 import { ClientContext } from '../clientById/clientById.model';
 
 @Component({
@@ -13,7 +13,6 @@ import { ClientContext } from '../clientById/clientById.model';
 export class RepresentationPowerComponent implements OnInit, OnChanges {
 
   @Input() clientContext: ClientContext;
-
   @Input() processNumber?: string;
   submissionStakeholders: StakeholdersCompleteInformation[] = [];
 
@@ -21,7 +20,6 @@ export class RepresentationPowerComponent implements OnInit, OnChanges {
   public currentPage: number;
   public subscription: Subscription;
   public stakeholders: StakeholdersCompleteInformation[];
-
   public returned: string;
   public submissionId: string;
 
@@ -40,7 +38,6 @@ export class RepresentationPowerComponent implements OnInit, OnChanges {
       this.stakeholdersToInsert = result;
     });
   }
-
 
   constructor(private route: ActivatedRoute, private router: Router, private data: DataService) {
     this.submissionId = localStorage.getItem('submissionId');

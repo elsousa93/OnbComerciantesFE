@@ -31,20 +31,16 @@ interface Process {
 
 export class ConsultasComponent implements OnInit {
 
-  //////////////////////
   navbarProcessNumberSearch: string = '';
   form: FormGroup;
   availableStates = [];
 
-  //////////////////////
   public map = new Map();
   public currentPage: number;
   public subscription: Subscription;
   public subs: Subscription[] = [];
-
   public url: string;
   public search: boolean = false;
-
   public endDate: string = "";
   public date: string;
 
@@ -52,7 +48,6 @@ export class ConsultasComponent implements OnInit {
 
   ListaDocType;
   isLengthOne: boolean = false;
-
 
   constructor(private logger: LoggerService, private datePipe: DatePipe, private snackBar: MatSnackBar, private route: Router, public modalService: BsModalService, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService, private translate: TranslateService, public appComponent: AppComponent, private configuration: AppConfigService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
@@ -73,7 +68,6 @@ export class ConsultasComponent implements OnInit {
       this.ListaDocType = result;
       this.ListaDocType = this.ListaDocType.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }));
-
     this.initializeForm();
   }
 
@@ -153,7 +147,6 @@ export class ConsultasComponent implements OnInit {
       this.url += 'untilStartedAt=' + processDateUntil;
       this.search = true;
     }
-
     if (this.url == this.baseUrl + 'process?') {
       this.snackBar.open(this.translate.instant('searches.emptySearch'), '', {
         duration: 4000,
@@ -179,7 +172,6 @@ export class ConsultasComponent implements OnInit {
         this.isLengthOne = true;
 
         let processesArray: Process[] = r.items.map<Process>((process) => {
-
           // mapear os estados para aparecer em PT ou EN
           if (process.state === 'Incomplete') {
             process.state = this.translate.instant('searches.incompleted');

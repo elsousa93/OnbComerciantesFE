@@ -26,7 +26,6 @@ export function GetCCData(): any {
   var photo = (<HTMLInputElement>document.getElementById("CCDivPhoto"));
   var country = (<HTMLInputElement>document.getElementById("CCDivCountry"));
 
-
   if ((elName != null && elName.innerText != "") &&
     (elCCNumber != null && elCCNumber.innerText != "") &&
     (elNif != null && elNif.innerText != "") &&

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -21,7 +21,6 @@ interface ProcessFT {
   nome: string;
   estado: string;
 }
-
 @Component({
   selector: 'app-consultas-ft',
   templateUrl: './consultas-ft.component.html',
@@ -53,12 +52,9 @@ export class ConsultasFTComponent implements OnInit {
   public currentPage: number;
   public subscription: Subscription;
   public subs: Subscription[] = [];
-
   public state: string;
-
   public search: boolean;
   public url: string;
-
   public endDate: string = "";
   public date: string;
 
@@ -81,7 +77,6 @@ export class ConsultasFTComponent implements OnInit {
       this.ListaDocType = result;
       this.ListaDocType = this.ListaDocType.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }));
-
     this.chooseState();
     this.initializeForm();
   }

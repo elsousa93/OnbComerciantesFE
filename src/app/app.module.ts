@@ -43,7 +43,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InfoDeclarativaAssinaturaComponent } from './client/info-declarativa/info-declarativa-assinatura/info-declarativa-assinatura.component';
 import { StakeholderService } from './stakeholders/stakeholder.service';
 import { NumberCounterComponent } from './number-counter/number-counter.component';
-import { UpdateStakeholderComponent } from './stakeholders/update-stakeholder/update-stakeholder.component';
 import { TableInfoService } from './table-info/table-info.service';
 import { InfoDeclarativaLojasComponent } from './client/info-declarativa/info-declarativa-lojas/info-declarativa-lojas.component';
 import { CountrysComponent } from './countrys/countrys.component';
@@ -100,7 +99,6 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     AddStoreComponent,
     StakeholdersComponent,
     NewStakeholderComponent,
-    UpdateStakeholderComponent,
     ComprovativosComponent,
     CommercialOfferListComponent,
     CommercialOfferNewConfigurationComponent,
@@ -167,7 +165,6 @@ const appInitializerFn = (appConfig: AppConfigService) => {
       { path: 'new-stakeholder/:nif/edit', component: NewStakeholderComponent },
       { path: 'add-stakeholder/:nif/:clientNr/delete', component: NewStakeholderComponent },
       { path: 'app-info-stakeholder', component: InfoStakeholderComponent },
-      { path: 'update-stakeholder/:nif', component: UpdateStakeholderComponent },
       { path: 'app-pep', component: PepComponent },
       { path: 'app-aceitacao', component: AceitacaoComponent },
       { path: 'app-aceitacao/:id', component: AceitacaoComponent },
@@ -196,9 +193,7 @@ const appInitializerFn = (appConfig: AppConfigService) => {
       { path: 'login/:tokenid', component: LoginComponent },
       { path: 'support-contacts', component: SupportContactsComponent },
       { path: 'dashboard', component: DashboardComponent },
-
       { path: 'nav-interna/:pag', component: NavMenuInternaComponent },
-
       { path: 'readcardcc', component: ReadcardComponent },
       { path: 'submission/:id/merchant', component: SubmissionComponent },
       { path: 'submission', component: SubmissionComponent },

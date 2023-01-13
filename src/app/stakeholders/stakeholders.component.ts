@@ -65,22 +65,16 @@ export class StakeholdersComponent implements OnInit {
     this.sameNIFEvent = nif;
   }
 
-
   currentStakeholder: StakeholdersCompleteInformation = {};
   currentIdx: number;
   allStakeholdersComprovativos = {}; 
-
   submissionId: string;
-
   processNumber: string;
   submissionStakeholders: IStakeholders[] = [];
-  
-  //Field "stakeholder type" for the search
   ListStakeholderType = stakeTypeList;
   TypeList;
   stakeholderType?: string = "";
 
-  //Field "doc type" for the search
   ListDocTypeP = docTypeListP;
   ListDocTypeE = docTypeListE;
   documentType?: string = "";
@@ -110,7 +104,6 @@ export class StakeholdersComponent implements OnInit {
   public map: Map<number, boolean>;
   public currentPage: number;
   public subscription: Subscription;
-
   public isParticular: boolean = false;
   public isCC: boolean = false;
   public isNoDataReadable: boolean;
@@ -162,7 +155,6 @@ export class StakeholdersComponent implements OnInit {
       }),
       stake: this.fb.group({})
     });
-
   }
 
   redirectAddStakeholder() {
@@ -374,7 +366,6 @@ export class StakeholdersComponent implements OnInit {
             this.submissionClient.headquartersAddress.locality = stakeForm.get("Locality").value;
             this.submissionClient.headquartersAddress.postalCode = stakeForm.get("ZIPCode").value;
             this.submissionClient.headquartersAddress.postalArea = stakeForm.get("Locality").value;
-
             this.clientService.EditClient(this.submissionId, this.submissionClient).subscribe(result => { });
           }
         }
@@ -397,7 +388,6 @@ export class StakeholdersComponent implements OnInit {
             this.data.updateData(true, 2);
             this.route.navigate(['store-comp']);
           }
-
         }, error => {
         });
       }
@@ -462,14 +452,6 @@ export class StakeholdersComponent implements OnInit {
   }
 
   goToClientById() {
-    //let navigationExtras: NavigationExtras = {
-    //  state: {
-    //    isClient: this.isClient
-    //  }
-    //};
-
     this.route.navigate(['/clientbyid/']);
   }
 }
-
-

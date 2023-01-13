@@ -22,7 +22,6 @@ export class TokenService {
 
     var clientID = this.configuration.getConfig().clientID;
     var clientSecret = this.configuration.getConfig().clientSecret;
-
     var secret = btoa(clientID + ":" + clientSecret);
 
     const HTTP_OPTIONS_AUTH = {
@@ -68,7 +67,6 @@ export class TokenService {
     var object = {
       token: token
     }
-
     var URI = this.neyondBackURL + 'BEToken/GetToken';
     return this.http.post(URI, object).toPromise();
   }

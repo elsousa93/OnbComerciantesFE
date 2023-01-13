@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { NewStakeholderComponent } from './new-stakeholder.component';
 
 describe('NewStakeholderComponent', () => {

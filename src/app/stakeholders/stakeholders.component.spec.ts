@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { StakeholdersComponent } from './stakeholders.component';
 
 describe('StakeholdersComponent', () => {

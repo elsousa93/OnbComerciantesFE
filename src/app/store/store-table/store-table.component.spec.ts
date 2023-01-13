@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { StoreTableComponent } from './store-table.component';
 
 describe('StoreTableComponent', () => {

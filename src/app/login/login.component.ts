@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ILogin } from 'src/app/login/ILogin.interface';
-import { AuthService } from '../services/auth.service'
 import { FormBuilder, Validators } from '@angular/forms';
 import { CookieService } from 'ngx-cookie-service'
 import { LoggerService } from 'src/app/logger.service';
@@ -14,8 +13,6 @@ import { LoggerService } from 'src/app/logger.service';
 export class LoginComponent implements OnInit {
 
   token: string | null = "";
-  clientId: number = 12345;
-
   model: ILogin = { userid: "admin", password: "admin@123" }
 
   public message: string = "";
@@ -30,7 +27,6 @@ export class LoginComponent implements OnInit {
   constructor(private logger: LoggerService,
     private formBuilder: FormBuilder,
     private route: Router,
-    private authService: AuthService,
     private router: ActivatedRoute,
     private cookie: CookieService
   ) {
@@ -62,7 +58,6 @@ export class LoginComponent implements OnInit {
     } else {
       this.isLoggedIn = true;
     }
-
   }
 
   // convenience getter for easy access to form fields  

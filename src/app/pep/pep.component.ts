@@ -14,10 +14,7 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./pep.component.css']
 })
 export class PepComponent implements OnInit {
-  private baseUrl: string;
   private submissionId: string;
-
-  //REACTIVE FORM
 
   //Informação de campos/tabelas
   PEPTypesP: PEPTypes[] = [];

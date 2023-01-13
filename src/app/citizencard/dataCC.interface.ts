@@ -23,4 +23,3 @@ export class dataCC {
 
   documentType?: any;
 }
- 

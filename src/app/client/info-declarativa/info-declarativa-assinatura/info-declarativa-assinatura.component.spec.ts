@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { InfoDeclarativaAssinaturaComponent } from './info-declarativa-assinatura.component';
 
 describe('InfoDeclarativaAssinaturaComponent', () => {

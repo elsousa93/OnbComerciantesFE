@@ -9,7 +9,6 @@ import { TokenService } from '../token.service';
 import { User } from '../userPermissions/user';
 import { role, roles, UserPermissions } from '../userPermissions/user-permissions';
 
-
 @Component({
   selector: 'app-auth',
   templateUrl: './auth.component.html',
@@ -18,7 +17,6 @@ import { role, roles, UserPermissions } from '../userPermissions/user-permission
 export class AuthComponent implements OnInit {
 
   authForm: FormGroup;
-
   tokenSubscription = new Subscription();
   timeout;
 
@@ -30,7 +28,6 @@ export class AuthComponent implements OnInit {
 
   ngOnInit(): void {
     this.generateAuthForm();
-
     this.authService.currentUser.subscribe(result => {
     })
 
@@ -43,7 +40,6 @@ export class AuthComponent implements OnInit {
 
   submit() {
     console.log("Form da autenticação: " + this.authForm);
-
     if (this.authForm.invalid) {
       return;
     }
@@ -72,7 +68,6 @@ export class AuthComponent implements OnInit {
         this.router.navigate(['/']);
       });
     });
-
   }
 
   noToken() {
@@ -90,7 +85,6 @@ export class AuthComponent implements OnInit {
     console.log("Form da autenticação: " + this.authService);
 
     this.router.navigate(['/']);
-
   }
 
   openDiv: boolean = false;
@@ -99,7 +93,6 @@ export class AuthComponent implements OnInit {
     this.openDiv = true;
     this.getsToken = this.token.getAccessToken();
     console.log("Token de acesso: " + this.getsToken);
-
   }
 
   generateAuthForm() {
@@ -122,5 +115,4 @@ export class AuthComponent implements OnInit {
     localStorage.removeItem('auth');
     this.authService.reset();
   }
-
 }

@@ -1,4 +1,4 @@
-import { EventEmitter, Output, ViewChild } from '@angular/core';
+import { EventEmitter, Output } from '@angular/core';
 import { ViewChildren } from '@angular/core';
 import { Component, Input, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
@@ -132,7 +132,6 @@ export class NavMenuInternaComponent implements OnInit {
     if (this.currentPage > 3 || this.map.get(3) != undefined) {
       this.route.navigate(['store-comp']);
     }
-
   }
 
   goToComprovativos() {

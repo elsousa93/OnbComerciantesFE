@@ -65,9 +65,7 @@ export class ConfigService {
         catchError(this.handleError)
       );
   }
-
 }
-
 
 /*
 Copyright Google LLC. All Rights Reserved.

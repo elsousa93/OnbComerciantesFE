@@ -24,11 +24,8 @@ export class AppComponent {
 
   isToggle: boolean = true;
   isAutoHide: boolean = false;
-
   hasAuthenticated: boolean = true;
   wantsLogin: boolean = false;
-
-
   translationLanguages = translationLanguages;
 
   constructor(private logger: LoggerService, public translate: TranslateService, private cookie: CookieService, private router: Router,

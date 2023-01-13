@@ -5,7 +5,6 @@ import { Subscription } from 'rxjs';
 import { AppComponent } from '../app.component';
 import { ProcessList, ProcessService } from '../process/process.service';
 
-
 @Component({
   selector: 'app-aceitacao',
   templateUrl: './aceitacao.component.html',
@@ -18,7 +17,6 @@ export class AceitacaoComponent implements OnInit {
   public map = new Map();
   public currentPage: number;
   public subscription: Subscription;
-
   public processId: string;
   public process: ProcessList;
 
@@ -29,12 +27,9 @@ export class AceitacaoComponent implements OnInit {
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.process = result;
     });
-
   }
 
   ngOnInit(): void {
-
     this.processId = this.router.snapshot.paramMap.get('id');
   }
-
 }

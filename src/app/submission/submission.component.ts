@@ -24,7 +24,6 @@ export class SubmissionComponent implements OnInit {
       this.isTable = true;
       this.ngOnInit();
     }, error => console.error(error));
-
   }
 
   get listContents(): Array<ISubmission> {
@@ -34,6 +33,5 @@ export class SubmissionComponent implements OnInit {
 
   ngOnInit(): void {
     this.logger.debug("Submissions List : " + this.submissionsList[0]);
-
   }
 }

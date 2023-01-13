@@ -199,7 +199,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
 
   @ViewChild('newModal') newModal;
 
-
   submissionId: string;
   submissionStakeholders: IStakeholders[] = [];
 
@@ -237,18 +236,14 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   public map: Map<number, boolean>;
   public currentPage: number;
   public subscription: Subscription;
-
   public isParticular: boolean = false;
   public isCC: boolean = false;
   public isNoDataReadable: boolean = true;
-
   public isSearch: boolean = false;
 
   stakeholderNumber: string;
-
   foundStakeholders: boolean = null;
   errorMsg: string = "";
-
   currentStakeholder: IStakeholders = {};
   searchEvent: Subject<string> = new Subject<string>();
   testEvent = this.searchEvent.asObservable();
@@ -256,7 +251,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   public subs: Subscription[] = [];
   returned: string;
   isClientNrSelected: boolean = false;
-
   incorrectNIFSize: boolean = false;
   incorrectNIF: boolean = false;
   incorrectNIPCSize: boolean = false;
@@ -548,7 +542,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       return false;
 
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
-
     this.emitSameNIF(of(this.stakeholderNumber)); //evento que serve para comparar o NIF inserido com os stakeholders já existentes
 
     if (this.submissionClient.fiscalId === this.stakeholderNumber) {
@@ -842,7 +835,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         this.sameNIPC = true;
         return false;
       } 
-
       return Number(nipc[8]) === comparador;
     }
   }
