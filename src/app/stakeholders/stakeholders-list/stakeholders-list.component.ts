@@ -250,15 +250,14 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
               stakeholderToInsert.stakeholderAcquiring.stakeholderId = res.result[0].stakeholderId;
               stakeholderToInsert.stakeholderAcquiring.clientId = res.result[0].stakeholderId;
               context.stakeholderService.getStakeholderByID(res.result[0].stakeholderId, 'requestID', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658', "AcquiringUserID").then(r => {
+
                 stakeholderToInsert.stakeholderOutbound = r.result;
-                //resolve(null);
                 stakeholderToInsert.stakeholderAcquiring.birthDate = stakeholderToInsert.stakeholderOutbound.birthDate;
                 stakeholderToInsert.stakeholderAcquiring.contactName = stakeholderToInsert.stakeholderOutbound.shortName;
                 stakeholderToInsert.stakeholderAcquiring.email = stakeholderToInsert.stakeholderOutbound.contacts.email;
                 stakeholderToInsert.stakeholderAcquiring.fiscalAddress = stakeholderToInsert.stakeholderOutbound.address;
                 stakeholderToInsert.stakeholderAcquiring.fullName = stakeholderToInsert.stakeholderOutbound.fullName;
                 stakeholderToInsert.stakeholderAcquiring.identificationDocument = stakeholderToInsert.stakeholderOutbound.identificationDocument;
-                //stakeholderToInsert.stakeholderAcquiring.isProxy = stakeholderToInsert.stakeholderOutbound.;
                 stakeholderToInsert.stakeholderAcquiring.pep = stakeholderToInsert.stakeholderOutbound.pep;
                 stakeholderToInsert.stakeholderAcquiring.phone1 = stakeholderToInsert.stakeholderOutbound.contacts.phone1;
                 stakeholderToInsert.stakeholderAcquiring.phone2 = stakeholderToInsert.stakeholderOutbound.contacts.phone2;
