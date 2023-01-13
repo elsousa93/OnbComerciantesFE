@@ -341,19 +341,20 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.isClient
     );
 
-    if (this.submissionExists) {
+    if (this.submissionExists || this.returned != null) {
       this.stakeholderService.GetAllStakeholdersFromSubmission(localStorage.getItem("submissionId")).then(result => {
         var stakeholders = result.result;
         stakeholders.forEach(function (value, index) {
           context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).subscribe(res => {
             context.submissionStakeholders.push(res);
-            if (context.submissionType == 'DigitalComplete') {
-              context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
-            }
+            //if (context.submissionType == 'DigitalComplete') {
+            //  context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
+            //}
           }, error => {
             console.log("Erro a adicionar stakeholder");
           });
         });
+        context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
       }, error => {
       });
 
@@ -656,8 +657,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           context.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(res => {
             if (res.length > 0) {
               res.forEach(doc => {
-                if (doc.type === '0001') {
-                  context.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(r => {
+                context.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(r => {
+                  if (doc.type === '0001') {
                     var file = {
                       documentType: '0001',
                       receivedAt: this.datepipe.transform(r.receivedAt, "yyyy-MM-dd"),
@@ -675,8 +676,10 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                     } as SubmissionPostDocumentTemplate;
                     this.clientContext.newSubmission.documents.push(acquiringFile);
                     this.fetchDocumentDescriptions();
-                  });
-                }
+                  } else {
+                    this.clientContext.newSubmission.documents.push(r);
+                  }
+                });
               });
             }
           });
@@ -949,7 +952,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         });
       }
 
-      if (!this.compareArraysStakes(context.submissionStakeholders, this.clientContext.newSubmission.stakeholders)) {
+      if (!this.compareArraysStakes(this.submissionStakeholders, this.clientContext.newSubmission.stakeholders)) {
         var stakeholders = this.clientContext.newSubmission.stakeholders;
         if (stakeholders.length == 0) {
           this.submissionStakeholders.forEach((val, index) => {
@@ -961,9 +964,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         } else {
 
           this.submissionStakeholders.forEach(stake => {
-            var found = context.clientContext.newSubmission.stakeholders.find(val => val.fiscalId === stake.fiscalId);
+            var found = stakeholders.find(val => val.fiscalId === stake.fiscalId);
             if (found == undefined) {
-              context.stakeholderService.DeleteStakeholder(submissionID, stake.id);
+              context.stakeholderService.DeleteStakeholder(submissionID, stake.id).subscribe(result => { });
             }
           });
 
@@ -987,61 +990,64 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           this.submissionDocs.forEach((val, index) => {
             context.documentService.DeleteDocumentFromSubmission(submissionID, val.id).subscribe(result => { });
           });
-        }
+          this.submissionDocs = [];
+        } else {
+          this.submissionDocs.forEach(val => {
+            var found = documents.find(doc => doc.documentType === val.documentType);
+            if (found == undefined) {
+              context.documentService.DeleteDocumentFromSubmission(submissionID, val.id).subscribe(result => { });
+            }
+          });
 
-        this.submissionDocs.forEach(val => {
-          var found = documents.find(doc => doc.documentType === val.documentType);
-          if (found == undefined) {
-            context.documentService.DeleteDocumentFromSubmission(submissionID, val.id).subscribe(result => { });
+          if (documents.length > 0) {
+            documents.forEach(doc => {
+              context.documentService.SubmissionPostDocument(submissionID, doc).subscribe(result => {
+                console.log('documento adicionado: ', result);
+              });
+            });
           }
-        });
 
-        if (documents.length > 0) {
-          documents.forEach(doc => {
-            context.documentService.SubmissionPostDocument(submissionID, doc).subscribe(result => {
-              console.log('documento adicionado: ', result);
+          if (context.clientDocs != null) {
+            context.clientDocs.forEach(function (value, idx) {
+              context.documentService.SubmissionPostDocument(submissionID, value).subscribe(result => {
+                console.log("adicionou documento: ", result);
+              });
             });
-          });
-        }
-
-        if (context.clientDocs != null) {
-          context.clientDocs.forEach(function (value, idx) {
-            context.documentService.SubmissionPostDocument(submissionID, value).subscribe(result => {
-              console.log("adicionou documento: ", result);
-            });
-          });
+          }
         }
 
       }
 
       if (!this.updateClient) {
         if (this.clientContext.isClient) {
-          this.storeService.getShopsListOutbound(newSubmission.merchant.merchantRegistrationId, "por mudar", "por mudar").subscribe(res => {
-            res.forEach(value => {
-              this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantRegistrationId, value.shopId, "por mudar", "por mudar").then(r => {
-                var storeToAdd: ShopDetailsAcquiring = {
-                  activity: r.result.activity,
-                  subActivity: r.result.secondaryActivity,
-                  address: {
-                    address: r.result.address.address,
-                    isInsideShoppingCenter: r.result.address.isInsideShoppingCenter,
-                    shoppingCenter: r.result.address.shoppingCenter,
-                    useMerchantAddress: r.result.address.sameAsMerchantAddress
-                  },
-                  bank: {
-                    bank: r.result.bankingInformation
-                  },
-                  name: r.result.name,
-                  website: r.result.url,
-                  equipments: []
-                }
+          if (newSubmission?.merchant?.merchantRegistrationId != null && newSubmission?.merchant?.merchantRegistrationId != "") {
+            this.storeService.getShopsListOutbound(newSubmission.merchant.merchantRegistrationId, "por mudar", "por mudar").subscribe(res => {
+              res.forEach(value => {
+                this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantRegistrationId, value.shopId, "por mudar", "por mudar").then(r => {
+                  var storeToAdd: ShopDetailsAcquiring = {
+                    activity: r.result.activity,
+                    subActivity: r.result.secondaryActivity,
+                    address: {
+                      address: r.result.address.address,
+                      isInsideShoppingCenter: r.result.address.isInsideShoppingCenter,
+                      shoppingCenter: r.result.address.shoppingCenter,
+                      useMerchantAddress: r.result.address.sameAsMerchantAddress
+                    },
+                    bank: {
+                      bank: r.result.bankingInformation
+                    },
+                    name: r.result.name,
+                    website: r.result.url,
+                    equipments: []
+                  }
 
-                context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
+                  context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
 
+                  });
                 });
               });
             });
-          });
+          }
         }
       }
 

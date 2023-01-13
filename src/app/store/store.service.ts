@@ -71,15 +71,6 @@ export class StoreService {
   /////////////
   //ACQUIRING//
   /////////////
-  GetAllShopActivities(): any {
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Accept-Language': this.currentLanguage,
-
-      }),
-    }
-    return this.http.get<ShopActivities[]>(this.baseUrl + 'shop/activity', HTTP_OPTIONS);
-  }
 
   GetAllShopProducts() {
     var HTTP_OPTIONS = {

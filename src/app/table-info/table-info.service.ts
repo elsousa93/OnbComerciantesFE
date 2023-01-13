@@ -6,7 +6,7 @@ import { APIRequestsService } from '../apirequests.service';
 import { AppConfigService } from '../app-config.service';
 import { PurposeDocument } from '../comprovativos/IComprovativos.interface';
 import { HttpMethod } from '../enums/enum-data';
-import { Bank } from '../store/IStore.interface';
+import { Bank, ShopActivities } from '../store/IStore.interface';
 import { Address, ContractPackLanguage, CorporateRelations, CountryInformation, DocTypes, DocumentSearchType, EconomicActivityInformation, Franchise, Kinship, PEPTypes, POS, Product, RequestResponse, ShopActivity, ShoppingCenter, StakeholderRole, TenantCommunication, TenantTerminal, TreatedResponse, UserTypes } from './ITable-info.interface';
 
 @Injectable({
@@ -298,5 +298,15 @@ export class TableInfoService {
       }),
     }
     return this.http.get<PurposeDocument[]>(this.acquiringUrl + 'document-purpose', HTTP_OPTIONS);
+  }
+
+  GetAllShopActivities(): any {
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+
+      }),
+    }
+    return this.http.get<ShopActivities[]>(this.acquiringUrl + 'shop/activity', HTTP_OPTIONS);
   }
 }
