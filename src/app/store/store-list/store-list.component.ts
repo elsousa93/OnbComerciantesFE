@@ -211,21 +211,22 @@ export class StoreComponent implements AfterViewInit {
       bankStores.get("bankInformation").setValue(this.currentStore.bank.useMerchantBank);
 
       if (!this.currentStore.bank.useMerchantBank) {
+        this.storeIbanComponent.isIBAN(this.currentStore.bank.useMerchantBank);
         bankStores.get("bankIban").setValue(this.currentStore.bank.bank.iban);
         this.documentService.GetSubmissionDocumentById(this.submissionId, this.currentStore.bank.bank.iban).subscribe(val => {
-          context.documentService.GetDocumentImage(context.submissionId, context.currentStore.bank.bank.iban).subscribe(res => {
-            var file = res.blob();
-
-            file.lastModifiedDate = new Date();
-            file.name = this.translate.instant('supportingDocuments.checklistModal.IBAN');
-
-            context.ibansToShow = {
-              dataDocumento: context.datePipe.transform(val.validUntil, 'dd-MM-yyyy'),
-              file: file,
-              id: context.currentStore.bank.bank.iban,
-              tipo: context.translate.instant('supportingDocuments.checklistModal.IBAN')
-            };
-
+          context.documentService.GetDocumentImage(context.submissionId, context.currentStore.bank.bank.iban).then(async res => {
+            console.log("imagem de um documento ", res);
+            
+            res.blob().then(data => {
+              var blob = new Blob([data], { type: 'application/pdf' });
+              var file = new File([blob], context.translate.instant('supportingDocuments.checklistModal.IBAN'), { 'type': 'application/pdf' });
+              context.ibansToShow = {
+                dataDocumento: context.datePipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                file: file,
+                id: context.currentStore.bank.bank.iban,
+                tipo: context.translate.instant('supportingDocuments.checklistModal.IBAN')
+              };
+            }); 
           });
         });
 

@@ -730,7 +730,7 @@ export class ClientCharacterizationComponent implements OnInit {
       }
     });
 
-    newSubmission.documents = [];
+    //newSubmission.documents = [];
 
     if (crc != null && crc != undefined) {
       newSubmission.documents.push({

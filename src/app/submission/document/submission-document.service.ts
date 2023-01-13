@@ -27,7 +27,16 @@ export class SubmissionDocumentService {
   GetDocumentImage(submissionID: string, documentID: string): any {
     var URI = this.baseUrl + 'submission/' + submissionID + '/document/' + documentID + '/image';
 
-    return this.http.get<any>(URI);
+    //return this.http.get<any>(URI);
+    return fetch(URI, {
+      headers: {
+        Authorization: 'Bearer ' + this.authService.GetToken(),
+        responseType: 'blob',
+        observe: 'response',
+        "Accept": "application/pdf",
+        "Content-Type": "application/pdf"
+      }
+    });
   }
 
   SubmissionPostDocument(submissionID: string, document: PostDocument): any {
