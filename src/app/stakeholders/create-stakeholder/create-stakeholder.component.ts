@@ -288,13 +288,17 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['sameNIFStake'].currentValue === true) {
-      this.isShown = false;
-      this.foundStakeholders = null;
-      this.showSameNIFError = true;
-      this.isCC = false;
-      this.okCC = false;
-      this.isNoDataReadable = true;
-      this.selected = false;
+      if (this.isParticular && !this.isClientNrSelected) {
+        this.showSameNIFError = true;
+      } else {
+        this.isShown = false;
+        this.foundStakeholders = null;
+        this.showSameNIFError = true;
+        this.isCC = false;
+        this.okCC = false;
+        this.isNoDataReadable = true;
+        this.selected = false;
+      }
     } else {
       this.showSameNIFError = false;
     }
@@ -598,7 +602,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     if (this.foundStakeholders && this.dataCCcontents.cardNumberCC == null) {
       this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], this.docType, 'por mudar').then(stakeholder => {
         var stakeholderToInsert = stakeholder.result;
-        console.log("Stakeholder to insert: ", stakeholderToInsert);
         stakeholderToInsert["fiscalId"] = this.currentStakeholder["stakeholderNIF"];
         stakeholderToInsert["stakeholderId"] = "";
         stakeholderToInsert["clientId"] = this.currentStakeholder["stakeholderNumber"];
@@ -622,8 +625,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         }
 
         stakeholderToInsert["potentialClientIds"] = this.potentialClientIds;
-
-        console.log("Stakeholder to insert atualizado: ", stakeholderToInsert);
 
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
           stakeholderToInsert.id = result["id"];
