@@ -220,7 +220,7 @@ export class ClientComponent implements OnInit {
   clientNr: boolean = false;
   clientsToShow: { client: Client, isClient: boolean }[] = [];
 
-  newClient: Client;
+  newClient: Client = {};
   tipologia: string;
   searchedDocument: string;
   firstTime: boolean = true;
