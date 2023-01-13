@@ -1,4 +1,3 @@
-
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Client } from './Client.interface';
@@ -18,7 +17,6 @@ export class ClientService {
     private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private API: APIRequestsService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.urlOutbound = configuration.getConfig().outboundUrl;
-
   }
 
   EditClient(submissionID: string, newClient: Client) {

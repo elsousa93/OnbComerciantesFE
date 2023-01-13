@@ -41,7 +41,6 @@ export class StoreComponent implements AfterViewInit {
 
   /*variable declaration*/
   public stores: Istore[] = [];
-
   public map: Map<number, boolean>;
   public currentPage: number;
   public subscription: Subscription;
@@ -57,7 +56,7 @@ export class StoreComponent implements AfterViewInit {
 
   formStores: FormGroup;
   editStores: FormGroup;
-
+  
   submissionClient: Client;
   returned: string;
   processNumber: string;

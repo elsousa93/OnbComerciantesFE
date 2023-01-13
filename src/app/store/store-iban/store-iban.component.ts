@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
-import { Bank, Istore, ShopBank, ShopBankingInformation, ShopDetailsAcquiring } from '../IStore.interface';
+import { Bank, ShopBank, ShopBankingInformation, ShopDetailsAcquiring } from '../IStore.interface';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth.service';
 import { UserPermissions } from '../../userPermissions/user-permissions';
@@ -12,7 +12,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
-
 
 @Component({
   selector: 'app-store-iban',
@@ -29,13 +28,10 @@ export class StoreIbanComponent implements OnInit, OnChanges {
   public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
   public ProductPackKindEnum = ProductPackKindEnum;
-
-
   private baseUrl;
 
   /*variable declarations*/
   public stroreId: number = 0;
-
   public isIBANConsidered: boolean = null;
   @Input() public IBANToShow: { tipo: string, dataDocumento: string, file: File, id: string };
   public result: any;
@@ -44,34 +40,13 @@ export class StoreIbanComponent implements OnInit, OnChanges {
   public isCardPresent: boolean = false;
   public isCardNotPresent: boolean = false;
   public isCombinedOffer: boolean = false;
-
   public isURLFilled: boolean = false;
-
-  public newStore: Istore = {
-    "id": 1,
-    "nameEstab": "",
-    "country": "",
-    "postalCode": "",
-    "address": "",
-    "fixedIP": "",
-    "postalLocality": "",
-    "emailContact": "",
-    "cellphoneIndic": "",
-    "cellphoneNumber": "",
-    "activityEstab": "",
-    "subActivityEstab": "",
-    "zoneEstab": "",
-    "subZoneEstab": "",
-    "iban": ""
-  };
-
-
   public map: Map<number, boolean>;
   public currentPage: number;
   public subscription: Subscription;
 
   /*CHANGE - Get via service from the clients */
-  public commIban: string = "232323232";
+  public commIban: string = "";
   public auxIban: string = "";
   public bank: string;
 
@@ -137,19 +112,6 @@ export class StoreIbanComponent implements OnInit, OnChanges {
     }
   }
 
-  /*Controles the radio button changes*/
-  radoChangehandler(event: any) {
-    this.selectedOption = event.target.value;
-    if (this.selectedOption == "Sim") {
-      this.auxIban = this.store.bank.bank.iban;
-      this.store.bank.bank.iban = this.commIban;
-      this.idisabled = true;
-    } else {
-      this.store.bank.bank.iban = this.auxIban;
-      this.idisabled = false;
-    }
-  }
-
   submit() {
     this.store.bank.bank = new ShopBankingInformation();
     this.store.bank.useMerchantBank = this.formStores.get("bankInformation").value;
@@ -182,8 +144,6 @@ export class StoreIbanComponent implements OnInit, OnChanges {
       this.onDelete(this.IBANToShow.id);
     }
     this.files = [];
-    this.newStore.id = 1;
-    this.newStore.iban = "teste";
     const files = <File[]>event.target.files;
     this.IBANToShow = { tipo: this.translate.instant('supportingDocuments.checklistModal.IBAN'), dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy'), file: files[0], id: "0" }
     for (var i = 0; i < files.length; i++) {

@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { StakeholderService } from './stakeholder.service';
 
 describe('StakeholderService', () => {
@@ -9,7 +8,6 @@ describe('StakeholderService', () => {
     TestBed.configureTestingModule({});
     service = TestBed.inject(StakeholderService);
   });
-
   it('should be created', () => {
     expect(service).toBeTruthy();
   });

@@ -155,12 +155,9 @@ export class InfoDeclarativaComponent implements OnInit {
 
   submit() {
     if (this.returned != 'consult') {
-
       this.newClient.contacts = new Contacts();
-
       this.newClient.contacts.phone1 = new Phone();
       this.newClient.contacts.phone2 = new Phone();
-
       this.newClient.commercialName = this.listValue.get('comercialName').value;
       this.newClient.contacts.phone1.countryCode = this.listValue.get('phone1').get('countryCode').value;
       this.newClient.contacts.phone1.phoneNumber = this.listValue.get('phone1').get('phoneNumber').value;

@@ -151,8 +151,6 @@ export class ObterPackContratualComponent implements OnInit {
 
 
   search(/*url: any, imgName: any*/ file: File) {
-    //this.logger.debug('url '+ url);
-    //this.logger.debug('image name '+ imgName);
     let blob = new Blob([file], { type: file.type });
     let url = window.URL.createObjectURL(blob);
 

@@ -1,8 +1,8 @@
-
 import { BehaviorSubject, Observable } from "rxjs";
 import { FileAndDetailsCC } from "src/app/readcard/fileAndDetailsCC.interface";
 import { StakeholdersProcess } from "src/app/stakeholders/IStakeholders.interface";
 import { SubmissionPostDocumentTemplate, SubmissionPostTemplate } from "../../submission/ISubmission.interface";
+import { OutboundClient } from "../Client.interface";
 
 export class ClientContext {
   tipologia: string;
@@ -13,22 +13,15 @@ export class ClientContext {
   crc?: any;
   processId?: string
   isClient: boolean;
-
   submissionID: string;
-
-
   stakeholdersToInsert: BehaviorSubject<StakeholdersProcess[]>;
   currentStakeholdersToInsert: Observable<any>;
-
   merchantInfo: BehaviorSubject<any>;
   currentMerchantInfo: Observable<any>;
-
   client: BehaviorSubject<any>;
   currentClient: Observable<any>;
-
   NIFNIPC: BehaviorSubject<any>;
   currentNIFNIPC: Observable<any>;
-
   documents: BehaviorSubject<SubmissionPostDocumentTemplate[]>;
   currentDocuments: Observable<any>;
 
@@ -50,42 +43,6 @@ export class ClientContext {
     "documents": []
   };
 
-
-  //Client predefinido
-  clientOutbound = {
-    "merchantId": null,
-    "legalName": null,
-    "commercialName": null,
-    "shortName": null,
-    "headquartersAddress": {},
-    "context": null,
-    "contextId": null,
-    "fiscalIdentification": {},
-    "merchantType": "corporation",
-    "legalNature": null,
-    "legalNature2": null,
-    "incorporationStatement": {},
-    "incorporationDate": null,
-    "shareCapital": null,
-    "bylaws": null,
-    "principalTaxCode": null,
-    "otherTaxCodes": [],
-    "principalEconomicActivity": null,
-    "otherEconomicActivities": [],
-    "sales": {
-      "annualEstimatedRevenue": null,
-      "productsOrServicesSold": [],
-      "productsOrServicesCountries": [],
-      "transactionsAverage": null
-    },
-    "documentationDeliveryMethod": null,
-    "bankingInformation": {},
-    "merchantRegistrationId": null,
-    "contacts": {},
-    "billingEmail": null,
-    "documents": []
-  };
-
   constructor(tipologia: string, clientExists: boolean, comprovativoCC: FileAndDetailsCC, NIFNIPC: string, clientId: string, dataCC: any, isClient: boolean) {
     this.dataCC = dataCC;
     this.tipologia = tipologia;
@@ -94,18 +51,13 @@ export class ClientContext {
     this.NIFNIPC = new BehaviorSubject(NIFNIPC);
     this.clientId = clientId;
     this.isClient = isClient;
-
-
-    this.client = new BehaviorSubject(this.clientOutbound);
+    this.client = new BehaviorSubject(new OutboundClient);
     this.merchantInfo = new BehaviorSubject(null);
-
     this.currentClient = this.client.asObservable();
     this.currentMerchantInfo = this.merchantInfo.asObservable();
     this.currentNIFNIPC = this.NIFNIPC.asObservable();
-
     this.stakeholdersToInsert = new BehaviorSubject([]);
     this.currentStakeholdersToInsert = this.stakeholdersToInsert.asObservable();
-
     this.documents = new BehaviorSubject([]);
     this.currentDocuments = this.documents.asObservable();
   }

@@ -42,7 +42,6 @@ export class Interceptor implements HttpInterceptor {
       localStorage.removeItem('auth');
       this.authService.reset();
     }
-
     return next.handle(request);
   }
 }

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { RepresentationPowerComponent } from './representation-power.component';
 
 describe('RepresentationPowerComponent', () => {

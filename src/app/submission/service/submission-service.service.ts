@@ -65,7 +65,6 @@ export class SubmissionService {
     return this.API.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS);
   }
 
-  //PROVISORIO
   callAPIAcquiring(httpMethod: HttpMethod, httpURL: string, body?: any) {
     var requestResponse: RequestResponse = {};
 

@@ -135,10 +135,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   @Output() sameNIFEmitter = new EventEmitter<boolean>();
 
   submissionStakeholders: StakeholdersCompleteInformation[] = [];
-
   selectedStakeholder: StakeholdersCompleteInformation = {};
   returned: string;
-
   displayedColumns: string[] = ['stakeholderAcquiring.shortName', 'stakeholderAcquiring.fiscalId', 'entityType', 'relationType', 'elegible', 'stakeholderAcquiring.stakeholderId', 'stakeholderAcquiring.isProxy', 'delete'];
   firstTimeStake: boolean;
 
@@ -149,7 +147,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   }
 
   ngAfterViewInit(): void {
-    //this.stakesMat.paginator = this.paginator;
     this.stakesMat.sort = this.sort;
   }
 
@@ -202,7 +199,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     var context = this;
 
     return new Promise((resolve, reject) => {
-      context.stakeholderService.GetStakeholderFromSubmissionTest(submissionID, stakeholderID).then(res => {
+      context.stakeholderService.GetStakeholderFromSubmission(submissionID, stakeholderID).then(res => {
         var AcquiringStakeholder = res.result;
         var stakeholderToInsert = {
           displayName: AcquiringStakeholder.shortName,
@@ -257,9 +254,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
   getSubmissionStakeholdersTest() {
     var context = this;
-
     context.submissionStakeholders = [];
-
     const promises = [
       this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId)
     ]

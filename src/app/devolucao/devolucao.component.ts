@@ -23,11 +23,9 @@ export class DevolucaoComponent implements OnInit {
   public map = new Map();
   public currentPage: number;
   public subscription: Subscription;
-
   public processId: string;
   public process: ProcessList;
   public processNumber: string;
-
   public issues: BusinessIssueViewModel
   public processHistoryItems: SearchProcessHistory;
 

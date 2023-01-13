@@ -5,7 +5,7 @@ import { APIRequestsService } from '../apirequests.service';
 import { AppConfigService } from '../app-config.service';
 import { BankInformation, Client, Contacts, ForeignFiscalInformation, HeadquartersAddress, ShareCapital } from '../client/Client.interface';
 import { HttpMethod } from '../enums/enum-data';
-import { ISubmission, SimplifiedReference } from '../submission/ISubmission.interface';
+import { SimplifiedReference } from '../submission/ISubmission.interface';
 import { Process } from './process.interface';
 
 @Injectable({
@@ -146,7 +146,6 @@ interface DocumentIssueViewModel {
   document?: SimplifiedReference
   issues?: IssueViewModel[]
 }
-
 export interface ClientForProcess {
   legalName?: string,
   commercialName?: string,
@@ -187,7 +186,6 @@ export interface ClientForProcess {
     archiveSource?: string
   }[]
 }
-
 export interface ProcessGet {
   items: ProcessList[]
   pagination: Pagination
@@ -230,7 +228,6 @@ interface Merchant {
 export interface SearchProcessHistory {
   items?: ProcessHistory[]
 }
-
 export interface ProcessHistory {
   idProcess?: number
   processState?: string

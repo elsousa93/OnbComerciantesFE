@@ -48,45 +48,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   clientContext: ClientContext;
 
   errorMsg: string = "";
-
   public clientId: string;
-
   socialDenomination: string;
-
-  public client: OutboundClient = {
-    "merchantId": null,
-    "legalName": null,
-    "commercialName": null,
-    "shortName": null,
-    "headquartersAddress": {},
-    "context": null,
-    "contextId": null,
-    "fiscalIdentification": {},
-    "merchantType": "corporation",
-    "legalNature": null,
-    "legalNature2": null,
-    "incorporationStatement": {},
-    "incorporationDate": null,
-    "shareCapital": null,
-    "bylaws": null,
-    "principalTaxCode": null,
-    "otherTaxCodes": [],
-    "principalEconomicActivity": null,
-    "otherEconomicActivities": [],
-    "sales": {
-      "annualEstimatedRevenue": null,
-      "productsOrServicesSold": [],
-      "productsOrServicesCountries": [],
-      "transactionsAverage": null
-    },
-    "documentationDeliveryMethod": null,
-    "bankingInformation": {},
-    "merchantRegistrationId": null,
-    "contacts": {},
-    "billingEmail": null,
-    "documents": []
-  };
-
   crcError: boolean = false;
   crcNotExists: boolean = false;
   crcIncorrect: boolean = false;
@@ -180,7 +143,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       commercialSociety: new FormControl(false, [Validators.required]), //sim
       collectCRC: new FormControl(this.collectCRC)
     });
-
   }
 
   initializeFormControlOther() {
@@ -227,14 +189,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.potentialClientIds = this.route.getCurrentNavigation().extras.state["potentialClientIds"];
     }
 
-
-
     if (localStorage.getItem("clientName") != null) {
       this.socialDenomination = localStorage.getItem("clientName");
       var nameArray = this.socialDenomination.split(" ").filter(element => element);
       this.shortName = nameArray?.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : this.socialDenomination;
     }
-
 
     this.returned = localStorage.getItem("returned");
 
@@ -269,7 +228,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.submissionExists = true;
     }
 
-
     var context = this;
     if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
 
@@ -280,7 +238,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
     console.log('Valor do Characterization: ', this.clientCharacterizationComponent);
-
   }
 
   async getMerchantInfo() {
@@ -305,7 +262,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       console.log(err);
     }
   }
-
 
   async ngOnInit() {
     var context = this;
@@ -391,7 +347,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                   country: result.headquartersAddress?.country
                 }
               }
-
               client.fiscalId = result.fiscalIdentification?.fiscalId;
               client.knowYourSales = {
                 estimatedAnualRevenue: result.sales?.annualEstimatedRevenue,
@@ -402,7 +357,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
               client.legalNature = result.legalNature;
               client.legalNature2 = result.legalNature2;
-
               client.incorporationStatement = result.incorporationStatement;
               client.shareCapital = result.shareCapital;
               client.byLaws = result.bylaws;
@@ -412,8 +366,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               client.mainEconomicActivity = result.principalEconomicActivity;
               client.otherEconomicActivities = result.otherEconomicActivities;
               client.billingEmail = result.billingEmail;
-
-
               client.documentationDeliveryMethod = result.documentationDeliveryMethod;
               client.bankInformation = result.bankingInformation;
               client.contacts = {
@@ -434,7 +386,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               }
 
               client.merchantType = result.merchantType;
-
               client["documents"] = result.documents;
               this.clientDocs = result.documents;
 
@@ -442,14 +393,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 doc.validUntil = this.datepipe.transform(doc.validUntil, "yyyy-MM-dd");
                 doc.receivedAt = this.datepipe.transform(doc.receivedAt, "yyyy-MM-dd");
               });
-
               this.fetchDocumentDescriptions();
-
               this.clientContext.clientExists = true;
               this.clientContext.setClient(client);
               this.NIFNIPC = client.fiscalId;
               this.clientContext.setNIFNIPC(client.fiscalId);
-
             }, error => {
               client.fiscalId = this.dataCC.nifCC;
               client.shortName = client.legalName = client.commercialName = this.dataCC.nameCC;
@@ -457,17 +405,13 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               client.headquartersAddress = {};
               client.otherEconomicActivities = [];
               client.businessGroup = {};
-
               client["knowYourSales"] = {};
               client["knowYourSales"]["servicesOrProductsDestinations"] = [];
               client["knowYourSales"]["servicesOrProductsSold"] = [];
-
               client.shareCapital = {};
               client.incorporationStatement = {};
               client.contacts = {};
-
               client.merchantType = this.tipologia;
-
               client.documentationDeliveryMethod = 'Portal';
 
               this.clientContext.setClient(client);
@@ -489,34 +433,25 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             client.headquartersAddress = {};
             client.otherEconomicActivities = [];
             client.businessGroup = {};
-
             client["knowYourSales"] = {};
             client["knowYourSales"]["servicesOrProductsDestinations"] = [];
             client["knowYourSales"]["servicesOrProductsSold"] = [];
-
             client.shareCapital = {};
             client.incorporationStatement = {};
             client.contacts = {};
-
             client.merchantType = this.tipologia;
-
             client.documentationDeliveryMethod = 'Portal';
 
             this.clientContext.setClient(client);
             this.clientContext.isClient = false;
             this.NIFNIPC = this.dataCC.nifCC;
             this.clientContext.setNIFNIPC(this.dataCC.nifCC);
-
             this.createSubmission();
-
           });
-
         } else {
-
           if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
             this.clientService.GetClientByIdOutbound(this.clientId).then(result => {
               var client = result;
-
               var clientToInsert: AcquiringClientPost = {};
               clientToInsert.clientId = client.merchantId;
               clientToInsert.merchantRegistrationId = client.merchantRegistrationId;
@@ -536,18 +471,14 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 servicesOrProductsDestinations: client.sales?.productsOrServicesCountries,
                 transactionsAverage: client.sales?.transactionsAverage
               };
-
               clientToInsert.legalNature = client.legalNature;
               clientToInsert.legalNature2 = client.legalNature2;
-
               if (client.incorporationStatement != null) {
                 clientToInsert.incorporationStatement = {
                   code: client.incorporationStatement.code,
                   validUntil: client.incorporationStatement.validUntil
                 }
               }
-
-
               clientToInsert.shareCapital = client.shareCapital;
               clientToInsert.byLaws = client.bylaws;
               clientToInsert.incorporationDate = client.incorporationDate;
@@ -556,8 +487,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               clientToInsert.mainEconomicActivity = client.principalEconomicActivity; //
               clientToInsert.otherEconomicActivities = client.otherEconomicActivities;
               clientToInsert.billingEmail = client.billingEmail;
-
-
               clientToInsert.documentationDeliveryMethod = client.documentationDeliveryMethod;
               clientToInsert.bankInformation = client.bankingInformation;
               clientToInsert.contacts = {
@@ -571,34 +500,23 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                   countryCode: client.contacts?.phone2?.internationalIndicative
                 },
               }
-
               clientToInsert.businessGroup = {
                 type: client.context,
                 branch: client.contextId
               }
-
-              //clientToInsert.potentialClientIds = this.potentialClientIds;
-
               clientToInsert.merchantType = client.merchantType;
-
               clientToInsert["documents"] = client.documents;
               this.clientDocs = client.documents;
-
               this.clientDocs.forEach(doc => {
                 doc.validUntil = this.datepipe.transform(doc.validUntil, "yyyy-MM-dd");
                 doc.receivedAt = this.datepipe.transform(doc.receivedAt, "yyyy-MM-dd");
               });
-
               this.fetchDocumentDescriptions();
-
               this.clientContext.clientExists = true;
               this.clientContext.setClient(clientToInsert);
-
               this.NIFNIPC = client.fiscalIdentification.fiscalId;
               this.clientContext.setNIFNIPC(client.fiscalIdentification.fiscalId);
-
               this.updateBasicForm();
-
             }).then(result => {
               if (this.clientContext.isClient == false) {
                 this.countriesComponent.getClientContextValues();
@@ -610,7 +528,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             //criar cliente aqui
             var currentClient = this.clientContext.getClient();
             var clientToInsert: AcquiringClientPost = {};
-
             clientToInsert.fiscalId = this.NIFNIPC;
             clientToInsert.legalName = this.socialDenomination;
             clientToInsert.commercialName = this.socialDenomination;
@@ -629,10 +546,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             clientToInsert.otherTaxCodes = [];
             clientToInsert.incorporationStatement = {};
             clientToInsert.shareCapital = {};
-
             clientToInsert.merchantType = this.tipologia;
             clientToInsert.documentationDeliveryMethod = 'Portal';
-
             this.clientContext.isClient = false;
             this.clientContext.setNIFNIPC(this.NIFNIPC);
             this.clientContext.setClient(clientToInsert);
@@ -651,8 +566,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           //dados necessários para a pesquisa feita anteriormente
           this.tipologia = result.merchantType;
           this.clientId = result.fiscalId;
-
-
           context.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(res => {
             if (res.length > 0) {
               res.forEach(doc => {
@@ -667,7 +580,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                     } as OutboundDocument;
                     this.clientDocs = [];
                     this.clientDocs.push(file);
-
                     var acquiringFile = {
                       documentType: "0001",
                       data: null,
@@ -680,8 +592,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               });
             }
           });
-
-
         }).then(result => {
           if (this.clientContext.isClient == false) { // !
             this.countriesComponent.getClientContextValues();
@@ -750,10 +660,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   submit() {
     if (this.returned != 'consult') {
       this.clientCharacterizationComponent.submit();
-
       if (this.clientContext.isClient == false) // !
         this.countriesComponent.submit();
-
       if (this.submissionType === 'DigitalComplete')
         this.representationPowerComponent.submit();
       this.updateSubmission();
@@ -774,10 +682,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           comprovativoCC: this.comprovativoCC,
         }
       };
-
       if (this.returned == null)
         this.route.navigate(["/client"], navigationExtras);
-
     } else {
       this.route.navigate(["/app-devolucao/"]);
     }
@@ -786,7 +692,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   redirectHomePage() {
     this.route.navigate(["/"]);
   }
-
 
   setAssociatedWith(value: boolean) {
     if (value == true) {
@@ -812,7 +717,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       return false;
     if (this.tipologia === 'ENI')
       return false;
-
     return true;
   }
 
@@ -840,16 +744,12 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         newSubmission.merchant.documentationDeliveryMethod = 'Portal';
       else
         newSubmission.merchant.documentationDeliveryMethod = 'Mail';
-
-
       if (merchantType === 'corporation' || merchantType === 'Corporate' || merchantType === 'Company')
         newSubmission.merchant.merchantType = 'Corporate';
       else
         newSubmission.merchant.merchantType = 'Entrepeneur';
-
       if (this.tipologia === 'Corporate' || this.tipologia === 'Company' || this.tipologia === '01' || this.tipologia === 'corporation')
         newSubmission.merchant.merchantType = 'Corporate';
-
       if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
         newSubmission.merchant.merchantType = 'Entrepeneur';
         var client = this.clientContext.getClient();
@@ -878,7 +778,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             number: this.clientContext.dataCC.cardNumberCC,
             expirationDate: this.clientContext.dataCC.expiryDate
           }
-
         }
         this.clientContext.setStakeholdersToInsert([stakeholder]);
       }
@@ -893,17 +792,13 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           context.processNrService.changeProcessNumber(result.processNumber);
         });
       }
-
       //adicionar o stakeholder após criar a submissão para que este não seja imediatamente criado
       newSubmission.stakeholders.push(stakeholder);
-
     }
   }
 
   updateSubmission() {
-
     if (this.returned != 'consult') {
-
       let navigationExtras: NavigationExtras = {
         state: {
           isClient: this.clientContext.isClient
@@ -911,10 +806,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       };
 
       this.data.changeCurrentIsClient(this.clientContext.isClient);
-
       var context = this;
       var submissionID = this.clientContext.submissionID ?? localStorage.getItem("submissionId");
-
       var newSubmission = this.clientContext.newSubmission;
 
       if (this.returned == 'edit')
@@ -927,7 +820,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       });
       var client = this.clientContext.getClient();
       var merchant = this.clientContext.newSubmission.merchant;
-
       var clientToSubmit: OutboundClient
 
       //antes estava merchant 
@@ -996,7 +888,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             });
           });
         }
-
       }
 
       if (!this.updateClient) {
@@ -1020,9 +911,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                   website: r.result.url,
                   equipments: []
                 }
-
                 context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
-
                 });
               });
             });
@@ -1076,12 +965,10 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
     for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
       const slice = byteCharacters.slice(offset, offset + sliceSize);
-
       const byteNumbers = new Array(slice.length);
       for (let i = 0; i < slice.length; i++) {
         byteNumbers[i] = slice.charCodeAt(i);
       }
-
       const byteArray = new Uint8Array(byteNumbers);
       byteArrays.push(byteArray);
     }
@@ -1103,7 +990,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       });
     } else {
       this.documentService.GetDocumentImage(localStorage.getItem("submissionId"), uniqueReference).subscribe(result => {
-        //this.b64toBlob(result.binary, 'application/pdf', 512);
       })
     }
   }
@@ -1138,7 +1024,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         this.formCountryIsValid = false;
       }
     })
-
   }
 
   countryListValidator(valid) {

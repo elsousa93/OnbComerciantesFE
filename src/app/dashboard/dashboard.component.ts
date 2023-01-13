@@ -118,10 +118,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  //---------------------------
-
   state = State;
-
   displayedColumns = ['processNumber', 'merchant.fiscalId', 'merchant.name', 'startedAt', 'state', 'buttons'];
   displayedColumnsQueues = ['processNumber', 'merchant.fiscalId', 'merchant.name', 'startedAt', 'state', 'assigned', 'buttons'];
 
@@ -164,7 +161,6 @@ export class DashboardComponent implements OnInit {
   complianceDoubtsCount: number;
 
   date: string;
-
   nipc: string;
   name: string;
 

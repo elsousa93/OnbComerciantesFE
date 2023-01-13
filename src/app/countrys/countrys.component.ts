@@ -16,13 +16,12 @@ import { ClientContext } from '../client/clientById/clientById.model';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 import { AcquiringClientPost } from '../client/Client.interface';
 
-
 @Component({
   selector: 'app-countrys',
   templateUrl: './countrys.component.html'
 })
 export class CountrysComponent implements OnInit {
-  continente = '';
+
   @Input() inline: boolean;
   @Input() clientContext: ClientContext;
 
@@ -33,7 +32,6 @@ export class CountrysComponent implements OnInit {
   contPais: CountryInformation[] = [];
 
   continenteName: string;
-
   lstPaisPreenchido: CountryInformation[] = [];
 
   inputEuropa: boolean = false;
@@ -63,25 +61,19 @@ export class CountrysComponent implements OnInit {
   countryList: CountryInformation[] = [];
   continentsList: string[] = [];
   checkedContinents = [];
-
-
   tipologia: any;
   NIFNIPC: any;
   client: AcquiringClientPost;
   clientId: string;
   processId: string;
-
   currentClient: any = {};
   crc;
   documentsList = []; //lista de documentos do utilizador
-
   processNumber: string;
   franchises: Franchise[] = [];
-
   returned: string;
   merchantInfo: any;
   consult: any;
-
   stakeholdersToInsert: StakeholdersProcess[];
 
   @Output() formCountrysReady: EventEmitter<AbstractControl> = new EventEmitter();
@@ -113,10 +105,8 @@ export class CountrysComponent implements OnInit {
       "formControlName": "inputOceania",
       "isSelected": false
     },
-
   ];
   comprovativoCC: FileAndDetailsCC;
-
   countryError: boolean;
   errorMsg: string;
   rootForm: FormGroup;
@@ -125,33 +115,6 @@ export class CountrysComponent implements OnInit {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
     this.returned = localStorage.getItem("returned");
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
-
-    this.client = {
-      clientId: '',
-      fiscalId: '',
-      legalName: '',
-      shortName: '',
-      headquartersAddress: {},
-      merchantType: '',
-      commercialName: '',
-      legalNature: '',
-      legalNature2: '',
-      incorporationStatement: {},
-      shareCapital: {},
-      byLaws: '',
-      mainEconomicActivity: '',
-      otherEconomicActivities: [],
-      mainTaxCode: '',
-      otherTaxCodes: [],
-      incorporationDate: null,
-      businessGroup: {},
-      knowYourSales: {},
-      bankInformation: {},
-      contacts: {},
-      documentationDeliveryMethod: '',
-      billingEmail: '',
-      merchantRegistrationId: ''
-    };
 
     this.initializeForm();
 
@@ -172,7 +135,6 @@ export class CountrysComponent implements OnInit {
         });
       }
     }
-
   }
 
   getMerchantInfoAsync() {
@@ -197,7 +159,6 @@ export class CountrysComponent implements OnInit {
         if (result !== undefined && result !== null) {
           this.newSubmission.merchant = result;
           this.merchantInfo = result;
-
         }
       })
 
@@ -208,7 +169,6 @@ export class CountrysComponent implements OnInit {
       this.client = this.merchantInfo;
       this.client["documents"] = [];
     }
-
     this.insertValues();
   }
 
@@ -239,7 +199,6 @@ export class CountrysComponent implements OnInit {
       this.countryList = result;
       this.countryList = this.countryList.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }, error => this.logger.debug(error)));
-
   }
 
   changeFormStructure(newForm: FormGroup) {
@@ -280,7 +239,6 @@ export class CountrysComponent implements OnInit {
         franchiseName: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo?.businessGroup != null && this.merchantInfo?.businessGroup?.type == 'Franchise') ? this.merchantInfo?.businessGroup?.branch : null),
         NIPCGroup: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo?.businessGroup != null && this.merchantInfo?.businessGroup?.type == 'Group') ? this.merchantInfo?.businessGroup?.branch : '')
       }));
-
       if (this.returned != null) {
         this.editCountries(false);
       } else {

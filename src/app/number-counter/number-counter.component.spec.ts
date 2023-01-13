@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { NumberCounterComponent } from './number-counter.component';
 
 describe('NumberCounterComponent', () => {

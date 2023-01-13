@@ -59,7 +59,6 @@ export class AuthService implements OnDestroy {
   constructor(private router: Router) {
     var auth = localStorage.getItem("auth");
 
-
     if (auth !== undefined && auth !== null && auth !== '') {
       var user = JSON.parse(auth);
 

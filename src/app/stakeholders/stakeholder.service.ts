@@ -18,15 +18,12 @@ export class StakeholderService {
   private urlOutbound: string;
 
   currentLanguage: string;
-
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
-
 
   constructor(private logger: LoggerService, private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private tableInfo: TableInfoService, private APIService: APIRequestsService, private queuesInfo: QueuesService) {
     this.languageStream$.subscribe((val) => {
       this.currentLanguage = val
     });
-
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;      
     this.urlOutbound = configuration.getConfig().outboundUrl;
   }
@@ -58,16 +55,13 @@ export class StakeholderService {
 
   GetAllStakeholdersFromSubmission(submissionId: string): any {
     this.logger.info(`Getting all stakeholders for submission ${submissionId}`)
-    //return this.http.get<IStakeholders[]>(this.baseUrl + 'submission/' + submissionId + '/stakeholder');
     var url = this.baseUrl + 'submission/' + submissionId + '/stakeholder';
-
     var response: TreatedResponse<IStakeholders[]> = {};
 
     return new Promise<TreatedResponse<IStakeholders[]>>((resolve, reject) => {
       var HTTP_OPTIONS = {
         headers: new HttpHeaders({
           'Accept-Language': this.currentLanguage,
-
         }),
       }
       this.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS).then(success => {
@@ -83,12 +77,12 @@ export class StakeholderService {
   }
 
   GetStakeholderFromSubmission(submissionId: string, stakeholderId: string): any {
-
     this.logger.info(`Getting stakeholder ${stakeholderId} for submission ${submissionId}`)
-    return this.http.get<IStakeholders>(this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId);
+    var url = this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId;
+
+    return this.callAPIAcquiring(HttpMethod.GET, url);
   }
 
-  //api / submisison/{id}/stakeholder/{sid}
   CreateNewStakeholder(submissionId: string, newStake: IStakeholders) {
     this.logger.info(`Creating new stakeholder for submission ${submissionId}`)
     this.logger.info(JSON.stringify(newStake));
@@ -148,35 +142,6 @@ export class StakeholderService {
 
   getStakeholderByID(StakeholderID: string, requestID: string, AcquiringUserID: string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string): any {
 
-    //var URI = this.urlOutbound + "api/v1/stakeholder/" + StakeholderID;
-
-    //var data = new Date();
-
-    //var HTTP_OPTIONS = {
-    //  headers: new HttpHeaders({
-    //    'X-Request-Id': requestID,
-    //    'X-Acquiring-UserId': AcquiringUserID
-    //  }),
-    //}
-
-    //if (AcquiringPartnerID !== null)
-    //  HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
-    //if (AcquiringBranchID !== null)
-    //  HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
-    //if (AcquiringProcessID !== null)
-    //  HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
-
-    //this.logger.info(`[Outbound] Searching stakeholder with id ${StakeholderID}`);
-    //this.logger.debug(`[Outbound] URI used is ${URI}`);
-    //this.logger.debug(`[Outbound] Headers used are ${JSON.stringify({
-    //  "Request-Id": HTTP_OPTIONS.headers.get('Request-Id'),
-    //  "X-Acquiring-UserId" : HTTP_OPTIONS.headers.get('X-Acquiring-UserId'),
-    //  "X-Acquiring-PartnerId" : HTTP_OPTIONS.headers.get("X-Acquiring-PartnerId"),
-    //  "X-Acquiring-BranchId" : HTTP_OPTIONS.headers.get("X-Acquiring-BranchId"),
-    //  "X-Acquiring-ProcessId" : HTTP_OPTIONS.headers.get("X-Acquiring-ProcessId"),
-    //}, null, 2)}`);
-
-
     var url = this.urlOutbound + "api/v1/stakeholder/" + StakeholderID;
 
     return this.APIService.callAPIOutbound(HttpMethod.GET, url, "searchId", "searchType", "requestID", "AcquiringUserID");
@@ -217,45 +182,4 @@ export class StakeholderService {
 
     return this.http.put<any>(URI, stakeholder, HTTP_OPTIONS);
   }
-
-
-
-  ///////////////////////////////////
-  //TESTAR ESTA CHAMADA SEM PROMISE//
-  ///////////////////////////////////
-
-  callAPIAcquiringTest(httpMethod: HttpMethod, httpURL: string, body?: any) {
-    var requestResponse: RequestResponse = {};
-    return new Promise<RequestResponse>((resolve, reject) => {
-      this.http[httpMethod](httpURL, body).subscribe(result => {
-        requestResponse.result = result;
-        requestResponse.error = null;
-        resolve(requestResponse);
-      }, error => {
-        requestResponse.result = null;
-        requestResponse.error = error;
-        reject(requestResponse);
-      });
-    });
-  }
-
-  GetAllStakeholdersFromSubmissionTest(submissionId: string): any {
-    this.logger.info(`Getting all stakeholders for submission ${submissionId}`)
-    //return this.http.get<IStakeholders[]>(this.baseUrl + 'submission/' + submissionId + '/stakeholder');
-    var url = this.baseUrl + 'submission/' + submissionId + '/stakeholder';
-
-    return this.callAPIAcquiringTest(HttpMethod.GET, url);
-  }
-
-  GetStakeholderFromSubmissionTest(submissionId: string, stakeholderId: string): any {
-
-    this.logger.info(`Getting stakeholder ${stakeholderId} for submission ${submissionId}`)
-
-    var url = this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId;
-
-    return this.callAPIAcquiringTest(HttpMethod.GET, url);
-  }
-
-
-  
 }

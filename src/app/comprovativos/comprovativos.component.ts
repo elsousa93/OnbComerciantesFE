@@ -24,8 +24,6 @@ import { DocumentSearchType, LegalNature } from '../table-info/ITable-info.inter
 import { StoreService } from '../store/store.service';
 import { ShopDetailsAcquiring } from '../store/IStore.interface';
 import { IStakeholders } from '../stakeholders/IStakeholders.interface';
-
-
 @Component({
   selector: 'app-comprovativos',
   templateUrl: './comprovativos.component.html',
@@ -33,99 +31,13 @@ import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 })
 export class ComprovativosComponent implements OnInit, AfterViewInit {
   public comprovativos: IComprovativos[] = [];
-
-  public newComp: IComprovativos = {
-    "id": 0,
-    "clientId": "",
-    "filename": "",
-    "url": ""
-  };
-
   public compToShow: { tipo: string, interveniente: string, dataValidade: string, dataEntrada: string, status: string };
   public compsToShow: ComprovativosTemplate[] = [];
-
-  public client: Client = {
-    "clientId": "",
-    "fiscalId": "",
-    "companyName": "",
-    "commercialName": "",
-    "shortName": "",
-    "headquartersAddress": {
-      "address": "",
-      "postalCode": "",
-      "postalArea": "",
-      "locality": "",
-      "country": ""
-    },
-    "merchantType": "",
-    "legalNature": "",
-    "legalNature2": "",
-    "crc": {
-      "code": "",
-      "validUntil": ""
-    },
-    "shareCapital": {
-      "capital": 0,
-      "date": "1966-08-30"
-    },
-    "byLaws": "",
-    "mainEconomicActivity": "",
-    "otherEconomicActivities": [""],
-    "mainOfficeAddress": {
-      "address": "",
-      "postalCode": "",
-      "postalArea": "",
-      "country": "",
-      "locality": ""
-    },
-    "establishmentDate": "2009-12-16",
-    "businessGroup": {
-      "type": "",
-      "branch": ""
-    },
-    "knowYourSales": {
-      "estimatedAnualRevenue": 0,
-      "transactionsAverage": 0,
-      "servicesOrProductsSold": [
-        "",
-        ""
-      ],
-      "servicesOrProductsDestinations": [
-        "",
-        ""
-      ]
-    },
-    "foreignFiscalInformation": {
-      "issuerCountry": "",
-      "issuanceIndicator": "",
-      "fiscalId": "",
-      "issuanceReason": ""
-    },
-    "bankInformation": {
-      "bank": "",
-      "branch": "",
-      "iban": "",
-      "accountOpenedAt": "2019-06-11"
-    },
-    "contacts": {
-      "phone1": {
-        "countryCode": "",
-        "phoneNumber": ""
-      },
-      "phone2": {
-        "countryCode": "",
-        "phoneNumber": ""
-      },
-      "email": ""
-    },
-    "documentationDeliveryMethod": "",
-    "billingEmail": ""
-  };
-
+  public client: Client;
   public result: any;
   public id: number = 0;
   public clientNr: number = 0;
-  submissionId: string = '83199e44-f089-471c-9588-f2a68e24b9ab';
+  submissionId: string;
 
   crcCode: string = "";
 
@@ -145,14 +57,12 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   checkListModalRef: BsModalRef | undefined;
   firstSubmissionModalRef: BsModalRef | undefined;
   compClientId;
-
   comerciante: string;
   comprovantes: string;
   intervenientes: string;
   lojas: string;
   oferta: string;
   info: string;
-
   filename: any;
   clientId: any;
   documentID: string;
@@ -162,7 +72,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   @ViewChild('firstSubmissionModal') firstSubmissionModal;
 
   validatedDocuments: boolean = false;
-
   submission: SubmissionGetTemplate = {};
   submissionClient: any = {};
   stakeholdersList: IStakeholders[] = [];
@@ -170,7 +79,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   public returned: string;
   updatedComps: boolean;
-
   requiredDocuments: RequiredDocuments;
   documentPurposes: PurposeDocument[];
   legalNatures: LegalNature[];
@@ -291,7 +199,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       context.requiredDocuments.requiredDocumentPurposesStakeholders.forEach(stakeholder => {
         stakeholder.documentPurposes.forEach(stakeholderDocPurposes => {
           if (stakeholderDocPurposes.documentState === 'NotExists') {
-            context.stakeholderService.GetStakeholderFromSubmissionTest(context.submissionId, stakeholder.entityId).then(result => {
+            context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, stakeholder.entityId).then(result => {
               if ((result.result.stakeholderId == null || result.result.stakeholderId == "") && result.result.fiscalId != "") {
                 context.stakeholderService.SearchStakeholderByQuery(result.result.fiscalId, "0501", "por mudar", "por mudar").then(stake => {
                   var exists = context.checkDocumentExists(stake.result[0].stakeholderId, stakeholderDocPurposes, 'stakeholder');
@@ -461,7 +369,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     location.reload()
   }
 
-
   //mandamos uma lista dos ficheiros (for)  recebemos um ficheiro e transformamos esse ficheiro em blob e depois redirecionamos para essa página
   search(file: any, format?: string) {
     if (file instanceof File) {
@@ -519,7 +426,6 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   confirmDelete() {
     this.deleteModalRef?.hide();
-
     if (this.fileToDelete instanceof File) {
       let index = this.files.findIndex(f => f.lastModified === this.fileToDelete.lastModified);
       let index1 = this.compsToShow.findIndex(f => f.file.lastModified === this.fileToDelete.lastModified);
@@ -550,7 +456,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.deleteModalRef?.hide();
   }
 
-  submissionPutTeste: SubmissionPutTemplate = {
+  submissionPut: SubmissionPutTemplate = {
     "submissionType": "DigitalFirstHalf",
     "processKind": "MerchantOnboarding",
     "processType": "Standard",
@@ -582,14 +488,14 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     });
 
     var loginUser = this.authService.GetCurrentUser();
-    this.submissionPutTeste.submissionUser = {
+    this.submissionPut.submissionUser = {
       user: loginUser.userName,
       branch: loginUser.bankLocation,
       partner: loginUser.bankName
     }
 
-    this.submissionPutTeste.processNumber = localStorage.getItem("processNumber");
-    this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPutTeste).subscribe(result => {
+    this.submissionPut.processNumber = localStorage.getItem("processNumber");
+    this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPut).subscribe(result => {
       this.logger.debug('Editar sub ' + result);
       this.data.updateData(true, 4);
       this.data.changeUpdatedComprovativos(true);

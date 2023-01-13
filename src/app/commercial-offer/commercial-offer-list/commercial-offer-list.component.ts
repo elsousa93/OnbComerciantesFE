@@ -62,7 +62,6 @@ export class CommercialOfferListComponent implements OnInit {
   updatedStoreEvent: Observable<{ store: ShopDetailsAcquiring, idx: number }>;
 
   displayedColumns: string[] = ['nameEstab', 'activityEstab', 'subActivityEstab', 'bank', 'terminalNumber', 'product'];
-
   storeEquipColumns: string[] = ['equipmentOwnership', 'equipmentType', 'communicationType', 'quantity', 'monthlyFee', 'delete', 'edit'];
 
   currentUser: User = {};
@@ -322,7 +321,6 @@ export class CommercialOfferListComponent implements OnInit {
         this.selectCommercialPack(this.currentStore.pack.packId);
       }
     });
-
   }
 
   selectCommercialPack(packId: string) {
@@ -423,7 +421,6 @@ export class CommercialOfferListComponent implements OnInit {
         this.chooseCommission(this.currentStore.pack.commission.commissionId);
       }
     });
-
   }
 
   chooseCommission(commisionId: string) {
@@ -631,7 +628,6 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   loadStoresWithSameBank(bank: string) {
-
   }
 
   deleteConfiguration(shopEquipment: ShopEquipment) {

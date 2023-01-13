@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { ShopActivities, ShopSubActivities, ShopDetailsAcquiring } from '../IStore.interface';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ShopActivities, ShopSubActivities } from '../IStore.interface';
 import { AppComponent } from '../../app.component';
 import { CountryInformation, ShoppingCenter, SubActivity } from '../../table-info/ITable-info.interface';
 import { Product, Subproduct } from '../../commercial-offer/ICommercialOffer.interface';
@@ -29,12 +29,11 @@ export class AddStoreComponent implements OnInit {
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
   public ProductPackKindEnum = ProductPackKindEnum;
 
-  @Input() parentFormGroup: FormGroup;
-
   //Submissao
   submissionId: string;
   submission: SubmissionGetTemplate;
   @Input() submissionClient: Client;
+  @Input() parentFormGroup: FormGroup;
 
   subActivities: ShopSubActivities[] = [];
 
@@ -43,9 +42,7 @@ export class AddStoreComponent implements OnInit {
   public map: Map<number, boolean>;
   public currentPage: number;
   public subscription: Subscription;
-
   public isComercialCentreStore: boolean = null;
-
   private baseUrl;
   public replicateAddress: boolean = true;
   formStores!: FormGroup;
@@ -53,138 +50,6 @@ export class AddStoreComponent implements OnInit {
 
   /*Variable declaration*/
   public stroreId: number = 0;
-  store: ShopDetailsAcquiring =
-    {
-      shopId: "1",
-      name: "ShopName",
-      manager: "Manager1",
-      activity: "C",
-      subActivity: "C1",
-      supportEntity: "Entity1",
-      registrationId: "RegID",
-      address: {
-        useMerchantAddress: true,
-        address: {
-          address: "A",
-          postalCode: "B",
-          postalArea: "C",
-          country: "123"
-        },
-        isInsideShoppingCenter: true,
-        shoppingCenter: "Shopping1"
-      },
-      bank: {
-        useMerchantBank: true,
-        bank: {
-          bank: "Bank",
-          iban: "12345"
-        }
-      },
-      website: "www.google.com",
-      productCode: "345",
-      subproductCode: "324",
-      equipments: [
-        {
-          shopEquipmentId: "123",
-          communicationOwnership: CommunicationOwnershipTypeEnum.UNKNOWN,
-          equipmentOwnership: EquipmentOwnershipTypeEnum.UNKNOWN,
-          communicationType: "A",
-          equipmentType: "A",
-          quantity: 0,
-          pricing: {
-            id: "123",
-            attribute: [
-              {
-                id: "A",
-                description: "A",
-                //originalValue: 1,
-                //finalValue: 1,
-                isReadOnly: true,
-                isVisible: true
-              }
-            ]
-          }
-        }
-      ],
-      pack: {
-        packId: "123",
-        packDetails: [
-          {
-            id: "1234",
-            description: "123",
-            kind: "1234",
-            attributes: [
-              {
-                id: "1234",
-                description: "AAA",
-                originalValue: true,
-                finalValue: true,
-                isReadOnly: true,
-                isVisible: true,
-                isSelected: true,
-                order: 0,
-                bundles: [
-                  {
-                    id: "B",
-                    description: "B",
-                    kind: ProductPackKindEnum.SIMPLE,
-                    attributes: [
-                      {
-                        id: "B123",
-                        description: "B123456",
-                        originalValue: true,
-                        finalValue: true,
-                        isReadOnly: true,
-                        isVisible: true,
-                        isSelected: true,
-                        order: 0
-                      }
-                    ]
-                  }
-                ]
-              }
-            ]
-          }
-        ],
-        commission: {
-          commissionId: "1",
-          attribute: {
-            id: "",
-            description: "A1",
-            fixedValue: {
-              originalValue: 1,
-              finalValue: 1,
-              isReadOnly: true,
-              isVisible: true
-            },
-            maxValue: {
-              originalValue: 1,
-              finalValue: 1,
-              isReadOnly: true,
-              isVisible: true
-            },
-            minValue: {
-              originalValue: 1,
-              finalValue: 1,
-              isReadOnly: true,
-              isVisible: true
-            },
-            percentageValue: {
-              originalValue: 1,
-              finalValue: 1,
-              isReadOnly: true,
-              isVisible: true
-            }
-          }
-        }
-      },
-      documents: {
-        href: "",
-        type: "",
-        id: ""
-      }
-    } as ShopDetailsAcquiring
-
 
   /*CHANGE - Get via service from the clients  - Address*/
   public commCountry: string = "";
@@ -313,95 +178,6 @@ export class AddStoreComponent implements OnInit {
     this.route.navigate(['store-comp']);
   }
 
-  /*Controles the radio button changes*/
-  radioAddChangehandler(event: any) {
-    this.selectedAddOption = event.target.value;
-    if (this.selectedAddOption == "Sim") {
-      /*Update Country according to the default from Client*/
-      this.auxCountry = this.store.address.address.country;
-      this.store.address.address.country = this.commCountry;
-      /*Update Postal Code according to the default from Client*/
-      this.auxPostal = this.store.address.address.postalCode;
-      this.store.address.address.postalCode = this.commPostal;
-      /*Update Address according to the default from Client*/
-      this.auxAddress = this.store.address.address.address;
-      this.store.address.address.address = this.commAddress;
-
-      this.auxLocal = this.store.address.address.postalArea;
-      this.store.address.address.postalArea = this.commLocal;
-
-      /*Disable the fields from the address*/
-      this.idisabledAdd = true;
-
-    } else {
-      /*Update Country according to the previous value selected*/
-      this.store.address.address.country = this.auxCountry;
-      /*Update Postal Code according to the previous value selected*/
-      this.store.address.address.postalCode = this.auxPostal;
-      /*Update Addresss according to the previous value selected*/
-      this.store.address.address.address = this.auxAddress;
-
-      /*Update IP according to the previous value selected*/
-      //this.store.fixedIP = this.auxIP;
-
-      /*Update Locale according to the previous value selected*/
-      this.store.address.address.postalArea = this.auxLocal;
-
-      /*Enable the fields from the address*/
-      this.idisabledAdd = false;
-    }
-
-  }
-
-  radioContactChangehandler(event: any) {
-    this.selectedContactOption = event.target.value;
-    if (this.selectedContactOption == "Sim") {
-
-    } else {
-
-    }
-  }
-
-  submit() {
-    this.store.name = this.formStores.get("storeName").value;
-    this.store.contactPerson = this.formStores.get("contactPoint").value;
-
-    this.store.activity = this.formStores.get("activityStores").value;
-    this.store.subActivity = this.formStores.get("subactivityStores").value;
-    this.store.product = this.formStores.get("productStores").value;
-    this.store.subProduct = this.formStores.get("subProductStores").value;
-
-    if (!this.replicateAddress) {
-      this.store.address.address.address = this.formStores.get("addressStore").value;
-      this.store.address.address.country = this.formStores.get("countryStore").value;
-      this.store.address.address.postalArea = this.formStores.get("localeStore").value;
-      this.store.address.address.postalCode = this.formStores.get("zipCodeStore").value;
-      this.store.address.useMerchantAddress = false;
-    } else {
-      this.store.address.address.address = this.submissionClient.headquartersAddress.address;
-      this.store.address.address.country = this.submissionClient.headquartersAddress.country;
-      this.store.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
-      this.store.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
-      this.store.address.useMerchantAddress = true;
-    }
-
-    if (this.isComercialCentreStore) {
-      this.store.address.shoppingCenter = this.formStores.get("subZoneStore").value;
-    } else {
-      console.log('Valor do commercial ', this.formStores.get("commercialCenter").value);
-    }
-
-    this.store.address.isInsideShoppingCenter = this.isComercialCentreStore;
-
-    let navigationExtras: NavigationExtras = {
-      state: {
-        store: this.store
-      }
-    }
-
-    this.route.navigate(['/add-store-iban'], navigationExtras);
-  }
-
   chooseAddress(toChoose: boolean) {
     this.replicateAddress = toChoose;
     this.formStores.get('replicate').setValue(toChoose);
@@ -429,7 +205,6 @@ export class AddStoreComponent implements OnInit {
       this.formStores.get('addressStore').updateValueAndValidity();
       this.formStores.get('countryStore').updateValueAndValidity();
       this.formStores.get('zipCodeStore').updateValueAndValidity();
-
     }
   }
 
@@ -508,12 +283,12 @@ export class AddStoreComponent implements OnInit {
   initializeForm() {
     this.formStores = new FormGroup({
       storeName: new FormControl('', Validators.required),
-      activityStores: new FormControl((this.returned !== null) ? this.store.activity : '', [Validators.required]),
+      activityStores: new FormControl('', [Validators.required]),
       countryStore: new FormControl('PT'),
       zipCodeStore: new FormControl(''),
       subZoneStore: new FormControl(''),
       contactPoint: new FormControl(''),
-      subactivityStore: new FormControl((this.returned !== null) ? this.store.subActivity : '', [Validators.required]),
+      subactivityStore: new FormControl('', [Validators.required]),
       localeStore: new FormControl(''),
       addressStore: new FormControl(''),
       replicate: new FormControl(true, Validators.required),

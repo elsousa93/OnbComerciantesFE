@@ -1,36 +1,34 @@
 import { OutboundDocument } from "../stakeholders/IStakeholders.interface"
 import { PostDocument } from "../submission/document/ISubmission-document"
 
-export interface OutboundClient {
-  bankingInformation?: BankInformation,
-  billingEmail?: string,
-  bylaws?: string,
-  commercialName?: string,
-  contacts?: Contacts,
-  context?: string,
-  contextId?: string,
-  documentationDeliveryMethod?: string,
-  documents?: OutboundDocument[],
-  fiscalIdentification?: ForeignFiscalInformation,
-  headquartersAddress?: HeadquartersAddress,
-  incorporationDate?: string,
-  incorporationStatement?: Crc,
-  legalName?: string,
-  legalNature?: string,
-  legalNature2?: string,
-  merchantId?: string,
-  merchantRegistrationId?: string,
-  merchantType?: string, //mudar para ENUM
-  otherEconomicActivities?: string[],
-  otherTaxCodes?: string[],
-  principalEconomicActivity?: string,
-  principalTaxCode?: string,
-  sales?: SalesOutbound,
-  shareCapital?: ShareCapital,
+export class OutboundClient {
+  bankingInformation?: BankInformation
+  billingEmail?: string
+  bylaws?: string
+  commercialName?: string
+  contacts?: Contacts
+  context?: string
+  contextId?: string
+  documentationDeliveryMethod?: string
+  documents?: OutboundDocument[]
+  fiscalIdentification?: ForeignFiscalInformation
+  headquartersAddress?:HeadquartersAddress
+  incorporationDate?:string
+  incorporationStatement?: Crc
+  legalName?: string
+  legalNature?: string
+  legalNature2?: string
+  merchantId?: string
+  merchantRegistrationId?: string
+  merchantType?: string //mudar para ENUM
+  otherEconomicActivities?: string[]
+  otherTaxCodes?: string[]
+  principalEconomicActivity?: string
+  principalTaxCode?: string
+  sales?: SalesOutbound
+  shareCapital?: ShareCapital
   shortName?: string
-}
-/** Interface Client
-* documentationDeliveryMethod: see docType.ts for the codes
+}/** Interface Client* documentationDeliveryMethod: see docType.ts for the codes
 **/
 
 export interface AcquiringClientPost {
@@ -91,7 +89,6 @@ export interface Client {
   merchantRegistrationId?: string,
   documents?: PostDocument[]
 }
-
 export interface HeadquartersAddress {
   address?: string,
   postalCode?: string,

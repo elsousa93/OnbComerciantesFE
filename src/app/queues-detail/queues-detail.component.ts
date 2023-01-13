@@ -15,7 +15,6 @@ import { ComprovativosService } from '../comprovativos/services/comprovativos.se
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 
-
 @Component({
   selector: 'queues-detail',
   templateUrl: './queues-detail.component.html'
@@ -29,7 +28,6 @@ export class QueuesDetailComponent implements OnInit {
 
   private baseUrl;
   localUrl: any;
-
   public map = new Map();
   public currentPage: number;
   public subscription: Subscription;
@@ -40,18 +38,13 @@ export class QueuesDetailComponent implements OnInit {
 
   public attach: { tipo: string, dataDocumento: string };
   public result: any;
-
   public fillComments: string;
   public enrollmentMerchantNumber: string;
   public enrollmentStoreNumber: string;
   public enrollmentTerminalNumber: string;
-
   public elegibilityStatus: string;
-
   public subs: Subscription[] = [];
-
   public riskRequest;
-
   public checkButton: boolean = false;
 
   stakesList: IStakeholders[] = [];
@@ -59,7 +52,6 @@ export class QueuesDetailComponent implements OnInit {
   equipmentList: ShopEquipment[] = [];
 
   public state: State;
-  //public externalState: ExternalState;
 
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, private http: HttpClient,
     private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService) {
@@ -76,9 +68,7 @@ export class QueuesDetailComponent implements OnInit {
 
     // Preencher os dados da fila de trabalho consoante o processId recebido
     this.fetchStartingInfo();
-
     this.data.updateData(true, 0);
-
   }
 
   initializeElegibilityForm() {
@@ -99,7 +89,6 @@ export class QueuesDetailComponent implements OnInit {
     this.stakesList.forEach(function (value, idx) {
       formGroupStakeholdersEligibility.addControl(value.id, new FormControl('', Validators.required));
     });
-
     this.form.setControl("stakeholdersEligibility", formGroupStakeholdersEligibility);
   }
 
@@ -125,7 +114,6 @@ export class QueuesDetailComponent implements OnInit {
 
   loadStakeholdersFromProcess() {
     //Listar os stakeholders do processo
-    var currentLength = 0;
     return new Promise((resolve, reject) => {
       this.queuesInfo.getProcessStakeholdersList(this.processId).then(result => {
         var stakeholders = result.result;
@@ -141,7 +129,6 @@ export class QueuesDetailComponent implements OnInit {
         Promise.all(stakeholderInfoPromises).then(res => {
           resolve;
         });
-
         this.logger.debug("stakeholders do processo: " + stakeholders);
       });
     });
@@ -165,15 +152,11 @@ export class QueuesDetailComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.queuesInfo.getProcessShopDetails(processId, shopId).then(result => {
         var shop = result.result;
-
         var shopMCC = this.form.get("shopsMCC") as FormGroup
-
         shopMCC.addControl(shop.id + "", new FormControl(Validators.required));
         this.shopsList.push(shop);
-
         this.queuesInfo.getShopEquipmentConfigurationsFromProcess(this.processId, shop.id).then(eq => {
           var equipments = eq.result;
-
           var shopEquipmentPromisses = [];
           equipments.forEach(val => {
             // Obter o detalhe dos equipamentos das lojas
@@ -197,7 +180,6 @@ export class QueuesDetailComponent implements OnInit {
         shops.forEach(value => {
           subPromisses.push(context.getShopInfo(this.processId, value.id));
         });
-
         Promise.all(subPromisses).then(success => {
           resolve;
         });
@@ -212,7 +194,6 @@ export class QueuesDetailComponent implements OnInit {
       this.stakesList = stakeholdersList;
       this.loadShopsFromProcess().then(next => {
       }, reject => {
-
       })
     })
   }

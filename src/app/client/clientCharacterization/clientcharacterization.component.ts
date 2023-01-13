@@ -37,63 +37,18 @@ export class ClientCharacterizationComponent implements OnInit {
 
   public clientId: string;
 
-  //client: Client = {} as Client;
-
-  public client: AcquiringClientPost = {
-    clientId: '',
-    fiscalId: '',
-    legalName: '',
-    shortName: '',
-    headquartersAddress: {},
-    merchantType: '',
-    commercialName: '',
-    legalNature: '',
-    legalNature2: '',
-    incorporationStatement: {},
-    shareCapital: {},
-    byLaws: '',
-    mainEconomicActivity: '',
-    otherEconomicActivities: [],
-    mainTaxCode: '',
-    otherTaxCodes: [],
-    incorporationDate: null,
-    businessGroup: {},
-    knowYourSales: {},
-    bankInformation: {},
-    contacts: {},
-    documentationDeliveryMethod: '',
-    billingEmail: '',
-    merchantRegistrationId: ''
-  };
+  public client: AcquiringClientPost;
 
   crcError: boolean = false;
   crcNotExists: boolean = false;
   crcIncorrect: boolean = false;
   crcMatchNIF: boolean = false;
-
-  processClient: CRCProcess = {
-    capitalStock: {},
-    code: '',
-    companyName: '',
-    mainEconomicActivity: '',
-    secondaryEconomicActivity: [],
-    expirationDate: '',
-    fiscalId: '',
-    hasOutstandingFacts: false,
-    headquartersAddress: {},
-    legalNature: '',
-    pdf: '',
-    requestId: '',
-    stakeholders: []
-  };
-
+  processClient: CRCProcess;
   tempClient: any;
   dataCC = null;
   crcCode: string;
-
   clientExists: boolean;
   crcFound: boolean = false;
-
   isCommercialSociety: boolean = null;
   isCompany: boolean;
   checkedContinents = []; // posso manter esta variavel para os continentes selecionados
@@ -113,13 +68,11 @@ export class ClientCharacterizationComponent implements OnInit {
 
   returned: string; //variável para saber se estamos a editar um processo
   merchantInfo: any;
-
   associatedWithGroupOrFranchise: boolean = false;
   isAssociatedWithFranchise: boolean;
   NIFNIPC: any;
   idClient: string;
   comprovativoCC: FileAndDetailsCC;
-
   DisableNIFNIPC = null;
   collectCRC: boolean;
   rootForm: FormGroup;
@@ -149,7 +102,6 @@ export class ClientCharacterizationComponent implements OnInit {
 
   updateBasicForm() {
     this.form.get("natJuridicaNIFNIPC").setValue(this.NIFNIPC);
-
   }
 
   initializeENI() {
@@ -195,8 +147,6 @@ export class ClientCharacterizationComponent implements OnInit {
     if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
       this.setCommercialSociety(false);
     }
-
-
     this.formClientCharacterizationReady.emit(this.form);
   }
 
@@ -209,7 +159,6 @@ export class ClientCharacterizationComponent implements OnInit {
     this.logger.debug("initializeformcontrolother");
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
     var collectCRC = this.form.get("collectCRC")?.value;
-
 
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
@@ -238,7 +187,6 @@ export class ClientCharacterizationComponent implements OnInit {
       this.form.get("natJuridicaN2").setValue(this.client.legalNature2);
       this.form.get("natJuridicaN2").updateValueAndValidity();
     }
-
     this.formClientCharacterizationReady.emit(this.form);
   }
 
@@ -275,7 +223,6 @@ export class ClientCharacterizationComponent implements OnInit {
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(true, [Validators.required])
     }));
-
 
     this.form.get("CAE1").valueChanges.subscribe(data => {
       if (data !== '') {
@@ -335,7 +282,6 @@ export class ClientCharacterizationComponent implements OnInit {
           this.form.get("CAESecondary3Branch").setValue(data.description);
         });
     }
-
     this.formClientCharacterizationReady.emit(this.form);
   }
 
@@ -382,7 +328,6 @@ export class ClientCharacterizationComponent implements OnInit {
         this.getClientContextValues();
       })
     }
-
   }
 
   getCurrentClientAsync() {
@@ -431,7 +376,6 @@ export class ClientCharacterizationComponent implements OnInit {
               this.isCommercialSociety = this.getIsCommercialSocietyFromLegalNature(this.client.legalNature)
               this.collectCRC = false;
               this.initializeFormControlOther();
-              //
             }, 100);
           }
         }
@@ -553,35 +497,24 @@ export class ClientCharacterizationComponent implements OnInit {
         this.processClient.secondaryEconomicActivity[0] = clientByCRC.economicActivity?.secondary[0]?.split('-')[0];
         this.processClient.secondaryEconomicActivity[1] = clientByCRC.economicActivity?.secondary[1]?.split('-')[0];
         this.processClient.secondaryEconomicActivity[2] = clientByCRC.economicActivity?.secondary[2]?.split('-')[0];
-
         this.processClient.fiscalId = clientByCRC.fiscalId;
         this.processClient.companyName = clientByCRC.companyName;
-
         this.processClient.capitalStock.date = clientByCRC.capitalStock.date;
         this.processClient.capitalStock.capital = clientByCRC.capitalStock.amount;
-
         this.processClient.headquartersAddress.address = clientByCRC.headquartersAddress.fullAddress;
         this.processClient.headquartersAddress.locality = clientByCRC.headquartersAddress.parish;
         this.processClient.headquartersAddress.postalCode = clientByCRC.headquartersAddress.postalCode;
         this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.postalArea;
         this.processClient.headquartersAddress.country = clientByCRC.headquartersAddress.country;
-
         this.processClient.expirationDate = clientByCRC.expirationDate;
         this.processClient.hasOutstandingFacts = clientByCRC.hasOutstandingFacts;
-
         this.processClient.stakeholders = clientByCRC.stakeholders;
-
         this.clientContext.setStakeholdersToInsert(clientByCRC.stakeholders);
-
         this.processClient.pdf = clientByCRC.pdf;
-
         this.processClient.code = crcInserted;
-
         this.processClient.requestId = clientByCRC.requestId;
-
         this.logger.debug("o crc chamou o initialize");
         this.initializeFormControlCRC();
-
       }, error: (error) => {
         this.crcNotExists = true;
         this.crcFound = false;
@@ -632,12 +565,10 @@ export class ClientCharacterizationComponent implements OnInit {
       } else {
         this.client.incorporationDate = this.form.value["constitutionDate"];
       }
-
       this.client.incorporationStatement = {
         code: this.form.value["crcCode"],
         validUntil: this.client?.incorporationStatement?.validUntil
       }
-
       this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
       this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
       this.client.commercialName = this.form.value["socialDenomination"];
@@ -683,7 +614,6 @@ export class ClientCharacterizationComponent implements OnInit {
           this.client.headquartersAddress.postalCode = this.dataCC.postalCodeCC;
         }
       }
-
     }
 
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
@@ -701,7 +631,6 @@ export class ClientCharacterizationComponent implements OnInit {
     var newSubmission = this.clientContext.newSubmission;
     var stakeholdersToInsert = this.clientContext.getStakeholdersToInsert();
     var crc = this.clientContext.crc;
-
     var context = this;
     var client = this.clientContext.getClient();
 
@@ -723,14 +652,11 @@ export class ClientCharacterizationComponent implements OnInit {
           "isBeneficiary": value.isBeneficiary,
           "role": value.role
         } as IStakeholders;
-
         newSubmission.stakeholders.push(stakeholderToInsert);
       } else {
         newSubmission.stakeholders.push(value);
       }
     });
-
-    //newSubmission.documents = [];
 
     if (crc != null && crc != undefined) {
       newSubmission.documents.push({
@@ -759,8 +685,6 @@ export class ClientCharacterizationComponent implements OnInit {
         data: null
       })
     }
-
-
     this.clientContext.newSubmission = newSubmission;
   }
 
@@ -786,9 +710,7 @@ export class ClientCharacterizationComponent implements OnInit {
       var zipCode = zipcode.split('-');
 
       this.subs.push(this.tableInfo.GetAddressByZipCode(Number(zipCode[0]), Number(zipCode[1])).subscribe(address => {
-
         var addressToShow = address[0];
-
         this.form.get('address').setValue(addressToShow.address);
         this.form.get('country').setValue(addressToShow.country);
         this.form.get('location').setValue(addressToShow.postalArea);
@@ -831,7 +753,6 @@ export class ClientCharacterizationComponent implements OnInit {
       return false;
     if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02')
       return false;
-
     return true;
   }
 }

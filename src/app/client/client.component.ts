@@ -2,20 +2,17 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Client } from './Client.interface';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router, NavigationExtras } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 import { DataService } from '../nav-menu-interna/data.service';
 import { Subscription } from 'rxjs';
 import { ClientService } from './client.service';
 import { TemplateRef, ViewChild } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { BsModalService } from 'ngx-bootstrap/modal';
-
 import { readCC } from '../citizencard/CitizenCardController.js';
 import { readCCAddress } from '../citizencard/CitizenCardController.js';
 import { ICCInfo } from '../citizencard/ICCInfo.interface';
 import { ReadcardService } from '../readcard/readcard.service';
-
-import { SubmissionService } from '../submission/service/submission-service.service';
 import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
 import { TableInfoService } from '../table-info/table-info.service';
@@ -37,7 +34,6 @@ export class ClientComponent implements OnInit {
   private neyondBackUrl: string;
 
   dataCC = null;
-
   modalRef: BsModalRef;
 
   openModal(template: TemplateRef<any>) {
@@ -45,7 +41,6 @@ export class ClientComponent implements OnInit {
   }
 
   public canSearch: boolean = true;
-
   public clients: Client[] = [];
   public newClientForm: FormGroup;
   public searchClientForm: FormGroup;
@@ -108,7 +103,6 @@ export class ClientComponent implements OnInit {
     nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
 
     this.dataCCcontents = {}
-
     this.dataCCcontents.nameCC = name;
     localStorage.setItem("clientName", name);
     this.dataCCcontents.nationalityCC = nationality;
@@ -132,10 +126,8 @@ export class ClientComponent implements OnInit {
     var expireDate = expiryDate.replaceAll(" ", "/").split("/");
     var date = expireDate[1] + "/" + expireDate[0] + "/" + expireDate[2];
     this.dataCCcontents.expiryDate = new Date(date).toISOString();
-
     this.dataCCcontents.emissonDate = emissonDate;
     this.dataCCcontents.emissonLocal = emissonLocal;
-
     this.dataCCcontents.countryIssuer = countryIssuer;
     this.dataCCcontents.imgSrc = imgSrc;
     this.dataCCcontents.cardIsExpired = cardIsExpired;
@@ -156,7 +148,6 @@ export class ClientComponent implements OnInit {
 
       var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
         emissonLocal, nameFather, nameMother, nif, nss, sns, assinatura, this.dataCCcontents.addressCC, this.dataCCcontents.postalCodeCC, this.dataCCcontents.countryCC];
-
 
       //Send to PDF without address -- type base64
       this.readCardService.formatPDF(ccArrayData).then(resolve => {
@@ -201,15 +192,12 @@ export class ClientComponent implements OnInit {
   clientIdNew;
   ccInfo;
   newId;
-
   ListaDocType;
   ListaDocTypeENI;
   formDocType!: FormGroup;
   docType?: string = "";
-
   errorInput;
   errorMsg;
-
   hasClient: boolean = true;
   hasNewClient: boolean = true;
   isClient: boolean;
@@ -218,9 +206,7 @@ export class ClientComponent implements OnInit {
   showFoundClient: boolean = false;
   idToSeacrh: number;
   searchDone: boolean = false;
-
   showButtons: boolean = false;
-
   showSeguinte: boolean = false;
   showENI: boolean = false;
   isENI: boolean = false;
@@ -232,77 +218,9 @@ export class ClientComponent implements OnInit {
   clientTypology: string = "";
   searchType: string = "";
   clientNr: boolean = false;
-
   clientsToShow: { client: Client, isClient: boolean }[] = [];
 
-  newClient: Client = {
-    "clientId": "",
-    "fiscalId": "",
-    "id": "",
-    "companyName": "J SILVESTRE LIMITADA",
-    "commercialName": "CAFE CENTRAL",
-    "shortName": "SILVESTRE LDA",
-    "headquartersAddress": {
-      "address": "Rua da Azoia 4",
-      "postalCode": "2625-236",
-      "postalArea": "Povoa de Santa Iria",
-      "country": "PT"
-    },
-    "merchantType": "Company",
-    "legalNature": "35",
-    "legalNature2": "",
-    "crc": {
-      "code": "0000-0000-0001",
-      "validUntil": "2023-06-29T17:52:08.336Z"
-    },
-    "shareCapital": {
-      "capital": 50000.20,
-      "date": "1966-08-30"
-    },
-    "byLaws": "O Joao pode assinar tudo",
-    "mainEconomicActivity": "90010",
-    "otherEconomicActivities": ["055111"],
-    "mainOfficeAddress": {
-      "address": "Rua da Azoia 4",
-      "postalCode": "2625-236",
-      "postalArea": "Povoa de Santa Iria",
-      "country": "Lisbon",
-      "locality": "PT"
-    },
-    "establishmentDate": "2009-12-16",
-    "businessGroup": {
-      "type": "",
-      "branch": ""
-    },
-    "knowYourSales": {
-      "estimatedAnualRevenue": 1000000,
-      "transactionsAverage": 30000,
-      "servicesOrProductsSold": [
-        "Cafe",
-        "Pastelaria"
-      ],
-      "servicesOrProductsDestinations": [
-        "PT",
-        "ES"
-      ]
-    },
-    "foreignFiscalInformation": {
-      "issuerCountry": "",
-      "issuanceIndicator": "",
-      "fiscalId": "",
-      "issuanceReason": ""
-    },
-    "contacts": {
-      "email": "joao@silvestre.pt",
-      "phone1": {
-        "countryCode": "+351",
-        "phoneNumber": "919654422"
-      }
-    },
-    "documentationDeliveryMethod": "Portal",
-    "billingEmail": "joao@silvestre.pt"
-  };
-
+  newClient: Client;
   tipologia: string;
   searchedDocument: string;
   firstTime: boolean = true;
@@ -330,11 +248,9 @@ export class ClientComponent implements OnInit {
   public map = new Map();
   public currentPage: number;
   public subscription: Subscription;
-
   public returned: string;
   public merchantInfo: any;
   public notFound: boolean = false;
-
   public subs: Subscription[] = [];
 
   incorrectNIFSize: boolean = false;
@@ -344,7 +260,6 @@ export class ClientComponent implements OnInit {
   incorrectCCSize: boolean = false;
   incorrectCC: boolean = false;
   incorrectCCFormat: boolean = false;
-
   potentialClientIds: string[] = [];
 
   constructor(private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder, private translate: TranslateService,
@@ -454,10 +369,8 @@ export class ClientComponent implements OnInit {
   searchClient() {
     this.logger.debug(this.newClient.clientId);
     this.showSeguinte = false;
-
     var context = this;
     this.newClientForm = null;
-
     context.clientsToShow = [];
     context.clientsMat.data = context.clientsToShow;
     context.potentialClientIds = [];
@@ -610,12 +523,10 @@ export class ClientComponent implements OnInit {
 
     if ((localStorage.getItem("submissionId") == null && !this.defaultValue) || !this.firstTime || !this.defaultValue)
       this.activateButtons(!this.showENI);
-
-    this.firstTime = false;
-    this.defaultValue = false;
-
-    this.toggleShowFoundClient(false);
-    this.docType = e.target.value;
+      this.firstTime = false;
+      this.defaultValue = false;
+      this.toggleShowFoundClient(false);
+      this.docType = e.target.value;
 
     // get search type
     this.searchType = this.docType;
@@ -637,7 +548,6 @@ export class ClientComponent implements OnInit {
     this.okCC = false;
     this.notFound = false;
     this.showSeguinte = false;
-
   }
 
   changeDocType() {
@@ -684,7 +594,6 @@ export class ClientComponent implements OnInit {
 
     this.logger.debug("a passar para a proxima pagina");
     this.route.navigate(['/clientbyid', selectedClient.fiscalId], navigationExtras);
-
   }
   /**
    *

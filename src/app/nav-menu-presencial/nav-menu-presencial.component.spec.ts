@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { NavMenuPresencialComponent } from './nav-menu-presencial.component';
 
 describe('NavMenuPresencialComponent', () => {

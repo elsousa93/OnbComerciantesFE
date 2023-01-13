@@ -34,19 +34,13 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   public displayValueSearch = "";
   isSelected = false; 
 
-
   allStakeholdersComprovativos = {};
-
   selectedStakeholderComprovativos = [];
-
   stakeholderNumber: string;
-
   crcStakeholders: IStakeholders[] = [];
   ccStakeholders: IStakeholders[] = [];
-
   submissionId: string;
   processNumber: string;
-  //submissionId: string = "83199e44-f089-471c-9588-f2a68e24b9ab";
 
   countries: CountryInformation[] = [];
 
@@ -67,37 +61,11 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   @Input() selectedStakeholderIsFromCRC = false;
   selectedStakeholderIsFromCC = false;
-
   formNewStakeholder!: FormGroup;
-
-
-  newStake: IStakeholders = {
-    fiscalId: 0,
-    fullName: '',
-    identificationDocument: {
-      type: "",
-      number: "",
-      country: "",
-      code: ""
-
-    },
-    fiscalAddress: {
-      address: "",
-      postalCode: "",
-      postalArea: "",
-      country: ""
-    },
-  } as unknown as IStakeholders
-
-  //currentStakeholder: StakeholdersCompleteInformation = {};
   currentIdx: number = 0;
-
   submissionStakeholders: IStakeholders[] = [];
-
   stakeholdersRoles: StakeholderRole[] = [];
-
   returned: string;
-
   ListaDocTypeENI = docTypeENI;
 
   loadCountries() {
@@ -127,7 +95,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     let el: HTMLElement = this.selectedBlueDiv.nativeElement;
     el.click();
   }
-
 
   public subs: Subscription[] = [];
 
@@ -219,10 +186,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.data.updateData(false, 2, 2);
-    this.newStake.fiscalId = this.router.snapshot.params['nif'];
-
-    
-
     this.initializeFormWithoutCC();
 
     if (this.rootFormGroup.form != null) {
@@ -231,8 +194,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
         this.formNewStakeholder.disable();
       }
     }
-
-
   }
 
   ngOnDestroy(): void {
@@ -264,8 +225,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     this.showYesCC = true;
     this.showNoCC = false;
     this.formNewStakeholder.get('flagRecolhaEletronica').setValue(true);
-    //this.flagRecolhaEletronica = true; este é o valor que mete o campo disabled
-
     this.changeValueCC();
     this.GetCountryByZipCode();
   }
@@ -274,7 +233,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     if (this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type === '0018') {
       this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = '0018';
       this.formNewStakeholder.get('documentType').setValue('0018');
-
     }
   }
 
@@ -288,7 +246,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
         this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality = this.formNewStakeholder.get("Locality").value;
         this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode = this.formNewStakeholder.get("ZIPCode").value;
         this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea = this.formNewStakeholder.get("Locality").value;
-
         this.currentStakeholder.stakeholderAcquiring.isProxy = (this.formNewStakeholder.get("proxy").value === 'true');
 
         if (this.showYesCC && !this.showNoCC) {
@@ -308,18 +265,10 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
             this.data.updateData(true, 2);
             this.route.navigate(['/store-comp']);
           }
-
         }, error => {
         });
       }
     }
-  }
-
-  onClickDelete(nif, clientNr) {
-    this.http.delete<IStakeholders[]>(this.baseUrl + 'bestakeholders/DeleteStakeholderById/' +
-      +this.newStake.fiscalId + '/' + this.newStake.fiscalId + '/delete').subscribe(result => {
-      }, error => console.error(error));
-    this.route.navigate(['stakeholders']);
   }
 
   validateCC(validate: boolean) {
@@ -377,7 +326,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       this.formNewStakeholder.get('Address').setValidators(null);
       this.formNewStakeholder.get('ZIPCode').setValidators(null);
       this.formNewStakeholder.get('Locality').setValidators(null);
-
       this.formNewStakeholder.get('Address').setValue('');
       this.formNewStakeholder.get('ZIPCode').setValue('');
       this.formNewStakeholder.get('Locality').setValue('');
@@ -385,24 +333,17 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   }
 
   GetCountryByZipCode() {
-
     var currentCountry = this.formNewStakeholder.get('Country').value;
-
     var zipcode = this.formNewStakeholder.value['ZIPCode'];
-
     this.formNewStakeholder.get('Address').setValue('');
     this.formNewStakeholder.get('Locality').setValue('');
 
     if (currentCountry === 'PT') {
       this.lockLocality = true;
-
       if (zipcode != null && zipcode.length >= 8) {
         var zipCode = zipcode.split('-');
-
         this.subs.push(this.tableData.GetAddressByZipCode(zipCode[0], zipCode[1]).subscribe(address => {
-
           var addressToShow = address[0];
-
           this.formNewStakeholder.get('Address').setValue(addressToShow.address);
           this.formNewStakeholder.get('Country').setValue(addressToShow.country);
           this.formNewStakeholder.get('Locality').setValue(addressToShow.postalArea);
@@ -430,13 +371,4 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       return false;
     return true;
   }
-
-  //canEditRole() {
-  //  if (this.returned == 'consult')
-  //    return false;
-  //  if (this.selectedStakeholderIsFromCRC)
-  //    return false;
-  //  return true;
-  //}
 }
-

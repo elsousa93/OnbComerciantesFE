@@ -18,7 +18,6 @@ import { ProcessService } from '../process/process.service';
 import { Bank } from '../store/IStore.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
-
 @Component({
   selector: 'app-nav-menu-presencial',
   templateUrl: './nav-menu-presencial.component.html',
@@ -29,11 +28,9 @@ export class NavMenuPresencialComponent implements OnInit {
 
   //Procura de processo
   processNumberToSearch: string;
-  /////////////////////
 
   @Output() toggleNavEvent = new EventEmitter<boolean>();
   @Output() autoHide = new EventEmitter<boolean>();
-
 
   isToggle: boolean = true;
   isAutohide: boolean = false;
