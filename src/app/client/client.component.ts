@@ -220,7 +220,7 @@ export class ClientComponent implements OnInit {
   clientNr: boolean = false;
   clientsToShow: { client: Client, isClient: boolean }[] = [];
 
-  newClient: Client = {};
+  newClient: Client;
   tipologia: string;
   searchedDocument: string;
   firstTime: boolean = true;
@@ -593,7 +593,7 @@ export class ClientComponent implements OnInit {
     localStorage.setItem("documentNumber", selectedClient.clientId);
 
     this.logger.debug("a passar para a proxima pagina");
-    this.route.navigate(['/clientbyid', selectedClient.fiscalId], navigationExtras);
+    this.route.navigate(['/clientbyid', this.clientId], navigationExtras);
   }
   /**
    *
