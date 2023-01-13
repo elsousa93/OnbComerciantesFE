@@ -68,7 +68,6 @@ import { environment } from 'src/environments/environment';
 import { ProductSelectionComponent } from './store/product-selection/product-selection.component';
 import { StakeholdersListComponent } from './stakeholders/stakeholders-list/stakeholders-list.component';
 import { AuthService } from './services/auth.service';
-import { ClientSearchComponent } from './client/client-search/client-search.component';
 import { SearchStakeholdersComponent } from './stakeholders/search-stakeholders/search-stakeholders.component';
 import { StoreTableComponent } from './store/store-table/store-table.component';
 import { LoggingInterceptor } from 'src/logger/loggerInterceptor';
@@ -134,7 +133,6 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     RepresentationPowerComponent,
     ProductSelectionComponent,
     StakeholdersListComponent,
-    ClientSearchComponent,
     SearchStakeholdersComponent,
     StoreTableComponent
   ],

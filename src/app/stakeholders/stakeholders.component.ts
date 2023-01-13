@@ -163,9 +163,6 @@ export class StakeholdersComponent implements OnInit {
     }
   }
 
-  changeDataReadable(readable: boolean) {
-    this.isNoDataReadable = readable;
-  }
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
@@ -174,20 +171,6 @@ export class StakeholdersComponent implements OnInit {
     this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem('returned');
     this.clickButton = true;
-  }
-
-  //Modal que pergunta se tem o PIN da Morada
-  launchNewModal() {
-    this.newModal = this.modalService.show(this.newModal, { class: 'modal-sm' })
-    this.newModal.result.then(function (result: boolean): void {
-      if (result) {
-        this.Window.readCCAddress();
-      } else {
-        this.Window.readCC();
-
-        this.closeModal();
-      }
-    }.bind(this));
   }
 
   createForm() {
@@ -204,33 +187,6 @@ export class StakeholdersComponent implements OnInit {
   selectStakeholder(stakeholder) {
     this.currentStakeholder = stakeholder;
     
-  }
-
-  searchStakeholder() {
-    var context = this;
-    this.stakeholderService.SearchStakeholderByQuery("000000002", "por mudar", this.UUIDAPI, "2").subscribe(o => {
-      var clients = o;
-
-      var context2 = this;
-
-      clients.forEach(function (value, index) {
-        context2.stakeholderService.getStakeholderByID(value.stakeholderId, "por mudar", "por mudar").subscribe(c => {
-          var stakeholder = {
-            "stakeholderNumber": c.stakeholderId,
-            "stakeholderName": c.shortName,
-            "stakeholderNIF": c.fiscalIdentification.fiscalId,
-            "elegible": "elegivel",
-            "associated": "SIM"
-          }
-
-          context.stakeholdersToShow.push(stakeholder);
-        }, error => {
-          console.log("Erro ao obter informação de um stakeholder");
-        });
-      })
-    }, error => {
-
-    });
   }
   
   deleteStakeholder(stakeholder) {

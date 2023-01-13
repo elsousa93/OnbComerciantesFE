@@ -105,10 +105,6 @@ export class NavMenuInternaComponent implements OnInit {
     }
   }
 
-  onClick(e) {
-    alert(this.item.name);
-  }
-
   goToAppDevolucao() {
     if (this.currentPage > 0 || this.map.get(0) != undefined) {
       this.route.navigate(['/app-devolucao']);

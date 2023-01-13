@@ -62,24 +62,12 @@ export class ClientContext {
     this.currentDocuments = this.documents.asObservable();
   }
 
-  isValidForCountries(): boolean {
-    return true;
-  }
-
-  isValidForCharacterization(): boolean {
-    return true;
-  }
-
   getClient() {
     return this.client.getValue();
   }
 
   setClient(client) {
     this.client.next(client);
-  }
-
-  getMerchantInfo() {
-    return this.merchantInfo.getValue();
   }
 
   setMerchantInfo(merchantInfo) {
@@ -100,21 +88,5 @@ export class ClientContext {
 
   setStakeholdersToInsert(stakeholdersToInsert) {
     this.stakeholdersToInsert.next(stakeholdersToInsert);
-  }
-
-  getDocuments() {
-    return this.documents;
-  }
-
-  setDocuments(documents) {
-    this.documents.next(documents);
-  }
-
-  getIsClient() {
-    return this.isClient;
-  }
-
-  setIsClient(isClient) {
-    this.isClient = isClient;
   }
 }

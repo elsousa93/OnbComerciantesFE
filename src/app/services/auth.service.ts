@@ -39,10 +39,6 @@ export class AuthService implements OnDestroy {
     return this.dataSource.getValue();
   }
 
-  GetBankLocation() {
-    return this.bankLocation.getValue();
-  }
-
   GetBank() {
     return this.dataSource.getValue().bankName;
   }

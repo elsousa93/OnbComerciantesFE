@@ -113,10 +113,6 @@ export class ClientCharacterizationComponent implements OnInit {
     });
   }
 
-  updateBasicForm() {
-    this.form.get("natJuridicaNIFNIPC").setValue(this.NIFNIPC);
-  }
-
   initializeENI() {
     this.logger.debug("-------- NIFNIPC --------");
     this.logger.debug("intializeeniform");
@@ -298,11 +294,6 @@ export class ClientCharacterizationComponent implements OnInit {
     this.formClientCharacterizationReady.emit(this.form);
   }
 
-  initializeFormControls() {
-    this.logger.debug("inicializar form controls");
-    this.initializeBasicFormControl();
-  }
-
   constructor(private logger: LoggerService, private datepipe: DatePipe, private rootFormDirective: FormGroupDirective,
     private route: Router, private tableInfo: TableInfoService, private data: DataService, private crcService: CRCService) {
     this.rootForm = this.rootFormDirective.form;
@@ -430,10 +421,6 @@ export class ClientCharacterizationComponent implements OnInit {
     }
   }
 
-  getCommercialSociety() {
-    return this.isCommercialSociety;
-  }
-
   onLegalNatureSelected() {
     this.legalNatureList2 = [];
     this.legalNatError = false;
@@ -534,10 +521,6 @@ export class ClientCharacterizationComponent implements OnInit {
         this.form.get("crcCode").setErrors({ 'incorrect': true });
       }
     });
-  }
-
-  getCrcCode() {
-    return this.form.get('crcCode').value;
   }
 
   submit() {
@@ -701,22 +684,6 @@ export class ClientCharacterizationComponent implements OnInit {
     this.clientContext.newSubmission = newSubmission;
   }
 
-  redirectBeginningClient() {
-    this.route.navigate(["/client"]);
-  }
-
-  redirectHomePage() {
-    this.route.navigate(["/"]);
-  }
-
-  setAssociatedWith(value: boolean) {
-    if (value == true) {
-      this.associatedWithGroupOrFranchise = true;
-    } else {
-      this.associatedWithGroupOrFranchise = false;
-    }
-  }
-
   GetCountryByZipCode() {
     var zipcode = this.form.value['ZIPCode'];
     if (zipcode.length === 8) {
@@ -729,17 +696,6 @@ export class ClientCharacterizationComponent implements OnInit {
         this.form.get('location').setValue(addressToShow.postalArea);
       }));
     }
-  }
-
-  GetLegalNatureByCode(code: string) {
-    var legalNature = this.legalNatureList.find(element => {
-      if (element.code == code) {
-        return true;
-      } else {
-        return false;
-      }
-    });
-    return legalNature.description;
   }
 
   setCollectCRC(value: boolean) {
@@ -755,13 +711,5 @@ export class ClientCharacterizationComponent implements OnInit {
     }
     else
       this.initializeBasicCRCFormControl();
-  }
-
-  canChangeCommercialSociety() {
-    if (this.returned === 'consult')
-      return false;
-    if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02')
-      return false;
-    return true;
   }
 }
