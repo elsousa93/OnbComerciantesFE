@@ -28,7 +28,7 @@ import { ClientService } from '../client/client.service';
 })
 export class StakeholdersComponent implements OnInit {
 
-  UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658";
+  UUIDAPI: string = "";
 
   newStake: IStakeholders = {
     "fiscalId": "",
@@ -210,42 +210,6 @@ export class StakeholdersComponent implements OnInit {
       identificationDocumentId: [''],
       documentType: ['']
     });
-  }
-
-  onClickSearch() {
-
-  }
-
-  //When canceling the create new store feature the user must navigate back to store list
-  onClickCancel() {
-    this.route.navigate(['stakeholders']);
-  }
-
-  onClickNew() {
-    let navigationExtras: NavigationExtras = {
-      state: {
-        isCC: this.isCC
-      }
-    };
-    this.route.navigate(['/add-stakeholder'], navigationExtras);
-  }
-
-  onClickEdit(fiscalId) {
-    this.route.navigate(['/update-stakeholder/', fiscalId]);
-  }
-
-  onClickDelete(fiscalId, clientNr) {
-    this.route.navigate(['/add-stakeholder/', fiscalId, clientNr, 'delete']);
-  }
-
-  toggleShow(stake: IStakeholders) {
-    //clear the array
-    this.stakeShow = [];
-    this.isShown = !this.isShown;
-
-    this.stakeShow.push(stake);
-   // GetByid(StakeholderNif, 0)
-       
   }
 
   selectStakeholder(stakeholder) {

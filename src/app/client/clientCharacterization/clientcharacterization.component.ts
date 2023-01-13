@@ -718,10 +718,6 @@ export class ClientCharacterizationComponent implements OnInit {
     }
   }
 
-  GetCAEByCode() {
-    var cae = this.form.value["CAE1"];
-  }
-
   GetLegalNatureByCode(code: string) {
     var legalNature = this.legalNatureList.find(element => {
       if (element.code == code) {

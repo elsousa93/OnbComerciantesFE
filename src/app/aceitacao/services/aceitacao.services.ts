@@ -4,7 +4,6 @@ import { map, catchError, retryWhen, delay, take } from 'rxjs/operators';
 import { AppConfigService } from '../../app-config.service';
 import { HttpUtilService } from './http.services';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -15,16 +14,6 @@ export class AceitacaoService {
   constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private httpUtil: HttpUtilService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.API_URL = this.baseUrl;
-  }
-
-  uploadFile(file: File, id: any) {
-    const formData: FormData = new FormData();
-    formData.append('image', file);
-    return this.http.put(this.API_URL + `ServicesAceitacao/` + id, formData)
-      .pipe(map(this.httpUtil.extrairDados))
-      .pipe(
-        retryWhen(errors => errors.pipe(delay(1000), take(10))),
-        catchError(this.httpUtil.processarErros));
   }
 
   delFile(id: any) {

@@ -21,7 +21,6 @@ export class TableInfoService {
 
   constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, public translate: TranslateService, private API: APIRequestsService) {
     this.acquiringUrl = configuration.getConfig().acquiringAPIUrl;
-
     this.languageStream$.subscribe((val) => {
       this.currentLanguage = val
     });
@@ -162,15 +161,6 @@ export class TableInfoService {
     return this.http.get<DocTypes[]>(this.acquiringUrl + 'identificationdocument', HTTP_OPTIONS);
   }
 
-  GetAllProducts() {
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Accept-Language': this.currentLanguage,
-      }),
-    }
-    return this.http.get<Product[]>(this.acquiringUrl + 'product', HTTP_OPTIONS);
-  }
-
   GetAddressByZipCode(cp4: number, cp3: number) {
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
@@ -210,15 +200,6 @@ export class TableInfoService {
         reject(response);
       })
     });
-  }
-
-  GetAllShoppingCenters(postalCode: string) {
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Accept-Language': this.currentLanguage,
-      }),
-    }
-    return this.http.get<ShoppingCenter[]>(this.acquiringUrl + 'shop/shoppingCenter?postalCode=' + postalCode, HTTP_OPTIONS);
   }
 
   GetAllSearchTypes(userType: UserTypes) {

@@ -23,7 +23,6 @@ export class AceitacaoComponent implements OnInit {
   constructor(private router: ActivatedRoute, private processService: ProcessService, public appComponent: AppComponent) {
 
     this.appComponent.toggleSideNav(false);
-
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.process = result;
     });

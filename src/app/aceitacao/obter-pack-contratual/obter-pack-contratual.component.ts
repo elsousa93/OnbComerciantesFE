@@ -28,7 +28,6 @@ export class ObterPackContratualComponent implements OnInit {
 
   public docToShow: { tipo: string, interveniente: string, dataEntrada: string };
 
-
   validatedDocuments: boolean = false;
   files?: File[] = [];
   fileToDelete?: File;
@@ -123,8 +122,6 @@ export class ObterPackContratualComponent implements OnInit {
       const sizeFile = file.size / (1024 * 1024);
       var extensoesPermitidas = /(.pdf)$/i;
       const limSize = 10;
-      // this.result = this.http.put(this.url + 'ServicesComprovativos/', this.newComp.clientId);
-      // if (this.result != null) {
       if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
         if (event.target.files && files[i]) {
           var reader = new FileReader();
@@ -140,15 +137,10 @@ export class ObterPackContratualComponent implements OnInit {
         } else {
           alert("Verifique o tipo / tamanho do ficheiro");
         }
-
       }
-      // }
-
     }
     this.logger.debug(this.files);
   }
-
-
 
   search(/*url: any, imgName: any*/ file: File) {
     let blob = new Blob([file], { type: file.type });
@@ -161,7 +153,6 @@ export class ObterPackContratualComponent implements OnInit {
     text-align: center;
     border: 3px solid green;
     `);
-
   }
 
   confirmDelete() {

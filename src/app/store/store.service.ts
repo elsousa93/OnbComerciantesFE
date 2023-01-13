@@ -74,16 +74,6 @@ export class StoreService {
     return this.http.get<ShopActivities[]>(this.baseUrl + 'shop/activity', HTTP_OPTIONS);
   }
 
-  GetAllShopProducts() {
-    var HTTP_OPTIONS = {
-      headers: new HttpHeaders({
-        'Accept-Language': this.currentLanguage,
-
-      }),
-    }
-    return this.http.get<Product[]>(this.baseUrl + 'product', HTTP_OPTIONS);
-  }
-
   getProcessShopDetails(processId: string, shopId: string) {
     return this.http.get<ShopDetailsAcquiring>(this.baseUrl + 'process/' + processId + '/merchant/' + 'shop/' + shopId);
   }
@@ -111,14 +101,6 @@ export class StoreService {
     return this.http.delete(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId);
   }
 
-  activitiesbycode(code: string): any {
-    return this.http.get(this.baseUrl + 'v1/config/activities/' + code);
-  }
-
-  subzonesNearby(zipCode: string): any {
-    return this.http.get(this.baseUrl + 'address/' + zipCode + '/shoppingcenter');
-  }
-
   getShopEquipmentConfigurationsFromProcess(processId: string, shopId: string) {
     return this.http.get<ShopEquipment>(this.baseUrl + 'process/' + processId + '/merchant/shop/' + shopId + '/equipment');
   }
@@ -139,8 +121,5 @@ export class StoreService {
 
   updateShopEquipmentConfigurationsInSubmission(submissionId: string, shopId: string, equipId: string, newShopEquipment: ShopEquipment) {
     return this.http.put<SimplifiedReference>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment/' + equipId, newShopEquipment);
-  }
-
-  addDocumentToShop(submissionId: string, shopId: string,) {
   }
 }

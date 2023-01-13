@@ -8,7 +8,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { ContractPackLanguage } from '../../table-info/ITable-info.interface';
 
-
 @Component({
   selector: 'app-pack-contratual',
   templateUrl: './pack-contratual.component.html'
@@ -47,12 +46,9 @@ export class PackContratualComponent implements OnInit {
     this.tableInfoService.GetContractualPackLanguage().subscribe(result => {
       this.contractLanguage = result;
     });
-
-
   }
 
   ngOnInit(): void {
-
     var context = this;
   }
 
@@ -108,7 +104,6 @@ export class PackContratualComponent implements OnInit {
       }
     }
     this.logger.debug(this.files);
-
   }
 
   openSubmeterPedidoModal() {
