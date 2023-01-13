@@ -589,7 +589,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                     this.clientContext.newSubmission.documents.push(acquiringFile);
                     this.fetchDocumentDescriptions();
                   } else {
-                    this.clientContext.newSubmission.documents.push(r);
+                    if(doc.type !== '0034')
+                      this.clientContext.newSubmission.documents.push(r);
                   }
                 });
               });
@@ -893,9 +894,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
           if (documents.length > 0) {
             documents.forEach(doc => {
-              context.documentService.SubmissionPostDocument(submissionID, doc).subscribe(result => {
-                console.log('documento adicionado: ', result);
-              });
+              if (doc.documentType !== '0001') { 
+                context.documentService.SubmissionPostDocument(submissionID, doc).subscribe(result => {
+                  console.log('documento adicionado: ', result);
+                });
+              }
             });
           }
 
