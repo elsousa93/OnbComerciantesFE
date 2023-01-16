@@ -201,7 +201,6 @@ export class ClientCharacterizationComponent implements OnInit {
 
   initializeFormControlCRC() {
     this.logger.debug("intializecrcform");
-    this.logger.debug("a");
     this.crcCode = this.form.get("crcCode").value;
     this.logger.debug(this.processClient.capitalStock.date);
     var b = this.datepipe.transform(this.processClient.capitalStock.date, 'MM-dd-yyyy').toString();

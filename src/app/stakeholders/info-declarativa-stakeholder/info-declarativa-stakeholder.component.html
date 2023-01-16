@@ -92,7 +92,7 @@
                         {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img src="assets/images/exit_to_app.svg"
                           style="height: 25px !important; vertical-align: sub;">
                       </button>
-                      <button id="btn5a3" [routerLink]="['/']" *ngIf="returned == 'consult'"
+                      <button id="btn5a3" [routerLink]="['/']" *ngIf="returned != 'consult'"
                         class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
                         wappler-command="editContent">
                         {{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/cancel.svg"

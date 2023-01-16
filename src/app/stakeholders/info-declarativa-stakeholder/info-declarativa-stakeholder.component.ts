@@ -45,6 +45,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
   updatedStakeholderEvent: Observable<{ stake: IStakeholders, idx: number }>;
   previousStakeholderEvent: Observable<number>;
+  public visitedStakes: string[] = [];
 
   emitPreviousStakeholder(idx) {
     this.previousStakeholderEvent = idx;
@@ -174,8 +175,10 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       }
 
       this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
-        if (this.currentIdx < (this.stakesLength - 1)) {
-          this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder.stakeholderAcquiring, idx: this.currentIdx }));
+        this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+        this.visitedStakes = Array.from(new Set(this.visitedStakes));
+        if (this.visitedStakes.length < (this.stakesLength)) {
+          this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
         } else {
           this.data.updateData(false, 6, 3);
           this.route.navigate(['info-declarativa-lojas']);

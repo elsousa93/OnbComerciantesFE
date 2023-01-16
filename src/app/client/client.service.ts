@@ -14,7 +14,7 @@ export class ClientService {
   private urlOutbound: string;
 
   constructor(private logger: LoggerService,
-    private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private API: APIRequestsService) {
+    private http: HttpClient, private configuration: AppConfigService, private API: APIRequestsService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.urlOutbound = configuration.getConfig().outboundUrl;
   }

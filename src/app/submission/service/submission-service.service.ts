@@ -15,7 +15,7 @@ export class SubmissionService {
   currentLanguage: string;
   languageStream$ = new BehaviorSubject<string>('');
 
-  constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private API: APIRequestsService) {
+  constructor(private http: HttpClient, private configuration: AppConfigService, private API: APIRequestsService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.languageStream$.subscribe((val) => {
       this.currentLanguage = val

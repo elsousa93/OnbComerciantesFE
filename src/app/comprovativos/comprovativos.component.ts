@@ -500,7 +500,11 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   getDocumentDescription(documentType: string) {
-    return this.documents?.find(doc => doc.code === documentType).description;
+    if (documentType == undefined) {
+      return 'desconhecido';
+    } else {
+      return this.documents?.find(doc => doc.code === documentType).description;
+    }
   }
 
   back() {

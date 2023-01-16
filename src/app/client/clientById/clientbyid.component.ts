@@ -198,9 +198,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit(): void {
-    console.log('Valor do Characterization: ', this.clientCharacterizationComponent);
-  }
+  ngAfterViewInit(): void {}
 
   async getMerchantInfo() {
     try {
