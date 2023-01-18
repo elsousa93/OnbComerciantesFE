@@ -28,6 +28,8 @@ export class DevolucaoComponent implements OnInit {
   public processNumber: string;
   public issues: BusinessIssueViewModel
   public processHistoryItems: SearchProcessHistory;
+  public selectedIssue: BusinessIssueViewModel;
+  public selectedHistoryGuid: string;
 
   constructor(private logger: LoggerService,
     private route: Router, private data: DataService,
@@ -89,6 +91,7 @@ export class DevolucaoComponent implements OnInit {
 
     this.processService.getProcessHistory(this.processId).then(result => {
       this.processHistoryItems = result.result;
+      this.processHistoryItems.items.sort((b, a) => new Date(b.whenStarted).getTime() - new Date(a.whenStarted).getTime());
       this.processHistoryItems.items.forEach(process => {
         process.whenStarted = this.datePipe.transform(process.whenStarted, 'dd-MM-yyyy').toString();
         if (process.processState === 'Incomplete') {
@@ -105,6 +108,15 @@ export class DevolucaoComponent implements OnInit {
           process.processState = this.translate.instant('searches.contractAcceptance')
         }
       });
+    });
+  }
+
+  getHistoryIssueDetails(historyGuid: string) {
+    this.selectedHistoryGuid = historyGuid;
+    this.processService.getProcessIssuesById(this.processId, historyGuid).subscribe(res => {
+      if (res.process.length != 0) {
+        this.selectedIssue = res;
+      }
     });
   }
 

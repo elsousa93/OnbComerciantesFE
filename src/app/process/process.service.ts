@@ -97,8 +97,11 @@ export class ProcessService {
     return this.http.post(this.baseUrl + 'process/' + processId + '/' + state + '/document', document);
   }
 
-  getProcessIssuesById(processId: string) {
-    return this.http.get<BusinessIssueViewModel>(this.baseUrl + 'process/' + processId + '/issue');
+  getProcessIssuesById(processId: string, processHistoryId?: string) {
+    var url = this.baseUrl + 'process/' + processId + '/issue'
+    if (processHistoryId != null)
+      url = url + '?processHistoryId=' + processHistoryId;
+    return this.http.get<BusinessIssueViewModel>(url);
   }
 
   getProcessHistory(processId: string) {

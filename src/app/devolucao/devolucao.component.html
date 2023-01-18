@@ -99,78 +99,6 @@
                 <h3 class="text-primary mt-5 ps-0" style="margin-bottom: 20px;"><img src="assets/images/gavel.svg"
                     style="height: 30px; vertical-align: bottom;">&nbsp;{{'acceptance.opinions'|translate|uppercase}}
                 </h3>
-                <h4 class="mt-0 mb-0 ps-0">Cliente Empresa</h4>
-                <div class="row ms-0 me-0">
-                  <div class="col-12 mt-4 pt-0 ps-0 pe-0">
-                    <div class="table-responsive mb-5">
-                      <table class="table">
-                        <thead class="text-primary table-primary">
-                          <tr class="table-white text-primary">
-                            <th scope="col" class="text-center text-primary bg-light table-white">
-                              {{'acceptance.name'|translate}}</th>
-                            <th scope="col" class="text-center bg-light">NIPC</th>
-                            <th scope="col" class="text-center bg-white">{{'acceptance.clientNumber'|translate}}&nbsp;
-                            </th>
-                            <th scope="col" class="text-center bg-white">BEF</th>
-                            <th scope="col" class="text-center bg-white">PEP</th>
-                            <th scope="col" class="text-center bg-white">{{'acceptance.eligibility'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'acceptance.opinionNumber'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">Compliance Office</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td class="text-primary text-center">{{'generalKeywords.yes'|translate}} </td>
-                            <td class="text-primary text-center">572612010</td>
-                            <td class="text-primary text-center">-</td>
-                            <td class="text-primary text-center">{{'generalKeywords.no'|translate}}</td>
-                            <td class="text-primary text-center">{{'generalKeywords.no'|translate}}</td>
-                            <td class="text-primary text-center">-</td>
-                            <td class="text-primary text-center">-</td>
-                            <td class="text-primary text-center">-</td>
-                          </tr>
-                          <tr></tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                <h4 class="mt-0 mb-0 ps-0">{{'stakeholder.title'|translate}}</h4>
-                <div class="row ms-0 me-0">
-                  <div class="col-12 mt-4 pt-0 ps-0 pe-0">
-                    <div class="table-responsive mb-5">
-                      <table class="table">
-                        <thead class="text-primary table-primary">
-                          <tr class="table-white text-primary">
-                            <th scope="col" class="text-center text-primary bg-light table-white">
-                              {{'acceptance.name'|translate}}</th>
-                            <th scope="col" class="text-center bg-light">NIF</th>
-                            <th scope="col" class="text-center bg-white">{{'acceptance.clientNumber'|translate}}&nbsp;
-                            </th>
-                            <th scope="col" class="text-center bg-white">BEF</th>
-                            <th scope="col" class="text-center bg-white">PEP</th>
-                            <th scope="col" class="text-center bg-white">{{'acceptance.eligibility'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">{{'acceptance.opinionNumber'|translate}}</th>
-                            <th scope="col" class="text-center bg-white">Compliance Office</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td class="text-primary text-center">{{'generalKeywords.yes'|translate}} </td>
-                            <td class="text-primary text-center">572612010</td>
-                            <td class="text-primary text-center">-</td>
-                            <td class="text-primary text-center">{{'generalKeywords.no'|translate}}</td>
-                            <td class="text-primary text-center">{{'generalKeywords.no'|translate}}</td>
-                            <td class="text-primary text-center">-</td>
-                            <td class="text-primary text-center">-</td>
-                            <td class="text-primary text-center">-</td>
-                          </tr>
-                          <tr></tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
                 <div class="col mt-4 ms-0 ps-0">
                   <hr>
                   <nav
@@ -211,7 +139,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr *ngFor="let history of processHistoryItems?.items">
+                      <tr *ngFor="let history of processHistoryItems?.items" (click)="getHistoryIssueDetails(history.historyGuid)" [ngClass]="{'row-selected': history.historyGuid == selectedHistoryGuid}">
                         <td class="text-primary text-center">{{history.idProcess}}</td>
                         <td class="text-primary text-center">{{history.processState}}</td>
                         <td class="text-primary text-center">{{history.whenStarted}}</td>
@@ -237,13 +165,27 @@
                       </tr>
                     </thead>
                     <tbody>
+                      <tr *ngFor="let issue of selectedIssue?.process">
+                        <td class="text-primary text-center">Processo</td>
+                        <td class="text-primary text-start">{{issue?.issueDescription}}</td>
+                      </tr>
                       <tr>
-                        <td scope="row" class="text-primary text-center">228060</td>
-                        <td class="text-primary text-center">Certidão do Registo Comercial</td>
-                        <td class="text-primary text-start">Os intervenientes associados ao processo não estão de acordo
-                          com os comprovativos de Sociedade. Queiram enviar documentos que sustentem a sua intervenção.
+                        <td class="text-primary text-center">
+                          {{ getEntityName('merchant', selectedIssue?.merchant?.merchant?.id) }}
                         </td>
-                        <td class="text-primary text-center"></td>
+                        <td class="text-primary text-start">{{selectedIssue?.merchant?.selectedIssue[0]?.issueDescription}}</td>
+                      </tr>
+                      <tr *ngFor="let issue of selectedIssue?.stakeholders">
+                        <td class="text-primary text-center">{{getEntityName('stake', issue?.stakeholder?.id)}}</td>
+                        <td class="text-primary text-start">{{issue?.selectedIssue[0]?.issueDescription}}</td>
+                      </tr>
+                      <tr *ngFor="let issue of selectedIssue?.shops">
+                        <td class="text-primary text-center">{{getEntityName('shop', issue?.shop?.id)}}</td>
+                        <td class="text-primary text-start">{{issue?.selectedIssue[0]?.issueDescription}}</td>
+                      </tr>
+                      <tr *ngFor="let issue of selectedIssue?.documents">
+                        <td class="text-primary text-center">{{getEntityName('document', issue?.document?.id)}}</td>
+                        <td class="text-primary text-start">{{issue?.selectedIssue[0]?.issueDescription}}</td>
                       </tr>
                     </tbody>
                   </table>
