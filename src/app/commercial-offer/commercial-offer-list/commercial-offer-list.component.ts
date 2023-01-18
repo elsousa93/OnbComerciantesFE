@@ -458,7 +458,7 @@ export class CommercialOfferListComponent implements OnInit {
       this.form.get("isUnicre").setValue(true);
       this.changeUnicre(true);
     }
-    this.form.get("productPackKind").setValue(this.currentStore.pack?.packId);
+    //this.form.get("productPackKind").setValue(this.currentStore.pack?.packId);
   }
 
   changeUnicre(bool: boolean) {

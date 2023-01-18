@@ -112,6 +112,7 @@ export class StakeholdersComponent implements OnInit {
   sameNIFStake: boolean = false;
 
   isClient: boolean;
+  contractAssociated: boolean = false;
 
   constructor(public modalService: BsModalService, private datePipe: DatePipe,
     private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, 
@@ -200,17 +201,22 @@ export class StakeholdersComponent implements OnInit {
 
   setFormData() {
     var stakeForm = this.editStakes.get("stake");
-    stakeForm.get("contractAssociation").setValue('true');
     var proxy = this.currentStakeholder.stakeholderAcquiring.isProxy != null ? this.currentStakeholder.stakeholderAcquiring.isProxy + '' : 'false';
     stakeForm.get("proxy").setValue(proxy);
     stakeForm.get("contractAssociation").setValue(this.currentStakeholder.stakeholderAcquiring.signType === 'CitizenCard' ? 'true' : 'false');
 
-    if (stakeForm.get("documentType") == null) {
+    if (this.currentStakeholder.stakeholderAcquiring.identificationDocument?.number == null) { //stakeForm.get("documentType") == null
       stakeForm.get("flagRecolhaEletronica").setValue(false);
       stakeForm.get("NIF").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalId);
       stakeForm.get("Role").setValue("");
       stakeForm.get("Country").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country);
-      stakeForm.get("ZIPCode").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode);
+      if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode.includes(" ")) {
+        var arr = this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode.split(" ");
+        stakeForm.get("ZIPCode").setValue(arr[0]);
+      } else {
+        stakeForm.get("ZIPCode").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode);
+      }
+
       stakeForm.get("Locality").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalArea);
       stakeForm.get("Address").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.address);
     } else {
@@ -255,6 +261,7 @@ export class StakeholdersComponent implements OnInit {
 
         if (stakeForm.get("contractAssociation").value === 'true') {
           this.currentStakeholder.stakeholderAcquiring.signType = 'CitizenCard';
+          this.contractAssociated = true;
         } else {
           this.currentStakeholder.stakeholderAcquiring.signType = 'NotSign';
         }
@@ -265,15 +272,22 @@ export class StakeholdersComponent implements OnInit {
         if (stakeForm.get("documentType") == null) { 
           this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address = stakeForm.get("Address").value;
           this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country = stakeForm.get("Country").value;
-          this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality = stakeForm.get("Locality").value;
-          this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode = stakeForm.get("ZIPCode").value;
+          if (stakeForm.get("ZIPCode").value.includes(" ")) {
+            var arr = stakeForm.get("ZIPCode").value.split(" ");
+            this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode = arr[0];
+          } else {
+            this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode = stakeForm.get("ZIPCode").value;
+          }
           this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea = stakeForm.get("Locality").value;
-
           if (this.submissionClient.merchantType.toLocaleLowerCase() === 'entrepeneur' || this.submissionClient.merchantType === '02') {
             this.submissionClient.headquartersAddress.address = stakeForm.get("Address").value;
             this.submissionClient.headquartersAddress.country = stakeForm.get("Country").value;
-            this.submissionClient.headquartersAddress.locality = stakeForm.get("Locality").value;
-            this.submissionClient.headquartersAddress.postalCode = stakeForm.get("ZIPCode").value;
+            if (stakeForm.get("ZIPCode").value.includes(" ")) {
+              var arr = stakeForm.get("ZIPCode").value.split(" ");
+              this.submissionClient.headquartersAddress.postalCode = arr[0];
+            } else {
+              this.submissionClient.headquartersAddress.postalCode = stakeForm.get("ZIPCode").value;
+            }
             this.submissionClient.headquartersAddress.postalArea = stakeForm.get("Locality").value;
             this.clientService.EditClient(this.submissionId, this.submissionClient).subscribe(result => { });
           }
@@ -294,8 +308,10 @@ export class StakeholdersComponent implements OnInit {
           if (this.visitedStakes.length < (this.stakesLength)) {
             this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
           } else {
-            this.data.updateData(true, 2);
-            this.route.navigate(['store-comp']);
+            if (this.contractAssociated) {
+              this.data.updateData(true, 2);
+              this.route.navigate(['store-comp']);
+            }
           }
         }, error => {
         });

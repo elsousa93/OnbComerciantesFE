@@ -25,7 +25,7 @@ export function validPhoneNumber(control: AbstractControl): ValidationErrors | n
   //Se ambos existirem, proceder à validação do indicativo/numero
   let phoneNumber = control.get("phoneNumber").value;
   let countryCode = control.get("countryCode").value;
-  if (countryCode == "+351") { //Indicativo de Portugal
+  if (countryCode == "PT") { //Indicativo de Portugal
     if (phoneNumber && phoneNumber.length == 9 && (phoneNumber.startsWith('91') || phoneNumber.startsWith('92') || phoneNumber.startsWith('93') || phoneNumber.startsWith('96'))) {
       return null;
     } else {
@@ -55,7 +55,7 @@ export function validPhoneAndMobileNumber(control: AbstractControl): ValidationE
   //Se ambos existirem, proceder à validação do indicativo/numero
   let phoneNumber = control.get("phoneNumber").value;
   let countryCode = control.get("countryCode").value;
-  if (countryCode == "+351") { //Indicativo de Portugal
+  if (countryCode == "PT") { //Indicativo de Portugal
     if (phoneNumber && phoneNumber.length == 9 && (phoneNumber.startsWith('91') || phoneNumber.startsWith('92') || phoneNumber.startsWith('93') || phoneNumber.startsWith('96') || phoneNumber.startsWith('2'))) {
       return null;
     } else {

@@ -107,18 +107,23 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     this.isVisible = paper;
     var context = this;
     if (!paper) {
-      this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
-        var stakeholders = result.result;
-        stakeholders.forEach(function (value, index) {
-          context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(res => {
-            context.form.addControl(index + "", new FormControl(null, Validators.required));
-            context.submissionStakeholders.push(res);
-          }, error => {
-            console.log("Erro a adicionar stakeholder");
+      if (this.submissionStakeholders.length == 0) { 
+        this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
+          var stakeholders = result.result;
+          stakeholders.forEach(function (value, index) {
+            context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).then(res => {
+              var stake = res.result;
+              if (stake.signType == 'CitizenCard') {
+                context.form.addControl(stake.id, new FormControl(stake.signType, Validators.required));
+                context.submissionStakeholders.push(stake);
+              }
+            }, error => {
+              console.log("Erro a adicionar stakeholder");
+            });
           });
+        }, error => {
         });
-      }, error => {
-      });
+      }
     }
   }
 
@@ -130,7 +135,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
         if (context.isVisible) {
           signType = "CitizenCard";
         } else {
-          signType = context.form.get(index + "").value;
+          signType = context.form.get(stake.id).value;
         }
         stake["signType"] = signType;
         this.stakeholderService.UpdateStakeholder(this.submissionId, stake.id, stake).subscribe(res => {

@@ -104,10 +104,9 @@
                     <tbody>
                       <tr class="clickable" *ngFor="let stakeholder of submissionStakeholders; let i = index;">
                         <td class="text-primary text-center align-middle"> {{stakeholder.shortName}} </td>
-                        <td class="text-primary text-center align-middle"> {{stakeholder.fiscalId == undefined ? "-" :
-                          stakeholder.fiscalId}} </td>
+                        <td class="text-primary text-center align-middle"> {{stakeholder.fiscalId == undefined ? "-" : stakeholder.fiscalId}} </td>
                         <td class="text-primary text-center align-middle">
-                          <select *ngIf="!isVisible" id="{{i + ''}}" name="{{i + ''}}" formControlName="{{i + ''}}">
+                          <select *ngIf="!isVisible" id="{{stakeholder.id}}" name="{{stakeholder.id}}" formControlName="{{stakeholder.id}}">
                             <option value="OneTimePassword">OTP</option>
                             <option value="DigitalCitizenCard">Chave Móvel Digital</option>
                             <option value="CitizenCard">CC</option>

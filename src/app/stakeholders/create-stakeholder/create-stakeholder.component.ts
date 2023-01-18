@@ -518,8 +518,8 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.selected = true;
     this.currentStakeholder = emittedStakeholder.stakeholder;
     this.stakesList.forEach(val => {
-      if (val["stakeholderNumber"] != emittedStakeholder.stakeholder.address.stakeholderNumber) {
-        this.potentialClientIds.push(emittedStakeholder.stakeholder.address.stakeholderNumber);
+      if (val["stakeholderNumber"] != emittedStakeholder.stakeholder.stakeholderNumber) {
+        this.potentialClientIds.push(emittedStakeholder.stakeholder.stakeholderNumber);
       }
     });
   }
@@ -645,7 +645,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         binary: this.prettyPDF.file,
         fileType: 'PDF',
       },
-      validUntil: new Date(formatedDate).toISOString(),
+      validUntil: new Date(this.prettyPDF.expirationDate).toISOString(),
       data: null
     };
 
@@ -677,7 +677,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       },
       "phone1": {},
       "phone2": {},
-      "signType": "DigitalCitizenCard"
+      "signType": "DigitalCitizenCard",
     }
 
     this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
@@ -685,6 +685,9 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
         duration: 4000,
         panelClass: ['snack-bar']
+      });
+      this.stakeholderService.AddNewDocumentStakeholder(this.submissionId, stakeholderToInsert.id, documentCC).subscribe(res => {
+        
       });
       this.emitInsertedStake(of(stakeholderToInsert));
       this.clearForm();

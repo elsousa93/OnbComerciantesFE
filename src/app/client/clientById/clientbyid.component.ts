@@ -148,7 +148,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.dataCC = this.route.getCurrentNavigation().extras.state["dataCC"];
       this.isClient = this.route.getCurrentNavigation().extras.state["isClient"];
       this.isFromSearch = this.route.getCurrentNavigation().extras.state["isFromSearch"];
-      this.potentialClientIds = this.route.getCurrentNavigation().extras.state["potentialClientIds"];
+      this.potentialClientIds = JSON.parse(this.route.getCurrentNavigation().extras.state["potentialClientIds"]);
     }
 
     if (localStorage.getItem("clientName") != null) {

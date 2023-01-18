@@ -569,7 +569,7 @@ export class ClientComponent implements OnInit {
         dataCC: this.dataCC,
         isClient: this.isClient,
         isFromSearch: true,
-        potentialClientIds: this.potentialClientIds
+        potentialClientIds: JSON.stringify(this.potentialClientIds)
       }
     };
 
@@ -658,6 +658,7 @@ export class ClientComponent implements OnInit {
   clientId: string
 
   aButtons(id: boolean, clientId: string, isClient: boolean) {
+    this.potentialClientIds = [];
     if (id == true) {
       this.showSeguinte = true
       this.clientId = clientId;
@@ -689,7 +690,8 @@ export class ClientComponent implements OnInit {
         NIFNIPC: NIFNIPC + "",
         comprovativoCC: this.prettyPDF,
         dataCC: this.dataCCcontents,
-        isFromSearch: true
+        isFromSearch: true,
+        potentialClientIds: JSON.stringify(this.potentialClientIds)
       }
     };
 

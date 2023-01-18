@@ -9,6 +9,7 @@ import { TableInfoService } from '../table-info/table-info.service';
 import { APIRequestsService } from '../apirequests.service';
 import { QueuesService } from '../queues-detail/queues.service';
 import { AppConfigService } from '../app-config.service';
+import { PostDocument } from '../submission/document/ISubmission-document';
 
 @Injectable({
   providedIn: 'root'
@@ -98,6 +99,10 @@ export class StakeholderService {
   DeleteStakeholder(submissionId: string, stakeholderId: string) {
     this.logger.info(`Deleting stakeholder ${stakeholderId} for submission ${submissionId}`)
     return this.http.delete(this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId);
+  }
+
+  AddNewDocumentStakeholder(submissionId: string, stakeholderId: string, document: PostDocument) {
+    return this.http.post(this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId + '/document', document);
   }
 
 
