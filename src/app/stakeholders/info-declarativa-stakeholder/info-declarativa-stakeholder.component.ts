@@ -123,7 +123,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
         this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepPoliticalPublicJobs' } });
         pep.get("pepType").setValue(stake.pep?.pepType);
       }
-    } else if (stake.phone1 != null) {
+    } else {
       this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
       this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
       this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepRelations' } });
