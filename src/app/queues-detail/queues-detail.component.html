@@ -93,13 +93,13 @@
                     <div class="row ms-0 me-0">
                       <div class="col-6 ms-0 me-0 ps-0 pe-5">
                         <p class="titulo-form-simples mt-0">{{'searches.documentType'|translate}}</p><select
-                          id="select3" disabled class="form-select  campo_form">
+                          id="select3" disabled class="form-select campo_form" > <!--formControlName=-->
                         </select>
                       </div>
                       <div class="col-6 ms-0 me-0 ps-0 pe-5">
                         <p class="titulo-form-simples" style="margin-top: 0px;">{{'searches.documentNumber'|translate}}
                         </p>
-                        <input id="text3" name="text3" type="text" class="form-control campo_form" disabled>
+                        <input id="text3" name="text3" type="text" class="form-control campo_form" disabled><!--formControlName=-->
                       </div>
                     </div>
                     <button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1" wappler-command="editContent">
@@ -143,15 +143,15 @@
                               <td class="text-primary text-center">{{stake.clientId}}</td>
                               <td *ngIf="queueName === 'risk'" class="text-primary text-center">7</td>
                               <td class="text-primary text-center">
-                                <input class="form-check-input" type="radio" value="true" id="radio8" name="radio8"
-                                  style="margin-left: 5px; margin-right: 5px;" [formControlName]="stake.id"
+                                <input class="form-check-input" type="radio" [value]=true id="radio8" name="{{stake.id}}"
+                                  style="margin-left: 5px; margin-right: 5px;" formControlName="{{stake.id}}"
                                   (click)="check()"><label class="form-check-label radio"
-                                  for="radio8">{{'queues.favorable'|translate}}&nbsp;</label>
+                                  for="{{stake.id}}">{{'queues.favorable'|translate}}&nbsp;</label>
 
                                 <input class="form-check-input" style="margin-left: 15px; margin-right: 5px;"
-                                  [formControlName]="stake.id" type="radio" value="false" id="radio8"
-                                  name="radio8"><label class="form-check-label radio pe-5"
-                                  for="radio8">{{'queues.unfavorable'|translate}}&nbsp;</label>
+                                  formControlName="{{stake.id}}" type="radio" [value]=false id="radio8"
+                                  name="{{stake.id}}" (click)="uncheck()"><label class="form-check-label radio pe-5"
+                                  for="{{stake.id}}">{{'queues.unfavorable'|translate}}&nbsp;</label>
                               </td>
                               <td *ngIf="queueName === 'eligibility'" class="text-primary text-center">
                                 <img src="assets/images/description.svg"
@@ -221,7 +221,7 @@
                               <td class="text-primary text-center">JCB</td>
                               <td class="text-primary text-center">-</td>
                               <td class="text-primary text-center">
-                                <select name="MCC" formControlName="shop.id">
+                                <select name="MCC" formControlName="{{shop.id}}">
                                   <option value="" disabled>A definir</option>
                                   <option>Opção</option><!-- Quando tivermos a reference data do MCC -->
                                 </select>

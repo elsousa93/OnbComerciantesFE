@@ -60,6 +60,22 @@ export interface ExternalState {
     riskAssessment?: RiskAssessment
 }
 
+export interface Hits {
+  code?: string
+  value?: string
+}
+
+export interface PostRisk {
+  processNumber?: string,
+  hasRisk?: string,
+  riskLevel?: number,
+  hits?: Hits[],
+  complianceEvaluation?: boolean,
+  complianceEvaluationOperator?: string,
+  complianceEvaluationDate?: string,
+  complianceEvaluationObservations?: string
+}
+
 export enum State {
     CONTRACT_ACCEPTANCE = "ContractAcceptance",
     STANDARD_INDUSTRY_CLASSIFICATION_CHOICE = "StandardIndustryClassificationChoice",

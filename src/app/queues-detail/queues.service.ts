@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { State } from './IQueues.interface';
+import { Hits, PostRisk, State } from './IQueues.interface';
 import { PostDocument } from '../submission/document/ISubmission-document';
 import { APIRequestsService } from '../apirequests.service';
 import { HttpMethod } from '../enums/enum-data';
@@ -14,15 +14,17 @@ import { AppConfigService } from '../app-config.service';
 export class QueuesService {
 
   private acquiringUrl: string;
+  private outboundUrl: string;
 
   currentLanguage: string;
 
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
   constructor(private logger: LoggerService,
-    private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService,
+    private http: HttpClient, private configuration: AppConfigService,
     private APIService: APIRequestsService) {
     this.acquiringUrl = configuration.getConfig().acquiringAPIUrl;
+    this.outboundUrl = configuration.getConfig().outboundUrl;
     this.languageStream$.subscribe((val) => {
       this.currentLanguage = val
     });
@@ -108,5 +110,20 @@ export class QueuesService {
         resolve(stakeholder);
       })
     });
+  }
+
+  getAssessmentRisk(fiscalId: string, clientType: string, assessmentPost: Hits[]) {
+    var url = this.acquiringUrl + 'assessment/' + fiscalId + '/risk' + '&clientType=' + clientType;
+    return this.APIService.callAPIOutbound(HttpMethod.POST, url, "por mudar", "por mudar", "por mudar", "por mudar", assessmentPost);
+  }
+
+  getAssessmentSendRisk(clientId: string, risk: PostRisk) { 
+    var url = this.acquiringUrl + 'assessment/' + clientId + '/send-risk';
+    return this.APIService.callAPIOutbound(HttpMethod.POST, url, "por mudar", "por mudar", "por mudar", "por mudar", risk);
+  }
+
+  getAssessmentEligibility(fiscalId: string, clientType: string, assessmentPost: Hits[]) {
+    var url = this.acquiringUrl + 'assessment/' + fiscalId + '/eligibility' + '&clientType=' + clientType;
+    return this.APIService.callAPIOutbound(HttpMethod.POST, url, "por mudar", "por mudar", "por mudar", "por mudar", assessmentPost);
   }
 }

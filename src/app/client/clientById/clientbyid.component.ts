@@ -730,18 +730,18 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         console.log("resultado: ", res);
       });
 
-      if (!this.updateClient && this.returned == null) {
-        var stakeholder = this.clientContext.newSubmission.stakeholders;
-        stakeholder.forEach(function (value, idx) {
-          if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
-            if (value.fiscalId === client.fiscalId) {
-              context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
-                value.id = result.id;
-              });
-            }
-          }
-        });
-      }
+      //if (!this.updateClient && this.returned == null) {
+      //  var stakeholder = this.clientContext.newSubmission.stakeholders;
+      //  stakeholder.forEach(function (value, idx) {
+      //    if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
+      //      if (value.fiscalId === client.fiscalId) {
+      //        context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+      //          value.id = result.id;
+      //        });
+      //      }
+      //    }
+      //  });
+      //}
 
       if (!this.compareArraysStakes(this.submissionStakeholders, this.clientContext.newSubmission.stakeholders)) {
         var stakeholders = this.clientContext.newSubmission.stakeholders;
@@ -767,6 +767,10 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
               if (value.fiscalId !== client.fiscalId) {
                 context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+                });
+              } else {
+                context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+                  value.id = result.id;
                 });
               }
             } else {

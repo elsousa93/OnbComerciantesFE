@@ -62,10 +62,6 @@ export class QueuesDetailComponent implements OnInit {
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
     }
 
-    this.ngOnInit();
-
-    this.logger.debug('Process Id ' + this.processId);
-
     // Preencher os dados da fila de trabalho consoante o processId recebido
     this.fetchStartingInfo();
     this.data.updateData(true, 0);
@@ -188,14 +184,13 @@ export class QueuesDetailComponent implements OnInit {
   }
 
   fetchStartingInfo() {
-
     this.queuesInfo.GetProcessStakeholders(this.processId).then(success => {
       var stakeholdersList = success;
       this.stakesList = stakeholdersList;
       this.loadShopsFromProcess().then(next => {
       }, reject => {
       })
-    })
+    });
   }
 
   nextPage() {
@@ -264,6 +259,10 @@ export class QueuesDetailComponent implements OnInit {
 
   check() {
     this.checkButton = true;
+  }
+
+  uncheck() {
+    this.checkButton = false;
   }
 
   concludeOpinion(/*state, externalState*/) {

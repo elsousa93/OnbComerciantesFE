@@ -137,6 +137,7 @@ export class StoreIbanComponent implements OnInit, OnChanges {
     this.IBANToShow = null;
     this.fileToDelete = null;
     this.formStores.get('bankIban').setValue('');
+    this.fileEmitter.emit(null);
   }
 
   selectFile(event: any) {
