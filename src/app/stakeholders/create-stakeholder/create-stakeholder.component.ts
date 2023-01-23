@@ -554,9 +554,16 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         stakeholderToInsert["clientId"] = this.currentStakeholder["stakeholderNumber"];
         stakeholderToInsert["fiscalAddress"] = stakeholderToInsert["address"];
         stakeholderToInsert["phone1"] = {
-          countryCode: stakeholderToInsert["contacts"]["phone1"]["countryCode"],
+          countryCode: stakeholderToInsert["contacts"]["phone1"]["country"],
           phoneNumber: stakeholderToInsert["contacts"]["phone1"]["phoneNumber"]
         }
+
+        if (stakeholderToInsert["phone2"] != null)
+        stakeholderToInsert["phone2"] = {
+          countryCode: stakeholderToInsert["contacts"]["phone2"]["country"],
+          phoneNumber: stakeholderToInsert["contacts"]["phone2"]["phoneNumber"]
+        }
+
         stakeholderToInsert["email"] = stakeholderToInsert["contacts"]["email"];
         stakeholderToInsert["contacts"] = null;
         stakeholderToInsert["contactName"] = stakeholderToInsert["shortName"];
@@ -570,8 +577,13 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
             checkDigit: stakeholderToInsert["identificationDocument"]["checkDigit"],
           }
         }
-
+        
         stakeholderToInsert["potentialClientIds"] = this.potentialClientIds;
+        if (stakeholderToInsert["signType"] == null) {
+          stakeholderToInsert["signType"] = "CitizenCard";
+        } else {
+          stakeholderToInsert["signType"] = stakeholderToInsert["signType"];
+        }
 
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
           stakeholderToInsert.id = result["id"];
@@ -596,17 +608,14 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
       var stakeholderToInsert: IStakeholders = {
         "fiscalId": this.formNewStakeholder.get("nif")?.value != '' ? this.formNewStakeholder.get("nif")?.value : this.formNewStakeholder.get("nipc")?.value,
-        "identificationDocument": {
-          "type": this.formStakeholderSearch.get("documentType").value,
-          "number": this.formStakeholderSearch.get("documentNumber").value,
-        },
         "phone1": {},
         "phone2": {},
         "fiscalAddress": null,
         "fullName": fullName,
         "shortName": shortName,
         "contactName": shortName,
-        "isProxy": false
+        "isProxy": false,
+        "signType": "CitizenCard"
       }
       if (this.submissionClient.fiscalId !== stakeholderToInsert.fiscalId) {
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
@@ -655,6 +664,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     var fullName = this.dataCCcontents.nameCC;
     var nameArray = fullName.split(" ").filter(element => element);
     var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
+    
 
     var stakeholderToInsert: IStakeholders = {
       "fiscalId": this.dataCCcontents.nifCC,
@@ -670,7 +680,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       },
       "fiscalAddress": {
         "address": this.dataCCcontents.addressCC,
-        "postalCode": this.dataCCcontents.postalCodeCC,
+        "postalCode": this.dataCCcontents.postalCodeCC.split(" ")[0], //
         "postalArea": this.dataCCcontents.localityCC,
         "country": this.dataCCcontents.countryCC,
       },

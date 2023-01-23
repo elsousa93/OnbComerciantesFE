@@ -110,6 +110,9 @@ export class AddStoreComponent implements OnInit {
   lockLocality: boolean = true;
 
   public subs: Subscription[] = [];
+  foundComercialCentre: boolean;
+  noAddress: boolean = false;
+  showError: boolean = false;
 
   constructor(private logger: LoggerService, private router: ActivatedRoute,
     private route: Router, public appComp: AppComponent, private tableInfo: TableInfoService, private storeService: StoreService,
@@ -216,6 +219,32 @@ export class AddStoreComponent implements OnInit {
     return true;
   }
 
+  GetComercialCenterByZipCode() {
+    this.foundComercialCentre = false;
+    this.showError = false;
+    this.subzonesShopping = [];
+    this.formStores.get("subZoneStore").setValue('');
+    var zipCode = this.formStores.value['zipCodeStore'];
+    if (zipCode.length === 8) { 
+      this.subs.push(this.tableInfo.GetShoppingByZipCode(zipCode.split("-", 1)).subscribe(result => {
+        if (result.length > 0) {
+          this.logger.debug(result);
+          this.foundComercialCentre = true;
+          this.subzonesShopping = result;
+          this.subzonesShopping = this.subzonesShopping.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+        } else {
+          this.foundComercialCentre = false;
+          this.showError = true;
+        }
+      }, error => {
+        this.foundComercialCentre = false;
+        this.showError = true;
+        this.logger.debug("Deu erro");
+      }));
+    }
+
+  }
+
   GetCountryByZipCode() {
     this.subzonesShopping = null;
     var currentCountry = this.formStores.get('countryStore').value;
@@ -313,6 +342,7 @@ export class AddStoreComponent implements OnInit {
         //chamar a API que vai buscar o centro comercial por codigo postal caso seja replicada a morada do cliente empresa
         this.subs.push(this.tableInfo.GetShoppingByZipCode(this.formStores.value['zipCodeStore'].split("-", 1)).subscribe(result => {
           this.logger.debug(result);
+          this.foundComercialCentre = true;
           this.subzonesShopping = result;
           this.subzonesShopping = this.subzonesShopping.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
         }, error => {
@@ -323,11 +353,15 @@ export class AddStoreComponent implements OnInit {
         if (this.submissionClient?.headquartersAddress?.postalCode != '' && this.submissionClient?.headquartersAddress?.postalCode != null) {
           var postalCode = this.submissionClient?.headquartersAddress?.postalCode.split("-", 1)[0];
           this.subs.push(this.tableInfo.GetShoppingByZipCode(Number(postalCode)).subscribe(res => {
+            this.foundComercialCentre = true;
             this.subzonesShopping = res;
             this.subzonesShopping = this.subzonesShopping.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
           }, error => {
             this.logger.debug("Deu erro");
           }));
+        } else if (this.formStores.get("subZoneStore").value == '' || this.formStores.get("subZoneStore").value == null) {
+          this.noAddress = true;
+          this.foundComercialCentre = false;
         }
       }
     } else {

@@ -7,7 +7,7 @@ import { IReadCard } from './IReadCard.interface';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { StakeholderService } from '../stakeholder.service';
-import { CountryInformation, StakeholderRole } from '../../table-info/ITable-info.interface';
+import { CountryInformation } from '../../table-info/ITable-info.interface';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { DatePipe } from '@angular/common';
 import { docTypeENI } from '../../client/docType';
@@ -64,7 +64,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   formNewStakeholder!: FormGroup;
   currentIdx: number = 0;
   submissionStakeholders: IStakeholders[] = [];
-  stakeholdersRoles: StakeholderRole[] = [];
+  //stakeholdersRoles: StakeholderRole[] = [];
   returned: string;
   ListaDocTypeENI = docTypeENI;
 
@@ -77,18 +77,18 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     }))
   }
 
-  loadStakeholdersRoles() {
-    this.subs.push(this.tableData.GetAllStakeholderRoles().subscribe(result => {
-      this.stakeholdersRoles = result;
-      this.stakeholdersRoles = this.stakeholdersRoles.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
-    }, error => {
-      this.logger.error(error);
-    }));
-  }
+  //loadStakeholdersRoles() {
+  //  this.subs.push(this.tableData.GetAllStakeholderRoles().subscribe(result => {
+  //    this.stakeholdersRoles = result;
+  //    this.stakeholdersRoles = this.stakeholdersRoles.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
+  //  }, error => {
+  //    this.logger.error(error);
+  //  }));
+  //}
 
   loadTableInfoData() {
     this.loadCountries();
-    this.loadStakeholdersRoles();
+    //this.loadStakeholdersRoles();
   }
 
   public subs: Subscription[] = [];
@@ -166,7 +166,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       flagRecolhaEletronica: new FormControl(false), //v
       proxy: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.isProxy != null) ? this.currentStakeholder?.stakeholderAcquiring?.isProxy+'' : 'false', Validators.required),
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalId : '', Validators.required),
-      Role: new FormControl(''),
+      //Role: new FormControl(''),
       Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.country : '', Validators.required), // tirei do if (this.returned != null)
       ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.postalCode : '', Validators.required), //
       Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.locality : '', Validators.required), //
@@ -181,7 +181,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.data.updateData(false, 2, 2);
-    this.initializeFormWithoutCC();
+    //this.initializeFormWithoutCC();
 
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
@@ -210,7 +210,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       contractAssociation: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.signType === 'CitizenCard' ? 'true' : 'false', Validators.required),
       proxy: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.isProxy != null ? this.currentStakeholder?.stakeholderAcquiring?.isProxy + '' : 'false', Validators.required),
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined) ? this.currentStakeholder?.stakeholderAcquiring.fiscalId : '', Validators.required),
-      Role: new FormControl(''),
+      //Role: new FormControl(''),
       Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country : '', Validators.required), // tirei do if (this.returned != null)
       ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? zipcode : '', Validators.required), //
       Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality : '', Validators.required), //

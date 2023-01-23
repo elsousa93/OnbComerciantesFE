@@ -299,8 +299,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               if ((this.dataCC.addressCC != " " && this.dataCC.addressCC != null) || (this.dataCC.countryCC != " " && this.dataCC.countryCC != null) || (this.dataCC.localityCC != " " && this.dataCC.localityCC != null) || (this.dataCC.postalCodeCC != " " && this.dataCC.postalCodeCC != null)) {
                 client.headquartersAddress.address = this.dataCC.addressCC;
                 client.headquartersAddress.country = this.dataCC.countryCC;
-                client.headquartersAddress.locality = this.dataCC.localityCC;
-                client.headquartersAddress.postalCode = this.dataCC.postalCodeCC;
+                client.headquartersAddress.postalArea = this.dataCC.localityCC;
+                client.headquartersAddress.postalCode = this.dataCC.postalCodeCC.split(" ")[0]; // 
               } else {
                 client.headquartersAddress = {
                   address: result.headquartersAddress?.address,

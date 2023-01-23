@@ -161,7 +161,20 @@
                 </nav>
               </div>
             </div>
-            <div class="row" *ngIf="isComercialCentreStore">
+            <div class="row" *ngIf="noAddress">
+              <div class="col-5">
+                <p class="titulo-form-simples" wappler-command="editContent">
+                  {{'stores.postalCode'|translate}} *
+                </p>
+                <input formControlName="zipCodeStore" id="text4" name="text3" type="text"
+                       class="form-control campo_form" maxlength="8" (keyup)="GetComercialCenterByZipCode()"
+                       (keypress)="numericOnly($event)">
+              </div>
+            </div>
+            <div *ngIf="foundComercialCentre == false && showError">
+              <p class="titulo-form-simples-erro">{{'client.searchError'|translate}}</p>
+            </div>
+            <div class="row" *ngIf="isComercialCentreStore && foundComercialCentre">
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">
                   {{'stores.subZone'|translate}}*

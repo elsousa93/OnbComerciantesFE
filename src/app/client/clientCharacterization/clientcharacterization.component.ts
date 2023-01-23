@@ -55,7 +55,8 @@ export class ClientCharacterizationComponent implements OnInit {
     legalNature: '',
     pdf: '',
     requestId: '',
-    stakeholders: []
+    stakeholders: [],
+    byLaws: ''
   };
   tempClient: any;
   dataCC = null;
@@ -497,15 +498,15 @@ export class ClientCharacterizationComponent implements OnInit {
         this.processClient.secondaryEconomicActivity[1] = clientByCRC.economicActivity?.secondary[1]?.split('-')[0];
         this.processClient.secondaryEconomicActivity[2] = clientByCRC.economicActivity?.secondary[2]?.split('-')[0];
         this.processClient.fiscalId = clientByCRC.fiscalId;
-        this.processClient.companyName = clientByCRC.companyName;
-        this.processClient.capitalStock.date = clientByCRC.capitalStock.date;
-        this.processClient.capitalStock.capital = clientByCRC.capitalStock.amount;
+        this.processClient.companyName = clientByCRC.companyName; //
+        this.processClient.capitalStock.date = clientByCRC.capitalStock.date; //
+        this.processClient.capitalStock.capital = clientByCRC.capitalStock.amount; //
         this.processClient.headquartersAddress.address = clientByCRC.headquartersAddress.fullAddress;
-        this.processClient.headquartersAddress.locality = clientByCRC.headquartersAddress.parish;
         this.processClient.headquartersAddress.postalCode = clientByCRC.headquartersAddress.postalCode;
         this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.postalArea;
         this.processClient.headquartersAddress.country = clientByCRC.headquartersAddress.country;
-        this.processClient.expirationDate = clientByCRC.expirationDate;
+        this.processClient.expirationDate = clientByCRC.expirationDate; //
+        this.processClient.byLaws = clientByCRC.obligeWay;
         this.processClient.hasOutstandingFacts = clientByCRC.hasOutstandingFacts;
         this.processClient.stakeholders = clientByCRC.stakeholders;
         this.clientContext.setStakeholdersToInsert(clientByCRC.stakeholders);
@@ -562,12 +563,19 @@ export class ClientCharacterizationComponent implements OnInit {
       }
       this.client.incorporationStatement = {
         code: this.form.value["crcCode"],
-        validUntil: this.client?.incorporationStatement?.validUntil
+        validUntil: this.processClient.expirationDate
       }
       this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
       this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
       this.client.commercialName = this.form.value["socialDenomination"];
       this.client.legalName = this.form.value["socialDenomination"];
+      this.client.shortName = this.form.value["socialDenomination"];
+
+      this.client.shareCapital.capital = this.processClient.capitalStock.capital;
+      this.client.shareCapital.date = this.processClient.capitalStock.date;
+      this.client.byLaws = this.processClient.byLaws;
+      this.client.legalNature = this.processClient.legalNature;
+      this.client.legalNature2 = this.form.value["natJuridicaN2"];
 
       if (this.tipologia === 'corporation' || this.tipologia === 'Corporate' || this.tipologia === 'Company' || this.tipologia === '01')
         this.client.merchantType = 'Corporate';
@@ -589,7 +597,7 @@ export class ClientCharacterizationComponent implements OnInit {
         if (natJuridicaN2 != null && natJuridicaN2 != '')
           this.client.legalNature2 = this.form.value["natJuridicaN2"];
       }
-      this.client.commercialName = this.form.value["socialDenomination"];
+      //this.client.commercialName = this.form.value["socialDenomination"];
     }
     if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
       this.client.legalName = this.form.value["socialDenomination"];
@@ -604,9 +612,8 @@ export class ClientCharacterizationComponent implements OnInit {
         if (this.dataCC.countryCC != null) {
           this.client.headquartersAddress.address = this.dataCC.addressCC;
           this.client.headquartersAddress.country = this.dataCC.countryCC;
-          this.client.headquartersAddress.locality = this.dataCC.localityCC;
           this.client.headquartersAddress.postalArea = this.dataCC.localityCC;
-          this.client.headquartersAddress.postalCode = this.dataCC.postalCodeCC;
+          this.client.headquartersAddress.postalCode = this.dataCC.postalCodeCC.split(" ")[0];
         }
       }
     }
@@ -637,6 +644,8 @@ export class ClientCharacterizationComponent implements OnInit {
         var stakeholderToInsert = {
           "fiscalId": (fiscalID != null && fiscalID != undefined) ? fiscalID : '',
           "shortName": value.name,
+          "fullName": value.name,
+          "contactName": value.name,
           "fiscalAddress": {
             "postalCode": value["address"] != null ? value["address"]["postalCode"] : null,
             "postalArea": value["address"] != null ? value["address"]["postalArea"] : null,
@@ -645,7 +654,9 @@ export class ClientCharacterizationComponent implements OnInit {
           },
           "capitalHeldPercentage": value.capitalHeldPercentage,
           "isBeneficiary": value.isBeneficiary,
-          "role": value.role
+          "role": value.role,
+          "isProxy": false,
+          "signType": "CitizenCard"
         } as IStakeholders;
         newSubmission.stakeholders.push(stakeholderToInsert);
       } else {

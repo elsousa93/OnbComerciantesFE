@@ -208,10 +208,10 @@ export class StakeholdersComponent implements OnInit {
     if (this.currentStakeholder.stakeholderAcquiring.identificationDocument?.number == null) { //stakeForm.get("documentType") == null
       stakeForm.get("flagRecolhaEletronica").setValue(false);
       stakeForm.get("NIF").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalId);
-      stakeForm.get("Role").setValue("");
+      //stakeForm.get("Role").setValue("");
       stakeForm.get("Country").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country);
-      if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode.includes(" ")) {
-        var arr = this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode.split(" ");
+      if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode?.includes(" ")) {
+        var arr = this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode.split(" ");
         stakeForm.get("ZIPCode").setValue(arr[0]);
       } else {
         stakeForm.get("ZIPCode").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode);
@@ -241,14 +241,16 @@ export class StakeholdersComponent implements OnInit {
   }
 
   getDocumentDescription(docs: OutboundDocument[]) {
-    this.subs.push(this.tableInfo.GetDocumentsDescription().subscribe(result => {
-      this.documents = result;
-      this.documents.forEach(doc => {
-        if (docs[0].documentType === doc.code) {
-          docs[0].documentType = doc.description;
-        }
-      });
-    }))
+    if (docs != undefined) { 
+      this.subs.push(this.tableInfo.GetDocumentsDescription().subscribe(result => {
+        this.documents = result;
+        this.documents.forEach(doc => {
+          if (docs[0]?.documentType === doc.code) {
+            docs[0].documentType = doc.description;
+          }
+        });
+      }));
+    }
   }
 
   submit() {
@@ -272,7 +274,7 @@ export class StakeholdersComponent implements OnInit {
         if (stakeForm.get("documentType") == null) { 
           this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address = stakeForm.get("Address").value;
           this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country = stakeForm.get("Country").value;
-          if (stakeForm.get("ZIPCode").value.includes(" ")) {
+          if (stakeForm.get("ZIPCode").value?.includes(" ")) {
             var arr = stakeForm.get("ZIPCode").value.split(" ");
             this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode = arr[0];
           } else {

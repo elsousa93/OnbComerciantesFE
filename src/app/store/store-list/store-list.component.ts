@@ -197,13 +197,23 @@ export class StoreComponent implements AfterViewInit {
         infoStores.get("addressStore").setValue(this.currentStore.address.address.address);
         infoStores.get("countryStore").setValue(this.currentStore.address.address.country);
         infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
+        infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
+        this.addStoreComponent.comercialCentre(this.currentStore.address.isInsideShoppingCenter);
+        infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
       } else {
         this.addStoreComponent.chooseAddress(true);
+        infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
+        this.addStoreComponent.comercialCentre(this.currentStore.address.isInsideShoppingCenter);
+        if (this.submissionClient.headquartersAddress.address != null) {
+          infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
+        } else {
+          if (this.currentStore.address.isInsideShoppingCenter && this.currentStore.address.useMerchantAddress) {
+            infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
+            this.addStoreComponent.GetComercialCenterByZipCode();
+            infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
+          }
+        }
       }
-
-      infoStores.get("commercialCenter").setValue(this.currentStore.address.isInsideShoppingCenter);
-      this.addStoreComponent.comercialCentre(this.currentStore.address.isInsideShoppingCenter);
-      infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
 
       var bankStores = this.editStores.controls["bankStores"];
       bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
@@ -262,12 +272,14 @@ export class StoreComponent implements AfterViewInit {
         this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
         this.currentStore.address.useMerchantAddress = false;
       } else {
-        if (this.submissionClient.headquartersAddress != null) {
+        this.currentStore.address.useMerchantAddress = true;
+        if (this.submissionClient.headquartersAddress.address != null) {
           this.currentStore.address.address.address = this.submissionClient.headquartersAddress.address;
           this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
           this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
           this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
-          this.currentStore.address.useMerchantAddress = true; //
+        } else {
+          this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
         }
       }
 
@@ -275,7 +287,7 @@ export class StoreComponent implements AfterViewInit {
         this.currentStore.address.shoppingCenter = infoStores.get("subZoneStore").value;
         this.currentStore.address.isInsideShoppingCenter = true;
       } else {
-        this.currentStore.address.shoppingCenter = null; //
+        this.currentStore.address.shoppingCenter = null; 
         this.currentStore.address.isInsideShoppingCenter = false;
       }
 

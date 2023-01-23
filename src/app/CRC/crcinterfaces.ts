@@ -14,4 +14,5 @@ export interface CRCProcess {
   pdf?: string
   requestId?: string
   stakeholders?: StakeholdersProcess[]
+  byLaws?: string
 }
