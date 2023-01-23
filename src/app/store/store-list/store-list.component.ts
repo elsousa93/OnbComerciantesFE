@@ -300,7 +300,8 @@ export class StoreComponent implements AfterViewInit {
 
       this.currentStore.bank = {
         bank: {
-          bank: bankStores.get("supportBank").value
+          bank: bankStores.get("supportBank").value,
+          iban: this.currentStore.bank?.bank?.iban
         },
         useMerchantBank: bankStores.get("bankInformation").value
       }
@@ -421,28 +422,29 @@ export class StoreComponent implements AfterViewInit {
 
   addDocumentToShop(storeId: string, store: ShopDetailsAcquiring) {
     if (this.ibansToShow != null) {
-      var context = this;
-      this.comprovativoService.readBase64(this.ibansToShow.file).then((data) => {
-        var docToSend: PostDocument = {
-          "documentType": "0071",
-          "documentPurpose": "BankAccount",
-          "file": {
-            "fileType": "PDF",
-            "binary": data.split(',')[1]
-          },
-          "validUntil": "2022-07-20T11:03:13.001Z",
-          "data": {}
-        }
-
-        context.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(res => {
-          store.bank.bank.iban = res.id;
-          this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), storeId, docToSend).subscribe(result => {
-            context.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, store).subscribe(res => {
-              console.log('Loja Atualizada ', res);
+      if (store.bank.bank.iban != this.ibansToShow.id) { 
+        var context = this;
+        this.comprovativoService.readBase64(this.ibansToShow.file).then((data) => {
+          var docToSend: PostDocument = {
+            "documentType": "0071",
+            "documentPurpose": "BankAccount",
+            "file": {
+              "fileType": "PDF",
+              "binary": data.split(',')[1]
+            },
+            "validUntil": "2022-07-20T11:03:13.001Z",
+            "data": {}
+          }
+          context.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(res => {
+            store.bank.bank.iban = res.id;
+            this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), storeId, docToSend).subscribe(result => {
+              context.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, store).subscribe(res => {
+                console.log('Loja Atualizada ', res);
+              });
             });
-          });
+          })
         })
-      })
+      }
     }
   }
 }

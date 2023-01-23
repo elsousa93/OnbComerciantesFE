@@ -435,16 +435,23 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       if (index > -1)
         this.files.splice(index, 1);
 
+      this.fileToDelete = null;
+      this.documentID = "";
+
     } else {
       this.documentService.DeleteDocumentFromSubmission(this.submissionId, this.documentID).subscribe(sucess => {
         console.log("Sucesso a apagar um documento: ", sucess);
+        let existsIndex = this.compsToShow.findIndex(f => f.id === this.documentID);
+        if (existsIndex > -1)
+          this.compsToShow.splice(existsIndex, 1);
+        this.fileToDelete = null;
+        this.documentID = "";
       }, error => {
         console.log("Erro a apagar um ficheiro: ", error.msg);
       });
     }
 
-    this.fileToDelete = null;
-    this.documentID = "";
+
   }
 
   onCheckList() {

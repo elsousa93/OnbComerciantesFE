@@ -51,7 +51,8 @@
           <div class="row">
             <div class="col">
               <p [hidden]="isCC && isNoDataReadable" class="titulo-form-simples">
-                {{'stakeholder.documentNumber'|translate}}: *</p>
+                {{'stakeholder.documentNumber'|translate}}: *
+              </p>
               <span class="titulo-form-error" *ngIf="incorrectCC && !isShown" class="titulo-form-simples-erro">
                 {{'client.incorrectCC'|translate}}
               </span>
@@ -76,10 +77,13 @@
               <span class="titulo-form-error" *ngIf="sameNIPC && !isShown" class="titulo-form-simples-erro">
                 {{'client.sameNIPC'|translate}}
               </span>
+              <span class="titulo-form-error" *ngIf="sameNIFMatch && !isShown" class="titulo-form-simples-erro">
+                {{'client.sameNIFMatch'|translate}}
+              </span>
               <input [hidden]="isCC && isNoDataReadable" #clientId (keyup)="checkValidationType(clientId.value)"
-                (keypress)="numericOnly($event)" [(ngModel)]="stakeholderNumber" id="text1" name="text1"
-                style="padding: .200rem;" type="text" (ngModelChange)="clearNewForm()" class="form-control campo_form"
-                formControlName="documentNumber">
+                     (keypress)="numericOnly($event)" [(ngModel)]="stakeholderNumber" id="text1" name="text1"
+                     style="padding: .200rem;" type="text" (ngModelChange)="clearNewForm()" class="form-control campo_form"
+                     formControlName="documentNumber">
             </div>
           </div>
         </div>
@@ -114,7 +118,7 @@
         <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
           <span class="navbar-text me-xxl-2 align-self-center ms-0 me-0">
             <button
-              [disabled]="!stakeType || !stakeDocType || !(stakeholderNumber?.length > 0) || incorrectNIFSize || incorrectNIF || incorrectCC || incorrectCCSize || incorrectCCFormat || incorrectNIPCSize || incorrectNIPC"
+              [disabled]="!stakeType || !stakeDocType || !(stakeholderNumber?.length > 0) || incorrectNIFSize || incorrectNIF || incorrectCC || incorrectCCSize || incorrectCCFormat || incorrectNIPCSize || incorrectNIPC || sameNIFMatch"
               id="btn5a2" class="btn botao_azul" wappler-command="editContent" style="margin: 8px 0px !important;"
               (click)="searchStakeholder()">
               {{'stakeholder.search'|translate|uppercase}}&nbsp;&nbsp; <img src="assets/images/person_search.svg"

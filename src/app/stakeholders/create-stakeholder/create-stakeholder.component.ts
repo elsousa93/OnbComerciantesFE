@@ -258,6 +258,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   incorrectCC: boolean = false;
   incorrectCCFormat: boolean = false;
   sameNIPC: boolean = false;
+  sameNIFMatch: boolean = false;
 
   stakesList: [] = [];
   potentialClientIds: string[] = [];
@@ -481,6 +482,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.incorrectNIPCSize = false;
     this.incorrectNIPC = false;
     this.sameNIPC = false;
+    this.sameNIFMatch = false;
     this.formStakeholderSearch.get("documentNumber").setValue("");
     this.formStakeholderSearch.get("documentNumber").updateValueAndValidity();
   }
@@ -488,6 +490,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   searchStakeholder() {
     this.isSearch = false;
     this.sameNIPC = false;
+    this.sameNIFMatch = false;
 
     if (this.formStakeholderSearch.invalid)
       return false;
@@ -499,7 +502,12 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.emitSameNIF(of(this.stakeholderNumber)); //evento que serve para comparar o NIF inserido com os stakeholders já existentes
 
     if (this.submissionClient.fiscalId === this.stakeholderNumber) {
-      this.sameNIPC = true;
+      if (this.docType === '0501') {
+        this.sameNIFMatch = true;
+      }
+      if (this.docType === '0502') {
+        this.sameNIPC = true;
+      }
       return false;
     }
 
@@ -518,7 +526,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.currentStakeholder = emittedStakeholder.stakeholder;
     this.stakesList.forEach(val => {
       if (val["stakeholderNumber"] != emittedStakeholder.stakeholder.stakeholderNumber) {
-        this.potentialClientIds.push(emittedStakeholder.stakeholder.stakeholderNumber);
+        this.potentialClientIds.push(val["stakeholderNumber"]);
       }
     });
   }
@@ -544,6 +552,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
 
   addStakeholder() {
     this.sameNIPC = false;
+    this.sameNIFMatch = false;
     this.showSameNIFError = false;
     this.showSameNIFErrorForm = false;
     if (this.foundStakeholders && this.dataCCcontents.cardNumberCC == null) {
@@ -629,7 +638,12 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
           this.route.navigate(['/stakeholders/']);
         });
       } else {
-        this.sameNIPC = true;
+        if (this.docType === '0501') {
+          this.sameNIFMatch = true;
+        }
+        if (this.docType === '0502') {
+          this.sameNIPC = true;
+        }
       }
     }
   }
@@ -741,6 +755,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.incorrectNIFSize = false;
     this.incorrectNIF = false;
     this.sameNIPC = false;
+    this.sameNIFMatch = false;
     this.showSameNIFError = false;
     this.showSameNIFErrorForm = false;
     if (nif != '') {
@@ -762,6 +777,11 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         return false;
       }
 
+      if (this.submissionClient.fiscalId === nif) {
+        this.sameNIFMatch = true;
+        return false;
+      }
+
       this.emitSameNIF(of(nif));
 
       return Number(nif[8]) === comparador;
@@ -772,6 +792,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.incorrectNIPCSize = false;
     this.incorrectNIPC = false;
     this.sameNIPC = false;
+    this.sameNIFMatch = false;
     this.showSameNIFError = false;
     this.showSameNIFErrorForm = false;
     if (nipc != '') {
@@ -808,6 +829,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.showSameNIFError = false;
     this.showSameNIFErrorForm = false;
     this.sameNIPC = false;
+    this.sameNIFMatch = false;
     var sum = 0;
     var secondDigit = false;
 
