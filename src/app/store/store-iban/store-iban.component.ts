@@ -213,5 +213,6 @@ export class StoreIbanComponent implements OnInit, OnChanges {
 
   removeFiles() {
     this.IBANToShow = null;
+    this.fileEmitter.emit(null);
   }
 }

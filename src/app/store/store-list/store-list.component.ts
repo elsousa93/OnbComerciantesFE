@@ -421,7 +421,7 @@ export class StoreComponent implements AfterViewInit {
   }
 
   addDocumentToShop(storeId: string, store: ShopDetailsAcquiring) {
-    if (this.ibansToShow != null) {
+    if (this.ibansToShow != null || store.bank.useMerchantBank == false) {
       if (store.bank.bank.iban != this.ibansToShow.id) { 
         var context = this;
         this.comprovativoService.readBase64(this.ibansToShow.file).then((data) => {

@@ -39,7 +39,7 @@
       <mat-header-cell *matHeaderCellDef mat-sort-header class="align-baseline text-primary table-white">
         {{'stakeholder.signature'|translate|uppercase}} </mat-header-cell>
       <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;">
-        {{(stakeholder.stakeholderAcquiring.signType === 'CitizenCard' ? 'generalKeywords.yes' : 'generalKeywords.no' ) | translate}}
+        {{(stakeholder.stakeholderAcquiring.signType === 'CitizenCard' || stakeholder.stakeholderAcquiring.signType === 'DigitalCitizenCard' ? 'generalKeywords.yes' : 'generalKeywords.no' ) | translate}}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="delete" class="small-cell">

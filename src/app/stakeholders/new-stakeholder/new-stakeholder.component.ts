@@ -7,7 +7,7 @@ import { IReadCard } from './IReadCard.interface';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { StakeholderService } from '../stakeholder.service';
-import { CountryInformation } from '../../table-info/ITable-info.interface';
+import { CountryInformation, DocumentSearchType } from '../../table-info/ITable-info.interface';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { DatePipe } from '@angular/common';
 import { docTypeENI } from '../../client/docType';
@@ -67,6 +67,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   //stakeholdersRoles: StakeholderRole[] = [];
   returned: string;
   ListaDocTypeENI = docTypeENI;
+  documents: DocumentSearchType[];
 
   loadCountries() {
     this.subs.push(this.tableData.GetAllCountries().subscribe(result => {
@@ -77,18 +78,22 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     }))
   }
 
-  //loadStakeholdersRoles() {
-  //  this.subs.push(this.tableData.GetAllStakeholderRoles().subscribe(result => {
-  //    this.stakeholdersRoles = result;
-  //    this.stakeholdersRoles = this.stakeholdersRoles.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
-  //  }, error => {
-  //    this.logger.error(error);
-  //  }));
-  //}
+  loadDocumentDescriptions() {
+    this.subs.push(this.tableData.GetDocumentsDescription().subscribe(result => {
+      this.documents = result;
+    }));
+  }
+
+  getDocumentDescription(documentType: string) {
+    var desc = "";
+    if (documentType != null) {
+      desc = this.documents?.find(document => document.code == documentType)?.description;
+    }
+    return desc;
+  }
 
   loadTableInfoData() {
     this.loadCountries();
-    //this.loadStakeholdersRoles();
   }
 
   public subs: Subscription[] = [];
@@ -162,7 +167,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   initializeFormWithoutCC() {
     this.formNewStakeholder = new FormGroup({
-      contractAssociation: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.signType === 'CitizenCard' ? 'true' : 'false', Validators.required),
+      contractAssociation: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.signType === 'CitizenCard' || this.currentStakeholder?.stakeholderAcquiring?.signType === 'DigitalCitizenCard' ? 'true' : 'false', Validators.required),
       flagRecolhaEletronica: new FormControl(false), //v
       proxy: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.isProxy != null) ? this.currentStakeholder?.stakeholderAcquiring?.isProxy+'' : 'false', Validators.required),
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalId : '', Validators.required),
@@ -199,7 +204,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   createFormCC() {
 
-    var zipcode = this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode.split(" - ")[0];
+    var zipcode = this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode?.split(" - ")[0];
 
     this.formNewStakeholder = this.fb.group({
       flagRecolhaEletronica: new FormControl(true), //v
@@ -207,10 +212,9 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       identificationDocumentCountry: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.country : ''), //
       identificationDocumentValidUntil: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.datePipe.transform(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate, 'dd-MM-yyyy') : ''), //
       identificationDocumentId: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.number : 'THIS'), //
-      contractAssociation: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.signType === 'CitizenCard' ? 'true' : 'false', Validators.required),
+      contractAssociation: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.signType === 'CitizenCard' || this.currentStakeholder?.stakeholderAcquiring?.signType === 'DigitalCitizenCard' ? 'true' : 'false', Validators.required),
       proxy: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.isProxy != null ? this.currentStakeholder?.stakeholderAcquiring?.isProxy + '' : 'false', Validators.required),
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined) ? this.currentStakeholder?.stakeholderAcquiring.fiscalId : '', Validators.required),
-      //Role: new FormControl(''),
       Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country : '', Validators.required), // tirei do if (this.returned != null)
       ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? zipcode : '', Validators.required), //
       Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality : '', Validators.required), //
@@ -227,7 +231,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   changeValueCC(){
     if (this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type === '0018') {
       this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = '0018';
-      this.formNewStakeholder.get('documentType').setValue('0018');
+      this.formNewStakeholder.get('documentType').setValue(this.getDocumentDescription(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type));
     }
   }
 

@@ -203,7 +203,7 @@ export class StakeholdersComponent implements OnInit {
     var stakeForm = this.editStakes.get("stake");
     var proxy = this.currentStakeholder.stakeholderAcquiring.isProxy != null ? this.currentStakeholder.stakeholderAcquiring.isProxy + '' : 'false';
     stakeForm.get("proxy").setValue(proxy);
-    stakeForm.get("contractAssociation").setValue(this.currentStakeholder.stakeholderAcquiring.signType === 'CitizenCard' ? 'true' : 'false');
+    stakeForm.get("contractAssociation").setValue(this.currentStakeholder.stakeholderAcquiring.signType === 'CitizenCard' || this.currentStakeholder?.stakeholderAcquiring?.signType === 'DigitalCitizenCard' ? 'true' : 'false');
 
     if (this.currentStakeholder.stakeholderAcquiring.identificationDocument?.number == null) { //stakeForm.get("documentType") == null
       stakeForm.get("flagRecolhaEletronica").setValue(false);
@@ -262,7 +262,9 @@ export class StakeholdersComponent implements OnInit {
         this.currentStakeholder.stakeholderAcquiring.isProxy = (stakeForm.get("proxy").value === 'true');
 
         if (stakeForm.get("contractAssociation").value === 'true') {
-          this.currentStakeholder.stakeholderAcquiring.signType = 'CitizenCard';
+          if (this.currentStakeholder?.stakeholderAcquiring?.signType !== 'DigitalCitizenCard') {
+            this.currentStakeholder.stakeholderAcquiring.signType = 'CitizenCard';
+          }
           this.contractAssociated = true;
         } else {
           this.currentStakeholder.stakeholderAcquiring.signType = 'NotSign';

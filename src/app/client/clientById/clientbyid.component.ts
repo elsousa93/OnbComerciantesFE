@@ -656,7 +656,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
         newSubmission.merchant.merchantType = 'Entrepeneur';
         var client = this.clientContext.getClient();
-
+        stakeholder.clientId = client.clientId;
         stakeholder.fiscalId = client.fiscalId;
         stakeholder.fullName = client.legalName;
         stakeholder.contactName = client.commercialName;
@@ -759,7 +759,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             if (found == undefined) {
               context.stakeholderService.DeleteStakeholder(submissionID, stake.id).subscribe(result => { });
             } else {
-              stakeholders = stakeholders.filter(item => item.fiscalId !== found.fiscalId);
+              if (found.clientId != null && found.clientId != "" && stake.clientId != null && stake.clientId != "" && found.clientId != stake.clientId) {
+                context.stakeholderService.DeleteStakeholder(submissionID, stake.id).subscribe(result => { });
+              } else {
+                stakeholders = stakeholders.filter(item => item.fiscalId !== found.fiscalId);
+              }
             }
           }); 
 
@@ -870,6 +874,10 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       const count1 = a1.filter(e => e.fiscalId === x).length;
       const count2 = a2.filter(e => e.fiscalId === x).length;
       if (count1 !== count2) return false;
+
+      const filter = a1.filter(e => e.fiscalId === x)[0];
+      const filter2 = a2.filter(e => e.fiscalId === x)[0];
+      if (filter.clientId !== filter2.clientId) return false;
     }
     return true;
   }

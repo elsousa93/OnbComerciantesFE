@@ -124,7 +124,7 @@
         <div class="row" *ngIf="showYesCC && !showNoCC">
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentType'|translate}}:*</p>
-            <input readonly name="identificationDocumentType" formControlName="documentType"
+            <input readonly name="documentType" formControlName="documentType"
               class="form-control campo_form">
           </div>
           <div class="col-6">
@@ -136,7 +136,7 @@
         <div class="row" *ngIf="showYesCC && !showNoCC">
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentCountry'|translate}}:*</p>
-            <select readonly name="documentCountry" formControlName="identificationDocumentCountry"
+            <select readonly name="identificationDocumentCountry" formControlName="identificationDocumentCountry"
               class="form-control campo_form">
               <option *ngFor="let country of countries" value={{country.code}}
                 [attr.selected]="(currentStakeholder.stakeholderAcquiring.identificationDocument.country == country.code) ? true : null">

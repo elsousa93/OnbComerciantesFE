@@ -167,7 +167,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                       id: val.id,
                       type: "pdf",
                       expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
-                      stakeholder: shopName ?? context.submissionClient.legalName,
+                      stakeholder: shopName ?? context.submissionClient.fullName,
                       status: "não definido",
                       uploadDate: latest_date,
                       file: val?.id,

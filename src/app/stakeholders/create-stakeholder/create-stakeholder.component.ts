@@ -608,7 +608,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       }, error => {
         this.logger.error(error, "", "Erro ao obter informação de um stakeholder");
       });
-    } else if (this.dataCCcontents.cardNumberCC != null) {
+    } else if (this.dataCCcontents.cardNumberCC != null || this.docType === '1001') {
       this.addStakeholderWithCC();
     }
     else {
@@ -656,45 +656,51 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   addStakeholderWithCC() {
     this.isCC = true;
     var dateCC = this.dataCCcontents.expiricyDateCC;
-    var separated = dateCC.split(' ');
-    var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0];
+    var separated = dateCC?.split(' ');
+    if (separated) {
+      var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0];
+    } else {
+      var formatedDate = '2023-10-10';
+    }
 
-    //Colocar comprovativo do CC na Submissao
-    var documentCC: PostDocument = {
-      documentType: '0018',
-      documentPurpose: 'Identification',
-      file: {
-        binary: this.prettyPDF.file,
-        fileType: 'PDF',
-      },
-      validUntil: new Date(this.prettyPDF.expirationDate).toISOString(),
-      data: null
-    };
+    if (this.prettyPDF != null) { 
+      //Colocar comprovativo do CC na Submissao
+      var documentCC: PostDocument = {
+        documentType: '0018',
+        documentPurpose: 'Identification',
+        file: {
+          binary: this.prettyPDF.file,
+          fileType: 'PDF',
+        },
+        validUntil: new Date(this.prettyPDF?.expirationDate).toISOString(),
+        data: null
+      };
 
-    this.submissionDocumentService.SubmissionPostDocument(this.submissionId, documentCC).subscribe(result => {
-      console.log('documento adicionado ', result);
-    });
+      this.submissionDocumentService.SubmissionPostDocument(this.submissionId, documentCC).subscribe(result => {
+        console.log('documento adicionado ', result);
+      });
+    }
 
-    var fullName = this.dataCCcontents.nameCC;
+    var fullName = this.dataCCcontents.nameCC ?? this.formNewStakeholder.get("name")?.value;
     var nameArray = fullName.split(" ").filter(element => element);
     var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
     
 
     var stakeholderToInsert: IStakeholders = {
-      "fiscalId": this.dataCCcontents.nifCC,
+      "fiscalId": this.dataCCcontents.nifCC ?? this.formNewStakeholder.get("nif")?.value,
       "fullName": fullName,
       "shortName": shortName,
       "contactName": shortName,
       "identificationDocument": {
         "type": '0018',
-        "number": this.dataCCcontents.cardNumberCC,
-        "country": this.dataCCcontents.countryCC,
+        "number": this.dataCCcontents.cardNumberCC ?? this.stakeholderNumber,
+        "country": this.dataCCcontents.countryCC ?? 'PT',
         "expirationDate": new Date(formatedDate).toISOString(),
         "checkDigit": null     //FIXME
       },
       "fiscalAddress": {
         "address": this.dataCCcontents.addressCC,
-        "postalCode": this.dataCCcontents.postalCodeCC.split(" ")[0], //
+        "postalCode": this.dataCCcontents?.postalCodeCC?.split(" ")[0], //
         "postalArea": this.dataCCcontents.localityCC,
         "country": this.dataCCcontents.countryCC,
       },
@@ -709,9 +715,10 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         duration: 4000,
         panelClass: ['snack-bar']
       });
-      this.stakeholderService.AddNewDocumentStakeholder(this.submissionId, stakeholderToInsert.id, documentCC).subscribe(res => {
-        
-      });
+      if (this.prettyPDF != null) { 
+        this.stakeholderService.AddNewDocumentStakeholder(this.submissionId, stakeholderToInsert.id, documentCC).subscribe(res => { 
+        });
+      }
       this.emitInsertedStake(of(stakeholderToInsert));
       this.clearForm();
     }, error => {

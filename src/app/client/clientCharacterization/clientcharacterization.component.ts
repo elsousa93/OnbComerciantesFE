@@ -570,9 +570,10 @@ export class ClientCharacterizationComponent implements OnInit {
       this.client.commercialName = this.form.value["socialDenomination"];
       this.client.legalName = this.form.value["socialDenomination"];
       this.client.shortName = this.form.value["socialDenomination"];
-
-      this.client.shareCapital.capital = this.processClient.capitalStock.capital;
-      this.client.shareCapital.date = this.processClient.capitalStock.date;
+      this.client.shareCapital = {
+        capital: this.processClient.capitalStock.capital,
+        date: this.processClient.capitalStock.date
+      }
       this.client.byLaws = this.processClient.byLaws;
       this.client.legalNature = this.processClient.legalNature;
       this.client.legalNature2 = this.form.value["natJuridicaN2"];
