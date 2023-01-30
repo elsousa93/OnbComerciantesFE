@@ -36,10 +36,10 @@
   --bs-danger: #5c5c5c;
   --bs-light: #fff;
   --bs-dark: #000;
-  --bs-primary-rgb: 30,102,176; /*30,102,176; */
-  --bs-secondary-rgb: 69,132,196; /*69,132,196;*/
-  --bs-icon-secondary-rgb: 89,148,212;
-  --bs-footer-secondary-rgb: 155,186,219;
+  --bs-primary-rgb: 17,68,124; /*30,102,176; */
+  --bs-secondary-rgb: 30,102,176; /*69,132,196;*/
+  --bs-icon-secondary-rgb: 17,68,124;
+  --bs-footer-secondary-rgb: 17,68,124;
   --bs-success-rgb: 151,170,230;
   --bs-info-rgb: 13,202,240;
   --bs-warning-rgb: 255,193,7;

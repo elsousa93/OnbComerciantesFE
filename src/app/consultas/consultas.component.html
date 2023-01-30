@@ -1,17 +1,37 @@
 <div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
   <div class="row">
     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
-      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0"><span
-          class="navbar-text text-light"><img src="assets/images/monograma_2.svg" class="img-fluid ms-0"
-            width="70"></span><span class="navbar-text">
+      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
+        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="70px" height="32px" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+             viewBox="0 0 324 148.998">
+        <defs>
+          <style type="text/css">
+            .fil0 {
+              fill: rgb(var(--bs-primary-rgb))
+            }
+
+            .fil1 {
+              fill: rgb(var(--bs-icon-secondary-rgb))
+            }
+          </style>
+        </defs>
+        <g id="Layer_x0020_1">
+          <metadata id="CorelCorpID_0Corel-Layer" />
+          <rect class="fil0" x="-0.201492" y="-0.0493018" width="324.402" height="149.097" />
+          <path class="fil1" d="M94.1079 -0.0507874l32.7768 0 0 91.9654c0,23.4224 11.7732,34.0512 35.1177,34.0512 23.3421,0 35.1248,-10.6264 35.1248,-33.8362l0 -92.1791 32.7638 0.0023622 0 93.4819c0,28.024 -11.6657,46.7291 -33.2185,55.6146l-69.3484 0c-21.5539,-8.88543 -33.2161,-27.5906 -33.2161,-55.6146l0 -93.4854 0 0z" />
+        </g>
+        </svg>
+      <span class="navbar-text">
           <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
             {{'searches.title'|translate|uppercase}}</h5>
         </span></nav>
     </div>
     <form [formGroup]="form" (ngSubmit)="submitSearch()">
       <div class="offset-1 bg-white align-self-center">
-        <h4 class="text-primary m-align mt-5 mb-4 ps-0"><img src="assets/images/search_blue.svg"
-            style="height: 30px; vertical-align: bottom;">&nbsp;{{'searches.search'|translate|uppercase}}</h4>
+        <h4 class="text-primary m-align mt-5 mb-4 ps-0"><span class="icon-search-blue search-blue-consultas"></span>
+        <!--<img src="assets/images/search_blue.svg"
+            style="height: 30px; vertical-align: bottom;">-->
+        &nbsp;{{'searches.search'|translate|uppercase}}</h4>
         <div class="row">
           <div class="col-12 ms-0 me-0 ps-5 pe-0">
             <div class="row">
@@ -107,8 +127,9 @@
               <mat-header-cell *matHeaderCellDef>
                 {{'searches.openProcess'|translate|uppercase}}
               </mat-header-cell>
-              <mat-cell *matCellDef="let row"> <img src="assets/images/description.svg" (click)="openProcess(row)"
-                  style="height: 25px !important; vertical-align: sub; cursor: pointer;"> </mat-cell>
+              <mat-cell *matCellDef="let row">
+                <span class="description icon-description" (click)="openProcess(row)"></span>
+              </mat-cell>
             </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let myRowData; columns: displayedColumns"></mat-row>
@@ -123,7 +144,8 @@
               <button [routerLink]="['/']" style="margin-right: 0px !important;" id="btn5a1"
                 class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
                 wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;
-                <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+                <span class="exit-to-app icon-exit-to-app"></span>
+                <!--<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">-->
               </button>
             </span>
           </nav>

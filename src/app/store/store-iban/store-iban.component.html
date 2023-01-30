@@ -61,12 +61,13 @@
                 <td class="text-primary text-center">{{IBANToShow.tipo}}</td>
                 <td class="text-primary text-center">{{IBANToShow.dataDocumento}}</td>
                 <td>
-                  <span>
-                    <img src="assets/images/search_blue.svg" (click)="openFile(files[0])"
+                  <span class="search-blue-iban icon-search-blue" (click)="openFile(files[0])">
+                    <!--<img src="assets/images/search_blue.svg" (click)="openFile(files[0])"
                       style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                     <img src="assets/images/delete_blue.svg" (click)="onDelete(IBANToShow.id)"
-                      style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                      style="height: 25px !important; vertical-align: sub; cursor: pointer;">-->
                   </span>
+                  <span class="delete-blue-comp icon-delete-blue" (click)="onDelete(IBANToShow.id)"></span>
                 </td>
               </tr>
               <tr></tr>

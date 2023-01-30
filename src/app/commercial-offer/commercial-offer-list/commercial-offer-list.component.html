@@ -4,9 +4,25 @@
     <div class="row">
       <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
         <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
-          <span class="navbar-text text-light">
-            <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
-          </span>
+          <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="70px" height="32px" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+               viewBox="0 0 324 148.998">
+            <defs>
+              <style type="text/css">
+                .fil0 {
+                  fill: rgb(var(--bs-primary-rgb))
+                }
+
+                .fil1 {
+                  fill: rgb(var(--bs-icon-secondary-rgb))
+                }
+              </style>
+          </defs>
+          <g id="Layer_x0020_1">
+            <metadata id="CorelCorpID_0Corel-Layer" />
+            <rect class="fil0" x="-0.201492" y="-0.0493018" width="324.402" height="149.097" />
+            <path class="fil1" d="M94.1079 -0.0507874l32.7768 0 0 91.9654c0,23.4224 11.7732,34.0512 35.1177,34.0512 23.3421,0 35.1248,-10.6264 35.1248,-33.8362l0 -92.1791 32.7638 0.0023622 0 93.4819c0,28.024 -11.6657,46.7291 -33.2185,55.6146l-69.3484 0c-21.5539,-8.88543 -33.2161,-27.5906 -33.2161,-55.6146l0 -93.4854 0 0z" />
+          </g>
+        </svg>
           <span class="navbar-text">
             <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
               {{'commercialOffer.title'|translate|uppercase}}</h5>
@@ -14,8 +30,9 @@
         </nav>
       </div>
       <div class="offset-1 col-10 mt-1 mb-0 pt-0 pb-0 ps-0 pe-0">
-        <h2 class="text-primary mt-5 pb-2 ps-0 m-align">
-          <img src="assets/images/store_blue.svg" class="img_add">&nbsp;{{'stores.titleOffer'|translate}}
+        <h2 class="text-primary mt-5 pb-2 ps-0 m-align"><span class="store-blue icon-store-blue"></span>
+          <!--<img src="assets/images/store_blue.svg" class="img_add">-->
+        {{'stores.titleOffer'|translate}}
         </h2>
         <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [isCommercialOffer]=true
           [updatedStoreEvent]="updatedStoreEvent" [currentStore]="currentStore" [currentIdx]="currentIdx"
@@ -31,8 +48,8 @@
             <h2 class="accordion1-header" id="flush-headingOne">
               <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" id="accordionButton1"
                 data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                <span class="material-symbols-outlined icon-accordion">
-                  <img src="assets/images/shopping_cart.svg" />
+                <span class="material-symbols-outlined icon-accordion shopping-cart icon-shopping-cart">
+                  <!--<img src="assets/images/shopping_cart.svg" />-->
                 </span>
                 &nbsp;&nbsp;{{'commercialOffer.relation'|translate|uppercase}}
               </button>
@@ -110,8 +127,8 @@
             <h2 class="accordion-header" id="flush-headingTwo">
               <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" id="accordionButton2"
                 data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
-                <span class="material-symbols-outlined icon-accordion">
-                  <img src="assets/images/category.svg" />
+                <span class="material-symbols-outlined icon-accordion category icon-category">
+                  <!--<img src="assets/images/category.svg" />-->
                 </span>
                 &nbsp;&nbsp;{{'commercialOffer.commercialPack'|translate|uppercase}}
               </button>
@@ -307,8 +324,8 @@
             <h2 class="accordion-header" id="flush-headingThree">
               <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" id="accordionButton3"
                 data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                <span class="material-symbols-outlined icon-accordion">
-                  <img src="assets/images/point_of_sale.svg" />
+                <span class="material-symbols-outlined icon-accordion point-of-sale icon-point-of-sale">
+                  <!--<img src="assets/images/point_of_sale.svg" />-->
                 </span>
                 &nbsp;&nbsp;{{'commercialOffer.terminalConfig'|translate|uppercase}}
               </button>
@@ -347,9 +364,9 @@
                     <mat-header-cell *matHeaderCellDef> </mat-header-cell>
                     <mat-cell *matCellDef="let storeEquip">
                       <span [hidden]="storeEquip == null" (click)="deleteConfiguration(storeEquip)"
-                        class="material-symbols-rounded delete-icon"
+                        class="material-symbols-rounded delete-icon delete-blue icon-delete-blue"
                         [ngStyle]="{'cursor': (returned != 'consult') ? 'pointer' : ''}">
-                        <img src="assets/images/delete_blue.svg">
+                        <!--<img src="assets/images/delete_blue.svg">-->
                       </span>
                     </mat-cell>
                   </ng-container>
@@ -357,9 +374,9 @@
                     <mat-header-cell *matHeaderCellDef> </mat-header-cell>
                     <mat-cell *matCellDef="let storeEquip">
                       <span [hidden]="storeEquip == null" (click)="editConfiguration(storeEquip)"
-                        class="material-symbols-rounded edit-icon"
+                        class="material-symbols-rounded edit-icon edit-square icon-edit-square"
                         [ngStyle]="{'cursor': (returned != 'consult') ? 'pointer' : ''}">
-                        <img src="assets/images/edit_square.svg" title="Edit">
+                        <!--<img src="assets/images/edit_square.svg" title="Edit">-->
                       </span>
                     </mat-cell>
                   </ng-container>
@@ -388,8 +405,8 @@
             <h2 class="accordion-header" id="flush-headingFour">
               <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" id="accordionButton4"
                 data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
-                <span class="material-symbols-outlined icon-accordion">
-                  <img src="assets/images/sell.svg" />
+                <span class="material-symbols-outlined icon-accordion sell icon-sell">
+                  <!--<img src="assets/images/sell.svg" />-->
                 </span>
                 &nbsp;&nbsp;{{'commercialOffer.price'|translate|uppercase}}
               </button>
@@ -490,12 +507,16 @@
               <button [routerLink]="['/']" id="btn5a1"
                 class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
                 wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;
-                <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+                <span class="exit-to-app icon-exit-to-app"></span>
+                <!--<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">-->
               </button><button id="btn5a1" *ngIf="returned != 'consult'" [routerLink]="['/']"
                 class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
-                wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img
+                wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;
+                <span class="cancel icon-cancel"></span>
+                <!--<img
                   src="assets/images/exit_to_app.svg"
-                  style="height: 25px !important; vertical-align: sub;"></button><button (click)="goToComprovativos()"
+                  style="height: 25px !important; vertical-align: sub;">-->
+                </button><button (click)="goToComprovativos()"
                 id="btn5a1"
                 class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
                 wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"

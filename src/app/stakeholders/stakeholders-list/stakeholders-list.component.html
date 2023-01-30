@@ -46,9 +46,9 @@
       <mat-header-cell *matHeaderCellDef [hidden]="canDelete == false" class="small-cell"> </mat-header-cell>
       <mat-cell *matCellDef="let stakeholder" class="small-cell" [hidden]="canDelete == false"
         (click)="removeStakeholder(stakeholder)" style="display: inline-grid;">
-        <span [hidden]="canDelete == false || submissionClient?.fiscalId === stakeholder.stakeholderAcquiring.fiscalId">
-          <img src="assets/images/delete_blue.svg"
-            style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+        <span [hidden]="canDelete == false || submissionClient?.fiscalId === stakeholder.stakeholderAcquiring.fiscalId" class="delete-blue-comp icon-delete-blue">
+          <!--<img src="assets/images/delete_blue.svg"
+            style="height: 25px !important; vertical-align: sub; cursor: pointer;">-->
         </span>
       </mat-cell>
     </ng-container>

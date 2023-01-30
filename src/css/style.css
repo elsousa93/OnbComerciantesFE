@@ -70,19 +70,19 @@ main {
   }
 
   .footer-fundo {
-    background-image: -webkit-gradient( linear, left bottom, left top, color-stop(14%, #1e66b0), to(#4b8fd6) );
-    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(14%, #1e66b0), to(#4b8fd6));
-    background-image: linear-gradient(0deg, #1e66b0 14%, #4b8fd6 100%);
+    background-image: -webkit-gradient( linear, left bottom, left top, color-stop(14%, rgb(var(--bs-primary-rgb))), to(#4b8fd6));
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(14%, rgb(var(--bs-primary-rgb))), to(#4b8fd6));
+    background-image: linear-gradient(0deg, rgb(var(--bs-primary-rgb)) 14%, #4b8fd6 100%);
     padding-left: 11px;
   }
 
   .offcanvas-checkboox {
     font-size: 20px;
-    color: #1e66b0;
+    color: rgb(var(--bs-primary-rgb));
     text-transform: uppercase;
     margin-bottom: 14px;
     border-width: 1px;
-    border-color: #1e66b0;
+    border-color: rgb(var(--bs-primary-rgb));
   }
 
   .banner_texto {
@@ -288,7 +288,7 @@ main {
   }
 
   .style6 {
-    background-color: #1e66b0;
+    background-color: rgb(var(--bs-primary-rgb));
     color: #d2e0ef;
   }
 
@@ -302,8 +302,8 @@ main {
   }
 
   .campo_form {
-    border-color: #6c757d;
-    color: #6f42c1;
+    border-color: var(--bs-gray-600); /* --bs-gray-600 */
+    color: var(--bs-purple); /* --bs-purple*/
     margin-top: 0px;
     margin-bottom: 20px;
     font-size: 20px;
@@ -311,7 +311,7 @@ main {
 
   .texto-coment {
     font-size: 14px;
-    color: #adb5bd;
+    color: var(--bs-gray-500); /* --bg-gray-500 */
     padding-left: 0px;
   }
 
@@ -320,7 +320,7 @@ main {
   }
 
   .campo_form_area {
-    border-color: #6c757d;
+    border-color: var(--bs-gray-600); /* --bs-gray-600 */
     color: #000;
     margin-top: 0px;
     margin-bottom: 20px;
@@ -366,7 +366,7 @@ main {
   }
 
   .style16 {
-    color: #1e66b0;
+    color: rgb(var(--bs-primary-rgb));
   }
 
   .icone-menu-secundario-incompleto {
@@ -377,8 +377,8 @@ main {
   }
 
   .campo-form-select {
-    border-color: #6c757d;
-    color: #6c757d;
+    border-color: var(--bs-gray-600); /* --bs-gray-600 */
+    color: var(--bs-gray-600); /* --bs-gray-600 */
   }
 
   .offcanvas_escollha {
@@ -392,11 +392,11 @@ main {
   }
 
   .titulo-form-simples {
-    color: #1e66b0;
+    color: rgb(var(--bs-primary-rgb));
     font-size: 18px;
     margin-top: 16px;
     margin-bottom: 5px;
-}
+  }
 
   .caixa_menu_footer {
     margin-top: 0px;
@@ -558,15 +558,15 @@ main {
 
 
 .botao_branco {
-  color: #1e66b0;
-  border: 2px solid #1e66b0;
+  color: rgb(var(--bs-primary-rgb));
+  border: 2px solid rgb(var(--bs-primary-rgb));
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   margin: 8px 0px;
   padding: 10px;
-  }
+}
 
 .botao_branco:hover {
   background-color: rgba(123, 147, 171, 0.31);
@@ -579,16 +579,16 @@ main {
 }
 
 .botao_azul {
-  border: 2px solid #1e66b0;
+  border: 2px solid rgb(var(--bs-primary-rgb));
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   color: #fff;
-  background-color: #1e66b0;
-  margin: 8px 0px ; 
+  background-color: rgb(var(--bs-primary-rgb));
+  margin: 8px 0px;
   padding: 10px;
-  }
+}
 
 .botao_azul:hover {
   background-color: rgba(30, 102, 176, 0.44);
@@ -599,14 +599,14 @@ main {
 
 .botao_azul_pesquisa {
   padding: 10px;
-  border: 2px solid #1e66b0;
+  border: 2px solid rgb(var(--bs-primary-rgb));
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   color: #fff;
-  background-color: #1e66b0;
-  }
+  background-color: rgb(var(--bs-primary-rgb));
+}
 
 .botao_azul_pesquisa:hover {
   background-color: rgba(30, 102, 176, 0.44);
@@ -618,13 +618,13 @@ main {
 
 .botao_branco_pesquisa {
   padding: 10px;
-  color: #1e66b0;
-  border: 2px solid #1e66b0;
+  color: rgb(var(--bs-primary-rgb));
+  border: 2px solid rgb(var(--bs-primary-rgb));
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
-  }
+}
 
 .botao_branco_pesquisa:hover {
   background-color: rgba(123, 147, 171, 0.31);
@@ -650,7 +650,7 @@ main {
 }
 
 .quadro_paises_tracejado {
-  border: 2px #1e66b0;
+  border: 2px rgb(var(--bs-primary-rgb));
   border-right-style: dashed;
 }
 

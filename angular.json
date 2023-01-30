@@ -79,6 +79,41 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "sibs": {
+              "assets": [
+                "src/favicon.ico",
+                "src/assets",
+                "src/assets/config/"
+              ],
+              "styles": [
+                "src/custom-theme.scss",
+                "src/bootstrap/5/css/bootstrapSIBS.min.css",
+                "src/css/style.css",
+                "src/css/style_x.css",
+                "src/css/roboto.css",
+                "src/css/materialsymbols.css",
+                "src/css/materialicons.css"
+              ],
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "5mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "5mb",
+                  "maximumError": "5mb"
+                }
+              ],
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
             }
           },
           "defaultConfiguration": "development"

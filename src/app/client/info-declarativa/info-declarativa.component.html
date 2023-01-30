@@ -3,9 +3,25 @@
   <div class="row">
     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
       <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
-        <span class="navbar-text text-light">
-          <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
-        </span>
+        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="70px" height="32px" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+             viewBox="0 0 324 148.998">
+          <defs>
+            <style type="text/css">
+              .fil0 {
+                fill: rgb(var(--bs-primary-rgb))
+              }
+
+              .fil1 {
+                fill: rgb(var(--bs-icon-secondary-rgb))
+              }
+            </style>
+          </defs>
+          <g id="Layer_x0020_1">
+            <metadata id="CorelCorpID_0Corel-Layer" />
+            <rect class="fil0" x="-0.201492" y="-0.0493018" width="324.402" height="149.097" />
+            <path class="fil1" d="M94.1079 -0.0507874l32.7768 0 0 91.9654c0,23.4224 11.7732,34.0512 35.1177,34.0512 23.3421,0 35.1248,-10.6264 35.1248,-33.8362l0 -92.1791 32.7638 0.0023622 0 93.4819c0,28.024 -11.6657,46.7291 -33.2185,55.6146l-69.3484 0c-21.5539,-8.88543 -33.2161,-27.5906 -33.2161,-55.6146l0 -93.4854 0 0z" />
+          </g>
+        </svg>
         <span class="navbar-text">
           <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
             {{'declarativeInformation.title'|translate|uppercase}}</h5>
@@ -40,8 +56,10 @@
           <div class="container-fluid mt-0 ps-3 pe-3" style="padding-left: 0.75rem !important;">
             <div class="row">
               <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">
-                <h2 class="text-primary mt-3 ps-0"><img src="assets/images/manage_accounts.svg"
-                    class="img_add">&nbsp;{{'client.data'|translate|uppercase}}
+                <h2 class="text-primary mt-3 ps-0"><span class="manage-accounts-lg icon-manage-accounts"></span>
+                  <!--<img src="assets/images/manage_accounts.svg"
+                    class="img_add">-->
+                  {{'client.data'|translate|uppercase}}
                 </h2>
                 <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
                 <div class="row ms-0 me-0" style="margin-bottom: 50px;">
@@ -153,13 +171,19 @@
                     <span class="navbar-text me-2 align-self-center ms-0 me-0">
                       <button id="btn5a1" [routerLink]="['/']"
                         class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
-                        wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;<img
+                        wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;
+                        <span class="exit-to-app icon-exit-to-app"></span>
+                      <!--<img
                           src="assets/images/exit_to_app.svg"
-                          style="height: 25px !important; vertical-align: sub;"></button>
+                          style="height: 25px !important; vertical-align: sub;">-->
+                      </button>
                       <button *ngIf="returned != 'consult'" id="btn5a3" [routerLink]="['/']"
                         class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
-                        wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img
-                          src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;"></button>
+                        wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;
+                        <span class="cancel icon-cancel"></span>
+                      <!--<img
+                          src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;">-->
+                      </button>
                       <button id="btn5a4" [routerLink]="['/commercial-offert-list']"
                         class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
                         wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"

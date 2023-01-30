@@ -5,9 +5,25 @@
     <div class="row">
       <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
         <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
-          <span class="navbar-text text-light">
-            <img src="assets/images/monograma_2.svg" class="img-fluid ms-0" width="70">
-          </span>
+          <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="70px" height="32px" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+               viewBox="0 0 324 148.998">
+            <defs>
+              <style type="text/css">
+                .fil0 {
+                  fill: rgb(var(--bs-primary-rgb))
+                }
+
+                .fil1 {
+                  fill: rgb(var(--bs-icon-secondary-rgb))
+                }
+              </style>
+            </defs>
+            <g id="Layer_x0020_1">
+              <metadata id="CorelCorpID_0Corel-Layer" />
+              <rect class="fil0" x="-0.201492" y="-0.0493018" width="324.402" height="149.097" />
+              <path class="fil1" d="M94.1079 -0.0507874l32.7768 0 0 91.9654c0,23.4224 11.7732,34.0512 35.1177,34.0512 23.3421,0 35.1248,-10.6264 35.1248,-33.8362l0 -92.1791 32.7638 0.0023622 0 93.4819c0,28.024 -11.6657,46.7291 -33.2185,55.6146l-69.3484 0c-21.5539,-8.88543 -33.2161,-27.5906 -33.2161,-55.6146l0 -93.4854 0 0z" />
+            </g>
+        </svg>
           <span class="navbar-text">
             <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
               {{'client.title'|translate|uppercase}}
@@ -23,8 +39,8 @@
                 <h2 class="accordion1-header" id="flush-headingOne">
                   <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
-                    <span class="material-symbols-outlined icon-accordion">
-                      <img src="assets/images/filter.svg" class="img_add" style="height: 33px;">
+                    <span class="material-symbols-outlined icon-accordion filter icon-filter">
+                      <!--<img src="assets/images/filter.svg" class="img_add" style="height: 33px;">-->
                     </span>
                     &nbsp;&nbsp;{{'client.companyCaracterization'|translate|uppercase}}&nbsp;&nbsp;
                     <img src="assets/images/triangle-exclamation-solid.svg"
@@ -46,8 +62,8 @@
                   <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                     (click)="onActivate()" data-bs-target="#flush-collapseTwo" aria-expanded="false"
                     aria-controls="flush-collapseTwo">
-                    <span class="material-symbols-outlined icon-accordion">
-                      <img src="assets/images/manage_accounts.svg" />
+                    <span class="material-symbols-outlined icon-accordion manage-accounts icon-manage-accounts">
+                      <!--<img src="assets/images/manage_accounts.svg" />-->
                     </span>
                     &nbsp;&nbsp;{{'client.companyInformation'|translate|uppercase}}&nbsp;&nbsp;
                     <img src="assets/images/triangle-exclamation-solid.svg"
@@ -70,8 +86,8 @@
                   <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                     (click)="onActivate()" data-bs-target="#flush-collapseFour" aria-expanded="false"
                     aria-controls="flush-collapseFour">
-                    <span class="material-symbols-outlined icon-accordion">
-                      <img src="assets/images/contact_page.svg" style="height: 33px;" />
+                    <span class="material-symbols-outlined icon-accordion contact-page icon-contact-page">
+                      <!--<img src="assets/images/contact_page.svg" style="height: 33px;" />-->
                     </span>
                     &nbsp;&nbsp;{{'client.documents'|translate|uppercase}}&nbsp;&nbsp;
                   </button>
@@ -101,10 +117,10 @@
                             <td class="text-primary text-center">{{docum.receivedAt}}</td>
                             <td class="text-primary text-center">{{docum.validUntil}}</td>
                             <td>
-                              <span>
-                                <img src="assets/images/search_blue.svg"
+                              <span class="search-blue icon-search-blue" (click)="getClientDocumentImage(docum.uniqueReference, docum.format, docum.archiveSource)">
+                                <!--<img src="assets/images/search_blue.svg"
                                   (click)="getClientDocumentImage(docum.uniqueReference, docum.format, docum.archiveSource)"
-                                  style="height: 25px !important; vertical-align: sub; cursor: pointer;">
+                                  style="height: 25px !important; vertical-align: sub; cursor: pointer;">-->
                               </span>
                             </td>
                           </tr>
@@ -121,8 +137,8 @@
                 <h2 class="accordion-header" id="flush-headingThree">
                   <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
-                    <span class="material-symbols-outlined icon-accordion">
-                      <img src="assets/images/supervisor_account.svg" />
+                    <span class="material-symbols-outlined icon-accordion supervisor-account icon-supervisor-account">
+                      <!--<img src="assets/images/supervisor_account.svg" />-->
                     </span>
                     &nbsp;&nbsp;{{'client.companyPower'|translate|uppercase}}&nbsp;&nbsp;
                     <img src="assets/images/triangle-exclamation-solid.svg"
@@ -148,14 +164,16 @@
                   <button id="btn5a1"
                     class="btn botao_branco_pesquisa center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-0 pt-3 pb-3 ps-3 pe-3"
                     wappler-command="editContent" [routerLink]="['/']">
-                    {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
-                      <img src="assets/images/exit_to_app.svg" style="height: 25px !important;">
+                    {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align exit-to-app icon-exit-to-app">
+                      <!--<img src="assets/images/exit_to_app.svg" style="height: 25px !important;">-->
                     </span>
                   </button>
                   <button *ngIf="returned != 'consult'" id="btn5a3" [routerLink]="['/']"
                     class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
-                    wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img
-                      src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;"></button>
+                    wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;
+                  <span class="cancel icon-cancel"></span>
+                  <!--<img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;">-->
+                  </button>
                 </span>
                 <button id="btn5a3"
                   class="btn botao_azul_pesquisa center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"

@@ -209,6 +209,17 @@ export class AddStoreComponent implements OnInit {
       this.formStores.get('countryStore').updateValueAndValidity();
       this.formStores.get('zipCodeStore').updateValueAndValidity();
     }
+    this.resetIsInsideCommercialCenter();
+  }
+
+  resetIsInsideCommercialCenter() {
+    this.isComercialCentreStore = null;
+    this.foundComercialCentre = false;
+    this.showError = false;
+    this.noAddress = false;
+    this.formStores.get("subZoneStore").setValue("");
+    this.formStores.get("zipCodeStore").setValue("");
+    this.formStores.get("commercialCenter").setValue(this.isComercialCentreStore);
   }
 
   numericOnly(event): boolean {
@@ -248,10 +259,14 @@ export class AddStoreComponent implements OnInit {
   GetCountryByZipCode() {
     this.subzonesShopping = null;
     var currentCountry = this.formStores.get('countryStore').value;
-    this.logger.debug("Pais escolhido atual");
-
     this.formStores.get('addressStore').setValue('');
     this.formStores.get('localeStore').setValue('');
+    this.isComercialCentreStore = null;
+    this.foundComercialCentre = false;
+    this.showError = false;
+    this.noAddress = false;
+    this.formStores.get("subZoneStore").setValue("");
+    this.formStores.get("commercialCenter").setValue(this.isComercialCentreStore);
 
     if (currentCountry === 'PT') {
       this.lockLocality = true;

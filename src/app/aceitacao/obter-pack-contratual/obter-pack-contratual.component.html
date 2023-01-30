@@ -1,9 +1,27 @@
 <div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0 bg-light">
   <div class="row align-items-center">
     <div class="offset-1 col-10 bg-primary mt-5 me-0 pt-0 ps-0 pe-0">
-      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0"><span
-          class="navbar-text text-light"><img src="assets/images/monograma_2.svg" class="img-fluid ms-0"
-            width="70"></span><span class="navbar-text">
+      <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
+        <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="70px" height="32px" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
+             viewBox="0 0 324 148.998">
+          <defs>
+            <style type="text/css">
+            .fil0 {
+              fill: rgb(var(--bs-primary-rgb))
+            }
+
+            .fil1 {
+              fill: rgb(var(--bs-icon-secondary-rgb))
+            }
+          </style>
+          </defs>
+          <g id="Layer_x0020_1">
+            <metadata id="CorelCorpID_0Corel-Layer" />
+            <rect class="fil0" x="-0.201492" y="-0.0493018" width="324.402" height="149.097" />
+            <path class="fil1" d="M94.1079 -0.0507874l32.7768 0 0 91.9654c0,23.4224 11.7732,34.0512 35.1177,34.0512 23.3421,0 35.1248,-10.6264 35.1248,-33.8362l0 -92.1791 32.7638 0.0023622 0 93.4819c0,28.024 -11.6657,46.7291 -33.2185,55.6146l-69.3484 0c-21.5539,-8.88543 -33.2161,-27.5906 -33.2161,-55.6146l0 -93.4854 0 0z" />
+          </g>
+        </svg>
+      <span class="navbar-text">
           <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
             {{'acceptance.title'|translate|uppercase}}</h5>
         </span></nav>
@@ -17,11 +35,12 @@
       </nav>
     </div>
     <div class="col-5 bg-light ms-1 ps-0 pe-0" style="cursor: pointer;" [routerLink]="['/app-pack-contratual']">
-      <nav
-        class="navbar navbar-expand-lg navbar-light justify-content-center bg-opacity-25 align-items-center botao_historico_detalhe_up ms-0 me-1">
+      <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-opacity-25 align-items-center botao_historico_detalhe_up ms-0 me-1">
         <span>
-          <img src="assets/images/task_alt.svg" style="height: 30px; vertical-align: bottom;">
-          {{'acceptance.title'|translate|uppercase}} </span>
+          <span class="icon-task-alt task-alt">
+
+          </span>{{'acceptance.title'|translate|uppercase}}
+        </span>
       </nav>
     </div>
     <div class="offset-1 col-10 mt-5 pt-0 ps-0 pe-0">
@@ -40,16 +59,21 @@
               <div class="bg-white align-self-center laterais_tabs col-12 mt-0 ms-0 me-0 pt-4 ps-5 pe-5"
                 style="margin-left: 1px !important;">
                 <div class="row mb-2 ms-0 me-0 pb-3">
-                  <h4 class="text-primary mt-3 ps-0"><img src="assets/images/content_copy.svg"
-                      style="height: 30px !important; vertical-align: sub;">&nbsp;{{'acceptance.contratualPack.documentation'|translate|uppercase}}
+                  <h4 class="text-primary mt-3 ps-0"><span class="content-copy icon-content-copy"></span>
+                    <!--<img src="assets/images/content_copy.svg"
+                      style="height: 30px !important; vertical-align: sub;">-->
+                  &nbsp;{{'acceptance.contratualPack.documentation'|translate|uppercase}}
                   </h4>
                   <p class="titulo-form-simples mt-0">{{'acceptance.contratualPack.step'|translate|uppercase}}</p>
                   <div class="row mb-0 ms-0 me-0 pb-0 ps-0 pe-0">
                     <div class="col-12 mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
                       <nav class="navbar navbar-expand-lg text-primary bg-primary bg-opacity-10 mt-4 pt-3 pb-3 pe-4">
-                        <span class="navbar-text ps-4 text-primary"><img src="assets/images/file_download.svg"
-                            (click)="downloadForm('assets/forms/contrato_adesao.pdf')"
-                            style="height: 25px !important; vertical-align: sub; cursor: pointer;"></span><span
+                        <span class="navbar-text ps-4 text-primary">
+                          <span class="file-download icon-file-download"></span>
+                          <!--<img src="assets/images/file_download.svg"
+    (click)="downloadForm('assets/forms/contrato_adesao.pdf')"
+    style="height: 25px !important; vertical-align: sub; cursor: pointer;">-->
+                        </span><span
                           class="navbar-text ps-4 text-primary">{{'acceptance.contratualPack.reduniq'|translate|uppercase}}&nbsp;
                           (CP)</span><span class="navbar-text ms-auto"><input id="text2" name="text2" type="text"
                             class="form-control form-control-sm mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0"></span>
@@ -58,9 +82,12 @@
                     </div>
                     <div class="col-12 mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
                       <nav class="navbar navbar-expand-lg text-primary bg-primary bg-opacity-10 mt-0 pt-3 pb-3 pe-4">
-                        <span class="navbar-text ps-4 text-primary"><img src="assets/images/file_download.svg"
+                        <span class="navbar-text ps-4 text-primary ">
+                        <span class="file-download icon-file-download"></span>
+                        <!--<img src="assets/images/file_download.svg"
                             (click)="downloadForm('assets/forms/contrato_adesao.pdf')"
-                            style="height: 25px !important; vertical-align: sub; cursor: pointer;"></span><span
+                            style="height: 25px !important; vertical-align: sub; cursor: pointer;">-->
+                          </span><span
                           class="navbar-text ps-4 text-primary">{{'acceptance.contratualPack.form'|translate|uppercase}}
                           1&nbsp; (F1)</span><span class="navbar-text ms-auto"><input id="text3" name="text1"
                             type="text"
@@ -70,9 +97,9 @@
                     </div>
                     <div class="col-12 mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
                       <nav class="navbar navbar-expand-lg text-primary bg-primary bg-opacity-10 mt-0 pt-3 pb-3 pe-4">
-                        <span class="navbar-text ps-4 text-primary"><img src="assets/images/file_download.svg"
-                            (click)="downloadForm('assets/forms/contrato_adesao.pdf')"
-                            style="height: 25px !important; vertical-align: sub; cursor: pointer;"></span><span
+                        <span class="navbar-text ps-4 text-primary ">
+                          <span class="file-download icon-file-download"></span>
+                        </span><span
                           class="navbar-text ps-4 text-primary">{{'acceptance.contratualPack.form'|translate|uppercase}}
                           2&nbsp; (F2)</span><span class="navbar-text ms-auto"><input id="text4" name="text3"
                             type="text"
@@ -92,8 +119,8 @@
                     </button>
                   </span>
                 </nav>
-                <h4 class="text-primary mt-3 ps-0">
-                  <img src="assets/images/attach_file.svg" style="height: 25px !important; vertical-align: top;">
+                <h4 class="text-primary mt-3 ps-0"><span class="attach-file icon-attach-file"></span>
+                  <!--<img src="assets/images/attach_file.svg" style="height: 25px !important; vertical-align: top;">-->
                   {{'acceptance.contratualPack.addProcess'|translate|uppercase}}
                 </h4>
                 <div class="table-responsive pb-3 mb-2" style="margin-bottom: 0px !important;">
@@ -261,7 +288,8 @@
                     <button [routerLink]="['/']" id="btn5a6"
                       class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
                       wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;
-                      <img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">
+                      <span class="exit-to-app icon-exit-to-app"></span>
+                      <!--<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">-->
                     </button>
                     <button id="btn5a6"
                       class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
@@ -284,8 +312,10 @@
                     <button id="btn5a6"
                       class="btn botao_branco center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"
                       wappler-command="editContent">
-                      <img src="assets/images/arrow_back_ios.svg"
-                        style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;
+                      <span class="arrow-back-ios icon-arrow-back-ios"></span>
+                      <!--<img src="assets/images/arrow_back_ios.svg"
+                        style="height: 25px !important; vertical-align: sub;">-->
+                      {{'generalKeywords.back'|translate|uppercase}}&nbsp;
                     </button>
                   </span>
                 </nav>
