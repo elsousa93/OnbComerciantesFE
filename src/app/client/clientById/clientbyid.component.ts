@@ -219,7 +219,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         });
       });
     } catch (err) {
-      console.log(err);
+      this.logger.error(err);
     }
   }
 
@@ -264,7 +264,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).then(res => {
             context.submissionStakeholders.push(res.result);
           }, error => {
-            console.log("Erro a adicionar stakeholder");
+            context.logger.error(error);
           }).then(r => {
             context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
           });
@@ -727,7 +727,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
       //antes estava merchant 
       this.clientService.EditClient(submissionID, client).subscribe(res => {
-        console.log("resultado: ", res);
+        this.logger.info("Update client: " + res);
       });
 
       //if (!this.updateClient && this.returned == null) {
@@ -806,7 +806,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             documents.forEach(doc => {
               if (doc.documentType !== '0001') { 
                 context.documentService.SubmissionPostDocument(submissionID, doc).subscribe(result => {
-                  console.log('documento adicionado: ', result);
+                  context.logger.info('Added document to submission: ' + result);
                 });
               }
             });
@@ -815,7 +815,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           if (context.clientDocs != null) {
             context.clientDocs.forEach(function (value, idx) {
               context.documentService.SubmissionPostDocument(submissionID, value).subscribe(result => {
-                console.log("adicionou documento: ", result);
+                context.logger.info("Added documents to submission from outbound client: " + result);
               });
             });
           }

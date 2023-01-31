@@ -50,8 +50,6 @@ export class NavMenuInternaComponent implements OnInit {
 
     window.addEventListener("scroll", this.autohide.bind(this), false);
 
-    this.logger.debug(this.map);
-
     this.historySubscription = this.data.historyStream$.subscribe((result) => {
       this.isHistory = result;
     });

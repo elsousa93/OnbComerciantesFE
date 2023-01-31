@@ -31,7 +31,6 @@ export class MainPageComponent implements OnInit {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
     crcService.getAccessToken().then(result => {
-      this.logger.debug("gerou!!");
       localStorage.setItem("accessToken", result.access_token);
     });
   }

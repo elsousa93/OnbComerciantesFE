@@ -42,7 +42,6 @@ export class LoginComponent implements OnInit {
   }
 
   validateRecievedCookie() {
-    this.logger.debug("ngOnInit")
     if (this.cookie.get("jwToken") === "" || this.cookie.get("jwToken") === "undefined" || this.cookie.get("jwToken") === null) {
       this.cookie.delete("jwToken")
       this.cookie.set('jwToken', this.router.snapshot.params['tokenid'], {
@@ -73,7 +72,6 @@ export class LoginComponent implements OnInit {
   }
 
   login() {
-    this.logger.debug("inicio do login")
     if (this.f['userid'].value == this.model.userid && this.f['password'].value == this.model.password) {
       this.cookie.delete("jwToken")
       //set cookie when log-in credentials are inserted

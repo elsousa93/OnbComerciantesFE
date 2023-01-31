@@ -36,23 +36,25 @@ export class DevolucaoComponent implements OnInit {
     private router: ActivatedRoute, private processService: ProcessService, private clientService: ClientService,
     private stakeholderService: StakeholderService, private storeService: StoreService, private translate: TranslateService, private datePipe: DatePipe) {
 
-    this.logger.debug('Process Id ' + this.processId);
   }
 
   getEntityName(entity: string, id: string) {
     if (id != null) {
       if (entity == 'merchant') {
         this.clientService.GetClientByIdOutbound(id).then(res => {
+          this.logger.info("Get client outbound result: " + res);
           return res.legalName;
         });
       }
       if (entity == 'stake') {
         this.stakeholderService.getStakeholderByID(id, "por mudar", "por mudar").then(res => {
+          this.logger.info("Get stake outbound result: " + res);
           return res.shortName;
         });
       }
       if (entity == 'shop') {
         this.storeService.getProcessShopDetails(this.processId, id).subscribe(res => {
+          this.logger.info("Get shop outbound result: " + res);
           return res.name;
         });
       }
@@ -69,20 +71,20 @@ export class DevolucaoComponent implements OnInit {
     this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
     var context = this;
     this.getPageInfo();
-    this.logger.debug('Valor do returned ' + localStorage.getItem("returned"));
     if (localStorage.getItem("returned") != 'consult') {
       localStorage.setItem('returned', 'edit');
-      this.logger.debug('Valor do returned' + localStorage.getItem("returned"));
     }
   }
 
   getPageInfo() {
     this.processService.getProcessById(this.processId).subscribe(result => {
+      this.logger.info("Get process by id result: " + result);
       this.process = result;
       this.processNumber = result.processNumber;
       localStorage.setItem('processNumber', this.processNumber);
       this.data.updateData(true, 0);
       this.processService.getProcessIssuesById(this.processId).subscribe(res => {
+        this.logger.info("Get process issues result: " + result);
         if (res.process.length != 0) { // no caso em que as issues vêm a null está a entrar num erro infinito
           this.issues = res;
         }
@@ -90,6 +92,7 @@ export class DevolucaoComponent implements OnInit {
     });
 
     this.processService.getProcessHistory(this.processId).then(result => {
+      this.logger.info("Get process history result: " + result);
       this.processHistoryItems = result.result;
       this.processHistoryItems.items.sort((b, a) => new Date(b.whenStarted).getTime() - new Date(a.whenStarted).getTime());
       this.processHistoryItems.items.forEach(process => {
@@ -114,6 +117,7 @@ export class DevolucaoComponent implements OnInit {
   getHistoryIssueDetails(historyGuid: string) {
     this.selectedHistoryGuid = historyGuid;
     this.processService.getProcessIssuesById(this.processId, historyGuid).subscribe(res => {
+      this.logger.info("Get process issues result: " + res);
       if (res.process.length != 0) {
         this.selectedIssue = res;
       }
@@ -121,6 +125,7 @@ export class DevolucaoComponent implements OnInit {
   }
 
   nextPage() {
+    this.logger.info("Redirecting to Client by id page");
     this.data.updateData(true, 0);
     this.route.navigate(['/clientbyid']);
   }

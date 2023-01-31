@@ -59,11 +59,12 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
   constructor(private logger: LoggerService, private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService) {
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
+      this.logger.info("Fetch all countries " + result);
       this.internationalCallingCodes = result;
       this.internationalCallingCodes = this.internationalCallingCodes.sort(function (a, b) {
         return a.description.localeCompare(b.description, 'pt-PT');
       }); //ordenar resposta
-    }, error => this.logger.debug(error)));
+    }, error => this.logger.error(error)));
 
     this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(result => {
       this.client = result;
@@ -124,6 +125,8 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   selectStore(info) {
     this.selectedStore = info.store;
     this.currentIdx = info.idx;
+    this.logger.info("Selected store " + this.selectedStore);
+    this.logger.info("Selected store index " + this.currentIdx);
     setTimeout(() => this.setForm(), 500);
   }
 
@@ -136,11 +139,12 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       this.selectedStore.phone1.phoneNumber = this.listValue.get("cellphone").get("phoneNumber").value;
       this.selectedStore.phone2.countryCode = this.listValue.get("telephone").get("countryCode").value;
       this.selectedStore.phone2.phoneNumber = this.listValue.get("telephone").get("phoneNumber").value;
-
+      this.logger.info("Shop data to send " + this.selectedStore);
       this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.selectedStore.id, this.selectedStore).subscribe(result => {
         if (this.currentIdx < (this.storesLength - 1)) {
           this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
           this.onActivate();
+          this.logger.info("Updated shop: " + result);
         } else {
           this.route.navigate(['/info-declarativa-assinatura']);
         }

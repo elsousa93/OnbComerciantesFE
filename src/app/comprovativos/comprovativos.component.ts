@@ -138,26 +138,30 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
     this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
       this.submission = result.result;
-      this.logger.debug('Submission ' + result);
+      this.logger.info('Get current submission: ' + result);
 
       this.clientService.GetClientByIdAcquiring(this.submissionId).then(c => {
         this.submissionClient = c;
         this.getLegalNatureDescription();
-        this.logger.debug('Cliente ' + c);
+        this.logger.info('Get client: ' + c);
 
         context.shopService.getSubmissionShopsList(context.submissionId).then(shops => {
+          context.logger.info("Get all shops from submission: " + shops);
           shops.result.forEach(function (value, index) {
             context.shopService.getSubmissionShopDetails(context.submissionId, value.id).then(shop => {
+              context.logger.info("Get shop from submission: " + shop);
               context.shopList.push(shop.result);
             });
           });
 
           this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
+            context.logger.info("Get all documents from submission: " + res);
             var documents = res;
             if (documents.length != 0) {
               documents.forEach(function (value, index) {
                 var document = value;
                 context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
+                  context.logger.info("Get document from submission: " + val);
                   const now = new Date();
                   var latest_date = context.datepipe.transform(now, 'dd-MM-yyyy').toString();
                   var index = context.compsToShow.findIndex(value => value.id == document.id);
@@ -184,11 +188,13 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     });
 
     this.comprovativoService.getRequiredDocuments(this.submissionId).then(result => {
+      context.logger.info("Get the submission's required documents: " + result);
       context.requiredDocuments = result.result;
       context.requiredDocuments.requiredDocumentPurposesMerchants.forEach(merchant => {
         merchant.documentPurposes.forEach(merchantDocPurposes => {
           if (merchantDocPurposes.documentState === 'NotExists') {
             this.clientService.GetClientByIdAcquiring(context.submissionId).then(client => {
+              context.logger.info("Get client: " + client);
               var exists = context.checkDocumentExists(client.clientId, merchantDocPurposes, 'merchant');
               merchantDocPurposes["existsOutbound"] = exists;
             });
@@ -200,11 +206,14 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         stakeholder.documentPurposes.forEach(stakeholderDocPurposes => {
           if (stakeholderDocPurposes.documentState === 'NotExists') {
             context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, stakeholder.entityId).then(result => {
+              context.logger.info("Get stakeholder from submission: " + result);
               if ((result.result.stakeholderId == null || result.result.stakeholderId == "") && result.result.fiscalId != "") {
                 context.stakeholderService.SearchStakeholderByQuery(result.result.fiscalId, "0501", "por mudar", "por mudar").then(stake => {
+                  context.logger.info("Search stakeholder: " + stake);
                   var exists = context.checkDocumentExists(stake.result[0].stakeholderId, stakeholderDocPurposes, 'stakeholder');
                   stakeholderDocPurposes["existsOutbound"] = exists;
                 }, error => {
+                  context.logger.error(error, "", "Stakeholder doesn't exist");
                   var exists = context.checkDocumentExists(result.result.stakeholderId, stakeholderDocPurposes, 'stakeholder');
                   stakeholderDocPurposes["existsOutbound"] = exists;
                 });
@@ -221,6 +230,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         shop.documentPurposes.forEach(shopDocPurposes => {
           if (shopDocPurposes.documentState === 'NotExists') {
             context.shopService.getSubmissionShopDetails(context.submissionId, shop.entityId).then(result => {
+              context.logger.info("Get shop from submission: " + result);
               var exists = context.checkDocumentExists(result.result.shopId, shopDocPurposes, 'shop');
               shopDocPurposes["existsOutbound"] = exists;
             });
@@ -228,13 +238,14 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         });
       });
     }).then(val => {
-      console.log('Terminou');
+      this.logger.info("API call ended");
     });
 
     if (this.submission.stakeholders != null) {
       if (this.submission.stakeholders.length != 0) {
         this.submission.stakeholders.forEach(stake => {
           this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").then(result => {
+            this.logger.info("Get stakeholder outbound: " + result);
             var stake = result.result;
             var index = this.stakeholdersList.findIndex(s => s.id == stake.id);
             if (index == -1)
@@ -256,6 +267,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     if (type === 'merchant') {
       var docMerchantExists = false;
       context.clientService.GetClientByIdOutbound(entityId).then(client => {
+        this.logger.info("Get client outbound: " + client);
         if (client.documents != null && client.documents.length > 0) {
           docMerchantExists = purpose.documentsTypeCodeFulfillPurpose.some(type => {
             if (client.documents.find(elem => elem.documentType === type) == undefined) {
@@ -266,6 +278,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           });
         }
       }, error => {
+        context.logger.error(error, "", "Client doesn't exist on outbound");
         return false;
       }).then(val => {
 
@@ -277,6 +290,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       var docStakeholderExists = false;
       if (entityId != undefined) {
         context.stakeholderService.getStakeholderByID(entityId, "", "").then(stake => {
+          this.logger.info("Get stakeholder outbound: " + stake);
           var client = stake.result;
           if (client.documents != null && client.documents.length > 0) {
             docMerchantExists = purpose.documentsTypeCodeFulfillPurpose.some(type => {
@@ -288,6 +302,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
             });
           }
         }, error => {
+          context.logger.error(error, "", "Stakeholder doesn't exist on outbound");
           return false;
         }).then(val => {
 
@@ -299,6 +314,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     if (type === 'shop') {
       var docShopExists = false;
       context.shopService.getShopInfoOutbound(context.submissionClient.clientId, entityId, "", "").then(shop => {
+        this.logger.info("Get shop outbound: " + shop);
         if (shop.result.supportingDocuments != null && shop.result.supportingDocuments.length > 0) {
           docShopExists = purpose.documentsTypeCodeFulfillPurpose.some(type => {
             if (shop.result.supportingDocuments.find(elem => elem.documentType === type) == undefined) {
@@ -309,6 +325,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           });
         }
       }, error => {
+        context.logger.error(error, "", "Shop doesn't exist on outbound");
         return false;
       }).then(val => {
 
@@ -387,6 +404,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         `);
     } else {
       this.documentService.GetDocumentImageOutbound(file, "por mudar", "por mudar", format).subscribe(result => {
+        this.logger.info("Get document image outbound: " + result);
         this.b64toBlob(result.binary, 'application/pdf', 512);
       });
     }
@@ -403,6 +421,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       link.click();
     } else {
       this.documentService.GetDocumentImageOutbound(file, "por mudar", "por mudar", format).subscribe(result => {
+        this.logger.info("Get document image outbound: " + result);
         this.b64toBlob(result.binary, 'application/pdf', 512, true);
       });
     }
@@ -418,6 +437,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     if (!this.updatedComps) {
       this.firstSubmissionModalRef = this.modalService.show(this.firstSubmissionModal, { class: 'modal-lg' });
     } else {
+      this.logger.info("Redirecting to Commercial Offer List page");
       this.data.updateData(true, 4);
       this.route.navigate(['/commercial-offert-list']);
     }
@@ -440,14 +460,14 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
     } else {
       this.documentService.DeleteDocumentFromSubmission(this.submissionId, this.documentID).subscribe(sucess => {
-        console.log("Sucesso a apagar um documento: ", sucess);
+        this.logger.info("Deleted document: " + sucess);
         let existsIndex = this.compsToShow.findIndex(f => f.id === this.documentID);
         if (existsIndex > -1)
           this.compsToShow.splice(existsIndex, 1);
         this.fileToDelete = null;
         this.documentID = "";
       }, error => {
-        console.log("Erro a apagar um ficheiro: ", error.msg);
+        this.logger.error(error, "", error.msg);
       });
     }
 
@@ -487,8 +507,9 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           "validUntil": "2022-07-20T11:03:13.001Z",
           "data": {}
         }
+        this.logger.info("Sent document: " + docToSend);
         this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(result => {
-          this.logger.debug('Ficheiro foi submetido ' + result);
+          this.logger.info('Document submitted ' + result);
         });
       })
     });
@@ -501,10 +522,12 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     }
 
     this.submissionPut.processNumber = localStorage.getItem("processNumber");
+    this.logger.info('Submission data:  ' + this.submissionPut);
     this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPut).subscribe(result => {
-      this.logger.debug('Editar sub ' + result);
+      this.logger.info('Updated submission ' + result);
       this.data.updateData(true, 4);
       this.data.changeUpdatedComprovativos(true);
+      this.logger.info("Redirecting to Commercial Offer List page");
       this.route.navigate(['/commercial-offert-list']);
     });
   }

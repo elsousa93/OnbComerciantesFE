@@ -1,4 +1,3 @@
-
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
@@ -143,7 +142,6 @@ export class ConsultasFTComponent implements OnInit {
 
   searchProcess() {
     this.search = false;
-    this.logger.debug(this.form);
     this.loadProcesses([]);
     var processStateToSearch = this.state;
     var processNumber = this.form.get('processNumber').value;
@@ -214,8 +212,7 @@ export class ConsultasFTComponent implements OnInit {
       }
       this.loadProcesses(processesArray);
     }, error => {
-      this.logger.debug("deu erro");
-      this.logger.debug(error);
+      this.logger.error(error, "", "Error when searching processes");
       this.loadProcesses([]);
     });
   }
@@ -223,17 +220,14 @@ export class ConsultasFTComponent implements OnInit {
   openProcess(process) {
     if (localStorage.getItem("returned") != 'consult') {
       localStorage.setItem('returned', 'edit');
-      this.logger.debug('Valor do returned' + localStorage.getItem("returned"));
     }
     localStorage.setItem("processNumber", process.processNumber);
-    this.logger.debug('Valor do processNumber ' + localStorage.getItem("processNumber"));
-
     let navigationExtras: NavigationExtras = {
       state: {
         queueName: this.queueName
       }
     };
-
+    this.logger.info("Redirecting to Queues Detail page");
     this.route.navigate(['/queues-detail'], navigationExtras);
   }
 

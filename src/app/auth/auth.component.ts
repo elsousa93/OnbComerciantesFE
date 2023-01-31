@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { LoggerService } from '../logger.service';
 import { AuthService } from '../services/auth.service';
 import { Bank } from '../store/IStore.interface';
 import { TableInfoService } from '../table-info/table-info.service';
@@ -24,7 +25,7 @@ export class AuthComponent implements OnInit {
   roles: role[] = roles; //roles é uma const
   banks: Bank[];
 
-  constructor(private token: TokenService, private authService: AuthService, private router: Router, private tableInfo: TableInfoService) { }
+  constructor(private token: TokenService, private authService: AuthService, private router: Router, private tableInfo: TableInfoService, private logger: LoggerService) { }
 
   ngOnInit(): void {
     this.generateAuthForm();
@@ -39,7 +40,7 @@ export class AuthComponent implements OnInit {
   }
 
   submit() {
-    console.log("Form da autenticação: " + this.authForm);
+    this.logger.debug("Login form: " + this.authForm);
     if (this.authForm.invalid) {
       return;
     }
@@ -55,6 +56,7 @@ export class AuthComponent implements OnInit {
     //fazer um if para quando o utilizador for unicre ou banca conseguir realizar o login neste portal, caso contrario não deve ser possível
 
     this.token.getLoginToken(user.userName, user.bankName, user.bankLocation).then(result => {
+      this.logger.info("Get login token result: " + result);
       user.token = result.access_token;
 
       this.token.getLoginTokenInfo(user.token).then(res => {
@@ -72,27 +74,22 @@ export class AuthComponent implements OnInit {
 
   noToken() {
     var user: User = {};
-
     user.userName = this.authForm.get('userName').value;
     user.bankName = this.authForm.get('bankName').value;
     user.bankLocation = this.authForm.get('bankLocation').value;
     user.permissions = UserPermissions.ADMIN;
     user.authTime = (new Date()).toLocaleString('pt-PT');
     user.token = ''
-
     this.authService.changeUser(user);
-
-    console.log("Form da autenticação: " + this.authService);
-
     this.router.navigate(['/']);
   }
 
   openDiv: boolean = false;
   getsToken: any = null;
+
   getAccessToken() {
     this.openDiv = true;
     this.getsToken = this.token.getAccessToken();
-    console.log("Token de acesso: " + this.getsToken);
   }
 
   generateAuthForm() {
@@ -106,7 +103,7 @@ export class AuthComponent implements OnInit {
 
   expirationCounter(timeout) {
     setTimeout(() => {
-      console.log('EXPIRED!!');
+      this.logger.info('Token expired');
       this.logout();
     }, timeout)
   }

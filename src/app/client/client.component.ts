@@ -88,7 +88,6 @@ export class ClientComponent implements OnInit {
   }
   setOkCC() {
     this.okCC = true;
-    this.logger.debug("okCC valor: " + this.okCC);
   }
   setAddressFalse() {
     this.addressReading = false;
@@ -277,7 +276,6 @@ export class ClientComponent implements OnInit {
 
     this.clientsMat.sort = this.sort;
     this.initializeForm();
-    this.logger.debug(this.baseUrl);
     this.data.updateData(false, 1);
     this.errorInput = "form-control campo_form_coment";
 
@@ -331,13 +329,13 @@ export class ClientComponent implements OnInit {
   }
 
   getValueENI() {
-    this.logger.debug("chamar a funcao de leitura do cartao: ");
+    this.logger.info("Calling fucntion to read citizen card...");
     this.http.get(this.neyondBackUrl + 'CitizenCard/searchCC').subscribe(result => {
       if (result == null) {
-        alert("Erro ao ler cartão cidadão!");
+        alert("Error reading citizen card!");
       } else {
         this.ccInfo = result;
-        this.logger.debug(this.ccInfo);
+        this.logger.info("Citizen card info: " + this.ccInfo);
       }
     }, error => this.logger.error(error));
   }
@@ -363,7 +361,7 @@ export class ClientComponent implements OnInit {
   }
 
   searchClient() {
-    this.logger.debug(this.newClient.clientId);
+    this.logger.info("Searching for client with ID: " + this.newClient.clientId);
     this.showSeguinte = false;
     var context = this;
     this.newClientForm = null;
@@ -374,14 +372,12 @@ export class ClientComponent implements OnInit {
     if (this.canSearch) {
       this.canSearch = false;
       this.clientService.SearchClientByQuery(this.newClient.clientId, this.searchType, "por mudar", "por mudar").subscribe(o => {
+        this.logger.info("Search client by ID result: " + o);
         this.showFoundClient = true;
         var clients = o;
         var context2 = this;
-        this.logger.debug(context.clientsToShow);
         context.clientsToShow = [];
         context.clientsMat.data = context.clientsToShow;
-
-        this.logger.debug(context.clientsToShow);
         if (clients.length > 0) {
           if (clients.length === 1) {
             context.snackBar.open(context.translate.instant('client.find'), '', {
@@ -396,7 +392,6 @@ export class ClientComponent implements OnInit {
           }
           context.resultError = "";
           clients.forEach(function (value, index) {
-            context.logger.debug(value);
             var clientToShow = {
               client: undefined,
               isClient: value.isClient
@@ -405,7 +400,7 @@ export class ClientComponent implements OnInit {
               isClient: boolean
             }
             context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").then(c => {
-              context.logger.debug(c);
+              context.logger.info("Get Merchant Outbound result: " + c);
               var client = {
                 "clientId": c.result.merchantId,
                 "commercialName": c.result.commercialName,
@@ -416,7 +411,7 @@ export class ClientComponent implements OnInit {
               }
               clientToShow.client = client;
               context.clientsToShow.push(clientToShow);
-              context.logger.debug(context.clientsToShow);
+              context.logger.info("Clients found from search: " + context.clientsToShow);
               context.clientsMat.data = context.clientsToShow;
 
             }).then(res => {
@@ -501,7 +496,7 @@ export class ClientComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.modalService.onHide.subscribe((e) => {
-      this.logger.debug('close' + this.modalService);
+      
     });
     this.returned = localStorage.getItem("returned");
     var context = this;
@@ -543,7 +538,7 @@ export class ClientComponent implements OnInit {
   }
 
   obterSelecionado() {
-    this.logger.debug(this.clientId);
+    this.logger.info("Client ID from selected client: " + this.clientId);
     var selectedClient = this.newClient;
     var NIFNIPC = null;
     if (selectedClient.documentationDeliveryMethod === '0502' || selectedClient.documentationDeliveryMethod === '0501') {
@@ -560,7 +555,7 @@ export class ClientComponent implements OnInit {
       };
       NIFNIPC = this.nifCC + "";
     }
-    this.logger.debug("antes de passar");
+
     let navigationExtras: NavigationExtras = {
       state: {
         tipologia: this.tipologia,
@@ -580,7 +575,6 @@ export class ClientComponent implements OnInit {
     localStorage.setItem("documentType", selectedClient.documentationDeliveryMethod);
     localStorage.setItem("documentNumber", selectedClient.clientId);
 
-    this.logger.debug("a passar para a proxima pagina");
     this.route.navigate(['/clientbyid', this.clientId], navigationExtras);
   }
   /**

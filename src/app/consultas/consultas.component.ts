@@ -114,7 +114,6 @@ export class ConsultasComponent implements OnInit {
   searchProcess() {
     this.isLengthOne = false;
     this.search = false;
-    this.logger.debug(this.form);
     this.loadProcesses([]);
     var processStateToSearch = this.form.get("state").value;
     var processNumber = this.form.get('processNumber').value;
@@ -161,6 +160,7 @@ export class ConsultasComponent implements OnInit {
       });
     }
     this.processService.advancedSearch(this.url, 0, 1).subscribe(r => {
+      this.logger.info("Search one process result: " + r);
       if (r.pagination.total > 300) {
         this.snackBar.open(this.translate.instant('searches.search300'), '', {
           duration: 4000,
@@ -205,6 +205,7 @@ export class ConsultasComponent implements OnInit {
 
       if (!this.isLengthOne) {
         this.processService.advancedSearch(this.url, 0, r.pagination.total).subscribe(result => {
+          this.logger.info("Search total processes result: " + result);
 
           let processesArray: Process[] = result.items.map<Process>((process) => {
 
@@ -238,14 +239,12 @@ export class ConsultasComponent implements OnInit {
           }
           this.loadProcesses(processesArray);
         }, error => {
-          this.logger.debug("deu erro");
-          this.logger.debug(error);
+          this.logger.error(error, "", "Error when searching for processes");
           this.loadProcesses([]);
         });
       }
     }, error => {
-      this.logger.debug("deu erro");
-      this.logger.debug(error);
+      this.logger.error(error, "", "Error when searching for processes");
       this.loadProcesses([]);
     });
   }
@@ -259,9 +258,9 @@ export class ConsultasComponent implements OnInit {
   }
 
   openProcess(process) {
-    this.logger.debug(process);
     localStorage.setItem("processNumber", process.processNumber);
     localStorage.setItem("returned", 'consult');
+    this.logger.info("Redirecting to Client By Id page");
     this.route.navigate(['/clientbyid']);
   }
 

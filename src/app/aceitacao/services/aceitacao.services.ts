@@ -11,7 +11,7 @@ export class AceitacaoService {
   API_URL: string = '';
   private baseUrl: string;
 
-  constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private httpUtil: HttpUtilService) {
+  constructor(private http: HttpClient, private configuration: AppConfigService, private httpUtil: HttpUtilService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.API_URL = this.baseUrl;
   }

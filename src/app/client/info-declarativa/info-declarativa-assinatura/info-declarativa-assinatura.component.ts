@@ -72,17 +72,6 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     });
   }
 
-  changeRepresentativeSelected(event) {
-    if (this.representativesSelected.indexOf(event.target.id) > -1) { //fazer o id ser o NIF ou outro identificador que seja apenas de um user
-      var index = this.representativesSelected.indexOf(event.target.id);
-      this.representativesSelected.splice(index, 1);
-    } else {
-      this.representativesSelected.push(event.target.id);
-    }
-    this.logger.debug(this.stakeholders);
-    this.logger.debug(this.representativesSelected);
-  }
-
   openCloseSubmissionModal() {
     this.closeSubmissionModalRef = this.modalService.show(this.closeSubmissionModal, { class: 'modal-lg' });
   }
@@ -118,7 +107,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
                 context.submissionStakeholders.push(stake);
               }
             }, error => {
-              console.log("Erro a adicionar stakeholder");
+              context.logger.error(error);
             });
           });
         }, error => {
@@ -159,9 +148,9 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
           startedAt: new Date().toISOString(),
           contractPackLanguage: this.form.get("language").value
         }
-
+        this.logger.info("Updated submission data: " + submissionToSend);
         this.submissionService.EditSubmission(this.submissionId, submissionToSend).subscribe(result => {
-          console.log("Submissão terminada");
+          this.logger.info("Submission updated: " + result);
         });
       });
     }

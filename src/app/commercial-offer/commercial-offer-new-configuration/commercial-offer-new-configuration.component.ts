@@ -68,9 +68,11 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   loadReferenceData() {
     this.subs.push(this.tableInfo.GetTenantCommunications().subscribe(result => {
+      this.logger.info("Get tenant communications: " + result);
       this.allCommunications = result;
       this.allCommunications = this.allCommunications.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }), this.tableInfo.GetTenantTerminals().subscribe(result => {
+      this.logger.info("Get tenant terminals: " + result);
       this.allTerminals = result;
       this.allTerminals = this.allTerminals.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }));
@@ -204,8 +206,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         quantity: this.formConfig.get('terminalAmount').value
       }
     }
-
+    this.logger.info("Filter to get commercial pack pricing list" + this.productPackPricingFilter);
     this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
+      this.logger.info("Get commercial pack pricing list result: " + result);
       this.pricingOptions = [];
       if (this.storeEquip?.pricing == null) {
         if (result.result.length == 1) {
@@ -234,6 +237,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     if (this.formConfig.valid) {
       if (this.storeEquip?.pricing == null) {
         this.COService.GetProductCommercialPackPricing(this.packId, id, this.productPackPricingFilter).then(res => {
+          this.logger.info("Get commercial pack pricing result: " + res);
           this.pricingAttributeList = [];
           res.result.attributes.forEach(attr => {
             this.pricingAttributeList.push(attr);
@@ -301,14 +305,14 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.storeEquip.pricing = {};
       this.storeEquip.pricing.id = this.selectedMensalidadeId;
       this.storeEquip.pricing.attribute = this.pricingAttributeList[0];
-
+      this.logger.info("Store equipment data: " + this.storeEquip);
 
       if (this.isNewConfig == false) {
         //chamada à API para editar uma configuração
         this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.currentStore.id, this.storeEquip.id, this.storeEquip).subscribe(result => {
           this.changedStoreEvent.emit(true);
           this.storeEquipEvent.emit(this.storeEquip);
-          this.logger.debug("Update Shop Equipment From Submission Response ", result.id);
+          this.logger.info("Update Shop Equipment From Submission Response " + result);
         });
       } else {
         //chamada à API para criar uma nova configuração
@@ -316,7 +320,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
           this.storeEquip.id = result.id;
           this.changedStoreEvent.emit(true);
           this.storeEquipEvent.emit(this.storeEquip);
-          this.logger.debug("Add Shop Equipment To Submission Response ", result.id);
+          this.logger.info("Add Shop Equipment To Submission Response " + result);
         });
       }
       this.el.nativeElement.focus();

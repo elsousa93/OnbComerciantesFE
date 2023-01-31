@@ -81,9 +81,7 @@ export class NavMenuPresencialComponent implements OnInit {
     this.authService.currentUser.subscribe(user => {
       this.currentUser = user;
       var a = UserPermissions[this.currentUser.permissions];
-
-      this.logger.debug("permissões: " + this.currentUser.permissions);
-      this.logger.debug("userPermission tratada: " + a);
+      this.logger.info("User permissions: " + this.currentUser.permissions);
       this.userPermissions = getMenuPermissions(a);
     });
 
@@ -129,7 +127,6 @@ export class NavMenuPresencialComponent implements OnInit {
 
   openProcess() {
     if (this.processNumberToSearch !== "") {
-      this.logger.debug("Opening process: " + this.processNumberToSearch);
       this.encodedCode = encodeURIComponent(this.processNumberToSearch);
       this.searchProcess(this.processNumberToSearch);
     }
@@ -150,7 +147,7 @@ export class NavMenuPresencialComponent implements OnInit {
     } else {
       let progress = progressSteps[this.currentPage - 1][this.currentSubPage - 1];
       this.progressImage = "assets/images/progress_bar/progress_bar_" + progress + ".svg"
-      this.logger.debug("New process image" + this.progressImage);
+      this.logger.info("New progress image" + this.progressImage);
     }
   }
 
@@ -173,11 +170,12 @@ export class NavMenuPresencialComponent implements OnInit {
 
   searchProcess(process) {
     this.processService.searchProcessByNumber(this.encodedCode, 0, 1).subscribe(resul => {
+      this.logger.info("Search process result:" + resul);
       if (resul.items.length != 0) {
         localStorage.setItem("processNumber", process);
         this.processNrService.changeProcessNumber(process);
         localStorage.setItem("returned", 'consult');
-
+        this.logger.info("Redirecting to Client by id page");
         this.route.navigate(['/clientbyid', this.encodedCode]);
       } else {
         let navigationExtras: NavigationExtras = {
@@ -186,11 +184,11 @@ export class NavMenuPresencialComponent implements OnInit {
           }
         };
         this.processNumberToSearch = ''; // to clean processNr
+        this.logger.info("Redirecting to App Consultas page");
         this.route.navigate(['/app-consultas'], navigationExtras);
       }
     }, error => {
-      this.logger.debug("Erro na pesquisa de processo");
-      this.logger.debug(error);
+      this.logger.error(error, "", "Error while searching for process");
     });
   }
 
@@ -198,7 +196,7 @@ export class NavMenuPresencialComponent implements OnInit {
     this.translate.use(language);
     this.getLanguageInfo(language);
     this.tableInfo.languageStream$.next(language);
-
+    this.logger.info("Redirecting to Dashboard page");
     this.route.navigate(['/']);
     let currentRoute = this.route.url;
     let currentState = this.route.getCurrentNavigation()?.extras.state;

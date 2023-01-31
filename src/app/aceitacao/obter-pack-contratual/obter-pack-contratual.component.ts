@@ -93,7 +93,7 @@ export class ObterPackContratualComponent implements OnInit {
   submission() {
     this.submissionModalRef = this.modalService.show(this.submissionModal, { class: 'modal-lg' });
 
-    this.logger.debug("ficheiros a inserir: " + this.files.toString());
+    this.logger.debug("Files to insert: " + this.files.toString());
     var context = this;
     this.files.forEach(function (file, idx) {
       context.readBase64(file).then((data) => {
@@ -104,9 +104,9 @@ export class ObterPackContratualComponent implements OnInit {
           "data": data.split(',')[1]
         }
         var processId = 'a5b04add-2179-4d0e-99ba-18c5622536cb';
-
+        context.logger.debug("Sent file data: " + docToSend);
         context.processService.postProcessDocuments(processId, 'ContractAcceptance', docToSend).subscribe(result => {
-          this.logger.debug('Ficheiro foi submetido ' + result);
+          this.logger.info('File was added: ' + result);
         });
       })
     });
@@ -139,7 +139,6 @@ export class ObterPackContratualComponent implements OnInit {
         }
       }
     }
-    this.logger.debug(this.files);
   }
 
   search(/*url: any, imgName: any*/ file: File) {
@@ -162,13 +161,12 @@ export class ObterPackContratualComponent implements OnInit {
       this.files.splice(index, 1);
     }
     this.aceitacao.delFile(this.id).subscribe(data => {
-      this.logger.debug("DATA: " + data);
       if (data != null) {
         this.load();
       }
     },
       err => {
-        console.error(err);
+        this.logger.error(err);
       }
     )
   }

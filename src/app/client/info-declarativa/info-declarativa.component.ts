@@ -68,11 +68,12 @@ export class InfoDeclarativaComponent implements OnInit {
 
   constructor(private logger: LoggerService, private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService) {
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
+      this.logger.info("Fetch all countries " + result);
       this.internationalCallingCodes = result;
       this.internationalCallingCodes = this.internationalCallingCodes.sort(function (a, b) {
         return a.description.localeCompare(b.description, 'pt-PT');
       }); //ordenar resposta
-    }));
+    }, error => this.logger.error(error)));
 
     this.emailRegex = '^(([^<>()\\[\\]\\\.,;:\\s@"]+(\.[^<>()\\[\\]\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$';
 
@@ -104,12 +105,12 @@ export class InfoDeclarativaComponent implements OnInit {
         });
       } else {
         this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(res => {
-          this.logger.debug("Foi buscar o merchant da submission " + res);
+          this.logger.info("Get Merchant from submission " + res);
           this.setForm(res);
         });
       }
     } else {
-      this.logger.debug("Foi buscar o merchant da localStorage " + this.newClient);
+      this.logger.info("Get Merchant from local storage " + this.newClient);
     }
   }
   ngOnInit(): void {
@@ -159,9 +160,9 @@ export class InfoDeclarativaComponent implements OnInit {
       let storedForm: infoDeclarativaForm = JSON.parse(localStorage.getItem("info-declarativa")) ?? new infoDeclarativaForm();
       storedForm.client = this.newClient;
       localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
-
+      this.logger.info("Merchant data to send " + this.newClient);
       this.clientService.EditClient(localStorage.getItem("submissionId"), this.newClient).subscribe(result => {
-        this.logger.debug("Resultado da chamada do edit do cliente " + result);
+        this.logger.info("Updated Merchant " + result);
       });
     }
     this.router.navigate(['/info-declarativa-stakeholder']);

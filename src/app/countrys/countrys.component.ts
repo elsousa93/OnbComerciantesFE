@@ -121,12 +121,13 @@ export class CountrysComponent implements OnInit {
     if (this.returned == null) {
       if (!this.clientContext.clientExists && this.map.get(2) == undefined) { // garantir que só adicionamos Portugal por default, se o cliente não existir E se o tabulador dos intervenientes ainda não foi visitado
         this.subs.push(this.tableInfo.GetCountryById('PT').subscribe(result => {
+          this.logger.info("Get country by id result: " + result);
           var index = this.contPais.findIndex(elem => elem.code == result.code);
           if (index == -1) {
             this.contPais.push(result);
             this.inserirText(null);
           }
-        }));
+        }, error => this.logger.error(error, "", "Error fetching country")));
       }
     } else {
       if (this.clientContext?.isClient == false) { // !
@@ -192,13 +193,13 @@ export class CountrysComponent implements OnInit {
     this.subs.push(this.tableInfo.GetAllFranchises().subscribe(result => {
       this.franchises = result;
       this.franchises = this.franchises.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
-    }));
+    }, error => this.logger.error(error, "", "Error fetching franchising")));
 
     //Chamada à API para receber todos os Paises
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.countryList = result;
       this.countryList = this.countryList.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
-    }, error => this.logger.debug(error)));
+    }, error => this.logger.error(error, "", "Error fetching countries")));
   }
 
   changeFormStructure(newForm: FormGroup) {
@@ -207,7 +208,6 @@ export class CountrysComponent implements OnInit {
   }
 
   insertValues() {
-
     if (this.clientExists) {
       this.changeFormStructure(new FormGroup({
         expectableAnualInvoicing: new FormControl(this.client.knowYourSales?.estimatedAnualRevenue/*, disabled: true*/, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
@@ -676,16 +676,18 @@ export class CountrysComponent implements OnInit {
     if (normalSubmssion) {
       this.client.knowYourSales.servicesOrProductsDestinations.forEach(countryID => {
         this.subs.push(this.tableInfo.GetCountryById(countryID).subscribe(result => {
+          this.logger.info("Get country by id result: " + result);
           this.contPais.push(result);
           this.inserirText(null);
-        }));
+        }, error => this.logger.error(error, "", "Error fetching country")));
       });
     } else {
       this.merchantInfo.knowYourSales.servicesOrProductsDestinations.forEach(countryID => {
         this.subs.push(this.tableInfo.GetCountryById(countryID).subscribe(result => {
+          this.logger.info("Get country by id result: " + result);
           this.contPais.push(result);
           this.inserirText(null);
-        }));
+        }, error => this.logger.error(error, "", "Error fetching country")));
       });
     }
     this.emitteCountrySize();
@@ -724,12 +726,13 @@ export class CountrysComponent implements OnInit {
 
       if (this.client?.knowYourSales?.servicesOrProductsDestinations?.length == 0) {
         this.subs.push(this.tableInfo.GetCountryById('PT').subscribe(result => {
+          this.logger.info("Get country by id result: " + result);
           var index = this.contPais.findIndex(elem => elem.code == result.code);
           if (index == -1) {
             this.contPais.push(result);
             this.inserirText(null);
           }
-        }));
+        }, error => this.logger.error(error, "", "Error fetching country")));
       }
 
       this.insertValues();

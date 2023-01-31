@@ -180,7 +180,7 @@ export class DashboardComponent implements OnInit {
     //Pendentes de envio
     if (this.FTPermissions?.pending) {
       this.processService.searchProcessByState('Incomplete', 0, 1).subscribe(result => {
-        this.logger.debug('Pendentes de envio ' + result.items);
+        this.logger.info('Pendentes de envio ' + result.items);
         this.incompleteCount = result.pagination.total;
       });
     }
@@ -188,7 +188,7 @@ export class DashboardComponent implements OnInit {
     //Tratamento BackOffice
     if (this.FTPermissions?.backOffice) {
       this.processService.searchProcessByState('Ongoing', 0, 1).subscribe(result => {
-        this.logger.debug('Tratamento BackOffice ' + result.items);
+        this.logger.info('Tratamento BackOffice ' + result.items);
         this.ongoingCount = result.pagination.total;
       });
     }
@@ -196,7 +196,7 @@ export class DashboardComponent implements OnInit {
     //Devolvido BackOffice
     if (this.FTPermissions?.returned) {
       this.processService.searchProcessByState('Returned', 0, 1).subscribe(result => {
-        this.logger.debug('Devolvidos BackOffice ' + result.items);
+        this.logger.info('Devolvidos BackOffice ' + result.items);
         this.returnedCount = result.pagination.total;
       });
     }
@@ -204,7 +204,7 @@ export class DashboardComponent implements OnInit {
     //Pendentes de Aceitação
     if (this.FTPermissions?.acceptance) {
       this.processService.searchProcessByState('ContractAcceptance', 0, 1).subscribe(result => {
-        this.logger.debug('Pendentes de Aceitação' + result);
+        this.logger.info('Pendentes de Aceitação' + result);
         this.contractAcceptanceCount = result.pagination.total;
       });
     }
@@ -212,7 +212,7 @@ export class DashboardComponent implements OnInit {
     //Arquivo Fisico
     if (this.FTPermissions?.pendingSent) {
       this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
-        this.logger.debug('Completos ' + result);
+        this.logger.info('Completos ' + result);
         this.pendingSentCount = result.pagination.total;
       });
     }
@@ -220,7 +220,7 @@ export class DashboardComponent implements OnInit {
     //Pareceres de Eligibilidade
     if (this.FTPermissions?.pendingEligibility) {
       this.processService.searchProcessByState('EligibilityAssessment', 0, 1).subscribe(result => {
-        this.logger.debug('EligibilityAssessment ' + result);
+        this.logger.info('EligibilityAssessment ' + result);
         this.pendingEligibilityCount = result.pagination.total;
       });
     }
@@ -228,7 +228,7 @@ export class DashboardComponent implements OnInit {
     //Múltiplos Clientes
     if (this.FTPermissions?.multipleClientes) {
       this.processService.searchProcessByState('ClientChoice', 0, 1).subscribe(result => {
-        this.logger.debug('ClientChoice ' + result);
+        this.logger.info('ClientChoice ' + result);
         this.multipleClientesCount = result.pagination.total;
       });
     }
@@ -236,7 +236,7 @@ export class DashboardComponent implements OnInit {
     //Valida DO
     if (this.FTPermissions?.DOValidation) {
       this.processService.searchProcessByState('OperationsEvaluation', 0, 1).subscribe(result => {
-        this.logger.debug('OperationsEvaluation ' + result);
+        this.logger.info('OperationsEvaluation ' + result);
         this.DOValidationCount = result.pagination.total;
       });
     }
@@ -244,7 +244,7 @@ export class DashboardComponent implements OnInit {
     //Aprovação de Negociação
     if (this.FTPermissions?.negotiationAproval) {
       this.processService.searchProcessByState('NegotiationApproval', 0, 1).subscribe(result => {
-        this.logger.debug('NegotiationApproval ' + result);
+        this.logger.info('NegotiationApproval ' + result);
         this.negotiationAprovalCount = result.pagination.total;
       });
     }
@@ -252,14 +252,14 @@ export class DashboardComponent implements OnInit {
     //MCC
     if (this.FTPermissions?.MCCTreatment) {
       this.processService.searchProcessByState('StandardIndustryClassificationChoice', 0, 1).subscribe(result => {
-        this.logger.debug('StandardIndustryClassificationChoice ' + result);
+        this.logger.info('StandardIndustryClassificationChoice ' + result);
         this.MCCTreatmentCount = result.pagination.total;
       });
     }
 
     if (this.FTPermissions?.validationSIBS) { //Validação SIBS
       this.processService.searchProcessByState('MerchantRegistration', 0, 1).subscribe(result => {
-        this.logger.debug('MerchantRegistration ' + result);
+        this.logger.info('MerchantRegistration ' + result);
         this.validationSIBSCount = result.pagination.total;
       });
     }
@@ -267,7 +267,7 @@ export class DashboardComponent implements OnInit {
     //Parecer de Risco
     if (this.FTPermissions?.riskOpinion) {
       this.processService.searchProcessByState('RiskAssessment', 0, 1).subscribe(result => {
-        this.logger.debug('RiskAssessment ' + result);
+        this.logger.info('RiskAssessment ' + result);
         this.riskOpinionCount = result.pagination.total;
       });
     }
@@ -275,7 +275,7 @@ export class DashboardComponent implements OnInit {
     //Dúvidas Compliance
     if (this.FTPermissions?.complianceDoubts) {
       this.processService.searchProcessByState('ComplianceEvaluation', 0, 1).subscribe(result => {
-        this.logger.debug('ComplianceEvaluation ' + result);
+        this.logger.info('ComplianceEvaluation ' + result);
         this.complianceDoubtsCount = result.pagination.total;
       });
     }
@@ -284,6 +284,7 @@ export class DashboardComponent implements OnInit {
   callIncompleteCount() {
     if (this.incompleteCount > 0) {
       this.processService.searchProcessByState('Incomplete', 0, this.incompleteCount).subscribe(resul => {
+        this.logger.info('Search incomplete processes ' + resul);
         this.incompleteProcessess = resul;
         this.incompleteProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
@@ -300,6 +301,7 @@ export class DashboardComponent implements OnInit {
   callBackOfficeCount() {
     if (this.ongoingCount > 0) {
       this.processService.searchProcessByState('Ongoing', 0, this.ongoingCount).subscribe(resul => {
+        this.logger.info('Search ongoing processes ' + resul);
         this.ongoingProcessess = resul;
         this.ongoingProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
@@ -317,6 +319,7 @@ export class DashboardComponent implements OnInit {
   callReturnedCount() {
     if (this.returnedCount > 0) {
       this.processService.searchProcessByState('Returned', 0, this.returnedCount).subscribe(resul => {
+        this.logger.info('Search returned processes ' + resul);
         this.returnedProcessess = resul;
         this.returnedProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
@@ -334,6 +337,7 @@ export class DashboardComponent implements OnInit {
   callAcceptanceCount() {
     if (this.contractAcceptanceCount > 0) {
       this.processService.searchProcessByState('ContractAcceptance', 0, this.contractAcceptanceCount).subscribe(resul => {
+        this.logger.info('Search contract acceptance processes ' + resul);
         this.contractAcceptanceProcessess = resul;
         this.contractAcceptanceProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
@@ -350,6 +354,7 @@ export class DashboardComponent implements OnInit {
   callPendingSentCount() {
     if (this.pendingSentCount > 0) {
       this.processService.searchProcessByState('Completed', 0, this.pendingSentCount).subscribe(resul => {
+        this.logger.info('Search completed processes ' + resul);
         this.pendingSentProcessess = resul;
         this.pendingSentProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
@@ -367,6 +372,7 @@ export class DashboardComponent implements OnInit {
   callPendingEligibilityCount() {
     if (this.pendingEligibilityCount > 0) {
       this.processService.searchProcessByState('EligibilityAssessment', 0, this.pendingEligibilityCount).subscribe(resul => {
+        this.logger.info('Search eligibility assessment processes ' + resul);
         this.pendingEligibilityProcessess = resul;
         this.pendingEligibilityProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
@@ -384,6 +390,7 @@ export class DashboardComponent implements OnInit {
   callMultipleClientsCount() {
     if (this.multipleClientesCount > 0) {
       this.processService.searchProcessByState('ClientChoice', 0, this.multipleClientesCount).subscribe(resul => {
+        this.logger.info('Search client choice processes ' + resul);
         this.multipleClientesProcessess = resul;
         this.multipleClientesProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
@@ -401,6 +408,7 @@ export class DashboardComponent implements OnInit {
   callDOValidationCount() {
     if (this.DOValidationCount > 0) {
       this.processService.searchProcessByState('OperationsEvaluation', 0, this.DOValidationCount).subscribe(resul => {
+        this.logger.info('Search operations evaluation processes ' + resul);
         this.DOValidationProcessess = resul;
         this.DOValidationProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
@@ -418,6 +426,7 @@ export class DashboardComponent implements OnInit {
   callNegotiationApprovalCount() {
     if (this.negotiationAprovalCount > 0) {
       this.processService.searchProcessByState('NegotiationApproval', 0, this.negotiationAprovalCount).subscribe(resul => {
+        this.logger.info('Search negotiation approval processes ' + resul);
         this.negotiationAprovalProcessess = resul;
         this.negotiationAprovalProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
@@ -435,6 +444,7 @@ export class DashboardComponent implements OnInit {
   callMCCTreatmentCount() {
     if (this.MCCTreatmentCount > 0) {
       this.processService.searchProcessByState('StandardIndustryClassificationChoice', 0, this.MCCTreatmentCount).subscribe(resul => {
+        this.logger.info('Search standard industry classification choice processes ' + resul);
         this.MCCTreatmentProcessess = resul;
         this.MCCTreatmentProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
@@ -452,6 +462,7 @@ export class DashboardComponent implements OnInit {
   callValidationSIBSCount() {
     if (this.validationSIBSCount > 0) {
       this.processService.searchProcessByState('MerchantRegistration', 0, this.validationSIBSCount).subscribe(resul => {
+        this.logger.info('Search merchant registration processes ' + resul);
         this.validationSIBSProcessess = resul;
         this.validationSIBSProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
@@ -469,6 +480,7 @@ export class DashboardComponent implements OnInit {
   callRiskOpinionCount() {
     if (this.riskOpinionCount > 0) {
       this.processService.searchProcessByState('RiskAssessment', 0, this.riskOpinionCount).subscribe(resul => {
+        this.logger.info('Search risk assessment processes ' + resul);
         this.riskOpinionProcessess = resul;
         this.riskOpinionProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
@@ -486,6 +498,7 @@ export class DashboardComponent implements OnInit {
   callComplianceDoubtsCount() {
     if (this.complianceDoubtsCount > 0) {
       this.processService.searchProcessByState('ComplianceEvaluation', 0, this.complianceDoubtsCount).subscribe(resul => {
+        this.logger.info('Search compliance evaluation processes ' + resul);
         this.complianceDoubtsProcessess = resul;
         this.complianceDoubtsProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
@@ -530,6 +543,7 @@ export class DashboardComponent implements OnInit {
         processId: processId
       }
     };
+    this.logger.info('Redirecting to Queues Detail page');
     this.router.navigate(["/queues-detail"], navigationExtras);
   }
 
@@ -541,12 +555,11 @@ export class DashboardComponent implements OnInit {
 
     this.processService.UpdateProcess(processId, updateProcess, "fQkRbjO+7kGqtbjwnDMAag==", "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").
       subscribe(result => {
-        this.logger.debug("Processo cancelado " + result);
+        this.logger.info("Cancel process " + result);
       });
   }
 
   openProcess(process) {
-    this.logger.debug(process);
     localStorage.setItem("processNumber", process.processNumber);
     localStorage.setItem("returned", 'consult');
     this.router.navigate(['/clientbyid']);

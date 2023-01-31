@@ -17,6 +17,7 @@ import { ClientService } from '../../client/client.service';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { TenantCommunication, TenantTerminal } from '../../table-info/ITable-info.interface';
 import { TranslateService } from '@ngx-translate/core';
+import { LoggerService } from '../../logger.service';
 
 @Component({
   selector: 'app-commercial-offer-list',
@@ -116,13 +117,14 @@ export class CommercialOfferListComponent implements OnInit {
     this.storeEquipMat.sort = this.storeEquipSort;
   }
 
-  constructor(private translate: TranslateService, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private clientService: ClientService, private tableInfo: TableInfoService) {
+  constructor(private translate: TranslateService, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private clientService: ClientService, private tableInfo: TableInfoService, private logger: LoggerService) {
     this.ngOnInit();
     this.loadReferenceData();
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.initializeForm();
 
     this.clientService.GetClientByIdAcquiring(this.submissionId).then(result => {
+      this.logger.info("Get merchant from submission: " + result);
       this.merchantCatalog = {
         context: result.context,
         contextId: result.contextId,
@@ -131,6 +133,7 @@ export class CommercialOfferListComponent implements OnInit {
           issuerCountry: ""
         }
       }
+      this.logger.info("Merchant catalog info to get packs: " + this.merchantCatalog);
     });
     this.data.updateData(false, 5, 1);
   }
@@ -146,7 +149,8 @@ export class CommercialOfferListComponent implements OnInit {
   getStoreEquipsFromSubmission() {
     this.storeEquipList = [];
     if (this.returned != null) {
-      this.storeService.getShopEquipmentConfigurationsFromProcess(this.processNumber, this.currentStore.shopId).subscribe(result => {
+      this.storeService.getShopEquipmentConfigurationsFromProcess(this.processNumber, this.currentStore.id).subscribe(result => {
+        this.logger.info("Get equipments from shop result: " + result);
         if (result != null) {
           this.storeEquipList.push(result);
         }
@@ -154,6 +158,7 @@ export class CommercialOfferListComponent implements OnInit {
     }
 
     this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.id).then(result => {
+      this.logger.info("Get equipments from shop result: " + result);
       var list = result.result;
       if (list.length > 0) {
         list.forEach(res => {
@@ -185,6 +190,9 @@ export class CommercialOfferListComponent implements OnInit {
     this.commissionOptions = []
     this.currentStore = info.store;
     this.currentIdx = info.idx;
+
+    this.logger.info("Selected store: " + this.currentStore);
+    this.logger.info("Selected store index: " + this.currentIdx);
 
     if (this.form.get("replicateProducts").value)
       this.loadStoresWithSameBank(this.currentStore.bank.bank.bank);
@@ -308,8 +316,9 @@ export class CommercialOfferListComponent implements OnInit {
       referenceStore: this.currentStore.shopId,
       supportBank: this.currentStore.supportEntity
     }
-
+    this.logger.info("Data sent to outbound get packs: " + this.productPack);
     this.COService.OutboundGetPacks(this.productPack).then(result => {
+      this.logger.info("Get packs: " + result);
       this.packs = result.result;
       if (this.packs.length === 1) {
         this.selectCommercialPack(this.packs[0].id);
@@ -327,6 +336,7 @@ export class CommercialOfferListComponent implements OnInit {
 
     if (this.currentStore.pack == null) {
       this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
+        context.logger.info("Get pack details " + res);
         context.paymentSchemes = res.result.paymentSchemes;
         context.addPaymentFormGroups();
         res.result.otherGroups.forEach(group => {
@@ -338,7 +348,7 @@ export class CommercialOfferListComponent implements OnInit {
       context.paymentSchemes = this.currentStore.pack.paymentSchemes;
       context.addPaymentFormGroups();
       this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
-
+        context.logger.info("Get pack details " + res);
         res.result.otherGroups.forEach(group => {
           context.groupsList.push(group);
         });
@@ -398,8 +408,9 @@ export class CommercialOfferListComponent implements OnInit {
       },
       packAttributes: this.groupsList //ter em atenção se os valores são alterados à medida que vamos interagindo com a interface
     }
-
+    this.logger.info("Filter sent to get commercial pack commission list: " + this.commissionFilter);
     this.COService.ListProductCommercialPackCommission(this.packId, this.commissionFilter).then(result => {
+      this.logger.info("Get commercial pack commission list result: " + result);
       this.commissionOptions = [];
       if (this.currentStore.pack == null) {
         if (result.result.length == 1) {
@@ -425,6 +436,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.commissionAttributeList = [];
     if (this.currentStore.pack == null) {
       this.COService.GetProductCommercialPackCommission(this.packId, this.commissionId, this.commissionFilter).then(res => {
+        this.logger.info("Get commercial pack commission result: " + res);
         this.commissionAttributeList = res.result.attributes;
         this.addCommissionFormGroups();
       });
@@ -458,7 +470,6 @@ export class CommercialOfferListComponent implements OnInit {
       this.form.get("isUnicre").setValue(true);
       this.changeUnicre(true);
     }
-    //this.form.get("productPackKind").setValue(this.currentStore.pack?.packId);
   }
 
   changeUnicre(bool: boolean) {
@@ -587,7 +598,9 @@ export class CommercialOfferListComponent implements OnInit {
         otherPackDetails: list
       }
       this.currentStore.registrationId = this.form.get("terminalRegistrationNumber")?.value?.toString();
+      this.logger.info("Store data update " + this.currentStore);
       this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.id, this.currentStore).subscribe(result => {
+        this.logger.info("Updated shop result: " + result);
         if (this.currentIdx < (this.storesLength - 1)) {
           this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
           this.closeAccordion();
@@ -684,9 +697,11 @@ export class CommercialOfferListComponent implements OnInit {
 
   loadReferenceData() {
     this.subs.push(this.tableInfo.GetTenantCommunications().subscribe(result => {
+      this.logger.info("Get tenant communications: " + result);
       this.allCommunications = result;
       this.allCommunications = this.allCommunications.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }), this.tableInfo.GetTenantTerminals().subscribe(result => {
+      this.logger.info("Get tenant terminals: " + result);
       this.allTerminals = result;
       this.allTerminals = this.allTerminals.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }));

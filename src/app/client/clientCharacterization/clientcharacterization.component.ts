@@ -106,18 +106,14 @@ export class ClientCharacterizationComponent implements OnInit {
     //Chamada à API para obter as naturezas juridicas
     this.tableInfo.GetAllLegalNatures().then(result => {
       this.legalNatureList = result.result;
-      this.logger.debug("FETCH LEGAL NATURES");
-      this.logger.debug(result);
-      this.logger.debug(this.legalNatureList);
+      this.logger.info("Fetched legal natures: " + result);
     }).then(val => {
       this.legalNatureList = this.legalNatureList.sort((a, b) => a.description > b.description ? 1 : -1);
     });
   }
 
   initializeENI() {
-    this.logger.debug("-------- NIFNIPC --------");
-    this.logger.debug("intializeeniform");
-
+    this.logger.info("Initialized ENI Form");
     var collectCRC = this.form.get("collectCRC")?.value;
 
     this.changeFormStructure(new FormGroup({
@@ -130,7 +126,7 @@ export class ClientCharacterizationComponent implements OnInit {
   }
 
   initializeBasicCRCFormControl() {
-    this.logger.debug("intializebasiccrcform");
+    this.logger.info("Initialized Basic CRC Form");
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required), //sim
@@ -142,7 +138,7 @@ export class ClientCharacterizationComponent implements OnInit {
   }
 
   initializeBasicFormControl() {
-
+    this.logger.info("Initialized Basic Form");
     this.setCommercialSociety(false);
     var collectCRC = this.form.get("collectCRC")?.value;
 
@@ -165,8 +161,7 @@ export class ClientCharacterizationComponent implements OnInit {
   }
 
   initializeFormControlOther() {
-    this.logger.debug("-------- NIFNIPC --------");
-    this.logger.debug("initializeformcontrolother");
+    this.logger.info("Initialized Other Form");
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
     var collectCRC = this.form.get("collectCRC")?.value;
 
@@ -201,9 +196,9 @@ export class ClientCharacterizationComponent implements OnInit {
   }
 
   initializeFormControlCRC() {
-    this.logger.debug("intializecrcform");
+    this.logger.info("Initialized CRC Form");
     this.crcCode = this.form.get("crcCode").value;
-    this.logger.debug(this.processClient.capitalStock.date);
+    this.logger.debug("Date from CRC capital stock: " + this.processClient.capitalStock.date);
     var b = this.datepipe.transform(this.processClient.capitalStock.date, 'MM-dd-yyyy').toString();
     var formatedDate = formatDate(b, 'yyyy-MM-dd', 'pt_PT');
     var branch1 = '';
@@ -417,7 +412,6 @@ export class ClientCharacterizationComponent implements OnInit {
         this.initializeENI();
       this.isCommercialSociety = false;
       this.form.get("commercialSociety").setValue(false);
-      this.logger.debug("entrou no false");
     }
   }
 
@@ -425,7 +419,6 @@ export class ClientCharacterizationComponent implements OnInit {
     this.legalNatureList2 = [];
     this.legalNatError = false;
     var exists = false;
-    this.logger.debug("entrou no legalnatureselected");
 
     var legalNatureToSearch = this.form.get('natJuridicaN1').value;
 
@@ -440,7 +433,6 @@ export class ClientCharacterizationComponent implements OnInit {
       }
     }
 
-    this.logger.debug(this.legalNatureList);
     this.legalNatureList.forEach(legalNat => {
       if (legalNatureToSearch == legalNat.code) {
         exists = true;
@@ -513,7 +505,6 @@ export class ClientCharacterizationComponent implements OnInit {
         this.processClient.pdf = clientByCRC.pdf;
         this.processClient.code = crcInserted;
         this.processClient.requestId = clientByCRC.requestId;
-        this.logger.debug("o crc chamou o initialize");
         this.initializeFormControlCRC();
       }, error: (error) => {
         this.crcNotExists = true;

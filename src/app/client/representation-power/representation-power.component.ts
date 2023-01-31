@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { LoggerService } from '../../logger.service';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { StakeholdersCompleteInformation, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
 import { ClientContext } from '../clientById/clientById.model';
@@ -39,7 +40,7 @@ export class RepresentationPowerComponent implements OnInit, OnChanges {
     });
   }
 
-  constructor(private route: ActivatedRoute, private router: Router, private data: DataService) {
+  constructor(private route: ActivatedRoute, private router: Router, private data: DataService, private logger: LoggerService) {
     this.submissionId = localStorage.getItem('submissionId');
     this.returned = localStorage.getItem('returned');
   }
@@ -49,7 +50,7 @@ export class RepresentationPowerComponent implements OnInit, OnChanges {
     }
 
   ngOnInit(): void {
-    console.log("contexto dentro do representation: ", this.clientContext);
+    this.logger.debug("Context inside representation.component: " + this.clientContext);
   }
 
   submit() {

@@ -17,14 +17,14 @@ export class AuthGuard implements CanActivate {
   }
   public isLoggedIn(): boolean {
     let status = false;
-    this.logger.debug(this.cookie.get("jwToken"));
-    this.logger.debug(this.cookie.get("jwToken") === "undefined");
+    this.logger.info(this.cookie.get("jwToken"));
+    this.logger.info(this.cookie.get("jwToken") === "undefined");
     if (this.cookie.get("jwToken") != "" && this.cookie.get("jwToken") !== "undefined" && this.cookie.get("jwToken") !== null) {
-      this.logger.debug("Sessão validada")
+      this.logger.info("Valid session")
       status = true;
     }
     else {
-      this.logger.debug("Sessão Não validada")
+      this.logger.info("Non valid session");
       status = false;
     }
     return status;
