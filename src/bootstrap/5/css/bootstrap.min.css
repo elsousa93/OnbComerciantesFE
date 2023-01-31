@@ -1281,6 +1281,20 @@ progress {
   vertical-align: bottom;
 }
 
+.icon-logo-navbar {
+  background: url("^assets/images/logo_navbar_pres.svg") no-repeat;
+}
+
+.logo-navbar {
+  display: inline-block;
+  margin-left: 1.05rem !important;
+  max-width: 100%;
+  height: 31px;
+  width: 470px;
+  vertical-align: middle;
+  background-size: contain;
+}
+
 .img-thumbnail {
   padding: .25rem;
   background-color: #fff;
