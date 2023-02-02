@@ -9,6 +9,7 @@ import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPack
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { TableInfoService } from '../../table-info/table-info.service';
+import { LoggerService } from '../../logger.service';
 
 @Component({
   selector: 'app-store-table',
@@ -59,20 +60,22 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   banks: Bank[];
 
-  constructor(private submissionService: SubmissionService, private storeService: StoreService, private translate: TranslateService, private tableInfo: TableInfoService) {
+  constructor(private submissionService: SubmissionService, private storeService: StoreService, private translate: TranslateService, private tableInfo: TableInfoService, private logger: LoggerService) {
     this.fetchActivities();
   }
 
   fetchActivities() {
     this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
+      this.logger.info("Get all shop activities result: " + JSON.stringify(result));
       this.activities = result;
     }, error => {
-
+      this.logger.error(error, "", "Error getting all shop activities");
     }));
     this.subs.push(this.tableInfo.GetBanks().subscribe(result => {
+      this.logger.info("Get all banks result: " + JSON.stringify(result));
       this.banks = result;
     }, error => {
-
+      this.logger.error(error, "", "Error getting all banks");
     }))
   }
 
@@ -152,10 +155,12 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
     return new Promise((resolve, reject) => {
       this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).then(result => {
+        this.logger.info("Get all shops from submission result: " + JSON.stringify(result));
         var shops = result.result;
         var totalLength = shops.length;
         shops.forEach(value => {
           this.storeService.getSubmissionShopDetails(localStorage.getItem("submissionId"), value.id).then(res => {
+            this.logger.info("Get shop from submission result: " + JSON.stringify(result));
             var shop = res.result;
             this.storesList.push(shop);
             length++;
@@ -173,11 +178,14 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     return new Promise((resolve, reject) => {
       if (this.returned != null) {
         this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
+          this.logger.info("Get submission by process number result: " + JSON.stringify(result));
           this.storeService.getSubmissionShopsList(result.result[0].submissionId).then(resul => {
+            this.logger.info("Get all shops from submission result: " + JSON.stringify(result));
             var shops = resul.result;
             var totalLength = shops.length;
             shops.forEach(val => {
               this.storeService.getSubmissionShopDetails(result.result[0].submissionId, val.id).then(res => {
+                this.logger.info("Get shop from submission result: " + JSON.stringify(result));
                 var shop = res.result;
                 var index = this.storesList.findIndex(store => store.shopId == shop.shopId);
                 if (index == -1) // só adicionamos a Loja caso esta ainda n exista na lista

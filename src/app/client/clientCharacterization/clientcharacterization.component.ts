@@ -106,7 +106,7 @@ export class ClientCharacterizationComponent implements OnInit {
     //Chamada à API para obter as naturezas juridicas
     this.tableInfo.GetAllLegalNatures().then(result => {
       this.legalNatureList = result.result;
-      this.logger.info("Fetched legal natures: " + result);
+      this.logger.info("Fetched legal natures: " + JSON.stringify(result));
     }).then(val => {
       this.legalNatureList = this.legalNatureList.sort((a, b) => a.description > b.description ? 1 : -1);
     });
@@ -198,7 +198,7 @@ export class ClientCharacterizationComponent implements OnInit {
   initializeFormControlCRC() {
     this.logger.info("Initialized CRC Form");
     this.crcCode = this.form.get("crcCode").value;
-    this.logger.debug("Date from CRC capital stock: " + this.processClient.capitalStock.date);
+    this.logger.info("Date from CRC capital stock: " + this.processClient.capitalStock.date);
     var b = this.datepipe.transform(this.processClient.capitalStock.date, 'MM-dd-yyyy').toString();
     var formatedDate = formatDate(b, 'yyyy-MM-dd', 'pt_PT');
     var branch1 = '';

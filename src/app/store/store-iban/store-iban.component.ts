@@ -12,6 +12,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
+import { LoggerService } from '../../logger.service';
 
 @Component({
   selector: 'app-store-iban',
@@ -71,7 +72,7 @@ export class StoreIbanComponent implements OnInit, OnChanges {
 
   @Output() fileEmitter = new EventEmitter<{ tipo: string, dataDocumento: string, file: File, id: string }>();
 
-  constructor(private translate: TranslateService, private datePipe: DatePipe, private snackBar: MatSnackBar, private router: ActivatedRoute, private tableInfo: TableInfoService, private route: Router, private data: DataService, private rootFormGroup: FormGroupDirective, private authService: AuthService, private docService: SubmissionDocumentService) {
+  constructor(private translate: TranslateService, private datePipe: DatePipe, private snackBar: MatSnackBar, private router: ActivatedRoute, private tableInfo: TableInfoService, private route: Router, private data: DataService, private rootFormGroup: FormGroupDirective, private authService: AuthService, private docService: SubmissionDocumentService, private logger: LoggerService) {
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
 
     this.initializeForm();
@@ -92,6 +93,7 @@ export class StoreIbanComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.tableInfo.GetBanks().subscribe(result => {
+      this.logger.info("Get all banks result: " + JSON.stringify(result));
       this.banks = result;
       this.banks = this.banks.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     });
@@ -132,7 +134,9 @@ export class StoreIbanComponent implements OnInit, OnChanges {
 
   onDelete(id: string) {
     if (id != "0") {
-      this.docService.DeleteDocumentFromSubmission(this.submissionId, id).subscribe(result => { });
+      this.docService.DeleteDocumentFromSubmission(this.submissionId, id).subscribe(result => {
+        this.logger.info("Deleted document result: " + JSON.stringify(result));
+      });
     }
     this.IBANToShow = null;
     this.fileToDelete = null;

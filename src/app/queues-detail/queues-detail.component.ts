@@ -112,7 +112,7 @@ export class QueuesDetailComponent implements OnInit {
     //Listar os stakeholders do processo
     return new Promise((resolve, reject) => {
       this.queuesInfo.getProcessStakeholdersList(this.processId).then(result => {
-        this.logger.info("Get stakeholders list from process result: " + result);
+        this.logger.info("Get stakeholders list from process result: " + JSON.stringify(result));
         var stakeholders = result.result;
         var totalLength = stakeholders.length;
 
@@ -135,7 +135,7 @@ export class QueuesDetailComponent implements OnInit {
 
     return new Promise((resolve, reject) => {
       this.queuesInfo.getProcessShopEquipmentDetails(processId, shopId, shopEquipmentId).then(r => {
-        this.logger.info("Get shop equipment list from process result: " + r);
+        this.logger.info("Get shop equipment list from process result: " + JSON.stringify(r));
         var equipment = r.result;
         this.equipmentList.push(equipment);
         resolve;
@@ -148,13 +148,13 @@ export class QueuesDetailComponent implements OnInit {
 
     return new Promise((resolve, reject) => {
       this.queuesInfo.getProcessShopDetails(processId, shopId).then(result => {
-        this.logger.info("Get shop from process result: " + result);
+        this.logger.info("Get shop from process result: " + JSON.stringify(result));
         var shop = result.result;
         var shopMCC = this.form.get("shopsMCC") as FormGroup
         shopMCC.addControl(shop.id + "", new FormControl(Validators.required));
         this.shopsList.push(shop);
         this.queuesInfo.getShopEquipmentConfigurationsFromProcess(this.processId, shop.id).then(eq => {
-          this.logger.info("Get shop equipments list from process result: " + result);
+          this.logger.info("Get shop equipments list from process result: " + JSON.stringify(result));
           var equipments = eq.result;
           var shopEquipmentPromisses = [];
           equipments.forEach(val => {
@@ -175,7 +175,7 @@ export class QueuesDetailComponent implements OnInit {
     var subPromisses = [];
     return new Promise((resolve, reject) => {
       this.queuesInfo.getProcessShopsList(this.processId).then(result => {
-        this.logger.info("Get shops list from process result: " + result);
+        this.logger.info("Get shops list from process result: " + JSON.stringify(result));
         var shops = result.result;
         shops.forEach(value => {
           subPromisses.push(context.getShopInfo(this.processId, value.id));
@@ -189,7 +189,7 @@ export class QueuesDetailComponent implements OnInit {
 
   fetchStartingInfo() {
     this.queuesInfo.GetProcessStakeholders(this.processId).then(success => {
-      this.logger.info("Get stakeholders list from process result: " + success);
+      this.logger.info("Get stakeholders list from process result: " + JSON.stringify(success));
       var stakeholdersList = success;
       this.stakesList = stakeholdersList;
       this.loadShopsFromProcess().then(next => {
@@ -351,7 +351,7 @@ export class QueuesDetailComponent implements OnInit {
     })
 
     this.queuesInfo.postExternalState(this.processId, this.state, queueModel).subscribe(result => {
-      this.logger.info("Queue post external state result: " + queueModel);
+      this.logger.info("Queue post external state result: " + JSON.stringify(queueModel));
     })
   }
 }

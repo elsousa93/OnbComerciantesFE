@@ -30,13 +30,13 @@ export class PepComponent implements OnInit {
     private tableInfo: TableInfoService, private rootFormGroup: FormGroupDirective) {
     this.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
-      this.logger.info("Get all countries result: " + result);
+      this.logger.info("Get all countries result: " + JSON.stringify(result));
       this.Countries = result;
       this.Countries = this.Countries.sort(function (a, b) {
         return a.description.localeCompare(b.description, 'pt-PT');
       }); //ordenar resposta
     }, error => this.logger.error(error, "", "Error fetching all countries")), this.tableInfo.GetAllPEPTypes().subscribe(result => {
-      this.logger.info("Get all PEP types result: " + result);
+      this.logger.info("Get all PEP types result: " + JSON.stringify(result));
       result.forEach(element => {
         if (element.code.startsWith('P')) {
           this.PEPTypesP.push(element);
@@ -47,11 +47,11 @@ export class PepComponent implements OnInit {
       this.PEPTypesP = this.PEPTypesP.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
       this.PEPTypesC = this.PEPTypesC.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }, error => this.logger.error(error, "", "Error fetching all PEP types")), this.tableInfo.GetAllCorporateRelations().subscribe(result => {
-      this.logger.info("Get all corporate relations result: " + result);
+      this.logger.info("Get all corporate relations result: " + JSON.stringify(result));
       this.corporateRelations = result;
       this.corporateRelations = this.corporateRelations.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }, error => this.logger.error(error, "", "Error fetching all corporate relations")), this.tableInfo.GetAllKinships().subscribe(result => {
-      this.logger.info("Get all stakeholders kinships result: " + result);
+      this.logger.info("Get all stakeholders kinships result: " + JSON.stringify(result));
       this.stakeholdersKinships = result;
       this.stakeholdersKinships = this.stakeholdersKinships.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }, error => this.logger.error(error, "", "Error fetching all stakeholders kinships")));

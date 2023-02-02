@@ -6,6 +6,7 @@ import { TableInfoService } from '../../table-info/table-info.service';
 import { validPhoneNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
 import { CountryInformation } from 'src/app/table-info/ITable-info.interface';
 import { Subscription } from 'rxjs';
+import { LoggerService } from '../../logger.service';
 
 @Component({
   selector: 'app-info-stakeholder',
@@ -30,9 +31,10 @@ export class InfoStakeholderComponent implements OnInit {
 
   @Output() nameEmitter = new EventEmitter<string>();
 
-  constructor(private data: DataService, private tableInfo: TableInfoService, private rootFormGroup: FormGroupDirective) {
+  constructor(private data: DataService, private tableInfo: TableInfoService, private rootFormGroup: FormGroupDirective, private logger: LoggerService) {
 
     this.tableInfo.GetAllCountries().subscribe(result => {
+      this.logger.info("Get all countries result: " + JSON.stringify(result));
       this.internationalCallingCodes = result;
       this.internationalCallingCodes = this.internationalCallingCodes.sort(function (a, b) {
         return a.description.localeCompare(b.description, 'pt-PT');

@@ -71,6 +71,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   loadCountries() {
     this.subs.push(this.tableData.GetAllCountries().subscribe(result => {
+      this.logger.info("Get all countries result: "+ JSON.stringify(result));
       this.countries = result;
       this.countries = this.countries.sort((a, b) => a.description> b.description? 1 : -1); //ordenar resposta
     }, error => {
@@ -80,6 +81,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   loadDocumentDescriptions() {
     this.subs.push(this.tableData.GetDocumentsDescription().subscribe(result => {
+      this.logger.info("Get documents description result: " + JSON.stringify(result));
       this.documents = result;
     }));
   }
@@ -94,6 +96,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   loadTableInfoData() {
     this.loadCountries();
+    this.loadDocumentDescriptions();
   }
 
   public subs: Subscription[] = [];
@@ -139,10 +142,14 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     var context = this;
     if (this.returned != null) {
       this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
+        context.logger.info("Get submission by process number result: " + JSON.stringify(result));
         this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
+          context.logger.info("Get submission by id result: " + JSON.stringify(resul));
           this.stakeService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
+            context.logger.info("Get all stakeholders from submission result: " + JSON.stringify(result));
             res.forEach(function (value, index) {
               context.stakeService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
+                context.logger.info("Get stakeholder from submission result: " + JSON.stringify(result));
                 context.submissionStakeholders.push(r);
               }, error => {
               });
@@ -208,17 +215,17 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
     this.formNewStakeholder = this.fb.group({
       flagRecolhaEletronica: new FormControl(true), //v
-      documentType: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type : ''), //tirei o this.returned != null
+      documentType: new FormControl(''),
       identificationDocumentCountry: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.country : ''), //
       identificationDocumentValidUntil: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.datePipe.transform(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate, 'dd-MM-yyyy') : ''), //
       identificationDocumentId: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.number : 'THIS'), //
       contractAssociation: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.signType === 'CitizenCard' || this.currentStakeholder?.stakeholderAcquiring?.signType === 'DigitalCitizenCard' ? 'true' : 'false', Validators.required),
       proxy: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.isProxy != null ? this.currentStakeholder?.stakeholderAcquiring?.isProxy + '' : 'false', Validators.required),
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined) ? this.currentStakeholder?.stakeholderAcquiring.fiscalId : '', Validators.required),
-      Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country : '', Validators.required), // tirei do if (this.returned != null)
-      ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? zipcode : '', Validators.required), //
-      Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality : '', Validators.required), //
-      Address: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != undefined) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address : '', Validators.required) //
+      Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country : '', Validators.required), // tirei do if (this.returned != null)
+      ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? zipcode : '', Validators.required), //
+      Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality : '', Validators.required), //
+      Address: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address : '', Validators.required) //
     });
     this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
     this.showYesCC = true;
@@ -255,13 +262,15 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
           this.currentStakeholder.stakeholderAcquiring.identificationDocument.country = this.formNewStakeholder.get("identificationDocumentCountry").value;
           this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate = this.formNewStakeholder.get("documentCountry").value;
         }
-
+        this.logger.info("Stakeholder to update: " + JSON.stringify(this.currentStakeholder.stakeholderAcquiring));
         this.stakeService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
+          this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
           if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
             this.currentIdx = this.currentIdx + 1;
             this.currentStakeholder.stakeholderAcquiring = this.submissionStakeholders[this.currentIdx];
           } else {
             this.data.updateData(true, 2);
+            this.logger.info("Redirecting to Store Comp page");
             this.route.navigate(['/store-comp']);
           }
         }, error => {
@@ -290,11 +299,10 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
         this.readcard = Object.keys(result).map(function (key) { return result[key]; });
         this.showNoCC = false;
         this.showYesCC = true;
-        this.logger.debug(this.readcard);
       } else {
         alert("Insira o cartão cidadão")
       }
-    }, error => console.error("error"));
+    }, error => this.logger.error(error, "", "Error reading citizen card"));
   }
 
   numericOnly(event): boolean {
@@ -329,6 +337,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       if (zipcode != null && zipcode.length >= 8) {
         var zipCode = zipcode.split('-');
         this.subs.push(this.tableData.GetAddressByZipCode(zipCode[0], zipCode[1]).subscribe(address => {
+          this.logger.info("Get address by zip code result: " + JSON.stringify(address));
           var addressToShow = address[0];
           this.formNewStakeholder.get('Address').setValue(addressToShow.address);
           this.formNewStakeholder.get('Country').setValue(addressToShow.country);

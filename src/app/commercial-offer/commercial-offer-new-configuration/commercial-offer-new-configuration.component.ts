@@ -68,11 +68,11 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   loadReferenceData() {
     this.subs.push(this.tableInfo.GetTenantCommunications().subscribe(result => {
-      this.logger.info("Get tenant communications: " + result);
+      this.logger.info("Get tenant communications: " + JSON.stringify(result));
       this.allCommunications = result;
       this.allCommunications = this.allCommunications.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }), this.tableInfo.GetTenantTerminals().subscribe(result => {
-      this.logger.info("Get tenant terminals: " + result);
+      this.logger.info("Get tenant terminals: " + JSON.stringify(result));
       this.allTerminals = result;
       this.allTerminals = this.allTerminals.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }));
@@ -206,9 +206,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         quantity: this.formConfig.get('terminalAmount').value
       }
     }
-    this.logger.info("Filter to get commercial pack pricing list" + this.productPackPricingFilter);
+    this.logger.info("Filter to get commercial pack pricing list" + JSON.stringify(this.productPackPricingFilter));
     this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
-      this.logger.info("Get commercial pack pricing list result: " + result);
+      this.logger.info("Get commercial pack pricing list result: " + JSON.stringify(result));
       this.pricingOptions = [];
       if (this.storeEquip?.pricing == null) {
         if (result.result.length == 1) {
@@ -237,7 +237,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     if (this.formConfig.valid) {
       if (this.storeEquip?.pricing == null) {
         this.COService.GetProductCommercialPackPricing(this.packId, id, this.productPackPricingFilter).then(res => {
-          this.logger.info("Get commercial pack pricing result: " + res);
+          this.logger.info("Get commercial pack pricing result: " + JSON.stringify(res));
           this.pricingAttributeList = [];
           res.result.attributes.forEach(attr => {
             this.pricingAttributeList.push(attr);
@@ -305,14 +305,14 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.storeEquip.pricing = {};
       this.storeEquip.pricing.id = this.selectedMensalidadeId;
       this.storeEquip.pricing.attribute = this.pricingAttributeList[0];
-      this.logger.info("Store equipment data: " + this.storeEquip);
+      this.logger.info("Store equipment data: " + JSON.stringify(this.storeEquip));
 
       if (this.isNewConfig == false) {
         //chamada à API para editar uma configuração
         this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.currentStore.id, this.storeEquip.id, this.storeEquip).subscribe(result => {
           this.changedStoreEvent.emit(true);
           this.storeEquipEvent.emit(this.storeEquip);
-          this.logger.info("Update Shop Equipment From Submission Response " + result);
+          this.logger.info("Update Shop Equipment From Submission Response " + JSON.stringify(result));
         });
       } else {
         //chamada à API para criar uma nova configuração
@@ -320,7 +320,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
           this.storeEquip.id = result.id;
           this.changedStoreEvent.emit(true);
           this.storeEquipEvent.emit(this.storeEquip);
-          this.logger.info("Add Shop Equipment To Submission Response " + result);
+          this.logger.info("Add Shop Equipment To Submission Response " + JSON.stringify(result));
         });
       }
       this.el.nativeElement.focus();

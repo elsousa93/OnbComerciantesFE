@@ -103,7 +103,7 @@ export class PackContratualComponent implements OnInit {
         }
       }
     }
-    this.logger.debug("Attached files " + this.files);
+    this.logger.debug("Attached files " + JSON.stringify(this.files));
   }
 
   openSubmeterPedidoModal() {

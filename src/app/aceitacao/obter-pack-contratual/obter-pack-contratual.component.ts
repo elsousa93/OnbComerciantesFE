@@ -93,7 +93,7 @@ export class ObterPackContratualComponent implements OnInit {
   submission() {
     this.submissionModalRef = this.modalService.show(this.submissionModal, { class: 'modal-lg' });
 
-    this.logger.debug("Files to insert: " + this.files.toString());
+    this.logger.info("Files to insert: " + JSON.stringify(this.files));
     var context = this;
     this.files.forEach(function (file, idx) {
       context.readBase64(file).then((data) => {
@@ -104,9 +104,9 @@ export class ObterPackContratualComponent implements OnInit {
           "data": data.split(',')[1]
         }
         var processId = 'a5b04add-2179-4d0e-99ba-18c5622536cb';
-        context.logger.debug("Sent file data: " + docToSend);
+        context.logger.info("Sent file data: " + JSON.stringify(docToSend));
         context.processService.postProcessDocuments(processId, 'ContractAcceptance', docToSend).subscribe(result => {
-          this.logger.info('File was added: ' + result);
+          this.logger.info('File was added: ' + JSON.stringify(result));
         });
       })
     });
@@ -184,6 +184,7 @@ export class ObterPackContratualComponent implements OnInit {
   }
 
   confirmSubmission() {
+    this.logger.info("Redirecting to Dashboard page");
     this.router.navigate(["/"]);
   }
   load() {

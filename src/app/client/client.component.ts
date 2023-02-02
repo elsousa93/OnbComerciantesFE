@@ -335,7 +335,7 @@ export class ClientComponent implements OnInit {
         alert("Error reading citizen card!");
       } else {
         this.ccInfo = result;
-        this.logger.info("Citizen card info: " + this.ccInfo);
+        this.logger.info("Citizen card info: " + JSON.stringify(this.ccInfo));
       }
     }, error => this.logger.error(error));
   }
@@ -372,7 +372,7 @@ export class ClientComponent implements OnInit {
     if (this.canSearch) {
       this.canSearch = false;
       this.clientService.SearchClientByQuery(this.newClient.clientId, this.searchType, "por mudar", "por mudar").subscribe(o => {
-        this.logger.info("Search client by ID result: " + o);
+        this.logger.info("Search client by ID result: " + JSON.stringify(o));
         this.showFoundClient = true;
         var clients = o;
         var context2 = this;
@@ -400,7 +400,7 @@ export class ClientComponent implements OnInit {
               isClient: boolean
             }
             context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").then(c => {
-              context.logger.info("Get Merchant Outbound result: " + c);
+              context.logger.info("Get Merchant Outbound result: " + JSON.stringify(c));
               var client = {
                 "clientId": c.result.merchantId,
                 "commercialName": c.result.commercialName,
@@ -411,7 +411,7 @@ export class ClientComponent implements OnInit {
               }
               clientToShow.client = client;
               context.clientsToShow.push(clientToShow);
-              context.logger.info("Clients found from search: " + context.clientsToShow);
+              context.logger.info("Clients found from search: " + JSON.stringify(context.clientsToShow));
               context.clientsMat.data = context.clientsToShow;
 
             }).then(res => {
@@ -574,7 +574,7 @@ export class ClientComponent implements OnInit {
 
     localStorage.setItem("documentType", selectedClient.documentationDeliveryMethod);
     localStorage.setItem("documentNumber", selectedClient.clientId);
-
+    this.logger.info("Redirecting to Client by id page");
     this.route.navigate(['/clientbyid', this.clientId], navigationExtras);
   }
   /**
@@ -709,13 +709,17 @@ export class ClientComponent implements OnInit {
     this.data.changeCurrentComprovativoCC(this.prettyPDF);
     this.data.changeCurrentTipologia(this.tipologia);
 
-    if (NIFNIPC !== null && NIFNIPC !== undefined)
+    if (NIFNIPC !== null && NIFNIPC !== undefined) {
+      this.logger.info("Redirecting to Client by id page");
       this.route.navigate(['/clientbyid', NIFNIPC], navigationExtras);
-    else
+    } else {
+      this.logger.info("Redirecting to Client by id page");
       this.route.navigate(['/clientbyid', 9999], navigationExtras);
+    }
   }
 
   close() {
+    this.logger.info("Redirecting to Dashboard page");
     this.route.navigate(['/']);
   }
 

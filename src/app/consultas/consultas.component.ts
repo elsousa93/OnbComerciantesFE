@@ -160,7 +160,7 @@ export class ConsultasComponent implements OnInit {
       });
     }
     this.processService.advancedSearch(this.url, 0, 1).subscribe(r => {
-      this.logger.info("Search one process result: " + r);
+      this.logger.info("Search one process result: " + JSON.stringify(r));
       if (r.pagination.total > 300) {
         this.snackBar.open(this.translate.instant('searches.search300'), '', {
           duration: 4000,
@@ -205,7 +205,7 @@ export class ConsultasComponent implements OnInit {
 
       if (!this.isLengthOne) {
         this.processService.advancedSearch(this.url, 0, r.pagination.total).subscribe(result => {
-          this.logger.info("Search total processes result: " + result);
+          this.logger.info("Search total processes result: " + JSON.stringify(result));
 
           let processesArray: Process[] = result.items.map<Process>((process) => {
 

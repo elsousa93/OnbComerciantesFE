@@ -30,7 +30,7 @@ export class AppComponent {
 
   constructor(private logger: LoggerService, public translate: TranslateService, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService, private tableInfo: TableInfoService) {
-    console.log('O AMBIENTE É DE PRODUCAO: ', environment.production);
+    this.logger.info("The environment is production: " + environment.production);
     //ir buscar as linguagens disponiveis. para adicionar uma nova linguagem basta adicionar à lista que se encontra no 'translationLanguages.ts'
     let langs = this.translationLanguages.map(val => {
       return val.abbreviation;
@@ -43,7 +43,6 @@ export class AppComponent {
     this.mobileQuery.addListener(this._mobileQueryListener);
 
     crcService.getAccessToken().then(result => {
-      this.logger.debug("gerou!!");
       localStorage.setItem("accessToken", result.access_token);
     });
 
@@ -93,7 +92,6 @@ export class AppComponent {
   }
 
   refresh(): void {
-    console.log("User Atual: ", this.authService.GetCurrentUser());
     localStorage.setItem("auth", JSON.stringify(this.authService.GetCurrentUser()));
     window.location.reload();
   }

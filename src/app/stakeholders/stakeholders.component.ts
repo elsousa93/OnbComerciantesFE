@@ -17,6 +17,7 @@ import { TableInfoService } from '../table-info/table-info.service';
 import { DocumentSearchType } from '../table-info/ITable-info.interface';
 import { Client } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
+import { LoggerService } from '../logger.service';
 
 /** Listagem Intervenientes / Intervenientes
  *
@@ -115,8 +116,8 @@ export class StakeholdersComponent implements OnInit {
   contractAssociated: boolean = false;
 
   constructor(public modalService: BsModalService, private datePipe: DatePipe,
-    private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService, 
-    private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private clientService: ClientService) {
+    private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService,
+    private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private clientService: ClientService, private logger: LoggerService) {
 
     if (this.route.getCurrentNavigation().extras.state) {
       this.editStakeInfo = this.route.getCurrentNavigation().extras.state["editStakeInfo"];
@@ -124,6 +125,7 @@ export class StakeholdersComponent implements OnInit {
     }
 
     this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
+      this.logger.info("Get client by id result: " + JSON.stringify(client));
       this.submissionClient = client;
     });
 
@@ -232,6 +234,8 @@ export class StakeholdersComponent implements OnInit {
     if(info.stakeholder != null) {
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
+      this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
+      this.logger.info("Selected stakeholder index: " + this.currentIdx);
       if (this.currentStakeholder.stakeholderOutbound != undefined) {
         this.selectedStakeholderComprovativos = this.currentStakeholder.stakeholderOutbound.supportingDocuments;
         this.getDocumentDescription(this.selectedStakeholderComprovativos);
@@ -243,6 +247,7 @@ export class StakeholdersComponent implements OnInit {
   getDocumentDescription(docs: OutboundDocument[]) {
     if (docs != undefined) { 
       this.subs.push(this.tableInfo.GetDocumentsDescription().subscribe(result => {
+        this.logger.info("Get documents description result: " + JSON.stringify(result));
         this.documents = result;
         this.documents.forEach(doc => {
           if (docs[0]?.documentType === doc.code) {
@@ -305,8 +310,9 @@ export class StakeholdersComponent implements OnInit {
           this.currentStakeholder.stakeholderAcquiring.identificationDocument.country = stakeForm.get("identificationDocumentCountry").value;
           this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate = stakeForm.get("documentCountry").value;
         }
-
+        this.logger.info("Stakeholder data to update: " + JSON.stringify(this.currentStakeholder.stakeholderAcquiring));
         this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
+          this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
           this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
           this.visitedStakes = Array.from(new Set(this.visitedStakes));
           if (this.visitedStakes.length < (this.stakesLength)) {
@@ -314,10 +320,12 @@ export class StakeholdersComponent implements OnInit {
           } else {
             if (this.contractAssociated) {
               this.data.updateData(true, 2);
+              this.logger.info("Redirecting to Store Comp page");
               this.route.navigate(['store-comp']);
             }
           }
         }, error => {
+          this.logger.error(error, "", "Error updating stakeholder");
         });
       }
     }
@@ -370,6 +378,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   goToClientById() {
+    this.logger.info("Redirecting to Client by id page");
     this.route.navigate(['/clientbyid/']);
   }
 }

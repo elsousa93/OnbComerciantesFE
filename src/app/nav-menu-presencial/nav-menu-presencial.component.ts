@@ -170,7 +170,7 @@ export class NavMenuPresencialComponent implements OnInit {
 
   searchProcess(process) {
     this.processService.searchProcessByNumber(this.encodedCode, 0, 1).subscribe(resul => {
-      this.logger.info("Search process result:" + resul);
+      this.logger.info("Search process result:" + JSON.stringify(resul));
       if (resul.items.length != 0) {
         localStorage.setItem("processNumber", process);
         this.processNrService.changeProcessNumber(process);

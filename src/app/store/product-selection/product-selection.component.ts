@@ -48,11 +48,11 @@ export class ProductSelectionComponent implements OnInit {
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
 
     this.COService.OutboundGetProductsAvailable().then(result => {
-      this.logger.debug(result);
+      this.logger.info("Get store products result: " + JSON.stringify(result));
       this.products = result.result;
     }, error => {
-      this.logger.debug("Erro");
-    }).then(res => { console.log('PRODUTOS ', this.products); });
+      this.logger.error(error, "", "Error fetching store products");
+    }).then(res => { });
 
     if (this.route.getCurrentNavigation()?.extras?.state) {
       this.store = this.route.getCurrentNavigation().extras.state["store"];
@@ -124,7 +124,7 @@ export class ProductSelectionComponent implements OnInit {
     this.store.subproductCode = this.formStores.get("subProduct").value;
     this.store.website = this.formStores.get("url").value;
     this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.store).subscribe(result => {
-      console.log("Uma nova loja foi adicionada à submissão", result);
+      
     });
     this.route.navigate(['store-comp']);
   }

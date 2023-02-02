@@ -23,6 +23,7 @@ import { SubmissionDocumentService } from '../../submission/document/submission-
 import { ComprovativosService } from '../../comprovativos/services/comprovativos.services';
 import { DatePipe } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
+import { LoggerService } from '../../logger.service';
 
 @Component({
   selector: 'app-store-list',
@@ -91,7 +92,7 @@ export class StoreComponent implements AfterViewInit {
     this.insertedStoreSubject.next(store);
   }
 
-  constructor(private translate: TranslateService, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private authService: AuthService, private comprovativoService: ComprovativosService, private documentService: SubmissionDocumentService, private datePipe: DatePipe) {
+  constructor(private translate: TranslateService, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private authService: AuthService, private comprovativoService: ComprovativosService, private documentService: SubmissionDocumentService, private datePipe: DatePipe, private logger: LoggerService) {
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.initializeForm();
 
@@ -224,13 +225,12 @@ export class StoreComponent implements AfterViewInit {
         bankStores.get("bankIban").setValue(this.currentStore.bank.bank.iban);
         this.documentService.GetSubmissionDocumentById(this.submissionId, this.currentStore.bank.bank.iban).subscribe(val => {
           context.documentService.GetDocumentImage(context.submissionId, context.currentStore.bank.bank.iban).then(async res => {
-            console.log("imagem de um documento ", res);
-            
+            context.logger.info("Get document image result: " + JSON.stringify(res));
             res.blob().then(data => {
               var blob = new Blob([data], { type: 'application/pdf' });
               var file = new File([blob], context.translate.instant('supportingDocuments.checklistModal.IBAN'), { 'type': 'application/pdf' });
               context.ibansToShow = {
-                dataDocumento: context.datePipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                dataDocumento: val.validUntil == null ? "desconhecido" : context.datePipe.transform(val.validUntil, 'dd-MM-yyyy'),
                 file: file,
                 id: context.currentStore.bank.bank.iban,
                 tipo: context.translate.instant('supportingDocuments.checklistModal.IBAN')
@@ -252,6 +252,7 @@ export class StoreComponent implements AfterViewInit {
   deleteStore() {
     if (this.currentStore != null) {
       this.storeService.deleteSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id).subscribe(result => {
+        this.logger.info("Deleted shop result: " + JSON.stringify(result));
         this.resetForm();
         this.emitRemovedStore(this.currentStore);
         this.currentStore = null;
@@ -319,7 +320,9 @@ export class StoreComponent implements AfterViewInit {
       }
 
       if (addStore) {
+        this.logger.info("Shop to add: " + JSON.stringify(this.currentStore));
         this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
+          this.logger.info("Added shop result: " + JSON.stringify(result));
           this.currentStore.id = result["id"];
           this.addDocumentToShop(result["id"], this.currentStore);
           this.emitInsertedStore(this.currentStore);
@@ -328,7 +331,9 @@ export class StoreComponent implements AfterViewInit {
           this.currentIdx = -2;
         });
       } else {
+
         this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
+          this.logger.info("Updated shop result: " + JSON.stringify(result));
           if (isEditButton) {
             this.addDocumentToShop(this.currentStore.id, this.currentStore);
             this.resetForm();
@@ -344,6 +349,7 @@ export class StoreComponent implements AfterViewInit {
               this.resetForm();
               this.currentStore = null;
               this.currentIdx = -2;
+              this.logger.info("Redirecting to Comprovativos page");
               this.data.updateData(true, 3);
               this.route.navigate(['comprovativos']);
             }
@@ -353,6 +359,7 @@ export class StoreComponent implements AfterViewInit {
 
     } else {
       if (this.currentStore == null) {
+        this.logger.info("Redirecting to Comprovativos page");
         this.data.updateData(true, 3);
         this.route.navigate(['comprovativos']);
       }
@@ -379,6 +386,7 @@ export class StoreComponent implements AfterViewInit {
 
   fetchStartingInfo() {
     this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
+      this.logger.info("Get client by id result: " + JSON.stringify(client));
       this.submissionClient = client;
     });
   }
@@ -404,6 +412,7 @@ export class StoreComponent implements AfterViewInit {
           editStakeInfo: true
         }
       }
+      this.logger.info("Redirecting to Stakeholders page");
       this.route.navigate(['/stakeholders'], navigationExtras);
     }
   }
@@ -432,14 +441,16 @@ export class StoreComponent implements AfterViewInit {
               "fileType": "PDF",
               "binary": data.split(',')[1]
             },
-            "validUntil": "2022-07-20T11:03:13.001Z",
+            "validUntil": null,
             "data": {}
           }
           context.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(res => {
             store.bank.bank.iban = res.id;
+            context.logger.info("Document to add to submission: " + JSON.stringify(docToSend));
             this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), storeId, docToSend).subscribe(result => {
+              context.logger.info("Added document to shop result: " + JSON.stringify(result));
               context.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, store).subscribe(res => {
-                console.log('Loja Atualizada ', res);
+                context.logger.info("Updated store result: " + JSON.stringify(res)); 
               });
             });
           })

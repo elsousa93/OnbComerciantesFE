@@ -556,7 +556,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.showSameNIFErrorForm = false;
     if (this.foundStakeholders && this.dataCCcontents.cardNumberCC == null) {
       this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], this.docType, 'por mudar').then(stakeholder => {
-        this.logger.info("Get stakeholder outbound: " + stakeholder);
+        this.logger.info("Get stakeholder outbound: " + JSON.stringify(stakeholder));
         var stakeholderToInsert = stakeholder.result;
         stakeholderToInsert["fiscalId"] = this.currentStakeholder["stakeholderNIF"];
         stakeholderToInsert["stakeholderId"] = "";
@@ -593,9 +593,9 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         } else {
           stakeholderToInsert["signType"] = stakeholderToInsert["signType"];
         }
-        this.logger.info("Stakeholder to add: " + stakeholderToInsert);
+        this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-          this.logger.info("Added stakeholder result: " + result);
+          this.logger.info("Added stakeholder result: " + JSON.stringify(result));
           stakeholderToInsert.id = result["id"];
           this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
             duration: 4000,
@@ -628,9 +628,9 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         "signType": "CitizenCard"
       }
       if (this.submissionClient.fiscalId !== stakeholderToInsert.fiscalId) {
-        this.logger.info("Stakeholder to add: " + stakeholderToInsert);
+        this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
         this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-          this.logger.info("Added stakeholder result: " + result);
+          this.logger.info("Added stakeholder result: " + JSON.stringify(result));
           stakeholderToInsert.id = result["id"];
           this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
             duration: 4000,
@@ -678,9 +678,9 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         validUntil: new Date(this.prettyPDF?.expirationDate).toISOString(),
         data: null
       };
-      this.logger.info("Document to add: " + documentCC);
+      this.logger.info("Document to add: " + JSON.stringify(documentCC));
       this.submissionDocumentService.SubmissionPostDocument(this.submissionId, documentCC).subscribe(result => {
-        this.logger.info('Added document: ' + result);
+        this.logger.info('Added document: ' + JSON.stringify(result));
       });
     }
 
@@ -711,18 +711,18 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       "phone2": {},
       "signType": "DigitalCitizenCard",
     }
-    this.logger.info("Stakeholder to add: " + stakeholderToInsert);
+    this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
     this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-      this.logger.info("Added stakeholder result: " + result);
+      this.logger.info("Added stakeholder result: " + JSON.stringify(result));
       stakeholderToInsert.id = result["id"];
       this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
         duration: 4000,
         panelClass: ['snack-bar']
       });
       if (this.prettyPDF != null) {
-        this.logger.info("Document to add " + documentCC);
+        this.logger.info("Document to add " + JSON.stringify(documentCC));
         this.stakeholderService.AddNewDocumentStakeholder(this.submissionId, stakeholderToInsert.id, documentCC).subscribe(res => {
-          this.logger.info("Added document to stakeholder " + res);
+          this.logger.info("Added document to stakeholder " + JSON.stringify(res));
         });
       }
       this.emitInsertedStake(of(stakeholderToInsert));

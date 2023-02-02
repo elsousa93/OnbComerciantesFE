@@ -105,12 +105,14 @@ export class NavMenuInternaComponent implements OnInit {
 
   goToAppDevolucao() {
     if (this.currentPage > 0 || this.map.get(0) != undefined) {
+      this.logger.info("Redirecting to Devolucao page");
       this.route.navigate(['/app-devolucao']);
     }
   }
 
   goToCliente() {
     if (this.currentPage > 1 || this.map.get(1) != undefined) {
+      this.logger.info("Redirecting to Client page");
       this.route.navigate(['client']);
     }
   }
@@ -118,30 +120,35 @@ export class NavMenuInternaComponent implements OnInit {
   //Redirecionar para as páginas - contemplar sessão
   goToStakeholders() {
     if (this.currentPage > 2 || this.map.get(2) != undefined) {
+      this.logger.info("Redirecting to Stakeholders page");
       this.route.navigate(['stakeholders/']);
     }
   }
 
   goToStores() {
     if (this.currentPage > 3 || this.map.get(3) != undefined) {
+      this.logger.info("Redirecting to Store comp page");
       this.route.navigate(['store-comp']);
     }
   }
 
   goToComprovativos() {
     if (this.currentPage > 4 || this.map.get(4) != undefined) {
+      this.logger.info("Redirecting to Comprovativos page");
       this.route.navigate(['comprovativos']);
     }
   }
 
   goToInfoDeclarativa() {
     if (this.currentPage > 6 || this.map.get(6) != undefined) {
+      this.logger.info("Redirecting to Info Declarativa page");
       this.route.navigate(['info-declarativa']);
     }
   }
 
   goToComercialOffer() {
     if (this.currentPage > 5 || this.map.get(5) != undefined) {
+      this.logger.info("Redirecting to Commercial Offer List page");
       this.route.navigate(['commercial-offert-list']);
     }
   }

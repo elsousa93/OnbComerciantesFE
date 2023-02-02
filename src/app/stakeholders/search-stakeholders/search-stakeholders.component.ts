@@ -5,6 +5,7 @@ import { StakeholderService } from '../stakeholder.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { TranslateService } from '@ngx-translate/core';
+import { LoggerService } from '../../logger.service';
 
 @Component({
   selector: 'app-search-stakeholders',
@@ -44,7 +45,7 @@ export class SearchStakeholdersComponent implements OnInit {
 
   foundStakeholders: boolean;
 
-  constructor(private stakeholderService: StakeholderService, private translate: TranslateService) {
+  constructor(private stakeholderService: StakeholderService, private translate: TranslateService, private logger: LoggerService) {
   }
 
   stakesMat = new MatTableDataSource<any>();
@@ -76,6 +77,7 @@ export class SearchStakeholdersComponent implements OnInit {
     var context = this;
     var stakeholder = null;
     this.stakeholderService.SearchStakeholderByQuery(clientID, this.searchType, this.UUIDAPI, "2").then(res => {
+      this.logger.info("Search stakeholder by query result: " + JSON.stringify(res));
       var clients = res.result;
       if (clients.length > 0) {
         context.stakeholdersToShow = [];
@@ -106,8 +108,9 @@ export class SearchStakeholdersComponent implements OnInit {
             }
           });
         }, error => {
-          console.log('ocorreu um erro');
+          this.logger.error(error, "", "Error occured while searching stakeholder");
         }).then(res => {
+          this.logger.info("Found stakeholders: " + JSON.stringify(context.stakeholdersToShow));
           context.foundStakeholders = true;
           context.searchAditionalInfoEmitter.emit({
             found: true,
@@ -121,15 +124,16 @@ export class SearchStakeholdersComponent implements OnInit {
         context.foundStakeholders = false;
         context.searchAditionalInfoEmitter.emit({
           found: false,
-          errorMsg: "Sem resultados"
+          errorMsg: "No results"
         });
       }
     }, error => {
+      context.logger.error(error, "", "Error while searching for stakeholders");
       context.stakeholdersToShow = [];
       context.foundStakeholders = false;
       context.searchAditionalInfoEmitter.emit({
         found: false,
-        errorMsg: "Sem resultados"
+        errorMsg: "No results"
       });
     });
   }

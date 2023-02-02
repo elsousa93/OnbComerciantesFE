@@ -7,6 +7,7 @@ import { DataService } from '../nav-menu-interna/data.service';
 import { AuthService } from '../services/auth.service';
 import { User } from '../userPermissions/user';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
+import { LoggerService } from '../logger.service';
 
 @Component({
   selector: 'app-sidenav-presencial',
@@ -29,7 +30,7 @@ export class SidenavPresencialComponent implements OnInit {
 
   constructor(private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
-    private dataService: DataService, private authService: AuthService, private processNrService: ProcessNumberService) {
+    private dataService: DataService, private authService: AuthService, private processNrService: ProcessNumberService, private logger: LoggerService) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -48,6 +49,7 @@ export class SidenavPresencialComponent implements OnInit {
     localStorage.clear();
     this.dataService.reset();
     this.processNrService.changeProcessNumber(null);
+    this.logger.info("Redirecting to Client page");
     this.router.navigate(["/client"]);
   }
 

@@ -205,11 +205,13 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       var context = this;
       return new Promise((resolve, reject) => {
         context.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(function (result) {
+          context.logger.info("Get submission by process number result: " + JSON.stringify(result));
           context.submissionType = result.result[0].submissionType;
           localStorage.setItem("submissionId", result.result[0].submissionId);
           return result;
         }).then(function (resul) {
           context.clientService.GetClientByIdAcquiring(resul.result[0].submissionId).then(function (res) {
+            context.logger.info("Get client by id result: " + JSON.stringify(res));
             context.merchantInfo = res;
             return context.merchantInfo;
           }).then(function (r) {
@@ -259,9 +261,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
     if (this.submissionExists || this.returned != null) {
       this.stakeholderService.GetAllStakeholdersFromSubmission(localStorage.getItem("submissionId")).then(result => {
+        context.logger.info("Get all stakeholders from submission result: " + JSON.stringify(result));
         var stakeholders = result.result;
         stakeholders.forEach(function (value, index) {
           context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).then(res => {
+            context.logger.info("Get stakeholder from submission result: " + JSON.stringify(res));
             context.submissionStakeholders.push(res.result);
           }, error => {
             context.logger.error(error);
@@ -270,14 +274,17 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           });
         });
       }, error => {
+        context.logger.error(error);
       }).then(res => {
         context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
       });
 
       this.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(result => {
+        context.logger.info("Get submission documents result: " + JSON.stringify(result));
         if (result.length > 0) {
           result.forEach(doc => {
             this.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(res => {
+              context.logger.info("Get submission document result: " + JSON.stringify(res));
               this.submissionDocs.push(res);
             });
           });
@@ -293,7 +300,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           var client: AcquiringClientPost = {} as AcquiringClientPost;
 
           this.clientService.SearchClientByQuery(this.dataCC.nifCC, "0501", "", "").subscribe(res => {
+            context.logger.info("Search client by query result: " + JSON.stringify(res));
             this.clientService.GetClientByIdOutbound(res[0].merchantId).then(result => {
+              context.logger.info("Get client by id outbound result: " + JSON.stringify(result));
               client.clientId = result.merchantId;
               client.merchantRegistrationId = result.merchantRegistrationId;
               if ((this.dataCC.addressCC != " " && this.dataCC.addressCC != null) || (this.dataCC.countryCC != " " && this.dataCC.countryCC != null) || (this.dataCC.localityCC != " " && this.dataCC.localityCC != null) || (this.dataCC.postalCodeCC != " " && this.dataCC.postalCodeCC != null)) {
@@ -413,6 +422,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         } else {
           if (this.clientId !== "-1" && this.clientId != null && this.clientId != undefined) {
             this.clientService.GetClientByIdOutbound(this.clientId).then(result => {
+              context.logger.info("Get client by id outbound result: " + JSON.stringify(result));
               var client = result;
               var clientToInsert: AcquiringClientPost = {};
               clientToInsert.clientId = client.merchantId;
@@ -518,20 +528,22 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         }
       } else {
         this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(result => {
+          context.logger.info("Get client by id result: " + JSON.stringify(result));
           this.clientContext.tipologia = result.merchantType;
           this.NIFNIPC = result.fiscalId;
           this.clientContext.setNIFNIPC(result.fiscalId);
           this.clientContext.submissionID = localStorage.getItem("submissionId");
           this.clientContext.setClient(result);
           this.clientContext.isClient = this.isClient;
-
           //dados necessários para a pesquisa feita anteriormente
           this.tipologia = result.merchantType;
           this.clientId = result.fiscalId;
           context.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(res => {
+            context.logger.info("Get submission documents result: " + JSON.stringify(res));
             if (res.length > 0) {
               res.forEach(doc => {
                 context.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(r => {
+                  context.logger.info("Get submission document result: " + JSON.stringify(r));
                   if (doc.type === '0001') {
                     var file = {
                       documentType: '0001',
@@ -600,6 +612,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         this.representationPowerComponent.submit();
       this.updateSubmission();
     } else {
+      this.logger.info("Redirecting to Stakeholders page");
       this.data.updateData(true, 1);
       this.route.navigateByUrl('/stakeholders');
     }
@@ -616,9 +629,12 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           comprovativoCC: this.comprovativoCC,
         }
       };
-      if (this.returned == null)
+      if (this.returned == null) { 
+        this.logger.info("Redirecting to Client page");
         this.route.navigate(["/client"], navigationExtras);
+      }
     } else {
+      this.logger.info("Redirecting to Devolucao page");
       this.route.navigate(["/app-devolucao/"]);
     }
   }
@@ -690,6 +706,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
       if (!this.submissionExists) {
         this.submissionService.InsertSubmission(newSubmission).subscribe(result => {
+          context.logger.info("Create submission result: " + JSON.stringify(result));
           context.clientContext.submissionID = result.id;
           localStorage.setItem("submissionId", result.id);
           context.processNrService.changeProcessNumber(result.processNumber);
@@ -715,10 +732,12 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
       if (this.returned == 'edit')
         newSubmission.processNumber = localStorage.getItem("processNumber");
-
+      context.logger.info("Submission to create: " + JSON.stringify(newSubmission));
       this.submissionService.EditSubmission(submissionID, newSubmission).subscribe(result => {
+        context.logger.info("Updated submission result: " + JSON.stringify(result));
         this.data.changeUpdatedClient(true);
         this.data.updateData(true, 1);
+        this.logger.info("Redirecting to Stakeholders page");
         this.route.navigateByUrl('/stakeholders', navigationExtras);
       });
       var client = this.clientContext.getClient();
@@ -727,7 +746,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
       //antes estava merchant 
       this.clientService.EditClient(submissionID, client).subscribe(res => {
-        this.logger.info("Update client: " + res);
+        this.logger.info("Update client: " + JSON.stringify(res));
       });
 
       //if (!this.updateClient && this.returned == null) {
@@ -747,20 +766,25 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         var stakeholders = this.clientContext.newSubmission.stakeholders;
         if (stakeholders.length == 0) {
           this.submissionStakeholders.forEach((val, index) => {
-            context.stakeholderService.DeleteStakeholder(submissionID, val.id).subscribe(result => { });
+            context.stakeholderService.DeleteStakeholder(submissionID, val.id).subscribe(result => {
+              context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
+            });
           });
           this.submissionStakeholders = [];
           this.clientContext.setStakeholdersToInsert([]);
           this.processClient.stakeholders = [];
         } else {
-
           this.submissionStakeholders.forEach(stake => {
             var found = stakeholders.find(val => val.fiscalId === stake.fiscalId);
             if (found == undefined) {
-              context.stakeholderService.DeleteStakeholder(submissionID, stake.id).subscribe(result => { });
+              context.stakeholderService.DeleteStakeholder(submissionID, stake.id).subscribe(result => {
+                context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
+              });
             } else {
               if (found.clientId != null && found.clientId != "" && stake.clientId != null && stake.clientId != "" && found.clientId != stake.clientId) {
-                context.stakeholderService.DeleteStakeholder(submissionID, stake.id).subscribe(result => { });
+                context.stakeholderService.DeleteStakeholder(submissionID, stake.id).subscribe(result => {
+                  context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
+                });
               } else {
                 stakeholders = stakeholders.filter(item => item.fiscalId !== found.fiscalId);
               }
@@ -771,14 +795,17 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
               if (value.fiscalId !== client.fiscalId) {
                 context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+                  context.logger.info("Created stakeholder result: " + JSON.stringify(result));
                 });
               } else {
                 context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+                  context.logger.info("Created stakeholder result: " + JSON.stringify(result));
                   value.id = result.id;
                 });
               }
             } else {
               context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+                context.logger.info("Created stakeholder result: " + JSON.stringify(result));
               });
             }
           });
@@ -789,14 +816,18 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         var documents = this.clientContext.newSubmission.documents;
         if (documents.length == 0) {
           this.submissionDocs.forEach((val, index) => {
-            context.documentService.DeleteDocumentFromSubmission(submissionID, val.id).subscribe(result => { });
+            context.documentService.DeleteDocumentFromSubmission(submissionID, val.id).subscribe(result => {
+              context.logger.info("Deleted document result: " + JSON.stringify(result));
+            });
           });
           this.submissionDocs = [];
         } else {
           this.submissionDocs.forEach(val => {
             var found = documents.find(doc => doc.documentType === val.documentType);
             if (found == undefined) {
-              context.documentService.DeleteDocumentFromSubmission(submissionID, val.id).subscribe(result => { });
+              context.documentService.DeleteDocumentFromSubmission(submissionID, val.id).subscribe(result => {
+                context.logger.info("Deleted document result: " + JSON.stringify(result));
+              });
             } else {
               documents = documents.filter(item => item.documentType !== found.documentType);
             }
@@ -806,7 +837,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             documents.forEach(doc => {
               if (doc.documentType !== '0001') { 
                 context.documentService.SubmissionPostDocument(submissionID, doc).subscribe(result => {
-                  context.logger.info('Added document to submission: ' + result);
+                  context.logger.info('Added document to submission: ' + JSON.stringify(result));
                 });
               }
             });
@@ -815,7 +846,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           if (context.clientDocs != null) {
             context.clientDocs.forEach(function (value, idx) {
               context.documentService.SubmissionPostDocument(submissionID, value).subscribe(result => {
-                context.logger.info("Added documents to submission from outbound client: " + result);
+                context.logger.info("Added documents to submission from outbound client: " + JSON.stringify(result));
               });
             });
           }
@@ -825,8 +856,10 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           if (this.clientContext.isClient) {
             if (newSubmission?.merchant?.merchantRegistrationId != null && newSubmission?.merchant?.merchantRegistrationId != "") {
               this.storeService.getShopsListOutbound(newSubmission.merchant.merchantRegistrationId, "por mudar", "por mudar").subscribe(res => {
+                context.logger.info("Get shops list outbound result: " + JSON.stringify(res));
                 res.forEach(value => {
                   this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantRegistrationId, value.shopId, "por mudar", "por mudar").then(r => {
+                    context.logger.info("Get shop outbound result: " + JSON.stringify(r));
                     var storeToAdd: ShopDetailsAcquiring = {
                       activity: r.result.activity,
                       subActivity: r.result.secondaryActivity,
@@ -845,7 +878,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                     }
 
                     context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
-
+                      context.logger.info("Added shop result: " + JSON.stringify(shop));
                     });
                   });
                 });
@@ -856,6 +889,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
       } else {
         this.data.updateData(true, 1);
+        this.logger.info("Redirecting to Stakeholders page");
         this.route.navigate(['/stakeholders']);
       }
     }
@@ -926,11 +960,13 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   getClientDocumentImage(uniqueReference: string, format: string, archiveSource: string) {
     if (archiveSource != null) {
       this.documentService.GetDocumentImageOutbound(uniqueReference, "por mudar", "por mudar", format).subscribe(result => {
+        this.logger.info("Get document image outbound result: " + JSON.stringify(result));
         this.b64toBlob(result.binary, 'application/pdf', 512);
       });
     } else {
       this.documentService.GetDocumentImage(localStorage.getItem("submissionId"), uniqueReference).subscribe(result => {
-      })
+        this.logger.info("Get document image result: " + JSON.stringify(result));
+      });
     }
   }
 
@@ -983,6 +1019,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
   fetchDocumentDescriptions() {
     this.subs.push(this.tableInfo.GetDocumentsDescription().subscribe(result => {
+      this.logger.info("Get all documents description result: " + JSON.stringify(result));
       this.documents = result;
     }));
   }

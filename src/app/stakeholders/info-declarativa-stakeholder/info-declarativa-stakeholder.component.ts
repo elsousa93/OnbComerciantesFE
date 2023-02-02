@@ -11,6 +11,7 @@ import { IPep, KindPep } from 'src/app/pep/IPep.interface';
 import { PepComponent } from '../../pep/pep.component';
 import { Observable, of } from 'rxjs';
 import { InfoStakeholderComponent } from '../info-stakeholder/info-stakeholder.component';
+import { LoggerService } from '../../logger.service';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -58,7 +59,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   ngAfterViewInit() {
   }
 
-  constructor(private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService) {
+  constructor(private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService, private logger: LoggerService) {
     this.infoStakeholders = this.formBuilder.group({
       contacts: this.formBuilder.group({
       }),
@@ -78,6 +79,8 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     if (info != null) {
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
+      this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
+      this.logger.info("Selected stakeholder index: " + this.currentIdx);
       this.getCountryInternationalCallingCode().then(result => {
         setTimeout(() => this.setFormData(), 500);
       });
@@ -173,14 +176,16 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       } else if (pep.get("pepPoliticalPublicJobs").value == 'false') {
         this.currentStakeholder.stakeholderAcquiring.pep = null;
       }
-
+      this.logger.info("Stakeholder to update: " + JSON.stringify(this.currentStakeholder.stakeholderAcquiring));
       this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
+        this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
         this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
         this.visitedStakes = Array.from(new Set(this.visitedStakes));
         if (this.visitedStakes.length < (this.stakesLength)) {
           this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
         } else {
           this.data.updateData(false, 6, 3);
+          this.logger.info("Redirecting to Info Declarativa Lojas page");
           this.route.navigate(['info-declarativa-lojas']);
         }
       });
@@ -195,6 +200,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     if ((this.currentIdx - 1) >= 0) {
       this.emitPreviousStakeholder(of(this.currentIdx));
     } else {
+      this.logger.info("Redirecting to Info Declarativa page");
       this.route.navigate(['/info-declarativa']);
     }
   }
@@ -203,6 +209,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     return new Promise(resolve => {
       if (this.currentStakeholder.stakeholderAcquiring?.phone1?.countryCode != null && !this.currentStakeholder?.stakeholderAcquiring?.phone1?.countryCode.startsWith("+")) {
         this.tableInfo.GetCountryById(this.currentStakeholder?.stakeholderAcquiring?.phone1?.countryCode).subscribe(result => {
+          this.logger.info("Get country by id result: " + JSON.stringify(result));
           if (result != null) {
             this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = result.internationalCallingCode;
           }

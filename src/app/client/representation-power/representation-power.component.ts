@@ -50,7 +50,7 @@ export class RepresentationPowerComponent implements OnInit, OnChanges {
     }
 
   ngOnInit(): void {
-    this.logger.debug("Context inside representation.component: " + this.clientContext);
+    this.logger.debug("Context inside representation.component: " + JSON.stringify(this.clientContext));
   }
 
   submit() {

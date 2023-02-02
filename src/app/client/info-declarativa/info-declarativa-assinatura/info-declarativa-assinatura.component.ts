@@ -83,7 +83,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
       panelClass: ['snack-bar']
     });
     this.sendFinalSubmission();
-
+    this.logger.info("Redirecting to Dashboard page");
     this.router.navigate(["/"]);
     this.data.reset();
   }
@@ -148,9 +148,9 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
           startedAt: new Date().toISOString(),
           contractPackLanguage: this.form.get("language").value
         }
-        this.logger.info("Updated submission data: " + submissionToSend);
+        this.logger.info("Updated submission data: " + JSON.stringify(submissionToSend));
         this.submissionService.EditSubmission(this.submissionId, submissionToSend).subscribe(result => {
-          this.logger.info("Submission updated: " + result);
+          this.logger.info("Submission updated: " + JSON.stringify(result));
         });
       });
     }

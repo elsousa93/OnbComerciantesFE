@@ -8,6 +8,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { Client } from '../../client/Client.interface';
 import { ClientService } from '../../client/client.service';
+import { LoggerService } from '../../logger.service';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { IStakeholders, StakeholdersCompleteInformation } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
@@ -22,7 +23,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
   public submissionClient: Client;
 
-  constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private clientService: ClientService, private dataService: DataService) {
+  constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private clientService: ClientService, private dataService: DataService, private logger: LoggerService) {
 
   }
 
@@ -159,9 +160,11 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     var context = this;
     if (this.submissionId != null) {
       await this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
+        context.logger.info("Get all stakeholders from submission result: " + JSON.stringify(result));
         var results = result.result;
         results.forEach(function (value, index) {
           context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).subscribe(res => {
+            context.logger.info("Get stakeholder from submission result: " + JSON.stringify(res));
             var AcquiringStakeholder = res;
             var stakeholderToInsert = {
               displayName: '',
@@ -171,26 +174,27 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
             }
             if (AcquiringStakeholder.id != null) {
               context.stakeholderService.getStakeholderByID(AcquiringStakeholder.id, "requestID", "AcquiringUserID").then(success => {
+                context.logger.info("Get stakeholder by id result: " + JSON.stringify(success));
                 stakeholderToInsert.stakeholderOutbound = success.result;
               }, error => {
-                console.log("Foi rejeitado: ", error);
+                context.logger.error(error, "", "Error when searching for stakeholder");
               }).then(success => {
-                console.log("stakeholder a adicionar: ", stakeholderToInsert);
                 context.submissionStakeholders.push(stakeholderToInsert);
               });
             }
-
           }, error => {
+            context.logger.error(error, "", "Error when searching for stakeholder");
           });
         });
       }, error => {
+        context.logger.error(error, "", "Error fetching all stakeholders from submission");
       }).then(success => {
         context.listLengthEmitter.emit(context.submissionStakeholders.length);
         context.loadStakeholders(context.submissionStakeholders);
         context.selectedStakeholder = context.submissionStakeholders[0];
         context.selectedStakeholderEmitter.emit({ stakeholder: context.submissionStakeholders[0], idx: 0 });
       }, error => {
-        console.log('Foi rejeitado ', error);
+        context.logger.error(error, "", "Error");
       });
     }
   }
@@ -200,6 +204,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
     return new Promise((resolve, reject) => {
       context.stakeholderService.GetStakeholderFromSubmission(submissionID, stakeholderID).then(res => {
+        context.logger.info("Get stakeholder from submission result: " + JSON.stringify(res));
         var AcquiringStakeholder = res.result;
         var stakeholderToInsert = {
           displayName: AcquiringStakeholder.shortName,
@@ -210,11 +215,12 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
         if (AcquiringStakeholder.fiscalId != "" && !this.isInfoDeclarativa && this.firstTimeStake) {
           context.stakeholderService.SearchStakeholderByQuery(AcquiringStakeholder.fiscalId, '0501', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658', "AcquiringUserID").then(res => {
+            context.logger.info("Search stakeholder by query result: " + JSON.stringify(res));
             if (res.result[0].stakeholderId != null) {
               stakeholderToInsert.stakeholderAcquiring.stakeholderId = res.result[0].stakeholderId;
               stakeholderToInsert.stakeholderAcquiring.clientId = res.result[0].stakeholderId;
               context.stakeholderService.getStakeholderByID(res.result[0].stakeholderId, '0501', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658', "AcquiringUserID").then(r => {
-
+                context.logger.info("Get stakeholder by id result: " + JSON.stringify(r));
                 stakeholderToInsert.stakeholderOutbound = r.result;
                 stakeholderToInsert.stakeholderAcquiring.birthDate = stakeholderToInsert.stakeholderOutbound.birthDate;
                 stakeholderToInsert.stakeholderAcquiring.contactName = stakeholderToInsert.stakeholderOutbound.shortName;
@@ -226,19 +232,23 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
                 stakeholderToInsert.stakeholderAcquiring.phone1 = stakeholderToInsert.stakeholderOutbound.contacts.phone1;
                 stakeholderToInsert.stakeholderAcquiring.phone2 = stakeholderToInsert.stakeholderOutbound.contacts.phone2;
                 stakeholderToInsert.stakeholderAcquiring.shortName = stakeholderToInsert.stakeholderOutbound.shortName;
-
+                context.logger.info("Stakeholder data to update: " + JSON.stringify(stakeholderToInsert.stakeholderAcquiring));
                 context.stakeholderService.UpdateStakeholder(context.submissionId, stakeholderToInsert.stakeholderAcquiring.id, stakeholderToInsert.stakeholderAcquiring).subscribe(stake => {
+                  context.logger.info("Updated stakeholder result: " + JSON.stringify(stake));
                   resolve(null);
                 }, rej => {
+                  context.logger.error(rej, "", "Error updating stakeholder");
                   resolve(null);
                 });
               }, rej => {
+                context.logger.error(rej, "", "Error getting stakeholder");
                 resolve(null);
               }).then(res => {
                 resolve(null);
               });
             }
           }, rej => {
+            context.logger.error(rej, "", "Error searching stakeholder");
             resolve(null);
           }).then(res => {
             context.submissionStakeholders.push(stakeholderToInsert);
@@ -273,9 +283,9 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       );
 
       Promise.all(allPromisesWithErrorHandler).then(resolve => {
-        console.log("Sucesso");
+        context.logger.info("Success fetching stakeholders");
       }, error => {
-        console.log("ocorreu um erro");
+        context.logger.error(error, "", "Error when fetching stakeholders");
       }).then(stakeholderInfo => {
         this.dataService.changeCurrentFirstTimeStake(false);
         this.loadStakeholders(context.submissionStakeholders);
@@ -314,13 +324,15 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   }
 
   removeStakeholder(stakeholder) {
+    this.logger.info("Stakeholder to remove: " + JSON.stringify(stakeholder));
     this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.stakeholderAcquiring.id).subscribe(result => {
+      this.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
       const index = this.submissionStakeholders.findIndex(stake => stake.stakeholderAcquiring.id === stakeholder.stakeholderAcquiring.id);
       this.submissionStakeholders.splice(index, 1);
       this.loadStakeholders(this.submissionStakeholders);
       this.listLengthEmitter.emit(this.submissionStakeholders.length);
     }, error => {
-      console.log("error: ", error);
+      this.logger.error(error, "", "Error when deleting stakeholder");
     });
   }
 }

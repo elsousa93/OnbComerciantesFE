@@ -124,7 +124,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.initializeForm();
 
     this.clientService.GetClientByIdAcquiring(this.submissionId).then(result => {
-      this.logger.info("Get merchant from submission: " + result);
+      this.logger.info("Get merchant from submission: " + JSON.stringify(result));
       this.merchantCatalog = {
         context: result.context,
         contextId: result.contextId,
@@ -133,7 +133,7 @@ export class CommercialOfferListComponent implements OnInit {
           issuerCountry: ""
         }
       }
-      this.logger.info("Merchant catalog info to get packs: " + this.merchantCatalog);
+      this.logger.info("Merchant catalog info to get packs: " + JSON.stringify(this.merchantCatalog));
     });
     this.data.updateData(false, 5, 1);
   }
@@ -150,7 +150,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.storeEquipList = [];
     if (this.returned != null) {
       this.storeService.getShopEquipmentConfigurationsFromProcess(this.processNumber, this.currentStore.id).subscribe(result => {
-        this.logger.info("Get equipments from shop result: " + result);
+        this.logger.info("Get equipments from shop result: " + JSON.stringify(result));
         if (result != null) {
           this.storeEquipList.push(result);
         }
@@ -158,7 +158,7 @@ export class CommercialOfferListComponent implements OnInit {
     }
 
     this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.id).then(result => {
-      this.logger.info("Get equipments from shop result: " + result);
+      this.logger.info("Get equipments from shop result: " + JSON.stringify(result));
       var list = result.result;
       if (list.length > 0) {
         list.forEach(res => {
@@ -191,7 +191,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.currentStore = info.store;
     this.currentIdx = info.idx;
 
-    this.logger.info("Selected store: " + this.currentStore);
+    this.logger.info("Selected store: " + JSON.stringify(this.currentStore));
     this.logger.info("Selected store index: " + this.currentIdx);
 
     if (this.form.get("replicateProducts").value)
@@ -316,9 +316,9 @@ export class CommercialOfferListComponent implements OnInit {
       referenceStore: this.currentStore.shopId,
       supportBank: this.currentStore.supportEntity
     }
-    this.logger.info("Data sent to outbound get packs: " + this.productPack);
+    this.logger.info("Data sent to outbound get packs: " + JSON.stringify(this.productPack));
     this.COService.OutboundGetPacks(this.productPack).then(result => {
-      this.logger.info("Get packs: " + result);
+      this.logger.info("Get packs: " + JSON.stringify(result));
       this.packs = result.result;
       if (this.packs.length === 1) {
         this.selectCommercialPack(this.packs[0].id);
@@ -336,7 +336,7 @@ export class CommercialOfferListComponent implements OnInit {
 
     if (this.currentStore.pack == null) {
       this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
-        context.logger.info("Get pack details " + res);
+        context.logger.info("Get pack details " + JSON.stringify(res));
         context.paymentSchemes = res.result.paymentSchemes;
         context.addPaymentFormGroups();
         res.result.otherGroups.forEach(group => {
@@ -348,7 +348,7 @@ export class CommercialOfferListComponent implements OnInit {
       context.paymentSchemes = this.currentStore.pack.paymentSchemes;
       context.addPaymentFormGroups();
       this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
-        context.logger.info("Get pack details " + res);
+        context.logger.info("Get pack details " + JSON.stringify(res));
         res.result.otherGroups.forEach(group => {
           context.groupsList.push(group);
         });
@@ -408,9 +408,9 @@ export class CommercialOfferListComponent implements OnInit {
       },
       packAttributes: this.groupsList //ter em atenção se os valores são alterados à medida que vamos interagindo com a interface
     }
-    this.logger.info("Filter sent to get commercial pack commission list: " + this.commissionFilter);
+    this.logger.info("Filter sent to get commercial pack commission list: " + JSON.stringify(this.commissionFilter));
     this.COService.ListProductCommercialPackCommission(this.packId, this.commissionFilter).then(result => {
-      this.logger.info("Get commercial pack commission list result: " + result);
+      this.logger.info("Get commercial pack commission list result: " + JSON.stringify(result));
       this.commissionOptions = [];
       if (this.currentStore.pack == null) {
         if (result.result.length == 1) {
@@ -436,7 +436,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.commissionAttributeList = [];
     if (this.currentStore.pack == null) {
       this.COService.GetProductCommercialPackCommission(this.packId, this.commissionId, this.commissionFilter).then(res => {
-        this.logger.info("Get commercial pack commission result: " + res);
+        this.logger.info("Get commercial pack commission result: " + JSON.stringify(res));
         this.commissionAttributeList = res.result.attributes;
         this.addCommissionFormGroups();
       });
@@ -598,14 +598,15 @@ export class CommercialOfferListComponent implements OnInit {
         otherPackDetails: list
       }
       this.currentStore.registrationId = this.form.get("terminalRegistrationNumber")?.value?.toString();
-      this.logger.info("Store data update " + this.currentStore);
+      this.logger.info("Store data update " + JSON.stringify(this.currentStore));
       this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.id, this.currentStore).subscribe(result => {
-        this.logger.info("Updated shop result: " + result);
+        this.logger.info("Updated shop result: " + JSON.stringify(result));
         if (this.currentIdx < (this.storesLength - 1)) {
           this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
           this.closeAccordion();
         } else {
           this.data.updateData(true, 5);
+          this.logger.info("Redirecting to Info Declarativa page");
           this.route.navigate(['info-declarativa']);
         }
       });
@@ -691,17 +692,18 @@ export class CommercialOfferListComponent implements OnInit {
     if ((this.currentIdx - 1) >= 0) {
       this.emitPreviousStore(of(this.currentIdx));
     } else {
+      this.logger.info("Redirecting to Comprovativos page");
       this.route.navigate(['/comprovativos']);
     }
   }
 
   loadReferenceData() {
     this.subs.push(this.tableInfo.GetTenantCommunications().subscribe(result => {
-      this.logger.info("Get tenant communications: " + result);
+      this.logger.info("Get tenant communications: " + JSON.stringify(result));
       this.allCommunications = result;
       this.allCommunications = this.allCommunications.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }), this.tableInfo.GetTenantTerminals().subscribe(result => {
-      this.logger.info("Get tenant terminals: " + result);
+      this.logger.info("Get tenant terminals: " + JSON.stringify(result));
       this.allTerminals = result;
       this.allTerminals = this.allTerminals.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
     }));

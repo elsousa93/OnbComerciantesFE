@@ -40,7 +40,7 @@ export class AuthComponent implements OnInit {
   }
 
   submit() {
-    this.logger.debug("Login form: " + this.authForm);
+    this.logger.debug("Login form: " + JSON.stringify(this.authForm));
     if (this.authForm.invalid) {
       return;
     }
@@ -56,9 +56,8 @@ export class AuthComponent implements OnInit {
     //fazer um if para quando o utilizador for unicre ou banca conseguir realizar o login neste portal, caso contrario não deve ser possível
 
     this.token.getLoginToken(user.userName, user.bankName, user.bankLocation).then(result => {
-      this.logger.info("Get login token result: " + result);
+      this.logger.info("Get login token result: " + JSON.stringify(result));
       user.token = result.access_token;
-
       this.token.getLoginTokenInfo(user.token).then(res => {
         user.userName = res.name;
         user.bankName = res["ext-bank"];
@@ -67,6 +66,7 @@ export class AuthComponent implements OnInit {
         this.timeout = newDate.getTime() - new Date().getTime();
         this.expirationCounter(this.timeout);
         this.authService.changeUser(user);
+        this.logger.info("Redirecting to Dashboard page");
         this.router.navigate(['/']);
       });
     });
@@ -81,6 +81,7 @@ export class AuthComponent implements OnInit {
     user.authTime = (new Date()).toLocaleString('pt-PT');
     user.token = ''
     this.authService.changeUser(user);
+    this.logger.info("Redirecting to Dashboard page");
     this.router.navigate(['/']);
   }
 
