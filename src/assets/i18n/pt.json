@@ -517,7 +517,12 @@
     "bothFieldsPhone": "Necessário preencher os dois campos",
     "invalidPhone": "O número de telefone é inválido",
     "invalidEmail": "O email é inválido",
-    "invalidUrl": "O URL é inválido", 
-    "isRequired": "Obrigatório"
+    "invalidUrl": "O URL é inválido",
+    "isRequired": "Obrigatório",
+    "startMsg": "Ups! Ocorreu um erro.",
+    "400": "O servidor não conseguiu processar o pedido devido a estes erros:",
+    "401": "Precisa de estar autenticado para realizar este pedido.",
+    "404": "O servidor não consegue encontrar o recurso pedido.",
+    "500": "O servidor não sabe como lidar com esta situação."
   }
 }

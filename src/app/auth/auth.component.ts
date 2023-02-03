@@ -40,7 +40,6 @@ export class AuthComponent implements OnInit {
   }
 
   submit() {
-    this.logger.debug("Login form: " + JSON.stringify(this.authForm));
     if (this.authForm.invalid) {
       return;
     }

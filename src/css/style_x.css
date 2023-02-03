@@ -1610,3 +1610,13 @@ mat-paginator {
   right: 108px;
 }
 
+.error {
+  background-color: red; /* twice */
+  position: fixed;
+  color: white; /* --bs-primary-rgb */
+  border-color: red; /* --bs-primary-rgb */
+  border-style: solid;
+  border-width: 2px;
+  top: 135px;
+  right: 108px;
+}

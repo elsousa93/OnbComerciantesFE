@@ -508,6 +508,11 @@
     "invalidPhone": "Phone number is invalid",
     "invalidEmail": "Email is invalid",
     "invalidurl": "URL is invalid",
-    "isRequired": "is required"
+    "isRequired": "is required",
+    "startMsg": "Ups! Something went wrong.",
+    "400": "The server cannot process the request due to this errors:",
+    "401": "You need to be authenticated to get the requested response.",
+    "404": "The server cannot find the requested resource.",
+    "500": "The server does not know how to handle this situation."
   }
 }
