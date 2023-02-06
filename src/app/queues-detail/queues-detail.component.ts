@@ -80,7 +80,7 @@ export class QueuesDetailComponent implements OnInit {
     });
   }
 
-  updateForm() {
+  updateStakeForm() {
     var formGroupStakeholdersEligibility = new FormGroup({});
     this.stakesList.forEach(function (value, idx) {
       formGroupStakeholdersEligibility.addControl(value.id, new FormControl('', Validators.required));
@@ -88,11 +88,25 @@ export class QueuesDetailComponent implements OnInit {
     this.form.setControl("stakeholdersEligibility", formGroupStakeholdersEligibility);
   }
 
+  updateShopForm() {
+    var formGroupShop = new FormGroup({});
+    this.shopsList.forEach(function (value, idx) {
+      formGroupShop.addControl(value.id, new FormControl('', Validators.required));
+    });
+    this.form.setControl("shopsMCC", formGroupShop);
+  }
+
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.historyStream$.next(true);
+    if (this.queueName === 'eligibility' || this.queueName === 'risk' || this.queueName === 'compliance' || this.queueName === 'multipleClients') {
     this.initializeElegibilityForm();
+    }
+    if (this.queueName === 'negotiationAproval' || this.queueName === 'MCCTreatment' || this.queueName === 'validationSIBS') {
+      this.initializeMCCForm();
+    }
+
   }
 
   getStakeholderInfo(processId, stakeholderId) {
@@ -150,8 +164,8 @@ export class QueuesDetailComponent implements OnInit {
       this.queuesInfo.getProcessShopDetails(processId, shopId).then(result => {
         this.logger.info("Get shop from process result: " + JSON.stringify(result));
         var shop = result.result;
-        var shopMCC = this.form.get("shopsMCC") as FormGroup
-        shopMCC.addControl(shop.id + "", new FormControl(Validators.required));
+        var shopMCC = this.form.get("shopsMCC") as FormGroup;
+        shopMCC.addControl(shopId, new FormControl('', Validators.required));
         this.shopsList.push(shop);
         this.queuesInfo.getShopEquipmentConfigurationsFromProcess(this.processId, shop.id).then(eq => {
           this.logger.info("Get shop equipments list from process result: " + JSON.stringify(result));
@@ -188,14 +202,22 @@ export class QueuesDetailComponent implements OnInit {
   }
 
   fetchStartingInfo() {
-    this.queuesInfo.GetProcessStakeholders(this.processId).then(success => {
-      this.logger.info("Get stakeholders list from process result: " + JSON.stringify(success));
-      var stakeholdersList = success;
-      this.stakesList = stakeholdersList;
+    if (this.queueName === 'eligibility' || this.queueName === 'risk' || this.queueName === 'compliance' || this.queueName === 'multipleClients') {
+      this.queuesInfo.GetProcessStakeholders(this.processId).then(success => {
+        this.logger.info("Get stakeholders list from process result: " + JSON.stringify(success));
+        var stakeholdersList = success;
+        this.stakesList = stakeholdersList;
+        this.updateStakeForm();
+      });
+    }
+    if (this.queueName === 'negotiationAproval' || this.queueName === 'MCCTreatment' || this.queueName === 'validationSIBS') {
       this.loadShopsFromProcess().then(next => {
       }, reject => {
-      })
-    });
+      });
+    }
+    if (this.queueName === 'DOValidation') {
+
+    }
   }
 
   nextPage() {

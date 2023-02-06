@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppConfigService } from '../app-config.service';
 import { DatePipe } from '@angular/common';
 interface ProcessFT {
+  processId: string;
   processNumber: string;
   nipc: number;
   nome: string;
@@ -197,6 +198,7 @@ export class ConsultasFTComponent implements OnInit {
       }
       let processesArray: ProcessFT[] = result.items.map<ProcessFT>((process) => {
         return {
+          processId: process.processId,
           processNumber: process.processNumber,
           nipc: 529463466,
           nome: "EMPRESA UNIPESSOAL TESTES",
@@ -224,7 +226,8 @@ export class ConsultasFTComponent implements OnInit {
     localStorage.setItem("processNumber", process.processNumber);
     let navigationExtras: NavigationExtras = {
       state: {
-        queueName: this.queueName
+        queueName: this.queueName,
+        processId: process.processId
       }
     };
     this.logger.info("Redirecting to Queues Detail page");

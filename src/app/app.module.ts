@@ -76,6 +76,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
 import { InterceptorModule } from './interceptor/interceptor.module';
 import { AppConfigService } from './app-config.service';
+import { MbscModule } from '@mobiscroll/angular-lite';
 
 registerLocaleData(localePT);
 
@@ -149,6 +150,7 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     MaterialModule,
     BrowserAnimationsModule,
     InterceptorModule,
+    MbscModule,
     RouterModule.forRoot([
       { path: '', component: DashboardComponent, pathMatch: 'full' },
       { path: 'client', component: ClientComponent },
