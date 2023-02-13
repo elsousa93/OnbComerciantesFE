@@ -21,7 +21,7 @@
         </h4>
         <h2 class="text-primary mt-5 ps-3"> </h2>
         <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
-        <div class="row ms-0 me-0">
+        <div class="ms-0 me-0" [ngClass]="{'row': window.outerWidth > 768}">
           <div class="col-6 ms-0 me-0 ps-0 pe-5">
             <p class="titulo-form-simples mt-0">{{'client.faturation'|translate|uppercase}}*</p>
             <input type="number" (keypress)="numericOnly($event)" class="form-control campo_form"
@@ -95,7 +95,7 @@
             </nav>
             <p class="titulo-form-simples"></p>
           </div>
-          <div class="offset-1 ms-0 me-0 ps-5 pe-0 col-6">
+          <div [ngClass]="{'col-6' : window.outerWidth > 768, 'pe-0' : window.outerWidth > 768, 'ps-5' : window.outerWidth > 768, 'me-0' : window.outerWidth > 768, 'ms-0': window.outerWidth > 768, 'offset-1': window.outerWidth > 768 }">
             <p class="titulo-form-simples mt-0 mb-3">{{'client.destinationCountry'|translate|uppercase}}*
               <span class="titulo-form-error" *ngIf="countryError == true" class="titulo-form-simples-erro">
                 {{'client.countryError'|translate}}
@@ -104,7 +104,7 @@
             <!--<mbsc-select [data]="countriesCheckBox">
 
             </mbsc-select>-->
-            <textarea id="text5" class="form_control campo_form w-75" readonly></textarea>
+            <textarea id="text5" class="form_control campo_form" [ngClass]="{'w-75': window.outerWidth > 768}" [ngStyle]="{'width': window.outerWidth <= 768 ? '63%' : null}" readonly></textarea>
             <div class="row ms-0 me-0">
               <div class="row ms-0 me-0">
                 <div class="col quadro_paises_tracejado">

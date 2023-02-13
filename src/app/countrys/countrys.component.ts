@@ -110,6 +110,7 @@ export class CountrysComponent implements OnInit {
   countryError: boolean;
   errorMsg: string;
   rootForm: FormGroup;
+  window: any = window;
 
   ngOnInit() {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);

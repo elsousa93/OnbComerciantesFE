@@ -35,7 +35,7 @@
                   <table class="table table-success" style="overflow-x: hidden !important;">
                      <thead class="table-primary text-primary">
                         <tr class="text-center text-primary table-light">
-                           <th scope="col" class="align-baseline text-primary table-white">
+                           <th scope="col" class="text-center text-primary table-white"> <!--align-baseline-->
                               {{'generalKeywords.type'|translate|uppercase}}</th>
                            <th scope="col" class="text-center bg-light">
                               {{'stakeholder.titleSingular'|translate|uppercase}}</th>
@@ -48,7 +48,7 @@
                         </tr>
                      </thead>
                      <tbody>
-                        <tr *ngFor="let comp of compsToShow">
+                        <tr class="text-break" *ngFor="let comp of compsToShow">
                            <td class="text-primary text-center text-primary">
                               {{getDocumentDescription(comp.documentType)}}</td>
                            <td class="text-primary text-center">{{comp.stakeholder}}</td>
@@ -56,17 +56,17 @@
                            <td class="text-primary text-center">{{comp.uploadDate}}</td>
                            <td class="text-primary text-center">{{comp.status}}</td>
                            <td></td>
-                           <td class="text-center text-primary">
+                           <td class="text-center text-primary" [ngStyle]="{'width': wnd.outerWidth <= 768 ? '15%' : null}">
                               <span *ngIf="!(comp.documentType === '0001' || comp.documentType === '0018' || comp.documentType === '0034' || comp.documentType === '0071')" class="delete-blue-comp icon-delete-blue" (click)="onDelete(comp.file, comp.id)">
                                  <!--<img src="assets/images/delete_blue.svg"
                                     (click)="onDelete(comp.file, comp.id)"
                                     style="height: 25px !important; vertical-align: sub; cursor: pointer;">-->
                               </span>
-                              <span class="search-blue icon-search-blue">
+                              <span class="search-blue icon-search-blue" (click)="search(comp.file, comp.type)">
                                  <!--<img src="assets/images/search_blue.svg" (click)="search(comp.file, comp.type)"
                                     style="height: 25px !important; vertical-align: sub; cursor: pointer;">-->
                               </span>
-                              <span class="file-download icon-file-download">
+                              <span class="file-download icon-file-download" (click)="download(comp.file, comp.type)">
                                  <!--<img src="assets/images/file_download.svg" (click)="download(comp.file, comp.type)"
                                     style="height: 25px !important; vertical-align: sub; cursor: pointer;">-->
                               </span>
@@ -450,15 +450,15 @@
                         {{'generalKeywords.back'|translate|uppercase}}&nbsp;
                      </button>
                      <button *ngIf="validatedDocuments && !updatedComps" id="btn5a" (click)="firstSubmission()"
-                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-                        wappler-command="editContent">
+                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 me-0 pt-3 pb-3 ps-3"
+                        wappler-command="editContent"> <!-- ms-2-->
                         {{'generalButtons.submit'|translate|uppercase}}&nbsp;
                         <img src="assets/images/arrow_forward_ios.svg"
                            style="height: 25px !important; vertical-align: sub;">
                      </button>
                      <button *ngIf="validatedDocuments && updatedComps" id="btn5a" (click)="firstSubmission()"
-                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-                        wappler-command="editContent">
+                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 me-0 pt-3 pb-3 ps-3"
+                        wappler-command="editContent"> <!-- ms-2-->
                         {{'generalKeywords.next'|translate|uppercase}}&nbsp;
                         <img src="assets/images/arrow_forward_ios.svg"
                            style="height: 25px !important; vertical-align: sub;">

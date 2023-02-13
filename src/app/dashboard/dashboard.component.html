@@ -94,8 +94,8 @@
             {{'homepage.processes.acceptance'|translate|uppercase}}<br><br>
           </h1>
         </button>
-        <button *ngIf="FTPermissions.pendingSent" type="button"
-                class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
+        <button *ngIf="FTPermissions.pendingSent" type="button" id="finalBtn"
+                class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center " data-bs-toggle="collapse"
                 data-bs-target="#flush-collapsePendingSent">
           <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
             <app-number-counter [number]="pendingSentCount"
@@ -111,8 +111,8 @@
             {{'homepage.processes.pendingSent'|translate|uppercase}}<br><br>
           </h1>
         </button>
-        <button *ngIf="FTPermissions.pendingEligibility" type="button"
-                class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
+        <button *ngIf="FTPermissions.pendingEligibility" type="button" id="finalBtn2"
+                class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center " data-bs-toggle="collapse"
                 data-bs-target="#flush-collapsePendingEligibility">
           <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
             <app-number-counter [number]="pendingEligibilityCount"

@@ -3,7 +3,7 @@ import { Output, EventEmitter } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from 'src/app/logger.service';
-import { Subscription } from 'rxjs';
+import { fromEvent, Subscription } from 'rxjs';
 import { AutoHideLogo } from '../animation';
 import { DataService } from '../nav-menu-interna/data.service';
 import { AuthService } from '../services/auth.service';
@@ -64,6 +64,8 @@ export class NavMenuPresencialComponent implements OnInit {
 
   banks: Bank[];
   bank: string;
+  resizeObservable$;
+  maxWidth: boolean;
 
   constructor(private route: Router, private snackBar: MatSnackBar, private processNrService: ProcessNumberService, private processService: ProcessService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
     authService.currentUser.subscribe(user => this.currentUser = user);
@@ -123,6 +125,11 @@ export class NavMenuPresencialComponent implements OnInit {
     var prevScrollpos = window.pageYOffset;
 
     window.addEventListener("scroll", this.autohide.bind(this), false);
+
+    this.resizeObservable$ = fromEvent(window, "resize");
+    this.resizeObservable$.subscribe(evt => {
+      this.updateProgress();
+    });
   }
 
   openProcess() {
@@ -146,7 +153,13 @@ export class NavMenuPresencialComponent implements OnInit {
       return;
     } else {
       let progress = progressSteps[this.currentPage - 1][this.currentSubPage - 1];
-      this.progressImage = "assets/images/progress_bar/progress_bar_" + progress + ".svg"
+      if (window.outerWidth > 768) {
+        this.maxWidth = true;
+        this.progressImage = "assets/images/progress_bar/progress_bar_" + progress + ".svg"
+      } else {
+        this.maxWidth = false;
+        this.progressImage = progress + "";
+      }
       this.logger.info("New progress image" + this.progressImage);
     }
   }

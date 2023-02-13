@@ -1003,6 +1003,17 @@ progress {
   vertical-align: sub;
 }
 
+@media (max-width: 768px) {
+
+  #finalBtn {
+    margin-left: 1.5% !important;
+  }
+
+  #finalBtn2 {
+    margin-right: 1% !important;
+  }
+}
+
 .icon-description {
   mask: url("^assets/images/description.svg");
 }
@@ -4792,9 +4803,9 @@ textarea.form-control-lg {
 .navbar {
   position: relative;
   display: flex;
-  flex-wrap: wrap;
+  /*flex-wrap: wrap;*/
   align-items: center;
-  justify-content: space-between;
+  /*justify-content: space-between;*/
   padding-top: .35rem;
   padding-bottom: .35rem
 }

@@ -599,7 +599,7 @@ main {
 
 .botao_azul_pesquisa {
   padding: 10px;
-  border: 2px solid rgb(var(--bs-primary-rgb));
+  /*border: 2px solid rgb(var(--bs-primary-rgb));*/
   border-top-left-radius: 5px;
   border-top-right-radius: 5px;
   border-bottom-left-radius: 5px;

@@ -96,6 +96,7 @@ export class ClientCharacterizationComponent implements OnInit {
   @Output() formClientCharacterizationReady: EventEmitter<AbstractControl> = new EventEmitter();
 
   updatedClient: boolean;
+  window: any = window;
 
   changeFormStructure(newForm: FormGroup) {
     this.rootForm.setControl("clientCharacterizationForm", newForm);

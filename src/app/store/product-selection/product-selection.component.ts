@@ -42,6 +42,7 @@ export class ProductSelectionComponent implements OnInit {
   public cardPresent;
   public cardNotPresent;
   public combinedOffer;
+  window: any = window;
 
   constructor(private logger: LoggerService, private router: ActivatedRoute, private route: Router, private data: DataService,
     private storeService: StoreService, private rootFormGroup: FormGroupDirective, private COService: CommercialOfferService) {

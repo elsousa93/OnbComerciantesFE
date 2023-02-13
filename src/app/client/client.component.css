@@ -20,6 +20,7 @@
   flex-wrap: nowrap !important;
   font-weight: bold;
   font-size: 14px !important;
+  word-break: break-word;
 }
 
 .mat-sort-header {
@@ -48,21 +49,36 @@
 .mat-header-cell {
   justify-content: center;
   font-weight: bold;
+  word-break: break-word;
 }
 
 .mat-cell {
   padding-right: 25px !important;
   justify-content: center;
+  word-break: break-word;
+  color: rgb(var(--bs-primary-rgb));
+/*  font-size: 16px !important;*/
 }
 
 .mat-row {
-
   width: auto !important;
+  border-bottom: 2px solid #fafafa;
+}
 
+.mat-table thead {
+  border-bottom: 1px solid rgb(var(--bs-primary-rgb)) !important;
 }
 
 mat-cell:first-of-type,
 mat-header-cell:first-of-type,
 mat-footer-cell:first-of-type {
   padding-left: 0px !important;
+}
+
+@media (max-width: 768px) {
+
+  .mat-cell{
+      text-align: center;
+  }
+
 }

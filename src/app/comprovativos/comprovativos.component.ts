@@ -85,6 +85,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   legalNature: string;
   mandatoryDocs: string;
   documents: DocumentSearchType[];
+  wnd: any = window;
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number, download: boolean = false) {
     const byteCharacters = atob(b64Data);

@@ -835,7 +835,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
           if (documents.length > 0) {
             documents.forEach(doc => {
-              if (doc.documentType !== '0001') { 
+              if (doc.documentType !== '0001') {
                 context.documentService.SubmissionPostDocument(submissionID, doc).subscribe(result => {
                   context.logger.info('Added document to submission: ' + JSON.stringify(result));
                 });
@@ -851,47 +851,45 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             });
           }
         }
+      }
+      if (!this.updateClient) {
+        if (this.clientContext.isClient) {
+          if (newSubmission?.merchant?.merchantRegistrationId != null && newSubmission?.merchant?.merchantRegistrationId != "") {
+            this.storeService.getShopsListOutbound(newSubmission.merchant.merchantRegistrationId, "por mudar", "por mudar").subscribe(res => {
+              context.logger.info("Get shops list outbound result: " + JSON.stringify(res));
+              res.forEach(value => {
+                this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantRegistrationId, value.shopId, "por mudar", "por mudar").then(r => {
+                  context.logger.info("Get shop outbound result: " + JSON.stringify(r));
+                  var storeToAdd: ShopDetailsAcquiring = {
+                    activity: r.result.activity,
+                    subActivity: r.result.secondaryActivity,
+                    address: {
+                      address: r.result.address.address,
+                      isInsideShoppingCenter: r.result.address.isInsideShoppingCenter,
+                      shoppingCenter: r.result.address.shoppingCenter,
+                      useMerchantAddress: r.result.address.sameAsMerchantAddress
+                    },
+                    bank: {
+                      bank: r.result.bankingInformation
+                    },
+                    name: r.result.name,
+                    website: r.result.url,
+                    equipments: []
+                  }
 
-        if (!this.updateClient) {
-          if (this.clientContext.isClient) {
-            if (newSubmission?.merchant?.merchantRegistrationId != null && newSubmission?.merchant?.merchantRegistrationId != "") {
-              this.storeService.getShopsListOutbound(newSubmission.merchant.merchantRegistrationId, "por mudar", "por mudar").subscribe(res => {
-                context.logger.info("Get shops list outbound result: " + JSON.stringify(res));
-                res.forEach(value => {
-                  this.storeService.getShopInfoOutbound(newSubmission.merchant.merchantRegistrationId, value.shopId, "por mudar", "por mudar").then(r => {
-                    context.logger.info("Get shop outbound result: " + JSON.stringify(r));
-                    var storeToAdd: ShopDetailsAcquiring = {
-                      activity: r.result.activity,
-                      subActivity: r.result.secondaryActivity,
-                      address: {
-                        address: r.result.address.address,
-                        isInsideShoppingCenter: r.result.address.isInsideShoppingCenter,
-                        shoppingCenter: r.result.address.shoppingCenter,
-                        useMerchantAddress: r.result.address.sameAsMerchantAddress
-                      },
-                      bank: {
-                        bank: r.result.bankingInformation
-                      },
-                      name: r.result.name,
-                      website: r.result.url,
-                      equipments: []
-                    }
-
-                    context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
-                      context.logger.info("Added shop result: " + JSON.stringify(shop));
-                    });
+                  context.storeService.addShopToSubmission(submissionID, storeToAdd).subscribe(shop => {
+                    context.logger.info("Added shop result: " + JSON.stringify(shop));
                   });
                 });
               });
-            }
+            });
           }
         }
-
-      } else {
-        this.data.updateData(true, 1);
-        this.logger.info("Redirecting to Stakeholders page");
-        this.route.navigate(['/stakeholders']);
       }
+    } else {
+      this.data.updateData(true, 1);
+      this.logger.info("Redirecting to Stakeholders page");
+      this.route.navigate(['/stakeholders']);
     }
   }
 

@@ -1,5 +1,5 @@
 .small-cell {
-  flex: 0 0 2% !important;
+  flex: 0 0 3% !important;
   width: 2% !important;
   padding: 0px !important;
 }
@@ -37,12 +37,14 @@
 .mat-header-cell {
   justify-content: center;
   font-weight: bold;
+  word-break: break-word;
 }
 
 .mat-cell {
   padding-left: 11px;
-  text-align: match-parent !important;
-
+  justify-content: center;
+  word-break: break-word;
+  
 }
 
 .mat-row {

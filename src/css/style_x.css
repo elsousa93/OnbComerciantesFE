@@ -66,6 +66,9 @@
   margin-bottom: 0px !important;
   padding-top: 0px !important;
   padding-bottom: 11px !important;
+  line-height: 1.2em;
+  height: 6em;
+  overflow: hidden;
 }
 
 .fundo_dash {
@@ -879,8 +882,29 @@ span {}
 .seta_direita {
   font-size: 20px;
   margin-left: 7px;
-  margin-right: 9px
+  margin-right: 9px;
+  height: 30px !important;
 }
+
+@media (max-width: 768px) {
+
+  .seta_direita {
+    /*margin-top:38px;*/
+    height: 20px !important;
+  }
+
+  .nav-li {
+      height: 40px;
+      width: 40px;
+      border: 2px solid white; /**/
+      border-radius: 50%;
+  }
+
+  .nav-img {
+      margin: 4px;
+  }
+}
+
 
 :root {
   --offcanvas-width: 265px;
@@ -1355,6 +1379,13 @@ mat-paginator {
 .conteudo {
   padding-top: 130px !important;
 }
+
+@media (max-width: 768px) {
+  .conteudo {
+    padding-top: 90px !important;
+  }
+}
+
 
 .modal-checkdocuments {
   position: fixed;

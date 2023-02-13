@@ -66,19 +66,19 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-xxl col-6">
+                <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 768 }">
                   <p class="titulo-form-simples" for="natJuridicaN1">{{'client.legalNature'|translate}} N1:*</p>
                   <input type="text" formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
                     class="form-select campo-form-select" />
                 </div>
-                <div class="col-xxl col-6">
+                <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 768 }">
                   <p class="titulo-form-simples" for="natJuridicaN2">{{'client.legalNature'|translate}} N2:*</p>
                   <input type="text" formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
                     class="form-select campo-form-select" />
                 </div>
               </div>
               <div class="row">
-                <div class="col-xxl col-6">
+                <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 768 }">
                   <p class="titulo-form-simples" for="CAE1">{{'client.principalCAE'|translate}}:*</p>
                   <mat-autocomplete #auto="matAutocomplete">
                     <mat-option *ngFor="let cae of CAEsList" [value]="cae.code">
@@ -93,7 +93,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-xxl col-6">
+                <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 768 }">
                   <p class="titulo-form-simples" for="CAE1Branch">{{'client.principalCAEBranch'|translate}}*: </p>
                   <input disabled formControlName="CAE1Branch" name="CAE1Branch" type="text" id="CAE1Branch"
                     class="form-control campo_form" readonly>
@@ -114,7 +114,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-xxl col-6">
+                <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 768 }">
                   <p class="titulo-form-simples" for="CAESecondary1">{{'client.secondaryCAE'|translate}} 1: </p>
                   <input formControlName="CAESecondary1" name="CAESecondary1" type="text" id="CAESecondary1"
                     class="form-control campo_form" readonly>
@@ -126,7 +126,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-xxl col-6">
+                <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 768 }">
                   <p class="titulo-form-simples" for="ramoSecundario1">{{'client.secondaryCAEBranch'|translate}}
                     1: </p>
                   <input formControlName="CAESecondary1Branch" name="ramoSecundario1" type="text" id="ramoSecundario1"
@@ -141,7 +141,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-xxl col-6">
+                <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 768 }">
                   <p class="titulo-form-simples" for="CAESecondary2">{{'client.secondaryCAE'|translate}} 2: </p>
                   <input formControlName="CAESecondary2" name="CAESecondary2" type="text" id="CAESecondary2"
                     class="form-control campo_form" readonly>
@@ -153,7 +153,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-xxl col-6">
+                <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 768 }">
                   <p class="titulo-form-simples" for="ramoSecundario2">{{'client.secondaryCAEBranch'|translate}}
                     2: </p>
                   <input formControlName="CAESecondary2Branch" name="ramoSecundario2" type="text" id="ramoSecundario2"
@@ -168,7 +168,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-xxl col-6">
+                <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 768 }">
                   <p class="titulo-form-simples" for="CAESecondary3">{{'client.secondaryCAE'|translate}} 3: </p>
                   <input formControlName="CAESecondary3" name="CAESecondary3" type="text" id="CAESecondary3"
                     class="form-control campo_form" readonly>
@@ -180,7 +180,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-xxl col-6">
+                <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 768 }">
                   <p class="titulo-form-simples" for="ramoSecundario3">{{'client.secondaryCAEBranch'|translate}}
                     3: </p>
                   <input formControlName="CAESecondary3Branch" name="CAESecondary3Branch" type="text"
@@ -195,7 +195,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-xxl col-6">
+                <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 768 }">
                   <p class="titulo-form-simples" for="paisSedeSocial">
                     {{'client.registeredOfficeCountry'|translate}}*: </p>
                   <input formControlName="country" name="country" type="text" id="country"
@@ -207,7 +207,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-xxl col-6">
+                <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 768 }">
                   <div>
                     <p class="titulo-form-simples" for="ZIPCode">{{'client.registeredOfficePostalCode'|translate}}*:
                     </p>
@@ -223,7 +223,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-xxl col-6">
+                <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 768 }">
                   <p class="titulo-form-simples" for="moradaSedeSocial">
                     {{'client.registeredOfficeAddress'|translate}}:*</p>
                   <input formControlName="address" name="address" type="text" id="address"
@@ -235,7 +235,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-xxl col-6">
+                <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 768 }">
                   <p class="titulo-form-simples" for="localidadeSedeSocial">
                     {{'client.registeredOfficeLocale'|translate}}*: </p>
                   <input formControlName="location" name="localidadeSedeSocial" type="text" id="localidadeSedeSocial"

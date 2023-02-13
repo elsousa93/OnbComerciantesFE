@@ -400,7 +400,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.submissionId = localStorage.getItem('submissionId');
     this.returned = localStorage.getItem("returned");
-    this.data.updateData(false, 2);
+    //this.data.updateData(false, 2);
 
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.setControl('searchStakes', this.formStakeholderSearch);

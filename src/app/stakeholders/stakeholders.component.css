@@ -3,8 +3,10 @@
 }
 
 .small-cell {
-  flex: 0 0 5% !important;
-  width: 5% !important;
+  /*  flex: 0 0 5% !important;
+  width: 5% !important;*/
+  flex: 0 0 3% !important;
+  width: 2% !important;
 }
 
 .mat-sort-header-content {
@@ -44,6 +46,7 @@
 .mat-cell {
   padding-right: 25px !important;
   justify-content: center;
+  word-break: break-word;
 }
 
 .mat-row {

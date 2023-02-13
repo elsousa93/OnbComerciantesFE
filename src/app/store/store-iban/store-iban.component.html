@@ -46,7 +46,7 @@
       </div>
       <div *ngIf="isIBANConsidered === false" class="col-5 ms-0 me-0 ps-5 pe-0">
         <p class="titulo-form-simples mb-3" wappler-command="editContent">{{'stores.attachIBAN'|translate}}*</p>
-        <div class="table-responsive mb-2">
+        <div class="mb-2">
           <table class="table">
             <thead class="text-primary table-primary">
               <tr class="table-white text-primary">
@@ -60,7 +60,7 @@
               <tr *ngIf="IBANToShow != undefined && IBANToShow != null">
                 <td class="text-primary text-center">{{IBANToShow.tipo}}</td>
                 <td class="text-primary text-center">{{IBANToShow.dataDocumento}}</td>
-                <td>
+                <td style="white-space: nowrap;">
                   <span class="search-blue-iban icon-search-blue" (click)="openFile(files[0])">
                     <!--<img src="assets/images/search_blue.svg" (click)="openFile(files[0])"
                       style="height: 25px !important; vertical-align: sub; cursor: pointer;">

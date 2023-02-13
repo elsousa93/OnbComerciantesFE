@@ -42,6 +42,11 @@ export class NumberCounterComponent implements OnInit {
   }
 
   public numberWithCommas(x) {
-    return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
+    let str = x + "";
+    while (str.length < 4) {
+      str = "0" + str;
+    }
+    return str;
+    //return x.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ".");
   }
 }

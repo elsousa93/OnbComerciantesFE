@@ -1,7 +1,7 @@
 import { EventEmitter, Output } from '@angular/core';
 import { ViewChildren } from '@angular/core';
 import { Component, Input, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { fromEvent, Subscription } from 'rxjs';
 import { DataService } from './data.service';
 import { Router } from '@angular/router';
 import { AutoHideSidenavAdjustBarraTopo } from '../animation';
@@ -38,6 +38,9 @@ export class NavMenuInternaComponent implements OnInit {
   public startedEditing: boolean; //preciso de ter associado a página
   prevScrollpos: number = window.pageYOffset;
   public isHistory: boolean = false;
+  wnd: any = window;
+  resizeObservable$;
+  isMinWidth: boolean;
 
   constructor(private logger: LoggerService, private data: DataService, private route: Router) {
   }
@@ -53,53 +56,176 @@ export class NavMenuInternaComponent implements OnInit {
     this.historySubscription = this.data.historyStream$.subscribe((result) => {
       this.isHistory = result;
     });
+
+    this.resizeObservable$ = fromEvent(window, "resize");
+    this.resizeObservable$.subscribe(evt => {
+      if (window.outerWidth > 768) {
+        this.isMinWidth = false;
+      } else {
+        this.isMinWidth = true;
+      }
+    });
   }
 
   setListItem(page: number) {
-    if (page == this.currentPage) {
-      return 'text-center text-lg-center text-center align-self-start mt-4'; //ativo -> atualizado
+    if (window.outerWidth > 768) {
+      this.isMinWidth = false;
+      if (page == this.currentPage) {
+        return 'text-center text-lg-center text-center align-self-start mt-4'; //ativo -> atualizado
+      } else {
+        if (this.map.get(page)) {
+          return 'text-center align-self-start align-self-center mt-5'; //se já foi visitado e foi concluido ->atualizado
+        }
+        if (this.map.get(page) == false) {
+          return 'text-center align-self-start align-self-center mt-5'; // se foi visitado, mas n foi concluido
+        }
+        return 'text-center align-self-start align-self-center mt-5'; //ainda nao foi visitado -> atualizado
+      }
     } else {
-      if (this.map.get(page)) {
-        return 'text-center align-self-start align-self-center mt-5'; //se já foi visitado e foi concluido ->atualizado
+      this.isMinWidth = true;
+      if (page == this.currentPage) {
+        return 'text-center text-lg-center text-center align-self-start';
+      } else {
+        return 'text-center align-self-start align-self-center';
       }
-      if (this.map.get(page) == false) {
-        return 'text-center align-self-start align-self-center mt-5'; // se foi visitado, mas n foi concluido
-      }
-      return 'text-center align-self-start align-self-center mt-5'; //ainda nao foi visitado -> atualizado
     }
   }
 
   setAnchor(page: number) {
-    if (page == this.currentPage) {
-      return 'active text-white texto-menu-secundario'; // página atual -> atualizado
+    if (window.outerWidth > 768) {
+      if (page == this.currentPage) {
+        return 'active text-white texto-menu-secundario'; // página atual -> atualizado
+      } else {
+        if (this.map.get(page)) {
+          return 'texto-menu-secundario text-success'; //pagina visitada e concluida -> atualizado
+        }
+        if (this.map.get(page) == false) {
+          return 'texto-menu-secundario text-danger'; //pagina visitada e quando esta incompleta    -> deixo o inativo ou deixo o normal
+        }
+        return 'texto-menu-secundario-inativo text-success'; // ainda nao foi visitada -> atualizado
+      }
     } else {
-      if (this.map.get(page)) {
-        return 'texto-menu-secundario text-success'; //pagina visitada e concluida -> atualizado
-      }
-      if (this.map.get(page) == false) {
-        return 'texto-menu-secundario text-danger'; //pagina visitada e quando esta incompleta    -> deixo o inativo ou deixo o normal
-      }
-      return 'texto-menu-secundario-inativo text-success'; // ainda nao foi visitada -> atualizado
+        return 'invisible';
     }
   }
 
   setImage(page: number) {
-    if (page == this.currentPage) {
-      return 'icone-menu-secundario'; //caso seja a página atual
+    if (window.outerWidth > 768) {
+      if (page == this.currentPage) {
+        return 'icone-menu-secundario'; //caso seja a página atual
+      }
     }
   }
 
   setImageSrc(page: number) {
-    if (page == this.currentPage) {
-      return 'assets/images/circle-solid.svg';
+    if (window.outerWidth > 768) {
+      if (page == this.currentPage) {
+        return 'assets/images/circle-solid.svg';
+      } else {
+        if (this.map.get(page)) {
+          return 'assets/images/circle-check-regular.svg'; //caso já tenha sido visitado e foi concluido
+        }
+        if (this.map.get(page) == false) {
+          return 'assets/images/triangle-exclamation-solid.svg'; //caso já tenha sido visitado mas ainda n foi concluido
+        }
+        return 'assets/images/circle-regular.svg'; //caso ainda n tenha sido visitado;
+      }
     } else {
-      if (this.map.get(page)) {
-        return 'assets/images/circle-check-regular.svg'; //caso já tenha sido visitado e foi concluido
+      return this.getResponsiveImg(page);
+    }
+  }
+
+  getResponsiveImg(page: number) {
+    if (page == 0) { //Histórico
+      if (this.currentPage == page) {
+        return 'assets/images/published_with_changes.svg';
+      } else {
+        if (this.map.get(page)) {
+          return 'assets/images/published_with_changes_blue.svg';
+        }
+        if (this.map.get(page) == false) {
+          return 'assets/images/published_with_changes_error.svg';
+        }
+        return 'assets/images/published_with_changes_responsive.svg';
       }
-      if (this.map.get(page) == false) {
-        return 'assets/images/triangle-exclamation-solid.svg'; //caso já tenha sido visitado mas ainda n foi concluido
+    }
+    if (page == 1) { //Cliente
+      if (this.currentPage == page) {
+        return 'assets/images/group_add_blue_white.svg'
+      } else {
+        if (this.map.get(page)) {
+          return 'assets/images/group_add_blue.svg';
+        }
+        if (this.map.get(page) == false) {
+          return 'assets/images/group_add_blue_error.svg';
+        }
+        return 'assets/images/group_add_blue_responsive.svg';
       }
-      return 'assets/images/circle-regular.svg'; //caso ainda n tenha sido visitado;
+    }
+    if (page == 2) { //Stakeholders
+      if (this.currentPage == page) {
+        return 'assets/images/groups_3_white.svg';
+      } else {
+        if (this.map.get(page)) {
+          return 'assets/images/groups_3.svg';
+        }
+        if (this.map.get(page) == false) {
+          return 'assets/images/groups_3_error.svg';
+        }
+        return 'assets/images/groups_3_responsive.svg';
+      }
+    }
+    if (page == 3) { //Lojas
+      if (this.currentPage == page) {
+        return 'assets/images/storefront_white.svg';
+      } else {
+        if (this.map.get(page)) {
+          return 'assets/images/storefront.svg';
+        }
+        if (this.map.get(page) == false) {
+          return 'assets/images/storefront_error.svg';
+        }
+        return 'assets/images/storefront_responsive.svg';
+      }
+    }
+    if (page == 4) { //Comprovativos
+      if (this.currentPage == page) {
+        return 'assets/images/attach_file_white.svg';
+      } else {
+        if (this.map.get(page)) {
+          return 'assets/images/attach_file.svg';
+        }
+        if (this.map.get(page) == false) {
+          return 'assets/images/attach_file_error.svg';
+        }
+        return 'assets/images/attach_file_responsive.svg';
+      }
+    }
+    if (page == 5) { //Oferta Comercial
+      if (this.currentPage == page) {
+        return 'assets/images/shopping_cart_white.svg';
+      } else {
+        if (this.map.get(page)) {
+          return 'assets/images/shopping_cart.svg';
+        }
+        if (this.map.get(page) == false) {
+          return 'assets/images/shopping_cart_error.svg';
+        }
+        return 'assets/images/shopping_cart_responsive.svg';
+      }
+    }
+    if (page == 6) { //Info Declarativa
+      if (this.currentPage == page) {
+        return 'assets/images/manage_accounts_white.svg';
+      } else {
+        if (this.map.get(page)) {
+          return 'assets/images/manage_accounts_responsive.svg';
+        }
+        if (this.map.get(page) == false) {
+          return 'assets/images/manage_accounts_error.svg';
+        }
+        return 'assets/images/manage_accounts_responsive.svg';
+      }
     }
   }
 
