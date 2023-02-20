@@ -51,16 +51,13 @@
                         <div class="row ms-0 me-0 pe-0">
                           <div class="col-3 ms-3 pt-3 pb-3 ps-3 pe-0">
                             <p class="mb-0 text-end text-primary">{{'acceptance.processNumber'|translate}}</p>
-                            <p class="mb-0 text-end text-primary">{{'acceptance.contractNumber'|translate}}</p>
                             <p class="mb-0 text-end text-primary">{{'acceptance.actualState'|translate}}</p>
                             <p class="mb-0 text-end text-primary">{{'acceptance.date'|translate}}</p>
                             <p class="mb-0 text-end text-primary">{{'acceptance.user'|translate}}</p>
                             <p class="mb-0 text-end text-primary">{{'acceptance.comments'|translate}}</p>
                           </div>
                           <div class="col bg-white bg-opacity-75 ms-3 me-0 pt-3 pb-3 pe-2">
-                            <p class="mb-0 text-primary text-start">{{(processNumber == null) ? '-' :
-                              process.processNumber}}</p>
-                            <p class="mb-0 text-primary text-start">-</p>
+                            <p class="mb-0 text-primary text-start">{{(processNumber == null) ? '-' : process.processNumber}}</p>
                             <p class="mb-0 text-primary text-start">Devolvido do backoffice</p>
                             <p class="mb-0 text-primary text-start">19/09/1985 17:05:02</p>
                             <p class="mb-0 text-primary text-start"> - </p>
@@ -95,20 +92,19 @@
                             <td class="text-primary text-start">{{issue?.issueDescription}}</td>
                           </tr>
                           <tr>
-                            <td class="text-primary text-center">{{getEntityName('merchant',
-                              issues?.merchant?.merchant?.id)}}</td>
+                            <td class="text-primary text-center">{{issues?.merchant?.merchant?.name}}</td>
                             <td class="text-primary text-start">{{issues?.merchant?.issues[0]?.issueDescription}}</td>
                           </tr>
                           <tr *ngFor="let issue of issues?.stakeholders">
-                            <td class="text-primary text-center">{{getEntityName('stake', issue?.stakeholder?.id)}}</td>
+                            <td class="text-primary text-center">{{issue?.stakeholder?.name}}</td>
                             <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
                           </tr>
                           <tr *ngFor="let issue of issues?.shops">
-                            <td class="text-primary text-center">{{getEntityName('shop', issue?.shop?.id)}}</td>
+                            <td class="text-primary text-center">{{issue?.shop?.name}}</td>
                             <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
                           </tr>
                           <tr *ngFor="let issue of issues?.documents">
-                            <td class="text-primary text-center">{{getEntityName('document', issue?.document?.id)}}</td>
+                            <td class="text-primary text-center">{{issue?.document?.name}}</td>
                             <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
                           </tr>
                         </tbody>
@@ -186,7 +182,6 @@
                         <th scope="col" class="text-center text-primary bg-light table-white">
                           {{'acceptance.returnReason0'|translate}}</th>
                         <th scope="col" class="text-center bg-light">{{'acceptance.returnReason1'|translate}}</th>
-                        <th scope="col" class="text-center bg-white">{{'acceptance.returnReason2'|translate}}</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -196,21 +191,21 @@
                       </tr>
                       <tr>
                         <td class="text-primary text-center">
-                          {{ getEntityName('merchant', selectedIssue?.merchant?.merchant?.id) }}
+                          {{ selectedIssue?.merchant?.merchant?.name }}
                         </td>
-                        <td class="text-primary text-start">{{selectedIssue?.merchant?.selectedIssue[0]?.issueDescription}}</td>
+                        <td class="text-primary text-start">{{selectedIssue?.merchant?.issues[0]?.issueDescription}}</td>
                       </tr>
                       <tr *ngFor="let issue of selectedIssue?.stakeholders">
-                        <td class="text-primary text-center">{{getEntityName('stake', issue?.stakeholder?.id)}}</td>
-                        <td class="text-primary text-start">{{issue?.selectedIssue[0]?.issueDescription}}</td>
+                        <td class="text-primary text-center">{{issue?.stakeholder?.name}}</td>
+                        <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
                       </tr>
                       <tr *ngFor="let issue of selectedIssue?.shops">
-                        <td class="text-primary text-center">{{getEntityName('shop', issue?.shop?.id)}}</td>
-                        <td class="text-primary text-start">{{issue?.selectedIssue[0]?.issueDescription}}</td>
+                        <td class="text-primary text-center">{{issue?.shop?.name}}</td>
+                        <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
                       </tr>
                       <tr *ngFor="let issue of selectedIssue?.documents">
-                        <td class="text-primary text-center">{{getEntityName('document', issue?.document?.id)}}</td>
-                        <td class="text-primary text-start">{{issue?.selectedIssue[0]?.issueDescription}}</td>
+                        <td class="text-primary text-center">{{issue?.document?.name}}</td>
+                        <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
                       </tr>
                     </tbody>
                   </table>

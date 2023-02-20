@@ -77,7 +77,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { InterceptorModule } from './interceptor/interceptor.module';
 import { AppConfigService } from './app-config.service';
 import { MbscModule } from '@mobiscroll/angular-lite';
-
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 registerLocaleData(localePT);
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -151,6 +151,7 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     BrowserAnimationsModule,
     InterceptorModule,
     MbscModule,
+    NgMultiSelectDropDownModule.forRoot(),
     RouterModule.forRoot([
       { path: '', component: DashboardComponent, pathMatch: 'full' },
       { path: 'client', component: ClientComponent },

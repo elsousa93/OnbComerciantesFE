@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -10,6 +10,7 @@ import { StakeholderService } from '../stakeholders/stakeholder.service';
 import { StoreService } from '../store/store.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
+import { QueuesService } from '../queues-detail/queues.service';
 
 @Component({
   selector: 'app-devolucao',
@@ -30,38 +31,16 @@ export class DevolucaoComponent implements OnInit {
   public processHistoryItems: SearchProcessHistory;
   public selectedIssue: BusinessIssueViewModel;
   public selectedHistoryGuid: string;
+  public merchantFirstTime: boolean;
+  public shopFirstTime: boolean;
+  public stakeFirstTime: boolean;
+  public docFirstTime: boolean;
 
   constructor(private logger: LoggerService,
     private route: Router, private data: DataService,
     private router: ActivatedRoute, private processService: ProcessService, private clientService: ClientService,
-    private stakeholderService: StakeholderService, private storeService: StoreService, private translate: TranslateService, private datePipe: DatePipe) {
+    private stakeholderService: StakeholderService, private storeService: StoreService, private translate: TranslateService, private datePipe: DatePipe, private queuesService: QueuesService) {
 
-  }
-
-  getEntityName(entity: string, id: string) {
-    if (id != null) {
-      if (entity == 'merchant') {
-        this.clientService.GetClientByIdOutbound(id).then(res => {
-          this.logger.info("Get client outbound result: " + JSON.stringify(res));
-          return res.legalName;
-        });
-      }
-      if (entity == 'stake') {
-        this.stakeholderService.getStakeholderByID(id, "por mudar", "por mudar").then(res => {
-          this.logger.info("Get stake outbound result: " + JSON.stringify(res));
-          return res.shortName;
-        });
-      }
-      if (entity == 'shop') {
-        this.storeService.getProcessShopDetails(this.processId, id).subscribe(res => {
-          this.logger.info("Get shop outbound result: " + JSON.stringify(res));
-          return res.name;
-        });
-      }
-      if (entity == 'document') {
-        return id;
-      }
-    }
   }
 
   ngOnInit(): void {
@@ -76,6 +55,22 @@ export class DevolucaoComponent implements OnInit {
     }
   }
 
+  async getNames(issues: BusinessIssueViewModel) {
+    await this.queuesService.getProcessMerchant(this.processId).then(res => {
+      issues.merchant.merchant["name"] = res.result.legalName;
+    });
+    issues.shops.forEach(val => {
+      this.queuesService.getProcessShopDetails(this.processId, val?.shop?.id).then(res => {
+        val.shop["name"] = res.result.name;
+      });
+    });
+    issues.stakeholders.forEach(val => {
+      this.queuesService.getProcessStakeholderDetails(this.processId, val?.stakeholder?.id).then(res => {
+        val.stakeholder["name"] = res.result.shortName;
+      });
+    });
+  }
+
   getPageInfo() {
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.logger.info("Get process by id result: " + JSON.stringify(result));
@@ -85,9 +80,8 @@ export class DevolucaoComponent implements OnInit {
       this.data.updateData(true, 0);
       this.processService.getProcessIssuesById(this.processId).subscribe(res => {
         this.logger.info("Get process issues result: " + JSON.stringify(result));
-        if (res.process.length != 0) { // no caso em que as issues vêm a null está a entrar num erro infinito
-          this.issues = res;
-        }
+        this.issues = res;
+        this.getNames(this.issues);
       });
     });
 
@@ -118,9 +112,8 @@ export class DevolucaoComponent implements OnInit {
     this.selectedHistoryGuid = historyGuid;
     this.processService.getProcessIssuesById(this.processId, historyGuid).subscribe(res => {
       this.logger.info("Get process issues result: " + JSON.stringify(res));
-      if (res.process.length != 0) {
-        this.selectedIssue = res;
-      }
+      this.selectedIssue = res;
+      this.getNames(this.selectedIssue);
     });
   }
 

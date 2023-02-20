@@ -57,14 +57,12 @@
                           <div class="row ms-0 me-0 pe-0">
                             <div class="col-3 ms-3 pt-3 pb-3 ps-3 pe-0">
                               <p class="mb-0 text-end text-primary">{{'acceptance.processNumber'|translate}}</p>
-                              <p class="mb-0 text-end text-primary">{{'acceptance.contractNumber'|translate}}</p>
                               <p class="mb-0 text-end text-primary">{{'acceptance.actualState'|translate}}</p>
                               <p class="mb-0 text-end text-primary">{{'acceptance.date'|translate}}</p>
                               <p class="mb-0 text-end text-primary">{{'acceptance.user'|translate}}</p>
                               <p class="mb-0 text-end text-primary">{{'acceptance.comments'|translate}}</p>
                             </div>
                             <div class="col bg-white bg-opacity-75 ms-3 me-0 pt-3 pb-3 pe-2">
-                              <p class="mb-0 text-primary text-start">-</p>
                               <p class="mb-0 text-primary text-start">-</p>
                               <p class="mb-0 text-primary text-start">
                                 {{'homepage.' + queueName|translate}}
@@ -161,20 +159,18 @@
                               <td *ngIf="queueName === 'risk'" class="text-primary text-center">7</td>
                               <td class="text-primary text-center">
                                 <input class="form-check-input" type="radio" [value]=true id="radio8" name="{{stake.id}}"
-                                  style="margin-left: 5px; margin-right: 5px;" formControlName="{{stake.id}}"
-                                  (click)="check()"><label class="form-check-label radio"
-                                  for="{{stake.id}}">{{'queues.favorable'|translate}}&nbsp;</label>
+                                       style="margin-left: 5px; margin-right: 5px;" formControlName="{{stake.id}}"
+                                       (click)="check()"><label class="form-check-label radio"
+                                                                for="{{stake.id}}">{{'queues.favorable'|translate}}&nbsp;</label>
 
                                 <input class="form-check-input" style="margin-left: 15px; margin-right: 5px;"
-                                  formControlName="{{stake.id}}" type="radio" [value]=false id="radio8"
-                                  name="{{stake.id}}" (click)="uncheck()"><label class="form-check-label radio pe-5"
-                                  for="{{stake.id}}">{{'queues.unfavorable'|translate}}&nbsp;</label>
+                                       formControlName="{{stake.id}}" type="radio" [value]=false id="radio8"
+                                       name="{{stake.id}}" (click)="uncheck()"><label class="form-check-label radio pe-5"
+                                                                                      for="{{stake.id}}">{{'queues.unfavorable'|translate}}&nbsp;</label>
                               </td>
-                              <td *ngIf="queueName === 'eligibility'" class="text-primary text-center">
-                                <span class="description icon-description"></span>
-                                <!--<img src="assets/images/description.svg"
-                                  style="height: 25px !important; vertical-align: sub; cursor: pointer;">-->
-                              </td>
+                              <!--<td *ngIf="queueName === 'eligibility'" class="text-primary text-center">
+                                  <span class="description icon-description"></span>
+                                </td>-->
                             </tr>
                             <tr></tr>
                           </tbody>
@@ -495,7 +491,7 @@
 
                           <button id="btn5a2"
                             *ngIf="queueName==='compliance' || queueName==='risk' || queueName==='eligibility'"
-                            [disabled]="(!(fillComments?.length > 0) && queueName==='compliance') || ((queueName==='eligibility' || queueName==='risk') && !checkButton)"
+                            [disabled]="(!(fillComments?.length > 0) && queueName==='compliance') || ((queueName==='eligibility' || queueName==='risk') && !form.valid)"
                             class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                             (click)="concludeOpinion()" wappler-command="editContent">
                             {{'queues.completed'|translate|uppercase}}&nbsp;

@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppConfigService } from '../../app-config.service';
+import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 import { AuthService } from '../../services/auth.service';
 import { ISubmissionDocument, PostDocument, SimplifiedDocument } from './ISubmission-document';
 
@@ -11,7 +12,7 @@ export class SubmissionDocumentService {
   private baseUrl;
   private urlOutbound;
 
-  constructor(private http: HttpClient, private configuration: AppConfigService, private authService: AuthService) {
+  constructor(private http: HttpClient, private configuration: AppConfigService, private authService: AuthService, private processNrService: ProcessNumberService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.urlOutbound = configuration.getConfig().outboundUrl;
   }
@@ -49,21 +50,31 @@ export class SubmissionDocumentService {
     if (format != null && format != "")
       URI += "?format=" + format;
 
-    var data = new Date();
+    requestID = window.crypto['randomUUID']();
+    AcquiringUserID = this.authService.GetCurrentUser().userName;
+    AcquiringPartnerID = this.authService.GetCurrentUser().bankName;
+    AcquiringBranchID = this.authService.GetCurrentUser().bankLocation;
+    this.processNrService.processNumber.subscribe(processNumber => AcquiringProcessID = processNumber);
 
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
+        'X-Acquiring-Tenant': "0800",
         'X-Request-Id': requestID,
         'X-Acquiring-UserId': AcquiringUserID,
+        'X-Date': new Date().toUTCString(),
+        'X-Acquiring-PartnerId': AcquiringPartnerID,
+        'X-Acquiring-BranchId': AcquiringBranchID
       }),
     }
+    if (AcquiringProcessID != "" && AcquiringProcessID != null)
+      HTTP_OPTIONS.headers = HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
 
-    if (AcquiringPartnerID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
-    if (AcquiringBranchID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
-    if (AcquiringProcessID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
+    //if (AcquiringPartnerID !== null)
+    //  HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
+    //if (AcquiringBranchID !== null)
+    //  HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
+    //if (AcquiringProcessID !== null)
+    //  HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
 
     return this.http.get<any>(URI, HTTP_OPTIONS);
   }

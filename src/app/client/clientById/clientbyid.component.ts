@@ -5,7 +5,7 @@ import { DocumentSearchType, EconomicActivityInformation, LegalNature, SecondLeg
 import { TableInfoService } from '../../table-info/table-info.service';
 import { SubmissionService } from '../../submission/service/submission-service.service'
 import { AbstractControl, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { catchError, Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { ClientService } from '../client.service';
 import { CRCService } from '../../CRC/crcservice.service';
@@ -128,6 +128,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   potentialClientIds: string[] = [];
   shortName: string;
   submissionDocs: ISubmissionDocument[] = [];
+  error: boolean = false;
 
   updateBasicForm() {
     this.form.get("clientCharacterizationForm").get("natJuridicaNIFNIPC").setValue(this.NIFNIPC);
@@ -717,8 +718,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     }
   }
 
-  updateSubmission() {
+  async updateSubmission() {
     if (this.returned != 'consult') {
+      this.error = false;
       let navigationExtras: NavigationExtras = {
         state: {
           isClient: this.clientContext.isClient
@@ -736,17 +738,18 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.submissionService.EditSubmission(submissionID, newSubmission).subscribe(result => {
         context.logger.info("Updated submission result: " + JSON.stringify(result));
         this.data.changeUpdatedClient(true);
-        this.data.updateData(true, 1);
-        this.logger.info("Redirecting to Stakeholders page");
-        this.route.navigateByUrl('/stakeholders', navigationExtras);
+      }, error => {
+        this.error = true;
       });
       var client = this.clientContext.getClient();
       var merchant = this.clientContext.newSubmission.merchant;
       var clientToSubmit: OutboundClient
 
       //antes estava merchant 
-      this.clientService.EditClient(submissionID, client).subscribe(res => {
+      await this.clientService.EditClient(submissionID, client).toPromise().then(res => {
         this.logger.info("Update client: " + JSON.stringify(res));
+      }, error => {
+        this.error = true;
       });
 
       //if (!this.updateClient && this.returned == null) {
@@ -836,20 +839,20 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           if (documents.length > 0) {
             documents.forEach(doc => {
               if (doc.documentType !== '0001') {
-                context.documentService.SubmissionPostDocument(submissionID, doc).subscribe(result => {
+                context.clientService.merchantPostDocument(submissionID, doc).subscribe(result => {
                   context.logger.info('Added document to submission: ' + JSON.stringify(result));
                 });
               }
             });
           }
 
-          if (context.clientDocs != null) {
-            context.clientDocs.forEach(function (value, idx) {
-              context.documentService.SubmissionPostDocument(submissionID, value).subscribe(result => {
-                context.logger.info("Added documents to submission from outbound client: " + JSON.stringify(result));
-              });
-            });
-          }
+          //if (context.clientDocs != null) {
+          //  context.clientDocs.forEach(function (value, idx) {
+          //    context.clientService.merchantPostDocument(submissionID, value).subscribe(result => {
+          //      context.logger.info("Added documents to submission from outbound client: " + JSON.stringify(result));
+          //    });
+          //  });
+          //}
         }
       }
       if (!this.updateClient) {
@@ -885,6 +888,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             });
           }
         }
+      }
+      if (!this.error) {
+        this.data.updateData(true, 1);
+        this.logger.info("Redirecting to Stakeholders page");
+        this.route.navigateByUrl('/stakeholders', navigationExtras);
       }
     } else {
       this.data.updateData(true, 1);

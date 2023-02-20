@@ -512,7 +512,27 @@
     "startMsg": "Ups! Something went wrong.",
     "400": "The server cannot process the request due to this errors:",
     "401": "You need to be authenticated to get the requested response.",
-    "404": "The server cannot find the requested resource.",
-    "500": "The server does not know how to handle this situation."
+    "500": "The server does not know how to handle this situation.",
+    "404": {
+      "merchantProcess": "The merchant associated with the process was not found.",
+      "merchantSubmission": "The merchant associated with the submission was not found.",
+      "merchantSearch": "The merchant you searched for does not exist.",
+      "merchant": "The merchant does not exist.",
+      "stakeholderProcess": "The stakeholder associated with the process was not found.",
+      "stakeholderSubmission": "The stakeholder associated with the submission was not found.",
+      "stakeholderSearch": "The stakeholder you searched for does not exist.",
+      "stakeholder": "The stakeholder does not exist.",
+      "shopProcess": "The shop associated with the process was not found.",
+      "shopSubmission": "The shop associated with the submission was not found.",
+      "shop": "The shop does not exist.",
+      "equipmentProcess": "The equipment associated with the process was not found.",
+      "equipmentSubmission": "The equipment associated with the submission was not found.",
+      "documentProcess": "The document associated with the process was not found.",
+      "documentImageProcess": "The document's image associated with the process was not found.",
+      "documentSubmission": "The document associated with the submission was not found.",
+      "documentImageSubmission": "The document's image associated with the submission was not found.",
+      "document": "The document's image was not found.",
+      "postalCode": "The postal code is invalid."
+    }
   }
 }

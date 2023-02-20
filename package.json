@@ -34,6 +34,7 @@
     "jquery": "^3.6.0",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.5.25",
+    "ng-multiselect-dropdown": "^0.3.9",
     "ngx-bootstrap": "^8.0.0",
     "ngx-bootstrap-modal": "^2.0.1",
     "ngx-cookie-service": "^13.2.1",

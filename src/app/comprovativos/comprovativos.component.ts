@@ -124,7 +124,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     private modalService: BsModalService, private datepipe: DatePipe, private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService, private authService: AuthService, private shopService: StoreService) {
     var context = this;
     this.ngOnInit();
-
+    const now = new Date();
+    var latest_date = context.datepipe.transform(now, 'dd-MM-yyyy').toString();
     this.tableInfo.GetDocumentsDescription().subscribe(result => {
       this.logger.info('Get all documents description result: ' + JSON.stringify(result));
       this.documents = result;
@@ -148,46 +149,70 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         this.submissionClient = c;
         this.getLegalNatureDescription();
         this.logger.info('Get client: ' + JSON.stringify(c));
+        this.submissionClient.documents.forEach(val => {
+          context.compsToShow.push({
+            id: val.id,
+            type: "pdf",
+            expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+            stakeholder: context.submissionClient.commercialName,
+            status: "não definido",
+            uploadDate: latest_date,
+            file: val?.id,
+            documentPurpose: val.purposes[0],
+            documentType: val.documentType
+          });
+        })
 
-        context.shopService.getSubmissionShopsList(context.submissionId).then(shops => {
-          context.logger.info("Get all shops from submission: " + JSON.stringify(shops));
-          shops.result.forEach(function (value, index) {
+        //context.shopService.getSubmissionShopsList(context.submissionId).then(shops => {
+        //  context.logger.info("Get all shops from submission: " + JSON.stringify(shops));
+          context.submission.shops.forEach(function (value, index) {
             context.shopService.getSubmissionShopDetails(context.submissionId, value.id).then(shop => {
               context.logger.info("Get shop from submission: " + JSON.stringify(shop));
-              context.shopList.push(shop.result);
+              context.compsToShow.push({
+                id: shop.result.documents[0].id,
+                type: "pdf",
+                expirationDate: context.datepipe.transform(shop.result.documents[0].validUntil, 'dd-MM-yyyy'),
+                stakeholder: shop.result.name,
+                status: "não definido",
+                uploadDate: latest_date,
+                file: shop.result.documents[0]?.id,
+                documentPurpose: shop.result.documents[0].purposes[0],
+                documentType: shop.result.documents[0].documentType
+              });
+              //context.shopList.push(shop.result);
             });
           });
 
-          this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
-            context.logger.info("Get all documents from submission: " + JSON.stringify(res));
-            var documents = res;
-            if (documents.length != 0) {
-              documents.forEach(function (value, index) {
-                var document = value;
-                context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
-                  context.logger.info("Get document from submission: " + JSON.stringify(val));
-                  const now = new Date();
-                  var latest_date = context.datepipe.transform(now, 'dd-MM-yyyy').toString();
-                  var index = context.compsToShow.findIndex(value => value.id == document.id);
-                  if (index == -1) {
-                    var shopName = context.shopList?.find(shop => shop.bank.bank.iban === document.id)?.name;
-                    context.compsToShow.push({
-                      id: val.id,
-                      type: "pdf",
-                      expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
-                      stakeholder: shopName ?? context.submissionClient.fullName,
-                      status: "não definido",
-                      uploadDate: latest_date,
-                      file: val?.id,
-                      documentPurpose: val.documentPurpose,
-                      documentType: val.documentType
-                    });
-                  }
-                });
-              });
-            }
-          });
-        });
+          //this.documentService.GetSubmissionDocuments(this.submissionId).subscribe(res => {
+          //  context.logger.info("Get all documents from submission: " + JSON.stringify(res));
+          //  var documents = res;
+          //  if (documents.length != 0) {
+          //    documents.forEach(function (value, index) {
+          //      var document = value;
+          //      context.documentService.GetSubmissionDocumentById(context.submissionId, document.id).subscribe(val => {
+          //        context.logger.info("Get document from submission: " + JSON.stringify(val));
+          //        const now = new Date();
+          //        var latest_date = context.datepipe.transform(now, 'dd-MM-yyyy').toString();
+          //        var index = context.compsToShow.findIndex(value => value.id == document.id);
+          //        if (index == -1) {
+          //          var shopName = context.shopList?.find(shop => shop.bank.bank.iban === document.id)?.name;
+          //          context.compsToShow.push({
+          //            id: val.id,
+          //            type: "pdf",
+          //            expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+          //            stakeholder: shopName ?? context.submissionClient.fullName,
+          //            status: "não definido",
+          //            uploadDate: latest_date,
+          //            file: val?.id,
+          //            documentPurpose: val.documentPurpose,
+          //            documentType: val.documentType
+          //          });
+          //        }
+          //      });
+          //    });
+          //  }
+          //});
+        //});
       });
     });
 
@@ -248,12 +273,26 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     if (this.submission.stakeholders != null) {
       if (this.submission.stakeholders.length != 0) {
         this.submission.stakeholders.forEach(stake => {
-          this.stakeholderService.getStakeholderByID(stake.id, "8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag==").then(result => {
+          this.stakeholderService.GetStakeholderFromSubmission(this.submission.id, stake.id, /*"8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag=="*/).then(result => {
             this.logger.info("Get stakeholder outbound: " + JSON.stringify(result));
             var stake = result.result;
             var index = this.stakeholdersList.findIndex(s => s.id == stake.id);
             if (index == -1)
               this.stakeholdersList.push(stake);
+            stake.documents.forEach(val => {
+              this.compsToShow.push({
+                id: val.id,
+                type: "pdf",
+                expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                stakeholder: stake.fullName,
+                status: "não definido",
+                uploadDate: latest_date,
+                file: val?.id,
+                documentPurpose: val.purposes[0],
+                documentType: val.documentType
+              });
+            })
+
           }, error => {
             this.logger.error(error, "", "Erro getting stakeholder");
           });

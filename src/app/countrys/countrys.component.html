@@ -101,9 +101,6 @@
                 {{'client.countryError'|translate}}
               </span>
             </p>
-            <!--<mbsc-select [data]="countriesCheckBox">
-
-            </mbsc-select>-->
             <textarea id="text5" class="form_control campo_form" [ngClass]="{'w-75': window.outerWidth > 768}" [ngStyle]="{'width': window.outerWidth <= 768 ? '63%' : null}" readonly></textarea>
             <div class="row ms-0 me-0">
               <div class="row ms-0 me-0">
@@ -122,9 +119,15 @@
                 <div class="col ps-5">
                   <div class="form-check" *ngFor="let item of lstCountry; index as i">
                     <input class="form-check-input" type="checkbox" [checked]="countryExists(item)" name="input16"
-                      (change)="onCountryChange(item)"
-                      [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
+                           (change)="onCountryChange(item)"
+                           [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
                   </div>
+                  <!--<ng-multiselect-dropdown [data]="lstCountry"
+                                           [(ngModel)]="lstPaisPreenchido"
+                                           [settings]="dropdownSettings"
+                                           (onSelect)="addCountry($event)"
+                                           (onDeSelect)="removeCountry($event)">
+                  </ng-multiselect-dropdown>-->
                 </div>
                 <div class="col">
                   <div class="form-check" *ngFor="let item of lstCountry1; index as i">

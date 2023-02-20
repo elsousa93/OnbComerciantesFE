@@ -73,6 +73,7 @@ export interface SubmissionGetTemplate {
   merchant?: SimplifiedReference
   stakeholders?: SimplifiedReference[]
   documents?: SimplifiedDocument[]
+  shops?: SimplifiedReference[]
   submissionType?: string
   processNumber?: string
   processKind?: string

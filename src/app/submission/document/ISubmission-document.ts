@@ -34,3 +34,11 @@ export interface OutboundDocument {
   archiveSource?: string,
   format?: string
 }
+
+export interface Documents {
+  id?: string
+  documentType?: string,
+  validUntil?: string,
+  data?: string,
+  purposes?: string[]
+}

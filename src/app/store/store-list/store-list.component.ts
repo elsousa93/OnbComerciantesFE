@@ -223,21 +223,21 @@ export class StoreComponent implements AfterViewInit {
       if (!this.currentStore.bank.useMerchantBank) {
         this.storeIbanComponent.isIBAN(this.currentStore.bank.useMerchantBank);
         bankStores.get("bankIban").setValue(this.currentStore.bank.bank.iban);
-        this.documentService.GetSubmissionDocumentById(this.submissionId, this.currentStore.bank.bank.iban).subscribe(val => {
-          context.documentService.GetDocumentImage(context.submissionId, context.currentStore.bank.bank.iban).then(async res => {
+        //this.documentService.GetSubmissionDocumentById(this.submissionId, this.currentStore.bank.bank.iban).subscribe(val => {
+        context.documentService.GetDocumentImage(context.submissionId, context.currentStore.documents[0].id).then(async res => {
             context.logger.info("Get document image result: " + JSON.stringify(res));
             res.blob().then(data => {
               var blob = new Blob([data], { type: 'application/pdf' });
               var file = new File([blob], context.translate.instant('supportingDocuments.checklistModal.IBAN'), { 'type': 'application/pdf' });
               context.ibansToShow = {
-                dataDocumento: val.validUntil == null ? "desconhecido" : context.datePipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                dataDocumento: context.currentStore.documents[0].validUntil == null ? "desconhecido" : context.datePipe.transform(context.currentStore.documents[0].validUntil, 'dd-MM-yyyy'),
                 file: file,
-                id: context.currentStore.bank.bank.iban,
+                id: context.currentStore.documents[0].id,
                 tipo: context.translate.instant('supportingDocuments.checklistModal.IBAN')
               };
             }); 
           });
-        });
+        //});
 
       }
       var productStores = this.editStores.controls["productStores"];
@@ -431,30 +431,32 @@ export class StoreComponent implements AfterViewInit {
 
   addDocumentToShop(storeId: string, store: ShopDetailsAcquiring) {
     if (this.ibansToShow != null || store.bank.useMerchantBank == false) {
-      if (store.bank.bank.iban != this.ibansToShow.id) { 
-        var context = this;
-        this.comprovativoService.readBase64(this.ibansToShow.file).then((data) => {
-          var docToSend: PostDocument = {
-            "documentType": "0071",
-            "documentPurpose": "BankAccount",
-            "file": {
-              "fileType": "PDF",
-              "binary": data.split(',')[1]
-            },
-            "validUntil": null,
-            "data": {}
-          }
-          context.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(res => {
-            store.bank.bank.iban = res.id;
-            context.logger.info("Document to add to submission: " + JSON.stringify(docToSend));
-            this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), storeId, docToSend).subscribe(result => {
-              context.logger.info("Added document to shop result: " + JSON.stringify(result));
-              context.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, store).subscribe(res => {
-                context.logger.info("Updated store result: " + JSON.stringify(res)); 
+      if (store?.documents?.length == 0 || store.documents == null) {
+        //if (store.documents[0].id != this.ibansToShow.id) { 
+          var context = this;
+          this.comprovativoService.readBase64(this.ibansToShow.file).then((data) => {
+            var docToSend: PostDocument = {
+              "documentType": "0071",
+              "documentPurpose": "BankAccount",
+              "file": {
+                "fileType": "PDF",
+                "binary": data.split(',')[1]
+              },
+              "validUntil": null,
+              "data": {}
+            }
+            //context.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(res => {
+            //  store.bank.bank.iban = res.id;
+              context.logger.info("Document to add to submission: " + JSON.stringify(docToSend));
+              this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), storeId, docToSend).subscribe(result => {
+                context.logger.info("Added document to shop result: " + JSON.stringify(result));
+                //context.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, store).subscribe(res => {
+                //  context.logger.info("Updated store result: " + JSON.stringify(res)); 
+                //});
               });
-            });
+            //})
           })
-        })
+        //}
       }
     }
   }

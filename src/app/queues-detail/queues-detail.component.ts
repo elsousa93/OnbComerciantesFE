@@ -14,6 +14,7 @@ import { PostDocument } from '../submission/document/ISubmission-document';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'queues-detail',
@@ -54,7 +55,7 @@ export class QueuesDetailComponent implements OnInit {
   public state: State;
 
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, private http: HttpClient,
-    private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService) {
+    private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService, private datePipe: DatePipe) {
 
     //Gets Queue Name and processId from the Dashboard component 
     if (this.route.getCurrentNavigation().extras.state) {
@@ -70,7 +71,7 @@ export class QueuesDetailComponent implements OnInit {
   initializeElegibilityForm() {
     this.form = new FormGroup({
       observation: new FormControl(''),
-      stakeholdersEligibility: new FormGroup({})
+      stakeholdersEligibility: new FormGroup({}, Validators.required)
     });
   }
 
@@ -101,12 +102,11 @@ export class QueuesDetailComponent implements OnInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.historyStream$.next(true);
     if (this.queueName === 'eligibility' || this.queueName === 'risk' || this.queueName === 'compliance' || this.queueName === 'multipleClients') {
-    this.initializeElegibilityForm();
+      this.initializeElegibilityForm();
     }
     if (this.queueName === 'negotiationAproval' || this.queueName === 'MCCTreatment' || this.queueName === 'validationSIBS') {
       this.initializeMCCForm();
     }
-
   }
 
   getStakeholderInfo(processId, stakeholderId) {
@@ -114,6 +114,12 @@ export class QueuesDetailComponent implements OnInit {
       this.queuesInfo.getProcessStakeholderDetails(processId, stakeholderId).then(res => {
         var stakeholder = res.result;
         var stakeholderGroup = this.form.get('stakeholdersEligibility') as FormGroup;
+
+        if (this.queueName === 'risk') {
+          this.queuesInfo.getAssessmentRisk(stakeholder.fiscalId, "", null).then(res => {
+
+          });
+        }
 
         stakeholderGroup.addControl(stakeholderId, new FormControl('', Validators.required));
         this.stakesList.push(stakeholder);
@@ -240,7 +246,7 @@ export class QueuesDetailComponent implements OnInit {
     } else if (this.queueName === "negotiationAproval") {
       this.type = "queues.attach.negotiationApproval"
     }
-    this.attach = { tipo: this.type, dataDocumento: "01-08-2022" }
+    this.attach = { tipo: this.type, dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy') };
     const files = <File[]>event.target.files;
     for (var i = 0; i < files.length; i++) {
       var file = files[i];
@@ -283,16 +289,17 @@ export class QueuesDetailComponent implements OnInit {
   }
 
   check() {
+    console.log('Form favorável ', this.form);
     this.checkButton = true;
   }
 
   uncheck() {
+    console.log('Form não favorável ', this.form);
     this.checkButton = false;
   }
 
   concludeOpinion(/*state, externalState*/) {
     var context = this;
-
     var queueModel;
     if (this.queueName === 'eligibility') {
       this.state = State.ELIGIBILITY_ASSESSMENT;
@@ -315,6 +322,15 @@ export class QueuesDetailComponent implements OnInit {
         accepted: true,
         merchantId: null
       };
+
+      queueModel.stakeholderAssessment.forEach(stake => {
+        if (stake.accepted == false) {
+          context.queuesInfo.markToCancel(context.processId).then(res => {
+            context.route.navigate(['/']);
+          });
+        }
+      });
+
     } else if (this.queueName === 'risk') {
       this.state = State.RISK_ASSESSMENT;
       queueModel = {} as RiskAssessment;
@@ -337,6 +353,15 @@ export class QueuesDetailComponent implements OnInit {
         accepted: true,
         merchantId: null
       };
+
+      queueModel.stakeholderAssessment.forEach(stake => {
+        if (stake.accepted == false) {
+          context.queuesInfo.markToCancel(context.processId).then(res => {
+            context.route.navigate(['/']);
+          });
+        }
+      });
+
     } else if (this.queueName === 'MCC') {
       this.state = State.STANDARD_INDUSTRY_CLASSIFICATION_CHOICE;
       queueModel = {} as StandardIndustryClassificationChoice;
@@ -357,22 +382,24 @@ export class QueuesDetailComponent implements OnInit {
       }
     }
 
-    this.files.forEach(function (value, idx) {
-      context.documentService.readBase64(value).then(data => {
-        var document: PostDocument = {
-          documentType: null,
-          file: {
-            fileType: "PDF",
-            binary: data.split(',')[1]
-          },
-          validUntil: new Date().toISOString(),
-          data: {}
-        }
-        context.queuesInfo.postProcessDocuments(document, context.processId, context.state);
-      });
-    })
+    if (this.files.length > 0) {
+      this.files.forEach(function (value, idx) {
+        context.documentService.readBase64(value).then(data => {
+          var document: PostDocument = {
+            documentType: null,
+            file: {
+              fileType: "PDF",
+              binary: data.split(',')[1]
+            },
+            validUntil: new Date().toISOString(),
+            data: {}
+          }
+          context.queuesInfo.postProcessDocuments(document, context.processId, context.state).then(res => { });
+        });
+      })
+    }
 
-    this.queuesInfo.postExternalState(this.processId, this.state, queueModel).subscribe(result => {
+    this.queuesInfo.postExternalState(this.processId, this.state, queueModel).then(result => {
       this.logger.info("Queue post external state result: " + JSON.stringify(queueModel));
     })
   }

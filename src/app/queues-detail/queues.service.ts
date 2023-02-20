@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Hits, PostRisk, State } from './IQueues.interface';
+import { ClientChoice, ComplianceEvaluation, ContractAcceptance, EligibilityAssessment, Hits, MerchantRegistration, NegotiationApproval, OperationsEvaluation, PostRisk, ProcessStateNotification, ReassingWorkQueue, RiskAssessment, StandardIndustryClassificationChoice, State } from './IQueues.interface';
 import { PostDocument } from '../submission/document/ISubmission-document';
 import { APIRequestsService } from '../apirequests.service';
 import { HttpMethod } from '../enums/enum-data';
@@ -30,15 +30,39 @@ export class QueuesService {
     });
   }
 
-  postExternalState(processId: string, state: State, externalState) {
+  postExternalState(processId: string, state: State, externalState: ContractAcceptance | StandardIndustryClassificationChoice | EligibilityAssessment | RiskAssessment | ClientChoice | NegotiationApproval | MerchantRegistration | OperationsEvaluation | ComplianceEvaluation) {
     var URI = this.acquiringUrl + "process/" + processId + "/" + state;
-    return this.http.post(URI, externalState);
+    return this.APIService.callAPIAcquiring(HttpMethod.POST, URI, externalState);
   }
 
-  postProcessDocuments(file: PostDocument, processID: string, state: string) {
+  postProcessDocuments(file: PostDocument, processID: string, state: State) {
     var url = this.acquiringUrl + "process/" + processID + "/" + state + "/document";
-
     return this.APIService.callAPIAcquiring(HttpMethod.POST, url, file);
+  }
+
+  getActiveWorkQueue(processID: string) {
+    var URI = this.acquiringUrl + "process/" + processID + "/active-workqueue";
+    return this.APIService.callAPIAcquiring(HttpMethod.GET, URI);
+  }
+
+  postReassignWorkQueue(processID: string, reassignWorkQueue: ReassingWorkQueue) {
+    var URI = this.acquiringUrl + "process/" + processID + "/reassign-workqueue";
+    return this.APIService.callAPIAcquiring(HttpMethod.POST, URI, reassignWorkQueue);
+  }
+
+  postUpdateProcessId(processID: string, processStateNotif: ProcessStateNotification) {
+    var URI = this.acquiringUrl + "process/" + processID + "/update";
+    return this.APIService.callAPIAcquiring(HttpMethod.POST, URI, processStateNotif);
+  }
+
+  postUpdateProcess(processRefId: string, processStateNotif: ProcessStateNotification) {
+    var URI = this.acquiringUrl + "process/update&processReferenceId=" + processRefId;
+    return this.APIService.callAPIAcquiring(HttpMethod.POST, URI, processStateNotif);
+  }
+
+  markToCancel(processId: string) {
+    var URI = this.acquiringUrl + "process/" + processId + "/mark_to_cancel";
+    return this.APIService.callAPIAcquiring(HttpMethod.PATCH, URI);
   }
 
   // Stakeholders List
@@ -61,7 +85,7 @@ export class QueuesService {
 
   // Shop Details
   getProcessShopDetails(processId: string, shopId: string) {
-    var url = this.acquiringUrl + 'process/' + processId + '/shop/' + shopId;
+    var url = this.acquiringUrl + 'process/' + processId + '/merchant/shop/' + shopId;
     return this.APIService.callAPIAcquiring(HttpMethod.GET, url);
   }
 
@@ -74,6 +98,11 @@ export class QueuesService {
   // Shop Equipments Detail
   getProcessShopEquipmentDetails(processId: string, shopId: string, equipmentId: string) {
     var url = this.acquiringUrl + 'process/' + processId + '/shop/' + shopId + '/equipment/' + equipmentId;
+    return this.APIService.callAPIAcquiring(HttpMethod.GET, url);
+  }
+
+  getProcessMerchant(processId: string) {
+    var url = this.acquiringUrl + 'process/' + processId + '/merchant';
     return this.APIService.callAPIAcquiring(HttpMethod.GET, url);
   }
 
@@ -113,17 +142,17 @@ export class QueuesService {
   }
 
   getAssessmentRisk(fiscalId: string, clientType: string, assessmentPost: Hits[]) {
-    var url = this.acquiringUrl + 'assessment/' + fiscalId + '/risk' + '&clientType=' + clientType;
+    var url = this.outboundUrl + 'api/v1/assessment/' + fiscalId + '/risk' + '&clientType=' + clientType;
     return this.APIService.callAPIOutbound(HttpMethod.POST, url, "por mudar", "por mudar", "por mudar", "por mudar", assessmentPost);
   }
 
-  getAssessmentSendRisk(clientId: string, risk: PostRisk) { 
-    var url = this.acquiringUrl + 'assessment/' + clientId + '/send-risk';
+  getAssessmentSendRisk(processRefId: string, clientId: string, risk: PostRisk) { 
+    var url = this.acquiringUrl + 'api/v1/process/' + processRefId + '/assessment/' + clientId + '/send-risk';
     return this.APIService.callAPIOutbound(HttpMethod.POST, url, "por mudar", "por mudar", "por mudar", "por mudar", risk);
   }
 
   getAssessmentEligibility(fiscalId: string, clientType: string, assessmentPost: Hits[]) {
-    var url = this.acquiringUrl + 'assessment/' + fiscalId + '/eligibility' + '&clientType=' + clientType;
+    var url = this.acquiringUrl + 'api/v1/assessment/' + fiscalId + '/eligibility' + '&clientType=' + clientType;
     return this.APIService.callAPIOutbound(HttpMethod.POST, url, "por mudar", "por mudar", "por mudar", "por mudar", assessmentPost);
   }
 }

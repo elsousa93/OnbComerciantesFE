@@ -679,9 +679,9 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         data: null
       };
       this.logger.info("Document to add: " + JSON.stringify(documentCC));
-      this.submissionDocumentService.SubmissionPostDocument(this.submissionId, documentCC).subscribe(result => {
-        this.logger.info('Added document: ' + JSON.stringify(result));
-      });
+      //this.submissionDocumentService.SubmissionPostDocument(this.submissionId, documentCC).subscribe(result => {
+      //  this.logger.info('Added document: ' + JSON.stringify(result));
+      //});
     }
 
     var fullName = this.dataCCcontents.nameCC ?? this.formNewStakeholder.get("name")?.value;

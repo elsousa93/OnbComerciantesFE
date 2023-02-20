@@ -7,6 +7,8 @@ import { BehaviorSubject } from 'rxjs';
 import { APIRequestsService } from '../apirequests.service';
 import { HttpMethod } from '../enums/enum-data';
 import { AppConfigService } from '../app-config.service';
+import { AuthService } from '../services/auth.service';
+import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +22,7 @@ export class StoreService {
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
   constructor(private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService,
-    private APIService: APIRequestsService) {
+    private APIService: APIRequestsService, private authService: AuthService, private processNrService: ProcessNumberService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.urlOutbound = configuration.getConfig().outboundUrl;
     this.languageStream$.subscribe((val) => {
@@ -36,21 +38,31 @@ export class StoreService {
 
     var URI = this.urlOutbound + "api/v1/merchant/" + merchantId + '/shop';
 
-    var data = new Date();
+    requestID = window.crypto['randomUUID']();
+    AcquiringUserID = this.authService.GetCurrentUser().userName;
+    AcquiringPartnerID = this.authService.GetCurrentUser().bankName;
+    AcquiringBranchID = this.authService.GetCurrentUser().bankLocation;
+    this.processNrService.processNumber.subscribe(processNumber => AcquiringProcessID = processNumber);
 
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({
+        'X-Acquiring-Tenant': "0800",
         'X-Request-Id': requestID,
         'X-Acquiring-UserId': AcquiringUserID,
+        'X-Date': new Date().toUTCString(),
+        'X-Acquiring-PartnerId': AcquiringPartnerID,
+        'X-Acquiring-BranchId': AcquiringBranchID
       }),
     }
+    if (AcquiringProcessID != "" && AcquiringProcessID != null)
+      HTTP_OPTIONS.headers = HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
 
-    if (AcquiringPartnerID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
-    if (AcquiringBranchID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
-    if (AcquiringProcessID !== null)
-      HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
+    //if (AcquiringPartnerID !== null)
+    //  HTTP_OPTIONS.headers.append("X-Acquiring-PartnerId", AcquiringPartnerID);
+    //if (AcquiringBranchID !== null)
+    //  HTTP_OPTIONS.headers.append("X-Acquiring-BranchId", AcquiringBranchID);
+    //if (AcquiringProcessID !== null)
+    //  HTTP_OPTIONS.headers.append("X-Acquiring-ProcessId", AcquiringProcessID);
 
     return this.http.get<ShopsListOutbound[]>(URI, HTTP_OPTIONS);
   }

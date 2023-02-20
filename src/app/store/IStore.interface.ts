@@ -1,6 +1,7 @@
 import { Phone } from "../client/Client.interface";
 import { Product, Subproduct, ProductPackCommissionAttribute, ProductPackPricingAttribute, ProductPackRootAttributeProductPackKind, ProductPackAttributeProductPackKind, TerminalSupportEntityEnum, ProductPackPaymentSchemes, ProductPackAttribute } from "../commercial-offer/ICommercialOffer.interface";
 import { FiscalAddress } from "../stakeholders/IStakeholders.interface";
+import { Documents } from "../submission/document/ISubmission-document";
 import { Document } from "../submission/ISubmission.interface";
 
 export interface Istore {
@@ -72,7 +73,7 @@ export class ShopDetailsAcquiring {
   pack?: ShopProductPackViewModel
   product?: Product
   subProduct?: Subproduct
-  documents?: ShopDocuments
+  documents?: Documents[]
   id?: string
   contactPerson?: string
   phone1?: Phone

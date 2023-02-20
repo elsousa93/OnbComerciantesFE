@@ -15,6 +15,7 @@ import { AuthService } from '../services/auth.service';
 import { ClientContext } from '../client/clientById/clientById.model';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 import { AcquiringClientPost } from '../client/Client.interface';
+import { IDropdownSettings } from 'ng-multiselect-dropdown';
 
 @Component({
   selector: 'app-countrys',
@@ -106,6 +107,9 @@ export class CountrysComponent implements OnInit {
       "isSelected": false
     },
   ];
+
+  dropDownSetting: IDropdownSettings = {}
+
   comprovativoCC: FileAndDetailsCC;
   countryError: boolean;
   errorMsg: string;

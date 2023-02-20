@@ -522,7 +522,27 @@
     "startMsg": "Ups! Ocorreu um erro.",
     "400": "O servidor não conseguiu processar o pedido devido a estes erros:",
     "401": "Precisa de estar autenticado para realizar este pedido.",
-    "404": "O servidor não consegue encontrar o recurso pedido.",
-    "500": "O servidor não sabe como lidar com esta situação."
+    "500": "O servidor não sabe como lidar com esta situação.",
+    "404": {
+      "merchantProcess": "O comerciante associado ao processo não foi encontrado.",
+      "merchantSubmission": "O comerciante associado à submissão não foi encontrado.",
+      "merchantSearch": "O comerciante que pesquisou não existe.",
+      "merchant": "O comerciante não existe.",
+      "stakeholderProcess": "O interveniente associado ao processo não foi encontrado.",
+      "stakeholderSubmission": "O interveniente associado à submissão não foi encontrado.",
+      "stakeholderSearch": "O interveniente que pesquisou não existe.",
+      "stakeholder": "O interveniente não existe.",
+      "shopProcess": "A loja associada ao processo não foi encontrada.",
+      "shopSubmission": "A loja associada à submissão não foi encontrada.",
+      "shop": "A loja não existe.",
+      "equipmentProcess": "O equipamento associado à loja do processo não foi encontrado.",
+      "equipmentSubmission": "O equipamento associado à loja da submissão não foi encontrado.",
+      "documentProcess": "O documento associado ao processo não foi encontrado.",
+      "documentImageProcess": "A imagem do documento associado ao processo não foi encontrada.",
+      "documentSubmission": "O documento associado à submissão não foi encontrado.",
+      "documentImageSubmission": "A imagem do documento associado à submissão não foi encontrada.",
+      "document": "A imagem do documento não foi encontrada.",
+      "postalCode": "O código postal é inválido."
+    }
   }
 }

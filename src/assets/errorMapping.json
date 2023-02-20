@@ -1,0 +1,260 @@
+{
+  "404": { 
+    "merchant":  
+      {
+        "client": [
+          {
+            "api": "api/v1/merchant",
+            "error": "merchantSearch"
+          },
+          {
+            "api": "api/v1/merchant/-",
+            "error": "merchant"
+          }
+        ],
+        "stakeholders": [
+          {
+            "api": "api/submission/-/merchant",
+            "error": "merchantSubmission"
+          }
+        ],
+        "comprovativos": [
+          {
+            "api": "api/submission/-/merchant",
+            "error": "merchantSubmission"
+          },
+          {
+            "api": "api/v1/merchant/-",
+            "error": "merchant"
+          }
+        ],
+        "store-comp": [
+          {
+            "api": "api/submission/-/merchant",
+            "error": "merchantSubmission"
+          }
+        ],
+        "commercial-offert-list": [
+          {
+            "api": "api/submission/-/merchant",
+            "error": "merchantSubmission"
+          }
+        ],
+        "info-declarativa": [
+          {
+            "api": "api/submission/-/merchant",
+            "error": "merchantSubmission"
+          }
+        ],
+        "info-declarativa-stakeholder": [
+          {
+            "api": "api/submission/-/merchant",
+            "error": "merchantSubmission"
+          }
+        ],
+        "info-declarativa-lojas": [
+          {
+            "api": "api/submission/-/merchant",
+            "error": "merchantSubmission"
+          }
+        ],
+        "app-devolucao": [
+          {
+            "api": "api/v1/merchant/-",
+            "error": "merchant"
+          }
+        ]
+      }
+    ,
+    "stakeholder": {
+      "client": [
+        {
+          "api": "api/submission/-/stakeholder/-",
+          "error": "stakeholderSubmission"
+        }
+      ],
+      "stakeholders": [
+        {
+          "api": "api/submission/-/stakeholder/-",
+          "error": "stakeholderSubmission"
+        },
+        {
+          "api": "api/v1/stakeholder",
+          "error": "stakeholderSearch"
+        },
+        {
+          "api": "api/v1/stakeholder/-",
+          "error": "stakeholder"
+        }
+      ],
+      "comprovativos": [
+        {
+          "api": "api/submission/-/stakeholder/-",
+          "error": "stakeholderSubmission"
+        },
+        {
+          "api": "api/v1/stakeholder",
+          "error": "stakeholderSearch"
+        },
+        {
+          "api": "api/v1/stakeholder/-",
+          "error": "stakeholder"
+        }
+      ],
+      "info-declarativa-stakeholder": [
+        {
+          "api": "api/submission/-/stakeholder/-",
+          "error": "stakeholderSubmission"
+        },
+        {
+          "api": "api/v1/stakeholder",
+          "error": "stakeholderSearch"
+        },
+        {
+          "api": "api/v1/stakeholder/-",
+          "error": "stakeholder"
+        }
+      ],
+      "info-declarativa-assinatura": [
+        {
+          "api": "api/submission/-/stakeholder/-",
+          "error": "stakeholderSubmission"
+        }
+      ],
+      "app-devolucao": [
+        {
+          "api": "api/v1/stakeholder/-",
+          "error": "stakeholder"
+        }
+      ],
+      "queues-detail": [
+        {
+          "api": "api/process/-/stakeholder/-",
+          "error": "stakeholderProcess"
+        }
+      ]
+    },
+    "shop": {
+      "client": [
+        {
+          "api": "api/v1/merchant/-/shop/-",
+          "error": "shop"
+        }
+      ],
+      "store-comp": [
+        {
+          "api": "api/submission/-/merchant/shop/-",
+          "error": "shopSubmission"
+        }
+      ],
+      "comprovativos": [
+        {
+          "api": "api/submission/-/merchant/shop/-",
+          "error": "shopSubmission"
+        },
+        {
+          "api": "api/v1/merchant/-/shop/-",
+          "error": "shop"
+        }
+      ],
+      "commercial-offert-list": [
+        {
+          "api": "api/submission/-/merchant/shop/-",
+          "error": "shopSubmission"
+        }
+      ],
+      "info-declarativa-lojas": [
+        {
+          "api": "api/submission/-/merchant/shop/-",
+          "error": "shopSubmission"
+        }
+      ],
+      "app-devolucao": [
+        {
+          "api": "api/process/-/merchant/shop/-",
+          "error": "shopProcess"
+        }
+      ],
+      "queues-detail": [
+        {
+          "api": "api/process/-/merchant/shop/-",
+          "error": "shopProcess"
+        }
+      ]
+    },
+    "equipment": {
+      "commercial-offert-list": [
+        {
+          "api": "api/submission/-/merchant/shop/-/equipment/-",
+          "error": "equipmentSubmission"
+        }
+      ],
+      "queues-detail": [
+        {
+          "api": "api/process/-/merchant/shop/-/equipment/-",
+          "error": "equipmentProcess"
+        }
+      ]
+    },
+    "document": {
+      "client": [
+        {
+          "api": "api/submission/-/document/-",
+          "error": "documentSubmission"
+        },
+        {
+          "api": "api/submission/-/document/-/image",
+          "error": "documentImageSubmission"
+        },
+        {
+          "api": "api/v1/document/-/image",
+          "error": "document"
+        }
+      ],
+      "stakeholders": [
+        {
+          "api": "api/v1/document/-/image",
+          "error": "document"
+        }
+      ],
+      "store-comp": [
+        {
+          "api": "api/submission/-/document/-",
+          "error": "documentSubmission"
+        },
+        {
+          "api": "api/submission/-/document/-/image",
+          "error": "documentImageSubmission"
+        }
+      ],
+      "comprovativos": [
+        {
+          "api": "api/submission/-/document/-",
+          "error": "documentSubmission"
+        },
+        {
+          "api": "api/submission/-/document/-/image",
+          "error": "documentImageSubmission"
+        },
+        {
+          "api": "api/v1/document/-/image",
+          "error": "document"
+        }
+      ]
+    },
+    "postalCode": {
+      "stakeholders": [
+        {
+          "api": "api/address/pt/-/-",
+          "error": "postalCode"
+        }
+      ],
+      "store-comp": [
+        {
+          "api": "api/address/pt/-/-",
+          "error": "postalCode"
+        }
+      ]
+    }
+  }
+}
