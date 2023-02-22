@@ -1,6 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { TranslateService } from '@ngx-translate/core';
+import { BehaviorSubject } from 'rxjs';
 import { APIRequestsService } from '../apirequests.service';
 import { AppConfigService } from '../app-config.service';
 import { BankInformation, Client, Contacts, ForeignFiscalInformation, HeadquartersAddress, ShareCapital } from '../client/Client.interface';
@@ -14,12 +16,17 @@ import { Process } from './process.interface';
 export class ProcessService {
   private baseUrl: string;
   private urlOutbound: string;
-
+  currentLanguage: string;
+  languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private API: APIRequestsService) {
+    private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private API: APIRequestsService, public translate: TranslateService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.urlOutbound = configuration.getConfig().outboundUrl;
+    this.languageStream$.subscribe((val) => {
+      this.currentLanguage = val
+    });
+    
   }
 
   getAllProcessSubmissions(id): any {
@@ -99,9 +106,15 @@ export class ProcessService {
 
   getProcessIssuesById(processId: string, processHistoryId?: string) {
     var url = this.baseUrl + 'process/' + processId + '/issue'
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.translate.currentLang,
+
+      }),
+    }
     if (processHistoryId != null)
       url = url + '?processHistoryId=' + processHistoryId;
-    return this.http.get<BusinessIssueViewModel>(url);
+    return this.http.get<BusinessIssueViewModel>(url, HTTP_OPTIONS);
   }
 
   getProcessHistory(processId: string) {

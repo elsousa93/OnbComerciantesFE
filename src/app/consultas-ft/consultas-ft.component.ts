@@ -17,7 +17,7 @@ import { DatePipe } from '@angular/common';
 interface ProcessFT {
   processId: string;
   processNumber: string;
-  nipc: number;
+  nipc: string;
   nome: string;
   estado: string;
 }
@@ -197,12 +197,45 @@ export class ConsultasFTComponent implements OnInit {
         });
       }
       let processesArray: ProcessFT[] = result.items.map<ProcessFT>((process) => {
+
+        if (process.state === 'Incomplete') {
+          process.state = this.translate.instant('searches.incompleted');
+        } else if (process.state === 'Ongoing') {
+          process.state = this.translate.instant('searches.running');
+        } else if (process.state === 'Completed') {
+          process.state = this.translate.instant('searches.completed');
+        } else if (process.state === 'Returned') {
+          process.state = this.translate.instant('searches.returned');
+        } else if (process.state === 'Cancelled') {
+          process.state = this.translate.instant('searches.cancelled');
+        } else if (process.state === 'ContractAcceptance') {
+          process.state = this.translate.instant('searches.contractAcceptance')
+        } else if (process.state === 'StandardIndustryClassificationChoice') {
+          process.state = this.translate.instant('searches.MCCTreatment')
+        } else if (process.state === 'RiskAssessment') {
+          process.state = this.translate.instant('searches.riskOpinion')
+        } else if (process.state === 'EligibilityAssessment') {
+          process.state = this.translate.instant('searches.eligibility')
+        } else if (process.state === 'ClientChoice') {
+          process.state = this.translate.instant('searches.multipleClients')
+        } else if (process.state === 'NegotiationApproval') {
+          process.state = this.translate.instant('searches.negotiationApproval')
+        } else if (process.state === 'MerchantRegistration') {
+          process.state = this.translate.instant('searches.merchantRegistration')
+        } else if (process.state === 'OperationsEvaluation') {
+          process.state = this.translate.instant('searches.DOValidation')
+        } else if (process.state === 'ContractDigitalAcceptance') {
+          process.state = this.translate.instant('searches.contractDigitalAcceptance')
+        } else if (process.state === 'DigitalIdentification') {
+          process.state = this.translate.instant('searches.digitalIdentification')
+        }
+
         return {
           processId: process.processId,
           processNumber: process.processNumber,
-          nipc: 529463466,
-          nome: "EMPRESA UNIPESSOAL TESTES",
-          estado: process.state
+          nipc: this.datePipe.transform(process?.startedAt, 'dd/MM/yyyy'),
+          nome: process?.merchant?.name,
+          estado: process?.startedBy?.user
         };
       })
 

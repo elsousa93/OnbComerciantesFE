@@ -210,8 +210,12 @@ export class StakeholdersComponent implements OnInit {
     if (this.currentStakeholder.stakeholderAcquiring.identificationDocument?.number == null) { //stakeForm.get("documentType") == null
       stakeForm.get("flagRecolhaEletronica").setValue(false);
       stakeForm.get("NIF").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalId);
-      //stakeForm.get("Role").setValue("");
-      stakeForm.get("Country").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country);
+
+      if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country == null || this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country == "")
+        stakeForm.get("Country").setValue("PT");
+      else
+        stakeForm.get("Country").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country);
+
       if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode?.includes(" ")) {
         var arr = this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode.split(" ");
         stakeForm.get("ZIPCode").setValue(arr[0]);

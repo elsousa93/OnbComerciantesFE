@@ -74,7 +74,7 @@
               <!-- NIPC Column -->
               <ng-container matColumnDef="nipc">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>
-                  NIPC
+                  {{'searches.date'|translate|uppercase}}
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row"> {{row.nipc}} </mat-cell>
               </ng-container>
@@ -88,7 +88,7 @@
               <!-- Estado Column -->
               <ng-container matColumnDef="estado">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>
-                  {{'searches.state'|translate|uppercase}}
+                  {{'searches.user'|translate|uppercase}}
                 </mat-header-cell>
                 <mat-cell *matCellDef="let row"> {{row.estado}} </mat-cell>
               </ng-container>

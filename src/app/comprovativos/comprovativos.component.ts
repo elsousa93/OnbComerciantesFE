@@ -236,19 +236,18 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           if (stakeholderDocPurposes.documentState === 'NotExists') {
             context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, stakeholder.entityId).then(result => {
               context.logger.info("Get stakeholder from submission: " + JSON.stringify(result));
-              if ((result.result.stakeholderId == null || result.result.stakeholderId == "") && result.result.fiscalId != "") {
-                context.stakeholderService.SearchStakeholderByQuery(result.result.fiscalId, "0501", "por mudar", "por mudar").then(stake => {
+              if (result.result.clientId != "") {
+                context.stakeholderService.SearchStakeholderByQuery(result.result.clientId, "0501", "por mudar", "por mudar").then(stake => {
                   context.logger.info("Search stakeholder: " + JSON.stringify(stake));
                   var exists = context.checkDocumentExists(stake.result[0].stakeholderId, stakeholderDocPurposes, 'stakeholder');
                   stakeholderDocPurposes["existsOutbound"] = exists;
-                }, error => {
-                  context.logger.error(error, "", "Stakeholder doesn't exist");
-                  var exists = context.checkDocumentExists(result.result.stakeholderId, stakeholderDocPurposes, 'stakeholder');
-                  stakeholderDocPurposes["existsOutbound"] = exists;
-                });
-              } else {
-                var exists = context.checkDocumentExists(result.result.stakeholderId, stakeholderDocPurposes, 'stakeholder');
-                stakeholderDocPurposes["existsOutbound"] = exists;
+                }
+                //  , error => {
+                //  context.logger.error(error, "", "Stakeholder doesn't exist");
+                //  var exists = context.checkDocumentExists(result.result.clientId, stakeholderDocPurposes, 'stakeholder');
+                //  stakeholderDocPurposes["existsOutbound"] = exists;
+                //}
+                );
               }
             });
           }

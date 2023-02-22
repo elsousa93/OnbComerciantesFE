@@ -61,7 +61,7 @@ interface StoreCatalog {
   subActivity?: string
   supportBank?: string
   referenceStore?: string
-  supportEntity?: TerminalSupportEntityEnum
+  supportEntity?: string
 }
 interface EquipmentCatalog {
   equipmentOwnership?: EquipmentOwnershipTypeEnum

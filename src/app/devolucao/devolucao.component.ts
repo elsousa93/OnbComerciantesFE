@@ -11,6 +11,8 @@ import { StoreService } from '../store/store.service';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { QueuesService } from '../queues-detail/queues.service';
+import { Client } from '../client/Client.interface';
+import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 
 @Component({
   selector: 'app-devolucao',
@@ -35,11 +37,14 @@ export class DevolucaoComponent implements OnInit {
   public shopFirstTime: boolean;
   public stakeFirstTime: boolean;
   public docFirstTime: boolean;
+  public merchant: Client;
+  public stakeholdersList: IStakeholders[] = [];
+  public ready: boolean = false;
 
   constructor(private logger: LoggerService,
     private route: Router, private data: DataService,
     private router: ActivatedRoute, private processService: ProcessService, private clientService: ClientService,
-    private stakeholderService: StakeholderService, private storeService: StoreService, private translate: TranslateService, private datePipe: DatePipe, private queuesService: QueuesService) {
+    private stakeholderService: StakeholderService, private storeService: StoreService, public translate: TranslateService, private datePipe: DatePipe, private queuesService: QueuesService) {
 
   }
 
@@ -58,6 +63,7 @@ export class DevolucaoComponent implements OnInit {
   async getNames(issues: BusinessIssueViewModel) {
     await this.queuesService.getProcessMerchant(this.processId).then(res => {
       issues.merchant.merchant["name"] = res.result.legalName;
+      this.merchant = res.result;
     });
     issues.shops.forEach(val => {
       this.queuesService.getProcessShopDetails(this.processId, val?.shop?.id).then(res => {
@@ -67,6 +73,7 @@ export class DevolucaoComponent implements OnInit {
     issues.stakeholders.forEach(val => {
       this.queuesService.getProcessStakeholderDetails(this.processId, val?.stakeholder?.id).then(res => {
         val.stakeholder["name"] = res.result.shortName;
+        this.stakeholdersList.push(res.result);
       });
     });
   }
@@ -88,9 +95,8 @@ export class DevolucaoComponent implements OnInit {
     this.processService.getProcessHistory(this.processId).then(result => {
       this.logger.info("Get process history result: " + JSON.stringify(result));
       this.processHistoryItems = result.result;
-      this.processHistoryItems.items.sort((b, a) => new Date(b.whenStarted).getTime() - new Date(a.whenStarted).getTime());
       this.processHistoryItems.items.forEach(process => {
-        process.whenStarted = this.datePipe.transform(process.whenStarted, 'dd-MM-yyyy').toString();
+        process.whenStarted = this.datePipe.transform(process.whenStarted, 'yyyy-MM-dd HH:mm').toString();
         if (process.processState === 'Incomplete') {
           process.processState = this.translate.instant('searches.incompleted');
         } else if (process.processState === 'Ongoing') {
@@ -104,6 +110,7 @@ export class DevolucaoComponent implements OnInit {
         } else if (process.processState === 'ContractAcceptance') {
           process.processState = this.translate.instant('searches.contractAcceptance')
         }
+        this.ready = true;
       });
     });
   }

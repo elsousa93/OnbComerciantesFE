@@ -566,6 +566,13 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['/clientbyid']);
   }
 
+  openProcessAceitacao(process) {
+    localStorage.setItem("processNumber", process.processNumber);
+    localStorage.setItem("returned", 'consult');
+    this.logger.info("Redirecting to Client by id page");
+    this.router.navigate(['/app-aceitacao']);
+  }
+
   redirectToProcessStart(process) {
     localStorage.setItem("processNumber", process.processNumber);
     localStorage.setItem("returned", 'edit');

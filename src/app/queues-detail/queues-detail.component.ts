@@ -4,7 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
-import { ProcessList } from '../process/process.service';
+import { BusinessIssueViewModel, ProcessList, ProcessService, SearchProcessHistory } from '../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
 import { QueuesService } from './queues.service';
 import { IStakeholders } from '../stakeholders/IStakeholders.interface';
@@ -15,6 +15,7 @@ import { ComprovativosService } from '../comprovativos/services/comprovativos.se
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
+import { Client } from '../client/Client.interface';
 
 @Component({
   selector: 'queues-detail',
@@ -53,9 +54,20 @@ export class QueuesDetailComponent implements OnInit {
   equipmentList: ShopEquipment[] = [];
 
   public state: State;
+  merchant: Client;
+
+  //public process: ProcessList;
+  public processNumber: string;
+  public issues: BusinessIssueViewModel
+  public processHistoryItems: SearchProcessHistory;
+  public selectedIssue: BusinessIssueViewModel;
+  public selectedHistoryGuid: string;
+  //public merchant: Client;
+  public stakeholdersList: IStakeholders[] = [];
+  public ready: boolean = false;
 
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, private http: HttpClient,
-    private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService, private datePipe: DatePipe) {
+    private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService, private datePipe: DatePipe, private queuesService: QueuesService, private processService: ProcessService) {
 
     //Gets Queue Name and processId from the Dashboard component 
     if (this.route.getCurrentNavigation().extras.state) {
@@ -71,7 +83,8 @@ export class QueuesDetailComponent implements OnInit {
   initializeElegibilityForm() {
     this.form = new FormGroup({
       observation: new FormControl(''),
-      stakeholdersEligibility: new FormGroup({}, Validators.required)
+      stakeholdersEligibility: new FormGroup({}, Validators.required),
+      merchantEligibility: new FormControl('', Validators.required)
     });
   }
 
@@ -207,7 +220,64 @@ export class QueuesDetailComponent implements OnInit {
     })
   }
 
+  async getNames(issues: BusinessIssueViewModel) {
+    await this.queuesService.getProcessMerchant(this.processId).then(res => {
+      issues.merchant.merchant["name"] = res.result.legalName;
+      this.merchant = res.result;
+    });
+    issues.shops.forEach(val => {
+      this.queuesService.getProcessShopDetails(this.processId, val?.shop?.id).then(res => {
+        val.shop["name"] = res.result.name;
+      });
+    });
+    issues.stakeholders.forEach(val => {
+      this.queuesService.getProcessStakeholderDetails(this.processId, val?.stakeholder?.id).then(res => {
+        val.stakeholder["name"] = res.result.shortName;
+        this.stakeholdersList.push(res.result);
+      });
+    });
+  }
+
+
   fetchStartingInfo() {
+    this.processService.getProcessById(this.processId).subscribe(result => {
+      this.logger.info("Get process by id result: " + JSON.stringify(result));
+      this.process = result;
+      this.processNumber = result.processNumber;
+      localStorage.setItem('processNumber', this.processNumber);
+      this.data.updateData(true, 0);
+      this.processService.getProcessIssuesById(this.processId).subscribe(res => {
+        this.logger.info("Get process issues result: " + JSON.stringify(result));
+        this.issues = res;
+        this.getNames(this.issues);
+      });
+    });
+
+    this.processService.getProcessHistory(this.processId).then(result => {
+      this.logger.info("Get process history result: " + JSON.stringify(result));
+      this.processHistoryItems = result.result;
+      this.processHistoryItems.items.forEach(process => {
+        process.whenStarted = this.datePipe.transform(process.whenStarted, 'yyyy-MM-dd HH:mm').toString();
+        if (process.processState === 'Incomplete') {
+          process.processState = this.translate.instant('searches.incompleted');
+        } else if (process.processState === 'Ongoing') {
+          process.processState = this.translate.instant('searches.running');
+        } else if (process.processState === 'Completed') {
+          process.processState = this.translate.instant('searches.completed');
+        } else if (process.processState === 'Returned') {
+          process.processState = this.translate.instant('searches.returned');
+        } else if (process.processState === 'Cancelled') {
+          process.processState = this.translate.instant('searches.cancelled');
+        } else if (process.processState === 'ContractAcceptance') {
+          process.processState = this.translate.instant('searches.contractAcceptance')
+        }
+        this.ready = true;
+      });
+    });
+
+    this.queuesInfo.getProcessMerchant(this.processId).then(res => {
+      this.merchant =  res.result;
+    })
     if (this.queueName === 'eligibility' || this.queueName === 'risk' || this.queueName === 'compliance' || this.queueName === 'multipleClients') {
       this.queuesInfo.GetProcessStakeholders(this.processId).then(success => {
         this.logger.info("Get stakeholders list from process result: " + JSON.stringify(success));
@@ -226,12 +296,19 @@ export class QueuesDetailComponent implements OnInit {
     }
   }
 
+  getHistoryIssueDetails(historyGuid: string) {
+    this.selectedHistoryGuid = historyGuid;
+    this.processService.getProcessIssuesById(this.processId, historyGuid).subscribe(res => {
+      this.logger.info("Get process issues result: " + JSON.stringify(res));
+      this.selectedIssue = res;
+      this.getNames(this.selectedIssue);
+    });
+  }
+
   nextPage() {
-    if (localStorage.getItem("returned") != 'consult') {
-      localStorage.setItem('returned', 'edit');
-    }
-    this.logger.info("Redirecting to Client page");
-    this.route.navigate(['/client']);
+    localStorage.setItem('returned', 'consult');
+    this.logger.info("Redirecting to Client By Id page");
+    this.route.navigate(['/clientbyid']);
   }
 
   selectFile(event: any) {
@@ -308,6 +385,11 @@ export class QueuesDetailComponent implements OnInit {
       queueModel.type = StateResultDiscriminatorEnum.ELIGIBILITY_ASSESSMENT;
       queueModel.userObservations = observation;
 
+      queueModel.merchantAssessment = {
+        merchantId: this.merchant.id,
+        accepted: this.form.get("merchantEligibility").value
+      };
+
       var stakeholders = this.form.get("stakeholdersEligibility") as FormGroup;
       queueModel.stakeholderAssessment = [];
 
@@ -318,18 +400,22 @@ export class QueuesDetailComponent implements OnInit {
           accepted: control.value
         });
       }
-      queueModel.merchantAssessment = {
-        accepted: true,
-        merchantId: null
-      };
 
-      queueModel.stakeholderAssessment.forEach(stake => {
-        if (stake.accepted == false) {
-          context.queuesInfo.markToCancel(context.processId).then(res => {
-            context.route.navigate(['/']);
-          });
-        }
-      });
+      if (queueModel.merchantAssessment.accepted == false) {
+        context.queuesInfo.markToCancel(context.processId).then(res => {
+          context.route.navigate(['/']);
+        });
+      } else {
+        queueModel.stakeholderAssessment.forEach(stake => {
+          if (stake.accepted == false) {
+            context.queuesInfo.markToCancel(context.processId).then(res => {
+              context.route.navigate(['/']);
+            });
+          }
+        });
+      }
+
+
 
     } else if (this.queueName === 'risk') {
       this.state = State.RISK_ASSESSMENT;

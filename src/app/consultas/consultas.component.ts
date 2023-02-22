@@ -222,6 +222,24 @@ export class ConsultasComponent implements OnInit {
               process.state = this.translate.instant('searches.cancelled');
             } else if (process.state === 'ContractAcceptance') {
               process.state = this.translate.instant('searches.contractAcceptance')
+            } else if (process.state === 'StandardIndustryClassificationChoice') {
+              process.state = this.translate.instant('searches.MCCTreatment')
+            } else if (process.state === 'RiskAssessment') {
+              process.state = this.translate.instant('searches.riskOpinion')
+            } else if (process.state === 'EligibilityAssessment') {
+              process.state = this.translate.instant('searches.eligibility')
+            } else if (process.state === 'ClientChoice') {
+              process.state = this.translate.instant('searches.multipleClients')
+            } else if (process.state === 'NegotiationApproval') {
+              process.state = this.translate.instant('searches.negotiationApproval')
+            } else if (process.state === 'MerchantRegistration') {
+              process.state = this.translate.instant('searches.merchantRegistration')
+            } else if (process.state === 'OperationsEvaluation') {
+              process.state = this.translate.instant('searches.DOValidation')
+            } else if (process.state === 'ContractDigitalAcceptance') {
+              process.state = this.translate.instant('searches.contractDigitalAcceptance')
+            } else if (process.state === 'DigitalIdentification') {
+              process.state = this.translate.instant('searches.digitalIdentification')
             }
 
             return {

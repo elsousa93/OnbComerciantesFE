@@ -126,11 +126,11 @@ export class CommercialOfferListComponent implements OnInit {
     this.clientService.GetClientByIdAcquiring(this.submissionId).then(result => {
       this.logger.info("Get merchant from submission: " + JSON.stringify(result));
       this.merchantCatalog = {
-        context: result.context,
-        contextId: result.contextId,
+        context: result.businessGroup.type,
+        contextId: result.businessGroup.branch,
         fiscalIdentification: {
           fiscalId: result.fiscalId,
-          issuerCountry: ""
+          issuerCountry: "PT"
         }
       }
       this.logger.info("Merchant catalog info to get packs: " + JSON.stringify(this.merchantCatalog));
@@ -312,9 +312,9 @@ export class CommercialOfferListComponent implements OnInit {
     this.productPack.store = {
       activity: this.currentStore.activity,
       subActivity: this.currentStore.subActivity,
-      supportEntity: TerminalSupportEntityEnum[this.currentStore.supportEntity] as TerminalSupportEntityEnum,
+      supportEntity: this.currentStore.supportEntity,
       referenceStore: this.currentStore.shopId,
-      supportBank: this.currentStore.supportEntity
+      supportBank: this.currentStore?.bank?.bank?.bank
     }
     this.logger.info("Data sent to outbound get packs: " + JSON.stringify(this.productPack));
     this.COService.OutboundGetPacks(this.productPack).then(result => {

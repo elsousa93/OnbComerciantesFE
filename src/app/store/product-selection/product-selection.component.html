@@ -16,7 +16,7 @@
             <span class="navbar-text text-primary">
               <div class="form-check">
                 <input formControlName="solutionType" class="form-check-input" type="radio" name="solutionType"
-                  (click)="chooseSolutionAPI(product.name)" value={{product.name}}>
+                  (click)="chooseSolutionAPI(product.name)" value={{product.code}}>
                 <label class="form-check-label radio pe-5" for="solutionType" wappler-command="editContent"><b>
                     {{product.name}}</b></label>
               </div>
@@ -33,7 +33,7 @@
             <span class="navbar-text text-primary">
               <div class="form-check">
                 <input class="form-check-input" formControlName="subProduct" type="radio"
-                  (click)="chooseSubSolutionAPI(subProduct.name)" value="{{subProduct.name}}" id="subProduct"
+                  (click)="chooseSubSolutionAPI(subProduct.code)" value="{{subProduct.code}}" id="subProduct"
                   name="subProduct">
                 <label class="form-check-label radio pe-5" for="subProduct"
                   wappler-command="editContent"><b>{{subProduct.name}}</b></label>
