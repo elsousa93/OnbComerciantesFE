@@ -54,7 +54,8 @@ export class CommercialOfferService {
   }
 
   OutboundGetPackDetails(packID: string, productPackFilter: ProductPackFilter): Promise<TreatedResponse<ProductPack>> {
-    var URI = this.urlOutbound + "api/v1/product/pack/" + this.currentLanguage + "/" + packID;
+    var id = encodeURIComponent(packID);
+    var URI = this.urlOutbound + "api/v1/product/pack/" + this.currentLanguage + "/" + id;
     var treatedResponse: TreatedResponse<ProductPack> = {};
 
     return new Promise<TreatedResponse<ProductPack>>((resolve, reject) => {
@@ -71,7 +72,8 @@ export class CommercialOfferService {
 
   //Obter os Pacotes Pricing 
   ListProductCommercialPackPricing(packId: string, productPackPricingFilter: ProductPackPricingFilter) {
-    var URI = this.urlOutbound + "api/v1/product/pack/" + this.currentLanguage + "/" + packId + "/pricing";
+    var id = encodeURIComponent(packId);
+    var URI = this.urlOutbound + "api/v1/product/pack/" + this.currentLanguage + "/" + id + "/pricing";
     var treatedResponse: TreatedResponse<ProductPackPricingEntry[]> = {};
 
     return new Promise<TreatedResponse<ProductPackPricingEntry[]>>((resolve, reject) => {
@@ -88,7 +90,9 @@ export class CommercialOfferService {
 
   //Retorna os detalhes de um Pacote Pricing
   GetProductCommercialPackPricing(packId: string, pricingId: string, productPackPricingFilter: ProductPackPricingFilter) {
-    var URI = this.urlOutbound + "api/v1/product/pack/" + this.currentLanguage + "/" + packId + "/pricing/" + pricingId;
+    var id = encodeURIComponent(packId);
+    var idPricing = encodeURIComponent(pricingId);
+    var URI = this.urlOutbound + "api/v1/product/pack/" + this.currentLanguage + "/" + id + "/pricing/" + idPricing;
     var treatedResponse: TreatedResponse<ProductPackPricing> = {};
 
     return new Promise<TreatedResponse<ProductPackPricing>>((resolve, reject) => {
@@ -104,7 +108,8 @@ export class CommercialOfferService {
   }
 
   ListProductCommercialPackCommission(packId: string, productPackCommissionFilter: ProductPackCommissionFilter) {
-    var URI = this.urlOutbound + "api/v1/product/pack/" + this.currentLanguage + "/" + packId + "/commission";
+    var id = encodeURIComponent(packId);
+    var URI = this.urlOutbound + "api/v1/product/pack/" + this.currentLanguage + "/" + id + "/commission";
     var treatedResponse: TreatedResponse<ProductPackPricingEntry[]> = {};
 
     return new Promise<TreatedResponse<ProductPackPricingEntry[]>>((resolve, reject) => {
@@ -120,7 +125,9 @@ export class CommercialOfferService {
   }
 
   GetProductCommercialPackCommission(packId: string, commissionId: string, productPackCommissionFilter: ProductPackCommissionFilter) {
-    var URI = this.urlOutbound + "api/v1/product/pack/" + this.currentLanguage + "/" + packId + "/commission/" + commissionId;
+    var id = encodeURIComponent(packId);
+    var idCommission = encodeURIComponent(commissionId);
+    var URI = this.urlOutbound + "api/v1/product/pack/" + this.currentLanguage + "/" + id + "/commission/" + idCommission;
     var treatedResponse: TreatedResponse<ProductPackCommission> = {};
 
     return new Promise<TreatedResponse<ProductPackCommission>>((resolve, reject) => {

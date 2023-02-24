@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { distinctUntilChanged, Subscription } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { DataService } from '../../../nav-menu-interna/data.service';
@@ -39,8 +39,13 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   returned: string; //variável para saber se estamos a editar um processo
   public submissionAnswer: SubmissionGetTemplate;
   public contractLanguage: ContractPackLanguage[];
+  returnedFrontOffice: boolean = false;
 
   constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService, private tableInfoService: TableInfoService) {
+    if (this.router?.getCurrentNavigation()?.extras?.state) {
+      this.returnedFrontOffice = this.router.getCurrentNavigation().extras.state["returnedFrontOffice"];
+    }
+
     this.submissionId = localStorage.getItem("submissionId");
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
 
@@ -154,5 +159,14 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
         });
       });
     }
+  }
+
+  goBack() {
+    let navigationExtras = {
+      state: {
+        returnedFrontOffice: this.returnedFrontOffice
+      }
+    } as NavigationExtras;
+    this.router.navigate(['info-declarativa-lojas'], navigationExtras);
   }
 }

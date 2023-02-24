@@ -28,7 +28,7 @@ export class APIRequestsService {
         requestResponse.error = null;
         resolve(requestResponse);
       }, error => {
-        console.log("erro na chamada da Acquiring: ", error);
+        //console.log("erro na chamada da Acquiring: ", error);
         requestResponse.result = null;
         requestResponse.error = error;
         reject(requestResponse);
@@ -71,7 +71,7 @@ export class APIRequestsService {
           requestResponse.error = null;
           resolve(requestResponse);
         }, error => {
-          console.log("Erro na chamada da Outbound: ", error);
+          //console.log("Erro na chamada da Outbound: ", error);
           requestResponse.result = null;
           requestResponse.error = error;
           reject(requestResponse);
@@ -82,7 +82,7 @@ export class APIRequestsService {
           requestResponse.error = null;
           resolve(requestResponse);
         }, error => {
-          console.log("Erro na chamada da Outbound: ", error);
+          //console.log("Erro na chamada da Outbound: ", error);
           requestResponse.result = null;
           requestResponse.error = error;
           reject(requestResponse);

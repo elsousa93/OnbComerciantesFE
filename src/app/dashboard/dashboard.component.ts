@@ -568,9 +568,8 @@ export class DashboardComponent implements OnInit {
 
   openProcessAceitacao(process) {
     localStorage.setItem("processNumber", process.processNumber);
-    localStorage.setItem("returned", 'consult');
-    this.logger.info("Redirecting to Client by id page");
-    this.router.navigate(['/app-aceitacao']);
+    this.logger.info("Redirecting to Aceitacao page");
+    this.router.navigate(['/app-aceitacao/', process.processId]);
   }
 
   redirectToProcessStart(process) {

@@ -63,15 +63,14 @@
                               <p class="mb-0 text-end text-primary">{{'acceptance.comments'|translate}}</p>
                             </div>
                             <div class="col bg-white bg-opacity-75 ms-3 me-0 pt-3 pb-3 pe-2">
-                              <p class="mb-0 text-primary text-start">-</p>
+                              <p class="mb-0 text-primary text-start">{{(processNumber == null) ? '-' : process.processNumber}}</p>
                               <p class="mb-0 text-primary text-start">
                                 {{'homepage.' + queueName|translate}}
                               </p>
-                              <p class="mb-0 text-primary text-start">19/09/1985 17:05:02</p>
-                              <p class="mb-0 text-primary text-start"> User 1 </p>
+                              <p class="mb-0 text-primary text-start">{{processHistoryItems.items[0].whenStarted}}</p>
+                              <p class="mb-0 text-primary text-start">{{processHistoryItems.items[0].whoStarted}}</p>
                               <p class="mb-0 text-primary text-start">
-                                Queiram enviar CRC devidamente actualizada, visto
-                                que na inscrição nº3 verifica-se que a nomeação do gerente Bual de Canela é provisória.
+                                {{(processHistoryItems.items[0].observations == null || processHistoryItems.items[0].observations == "") ? "-" : processHistoryItems.items[0].observations}}
                               </p>
                             </div>
                           </div>
@@ -196,9 +195,9 @@
                           </thead>
                           <tbody>
                             <tr>
-                              <td class="text-primary text-center">{{merchant.legalName}}</td>
-                              <td class="text-primary text-center">{{merchant.fiscalId}}</td>
-                              <td class="text-primary text-center">{{(merchant.clientId == null || merchant.clientId == "") ? "-" : merchant.clientId}}</td>
+                              <td class="text-primary text-center">{{merchant?.legalName}}</td>
+                              <td class="text-primary text-center">{{merchant?.fiscalId}}</td>
+                              <td class="text-primary text-center">{{(merchant?.clientId == null || merchant?.clientId == "") ? "-" : merchant?.clientId}}</td>
                               <td *ngIf="queueName === 'risk'" class="text-primary text-center">7</td>
                               <td class="text-primary text-center">
                                 <input class="form-check-input" type="radio" [value]=true id="radio8" name="merchantEligibility"

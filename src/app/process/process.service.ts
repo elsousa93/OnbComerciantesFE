@@ -42,8 +42,8 @@ export class ProcessService {
   }
 
   UpdateProcess(processId: string, processUpdate: UpdateProcess, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string) {
-
-    var URI = this.urlOutbound + "api/v1/process/" + processId;
+    var id = encodeURIComponent(processId);
+    var URI = this.urlOutbound + "api/v1/process/" + id;
 
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({

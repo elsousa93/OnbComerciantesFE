@@ -399,8 +399,10 @@
     "returnReason0": "Motivo Devolução N0",
     "returnReason1": "Motivo Devolução N1",
     "returnReason2": "Motivo Devolução N2",
+    "actions": "Ações",
+    "stakeIdentification": "Identificação do interveniente presencial?",
     "contratualPack": {
-      "title": "Pack Contratual",
+      "title": "Identificação & Assinatura Pack",
       "documentation": "Documentação Gerada no Processo",
       "step": "Neste passo, deve entregar a documentação gerada ao cliente para assinar",
       "reduniq": "Contrato de adesão ao sistema reduniq de aceitação de pagamentos com cartões",
@@ -418,7 +420,15 @@
       "uploadPADDocuments": "Carregar Documentos da PAD",
       "cancelPADDocuments": "Cancelar Documentos da PAD",
       "digitalSignaturePlatform": "Plataforma de Assinatura Digital",
-      "processSent": "Processo enviado para assinatura digital"
+      "processSent": "Processo enviado para assinatura digital",
+      "cancelIdentification": "Cancelar Identificação",
+      "cancelSignature": "Cancelar Assinatura",
+      "updateState": "Atualizar Estado",
+      "manualSignature": "Assinatura Manual",
+      "identificationAndSign": "Identificação e assinatura de contrato",
+      "representatives": "Representantes e Estado de identificação & assinatura",
+      "processDocuments": "Documentos do processo",
+      "signType": "Modo Assinatura"
     }
   },
   "queues": {
@@ -501,7 +511,9 @@
     "submit": "Submeter Pedido",
     "send": "Enviar",
     "returnCommercial": "Devolver ao Comercial",
-    "returnBackoffice": "Devolver ao BackOffice"
+    "returnBackoffice": "Devolver ao BackOffice",
+    "returnToFirstStage": "Voltar à 1ª Etapa",
+    "cancelProcess": "Cancelar Processo"
   },
   "footer": {
     "cookies": "Política de Cookies",

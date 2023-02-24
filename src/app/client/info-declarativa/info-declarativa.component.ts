@@ -3,7 +3,7 @@ import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/fo
 import { Client, Contacts, Phone } from '../Client.interface'
 import { FormBuilder } from '@angular/forms';
 import { EventEmitter, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { Subscription } from 'rxjs';
 import { TableInfoService } from '../../table-info/table-info.service';
@@ -48,6 +48,7 @@ export class InfoDeclarativaComponent implements OnInit {
   public merchantInfo: any;
 
   public emailRegex: string;
+  returnedFrontOffice: boolean = false;
 
   setForm(client: Client) {
     this.newClient = client;
@@ -67,6 +68,11 @@ export class InfoDeclarativaComponent implements OnInit {
   public subs: Subscription[] = [];
 
   constructor(private logger: LoggerService, private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService) {
+
+    if (this.router?.getCurrentNavigation()?.extras?.state) {
+      this.returnedFrontOffice = this.router.getCurrentNavigation().extras.state["returnedFrontOffice"];
+    }
+
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.logger.info("Fetch all countries " + JSON.stringify(result));
       this.internationalCallingCodes = result;
@@ -95,12 +101,11 @@ export class InfoDeclarativaComponent implements OnInit {
     this.phone2 = this.listValue.get("phone2");
 
     if (!this.newClient) {
-      if (this.returned != null) {
+      if (this.returned != null || this.returnedFrontOffice == true) {
         this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
-          this.submissionService.GetSubmissionByID(result.result[0].submissionId).then(resul => {
-            this.clientService.GetClientByIdAcquiring(resul.result.id).then(res => {
-              this.setForm(res);
-            });
+          localStorage.setItem("submissionId", result.result[0].submissionId);
+          this.clientService.GetClientByIdAcquiring(result.result[0].submissionId).then(res => {
+            this.setForm(res);
           });
         });
       } else {
@@ -166,7 +171,12 @@ export class InfoDeclarativaComponent implements OnInit {
       });
     }
     this.logger.info("Redirecting to Info Declarativa Stakeholder page");
-    this.router.navigate(['/info-declarativa-stakeholder']);
+    let navigationExtras = {
+      state: {
+        returnedFrontOffice: true
+      }
+    } as NavigationExtras;
+    this.router.navigate(['/info-declarativa-stakeholder'], navigationExtras);
   }
 
   numericOnly(event): boolean {

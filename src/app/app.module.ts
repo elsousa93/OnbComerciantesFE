@@ -176,6 +176,7 @@ const appInitializerFn = (appConfig: AppConfigService) => {
       { path: 'app-consultas-ft', component: ConsultasFTComponent },
       { path: 'app-consultas/:id', component: ConsultasComponent },
       { path: 'app-pack-contratual', component: PackContratualComponent },
+      { path: 'app-pack-contratual/:id', component: PackContratualComponent },
       { path: 'app-obter-pack-contratual', component: ObterPackContratualComponent },
       { path: 'comprovativos', component: ComprovativosComponent },
       { path: 'comprovativos/:id', component: ComprovativosComponent },

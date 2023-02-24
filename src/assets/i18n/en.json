@@ -398,8 +398,10 @@
     "returnReason0": "Return Reasons N0",
     "returnReason1": "Return Reasons N1",
     "returnReason2": "Return Reasons N2",
+    "actions": "Actions",
+    "stakeIdentification": "Stakeholder identification in person?",
     "contratualPack": {
-      "title": "Contratual Pack",
+      "title": "Identification and signature pack",
       "documentation": "Documentation Generated in the Process",
       "step": "In this step, you must deliver the generated documentation to the customer to sign",
       "reduniq": "Contract for joining the reduniq card payment acceptance system",
@@ -417,7 +419,15 @@
       "uploadPADDocuments": "Upload Documents of DSP",
       "cancelPADDocuments": "Cancel Documents of DSP",
       "digitalSignaturePlatform": "Digital Signature Platform",
-      "processSent": "Process sent for digital signature"
+      "processSent": "Process sent for digital signature",
+      "cancelIdentification": "Cancel Identification",
+      "cancelSignature": "Cancel Signature",
+      "updateState": "Update State",
+      "manualSignature": "Manual Signature",
+      "identificationAndSign": "Identification and signature of contract",
+      "representatives": "Identification State and Signature of representatives",
+      "processDocuments": "Process documents",
+      "signType": "Sign Type"
     }
   },
   "queues": {
@@ -499,7 +509,9 @@
     "submit": "Submit",
     "send": "Send",
     "returnCommercial": "Return to Comercial",
-    "returnBackoffice": "Return to BackOffice"
+    "returnBackoffice": "Return to BackOffice",
+    "returnToFirstStage": "Return to 1st Stage",
+    "cancelProcess": "Cancel Process"
   },
   "footer": {
     "cookies": "Cookies Policy",

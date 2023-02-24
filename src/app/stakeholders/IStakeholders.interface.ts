@@ -34,6 +34,8 @@ export interface IStakeholders {
   clientId?: string
   stakeholderId?: string
   signType?: string
+  identificationState?: string
+  signatureState?: string
 }
 
 interface FiscalIdentification {

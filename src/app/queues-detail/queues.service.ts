@@ -146,8 +146,10 @@ export class QueuesService {
     return this.APIService.callAPIOutbound(HttpMethod.POST, url, "por mudar", "por mudar", "por mudar", "por mudar", assessmentPost);
   }
 
-  getAssessmentSendRisk(processRefId: string, clientId: string, risk: PostRisk) { 
-    var url = this.acquiringUrl + 'api/v1/process/' + processRefId + '/assessment/' + clientId + '/send-risk';
+  getAssessmentSendRisk(processRefId: string, clientId: string, risk: PostRisk) {
+    var id = encodeURIComponent(processRefId);
+    var idClient = encodeURIComponent(clientId);
+    var url = this.acquiringUrl + 'api/v1/process/' + id + '/assessment/' + idClient + '/send-risk';
     return this.APIService.callAPIOutbound(HttpMethod.POST, url, "por mudar", "por mudar", "por mudar", "por mudar", risk);
   }
 

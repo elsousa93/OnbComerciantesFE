@@ -35,8 +35,8 @@ export class StoreService {
   ////////////
 
   getShopsListOutbound(merchantId: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?) {
-
-    var URI = this.urlOutbound + "api/v1/merchant/" + merchantId + '/shop';
+    var id = encodeURIComponent(merchantId);
+    var URI = this.urlOutbound + "api/v1/merchant/" + id + '/shop';
 
     requestID = window.crypto['randomUUID']();
     AcquiringUserID = this.authService.GetCurrentUser().userName;
@@ -68,7 +68,9 @@ export class StoreService {
   }
 
   getShopInfoOutbound(merchantId: string, shopId: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, AcquiringPartnerID?: string, AcquiringBranchID?) {
-    var URI = this.urlOutbound + 'api/v1/merchant/' + merchantId + '/shop/' + shopId;
+    var id = encodeURIComponent(merchantId);
+    var idShop = encodeURIComponent(shopId);
+    var URI = this.urlOutbound + 'api/v1/merchant/' + id + '/shop/' + idShop;
 
     return this.APIService.callAPIOutbound(HttpMethod.GET, URI, "searchId", "searchType", "requestId", "acquiringUserId");
   }

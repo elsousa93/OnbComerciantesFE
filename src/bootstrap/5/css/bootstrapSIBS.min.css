@@ -841,6 +841,15 @@ progress {
   mask: url("^assets/images/cancel.svg");
 }
 
+.cancel-white {
+  display: inline-block;
+  width: 25px;
+  height: 25px !important;
+  background: rgb(var(--bs-white-rgb));
+  mask-size: cover;
+  vertical-align: sub;
+}
+
 .cancel {
   display: inline-block;
   width: 25px;

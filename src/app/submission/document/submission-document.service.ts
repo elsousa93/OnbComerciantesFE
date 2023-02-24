@@ -44,8 +44,8 @@ export class SubmissionDocumentService {
   }
 
   GetDocumentImageOutbound(documentReference: string, requestID: string, AcquiringUserID: string, format?: string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string): any {
-
-    var URI = this.urlOutbound + "api/v1/document/" + documentReference + "/image";
+    var id = encodeURIComponent(documentReference);
+    var URI = this.urlOutbound + "api/v1/document/" + id + "/image";
 
     if (format != null && format != "")
       URI += "?format=" + format;

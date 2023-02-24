@@ -161,7 +161,7 @@
                 </nav>
               </div>
             </div>
-            <div class="row" *ngIf="noAddress">
+            <div class="row" *ngIf="noAddress && isComercialCentreStore">
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">
                   {{'stores.postalCode'|translate}} *

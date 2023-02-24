@@ -1,5 +1,5 @@
 export interface EligibilityAssessment {
-  type: StateResultDiscriminatorEnum,
+  $type: StateResultDiscriminatorEnum,
   userObservations?: string,
   merchantAssessment: MerchantEligibilityAssessment,
   stakeholderAssessment?: StakeholderEligibilityAssessment[]
@@ -16,7 +16,7 @@ export interface StakeholderEligibilityAssessment {
 }
 
 export interface RiskAssessment {
-  type: StateResultDiscriminatorEnum,
+  $type: StateResultDiscriminatorEnum,
   userObservations?: string,
   merchantAssessment: MerchantRiskAssessment,
   stakeholderAssessment?: StakeholderRiskAssessment[]
@@ -32,13 +32,12 @@ export interface StakeholderRiskAssessment {
 }
 
 export interface ContractAcceptance {
-  type: StateResultDiscriminatorEnum,
   userObservations?: string,
-  accepted?: boolean
+  contractAcceptanceResult: ContractAcceptanceEnum
 }
 
 export interface StandardIndustryClassificationChoice {
-  type: StateResultDiscriminatorEnum,
+  $type: StateResultDiscriminatorEnum,
   userObservations?: string,
   shopsClassification?: ShopClassifications
 }
@@ -54,7 +53,7 @@ export interface PaymentSchemaClassification {
 }
 
 export interface ClientChoice {
-  type?: StateResultDiscriminatorEnum,
+  $type?: StateResultDiscriminatorEnum,
   userObservations?: string,
   merchantChoice?: ClientNumberDecision,
   stakeholdersChoice?: ClientNumberDecision[]
@@ -67,15 +66,25 @@ export interface ClientNumberDecision {
 }
 
 export interface NegotiationApproval {
-  type?: StateResultDiscriminatorEnum,
+  $type?: StateResultDiscriminatorEnum,
   userObservations?: string,
   decision?: NegotiationApprovalEnum
 }
 
 export interface OperationsEvaluation {
-  type?: StateResultDiscriminatorEnum,
+  $type?: StateResultDiscriminatorEnum,
   userObservations?: string,
   decision?: OperationsEvaluationEnum
+}
+
+export interface ContractDigitalAcceptance {
+  userObservations?: string,
+  contractDigitalAcceptanceResult?: ContractDigitalAcceptanceEnum
+}
+
+export interface DigitalIdentification {
+  userObservations?: string,
+  digitalIdentificationResult?: DigitalIdentificationEnum
 }
 
 export interface ExternalState {
@@ -91,7 +100,7 @@ export interface ExternalState {
 }
 
 export interface MerchantRegistration {
-  type?: StateResultDiscriminatorEnum,
+  $type?: StateResultDiscriminatorEnum,
   userObservations?: string,
   merchantRegistrationId?: string,
   shops?: ShopRegistration[]
@@ -109,7 +118,7 @@ export interface ShopEquipmentRegistration{
 }
 
 export interface ComplianceEvaluation {
-  type?: StateResultDiscriminatorEnum,
+  $type?: StateResultDiscriminatorEnum,
   userObservations?: string
 }
 
@@ -142,15 +151,17 @@ export interface PostRisk {
 }
 
 export enum State {
-  CONTRACT_ACCEPTANCE = "ContractAcceptance",
-  STANDARD_INDUSTRY_CLASSIFICATION_CHOICE = "StandardIndustryClassificationChoice",
+  CONTRACT_ACCEPTANCE = "ContractAcceptanceModel",
+  STANDARD_INDUSTRY_CLASSIFICATION_CHOICE = "StandardIndustryClassificationModel",
   RISK_ASSESSMENT = "RiskAssessment",
   ELIGIBILITY_ASSESSMENT = "EligibilityAssessment",
   CLIENT_CHOICE = "ClientChoice",
   NEGOTIATION_APPROVAL = "NegotiationApproval",
   MERCHANT_REGISTRATION = "MerchantRegistration",
   OPERATIONS_EVALUATION = "OperationsEvaluation",
-  COMPLIANCE_EVALUATION = "ComplianceEvaluation"
+  COMPLIANCE_EVALUATION = "ComplianceEvaluation",
+  CONTRACT_DIGITAL_ACCEPTANCE = "ContractDigitalAcceptance",
+  DIGITAL_IDENTIFICATION = "DigitalIdentification"
 }
 
 export enum StateResultDiscriminatorEnum {
@@ -163,7 +174,9 @@ export enum StateResultDiscriminatorEnum {
   NEGOTIATION_APPROVAL = "NegotiationApproval",
   MERCHANT_REGISTRATION = "MerchantRegistration",
   OPERATIONS_EVALUATION = "OperationsEvaluation",
-  COMPLIANCE_EVALUATION = "ComplianceEvaluation"
+  COMPLIANCE_EVALUATION = "ComplianceEvaluation",
+  CONTRACT_DIGITAL_ACCEPTANCE = "ContractDigitalAcceptance",
+  DIGITAL_IDENTIFICATION = "DigitalIdentification"
 }
 
 export enum ClientNumberDecisionEnum {
@@ -180,4 +193,23 @@ export enum NegotiationApprovalEnum {
 export enum OperationsEvaluationEnum {
   CONTINUE = "Continue",
   RETURN = "Return"
+}
+
+export enum ContractDigitalAcceptanceEnum {
+  RETURN_TO_FRONT_OFFICE = "ReturnToFrontOffice",
+  UPDATE_INFORMATION = "UpdateInformation",
+  ACCEPTED = "Accepted"
+}
+
+export enum DigitalIdentificationEnum {
+  RETURN_TO_FRONT_OFFICE = "ReturnToFrontOffice",
+  UPDATE_INFORMATION = "UpdateInformation",
+  ACCEPTED = "Accepted"
+}
+
+export enum ContractAcceptanceEnum {
+  RETURN_TO_FRONT_OFFICE = "ReturnToFrontOffice",
+  RETURN_TO_BACK_OFFICE = "ReturnToBackOffice",
+  CANCEL = "Cancel",
+  ACCEPTED = "Accepted"
 }

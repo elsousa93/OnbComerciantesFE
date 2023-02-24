@@ -68,8 +68,9 @@ export class ClientService {
   }
 
   getClientByID(clientID: string, requestID: string, AcquiringUserID: string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string) {
-    var URI = this.urlOutbound + "api/v1/merchant/" + clientID;
-
+    var id = encodeURIComponent(clientID);
+    var URI = this.urlOutbound + "api/v1/merchant/" + id;
+    
     return this.API.callAPIOutbound(HttpMethod.GET, URI, "por mudar", "por mudar", requestID, AcquiringUserID);
   }
 
@@ -82,7 +83,8 @@ export class ClientService {
   ////////////////////
 
   getClientByIdCall(clientID: string) {
-    var url = this.urlOutbound + "api/v1/merchant/" + clientID;
+    var id = encodeURIComponent(clientID);
+    var url = this.urlOutbound + "api/v1/merchant/" + id;
 
     return this.API.callAPIOutbound(HttpMethod.GET, url, "por mudar", "por mudar", "por mudar", "por mudar");
   }

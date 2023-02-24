@@ -146,8 +146,8 @@ export class StakeholderService {
   }
 
   getStakeholderByID(StakeholderID: string, requestID: string, AcquiringUserID: string, AcquiringPartnerID?: string, AcquiringBranchID?: string, AcquiringProcessID?: string): any {
-
-    var url = this.urlOutbound + "api/v1/stakeholder/" + StakeholderID;
+    var id = encodeURIComponent(StakeholderID);
+    var url = this.urlOutbound + "api/v1/stakeholder/" + id;
 
     return this.APIService.callAPIOutbound(HttpMethod.GET, url, "searchId", "searchType", "requestID", "AcquiringUserID");
   }

@@ -850,6 +850,15 @@ progress {
   vertical-align: sub;
 }
 
+.cancel-white {
+  display: inline-block;
+  width: 25px;
+  height: 25px !important;
+  background: rgb(var(--bs-white-rgb));
+  mask-size: cover;
+  vertical-align: sub;
+}
+
 .icon-add-call {
   mask: url("^assets/images/add_call.svg");
 }

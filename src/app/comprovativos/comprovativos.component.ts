@@ -224,8 +224,13 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           if (merchantDocPurposes.documentState === 'NotExists') {
             this.clientService.GetClientByIdAcquiring(context.submissionId).then(client => {
               context.logger.info("Get client: " + JSON.stringify(client));
-              var exists = context.checkDocumentExists(client.clientId, merchantDocPurposes, 'merchant');
-              merchantDocPurposes["existsOutbound"] = exists;
+              if (client.clientId != null && client.clientId != "") {
+                var exists = context.checkDocumentExists(client.clientId, merchantDocPurposes, 'merchant');
+                merchantDocPurposes["existsOutbound"] = exists;
+              } else {
+                var exists = context.checkDocumentExists(null, merchantDocPurposes, 'merchant');
+                merchantDocPurposes["existsOutbound"] = exists;
+              }
             });
           }
         });
@@ -236,18 +241,18 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           if (stakeholderDocPurposes.documentState === 'NotExists') {
             context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, stakeholder.entityId).then(result => {
               context.logger.info("Get stakeholder from submission: " + JSON.stringify(result));
-              if (result.result.clientId != "") {
+              if (result.result.clientId != "" && result.result.clientId != null) {
                 context.stakeholderService.SearchStakeholderByQuery(result.result.clientId, "0501", "por mudar", "por mudar").then(stake => {
                   context.logger.info("Search stakeholder: " + JSON.stringify(stake));
                   var exists = context.checkDocumentExists(stake.result[0].stakeholderId, stakeholderDocPurposes, 'stakeholder');
                   stakeholderDocPurposes["existsOutbound"] = exists;
-                }
-                //  , error => {
-                //  context.logger.error(error, "", "Stakeholder doesn't exist");
-                //  var exists = context.checkDocumentExists(result.result.clientId, stakeholderDocPurposes, 'stakeholder');
-                //  stakeholderDocPurposes["existsOutbound"] = exists;
-                //}
-                );
+                }, error => {
+                  var exists = context.checkDocumentExists(null, stakeholderDocPurposes, 'stakeholder');
+                  stakeholderDocPurposes["existsOutbound"] = exists;
+                });
+              } else {
+                var exists = context.checkDocumentExists(null, stakeholderDocPurposes, 'stakeholder');
+                stakeholderDocPurposes["existsOutbound"] = exists;
               }
             });
           }
@@ -259,8 +264,13 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           if (shopDocPurposes.documentState === 'NotExists') {
             context.shopService.getSubmissionShopDetails(context.submissionId, shop.entityId).then(result => {
               context.logger.info("Get shop from submission: " + JSON.stringify(result));
-              var exists = context.checkDocumentExists(result.result.shopId, shopDocPurposes, 'shop');
-              shopDocPurposes["existsOutbound"] = exists;
+              if (result.result.shopId != null && result.result.shopId != "") {
+                var exists = context.checkDocumentExists(result.result.shopId, shopDocPurposes, 'shop');
+                shopDocPurposes["existsOutbound"] = exists;
+              } else {
+                var exists = context.checkDocumentExists(null, shopDocPurposes, 'shop');
+                shopDocPurposes["existsOutbound"] = exists;
+              }
             });
           }
         });
@@ -306,34 +316,11 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   checkDocumentExists(entityId: string, purpose: DocumentPurpose, type: string) {
     var context = this;
-    if (type === 'merchant') {
-      var docMerchantExists = false;
-      context.clientService.GetClientByIdOutbound(entityId).then(client => {
-        this.logger.info("Get client outbound: " + JSON.stringify(client));
-        if (client.documents != null && client.documents.length > 0) {
-          docMerchantExists = purpose.documentsTypeCodeFulfillPurpose.some(type => {
-            if (client.documents.find(elem => elem.documentType === type) == undefined) {
-              return false;
-            } else {
-              return true;
-            }
-          });
-        }
-      }, error => {
-        context.logger.error(error, "", "Client doesn't exist on outbound");
-        return false;
-      }).then(val => {
-
-      });
-      return docMerchantExists;
-    }
-
-    if (type === 'stakeholder') {
-      var docStakeholderExists = false;
-      if (entityId != undefined) {
-        context.stakeholderService.getStakeholderByID(entityId, "", "").then(stake => {
-          this.logger.info("Get stakeholder outbound: " + JSON.stringify(stake));
-          var client = stake.result;
+    if (entityId != null) {
+      if (type === 'merchant') {
+        var docMerchantExists = false;
+        context.clientService.GetClientByIdOutbound(entityId).then(client => {
+          this.logger.info("Get client outbound: " + JSON.stringify(client));
           if (client.documents != null && client.documents.length > 0) {
             docMerchantExists = purpose.documentsTypeCodeFulfillPurpose.some(type => {
               if (client.documents.find(elem => elem.documentType === type) == undefined) {
@@ -344,35 +331,62 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
             });
           }
         }, error => {
-          context.logger.error(error, "", "Stakeholder doesn't exist on outbound");
+          context.logger.error(error, "", "Client doesn't exist on outbound");
           return false;
         }).then(val => {
 
         });
+        return docMerchantExists;
       }
-      return docStakeholderExists;
-    }
 
-    if (type === 'shop') {
-      var docShopExists = false;
-      context.shopService.getShopInfoOutbound(context.submissionClient.clientId, entityId, "", "").then(shop => {
-        this.logger.info("Get shop outbound: " + JSON.stringify(shop));
-        if (shop.result.supportingDocuments != null && shop.result.supportingDocuments.length > 0) {
-          docShopExists = purpose.documentsTypeCodeFulfillPurpose.some(type => {
-            if (shop.result.supportingDocuments.find(elem => elem.documentType === type) == undefined) {
-              return false;
-            } else {
-              return true;
+      if (type === 'stakeholder') {
+        var docStakeholderExists = false;
+        if (entityId != undefined) {
+          context.stakeholderService.getStakeholderByID(entityId, "", "").then(stake => {
+            this.logger.info("Get stakeholder outbound: " + JSON.stringify(stake));
+            var client = stake.result;
+            if (client.documents != null && client.documents.length > 0) {
+              docMerchantExists = purpose.documentsTypeCodeFulfillPurpose.some(type => {
+                if (client.documents.find(elem => elem.documentType === type) == undefined) {
+                  return false;
+                } else {
+                  return true;
+                }
+              });
             }
+          }, error => {
+            context.logger.error(error, "", "Stakeholder doesn't exist on outbound");
+            return false;
+          }).then(val => {
+
           });
         }
-      }, error => {
-        context.logger.error(error, "", "Shop doesn't exist on outbound");
-        return false;
-      }).then(val => {
+        return docStakeholderExists;
+      }
 
-      });
-      return docShopExists;
+      if (type === 'shop') {
+        var docShopExists = false;
+        context.shopService.getShopInfoOutbound(context.submissionClient.clientId, entityId, "", "").then(shop => {
+          this.logger.info("Get shop outbound: " + JSON.stringify(shop));
+          if (shop.result.supportingDocuments != null && shop.result.supportingDocuments.length > 0) {
+            docShopExists = purpose.documentsTypeCodeFulfillPurpose.some(type => {
+              if (shop.result.supportingDocuments.find(elem => elem.documentType === type) == undefined) {
+                return false;
+              } else {
+                return true;
+              }
+            });
+          }
+        }, error => {
+          context.logger.error(error, "", "Shop doesn't exist on outbound");
+          return false;
+        }).then(val => {
+
+        });
+        return docShopExists;
+      }
+    } else {
+      return false;
     }
   }
 

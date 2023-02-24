@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, AbstractControl } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { ShopDetailsAcquiring } from '../../../store/IStore.interface';
 import { StoreService } from '../../../store/store.service';
@@ -56,8 +56,13 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   }
 
   public subs: Subscription[] = [];
+  returnedFrontOffice: boolean = false;
 
   constructor(private logger: LoggerService, private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService) {
+    if (this.route?.getCurrentNavigation()?.extras?.state) {
+      this.returnedFrontOffice = this.route.getCurrentNavigation().extras.state["returnedFrontOffice"];
+    }
+
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.logger.info("Fetch all countries " + JSON.stringify(result));
       this.internationalCallingCodes = result;
@@ -194,5 +199,14 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
       return false;
     return true;
+  }
+
+  goBack() {
+    let navigationExtras = {
+      state: {
+        returnedFrontOffice: this.returnedFrontOffice
+      }
+    } as NavigationExtras;
+    this.route.navigate(['info-declarativa-stakeholder'], navigationExtras);
   }
 }

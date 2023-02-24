@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { IStakeholders, StakeholdersCompleteInformation } from '../IStakeholders.interface'
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { FormBuilder } from '@angular/forms';
 import { EventEmitter, Output } from '@angular/core';
 import { TableInfoService } from '../../table-info/table-info.service';
@@ -47,6 +47,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   updatedStakeholderEvent: Observable<{ stake: IStakeholders, idx: number }>;
   previousStakeholderEvent: Observable<number>;
   public visitedStakes: string[] = [];
+  returnedFrontOffice: boolean = false;
 
   emitPreviousStakeholder(idx) {
     this.previousStakeholderEvent = idx;
@@ -60,6 +61,10 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   }
 
   constructor(private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService, private logger: LoggerService) {
+    if (this.route?.getCurrentNavigation()?.extras?.state) {
+      this.returnedFrontOffice = this.route.getCurrentNavigation().extras.state["returnedFrontOffice"];
+    }
+
     this.infoStakeholders = this.formBuilder.group({
       contacts: this.formBuilder.group({
       }),
@@ -200,8 +205,13 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     if ((this.currentIdx - 1) >= 0) {
       this.emitPreviousStakeholder(of(this.currentIdx));
     } else {
+      let navigationExtras = {
+        state: {
+          returnedFrontOffice: this.returnedFrontOffice
+        }
+      } as NavigationExtras;
       this.logger.info("Redirecting to Info Declarativa page");
-      this.route.navigate(['/info-declarativa']);
+      this.route.navigate(['/info-declarativa'], navigationExtras);
     }
   }
 
@@ -220,4 +230,5 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       }
     });
   }
+
 }

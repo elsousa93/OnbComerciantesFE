@@ -382,7 +382,7 @@ export class QueuesDetailComponent implements OnInit {
       this.state = State.ELIGIBILITY_ASSESSMENT;
       queueModel = {} as EligibilityAssessment;
       var observation = this.form.get('observation').value;
-      queueModel.type = StateResultDiscriminatorEnum.ELIGIBILITY_ASSESSMENT;
+      queueModel.$type = StateResultDiscriminatorEnum.ELIGIBILITY_ASSESSMENT;
       queueModel.userObservations = observation;
 
       queueModel.merchantAssessment = {
@@ -422,7 +422,7 @@ export class QueuesDetailComponent implements OnInit {
       queueModel = {} as RiskAssessment;
 
       var observation = this.form.get('observation').value;
-      queueModel.type = StateResultDiscriminatorEnum.ELIGIBILITY_ASSESSMENT;
+      queueModel.$type = StateResultDiscriminatorEnum.ELIGIBILITY_ASSESSMENT;
       queueModel.userObservations = observation;
 
       var stakeholders = this.form.get("stakeholdersEligibility") as FormGroup;

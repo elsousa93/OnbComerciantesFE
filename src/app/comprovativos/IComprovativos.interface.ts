@@ -17,6 +17,13 @@ export interface ComprovativosTemplate {
   documentType?: string
 }
 
+export interface AceitacaoDoc {
+  id?: string,
+  type?: string,
+  date?: string,
+  file?: File,
+}
+
 export interface RequiredDocuments {
   requiredDocumentPurposesMerchants?: RequiredDocumentPurpose[],
   requiredDocumentPurposesStakeholders?: RequiredDocumentPurpose[],
