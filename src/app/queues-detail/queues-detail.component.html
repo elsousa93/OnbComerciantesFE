@@ -67,10 +67,10 @@
                               <p class="mb-0 text-primary text-start">
                                 {{'homepage.' + queueName|translate}}
                               </p>
-                              <p class="mb-0 text-primary text-start">{{processHistoryItems.items[0].whenStarted}}</p>
-                              <p class="mb-0 text-primary text-start">{{processHistoryItems.items[0].whoStarted}}</p>
+                              <p class="mb-0 text-primary text-start">{{processHistoryItems?.items[0].whenStarted}}</p>
+                              <p class="mb-0 text-primary text-start">{{processHistoryItems?.items[0].whoStarted}}</p>
                               <p class="mb-0 text-primary text-start">
-                                {{(processHistoryItems.items[0].observations == null || processHistoryItems.items[0].observations == "") ? "-" : processHistoryItems.items[0].observations}}
+                                {{(processHistoryItems?.items[0].observations == null || processHistoryItems?.items[0].observations == "") ? "-" : processHistoryItems?.items[0].observations}}
                               </p>
                             </div>
                           </div>
@@ -131,9 +131,9 @@
                   <h3 *ngIf="queueName === 'risk'" class="text-primary mt-5 mb-0 ps-0">
                     &nbsp;{{'homepage.risk'|translate|uppercase}}
                   </h3>
-                  <h3 *ngIf="queueName === 'DOValidation'" class="text-primary mt-5 mb-0 ps-0">
+                  <!--<h3 *ngIf="queueName === 'DOValidation'" class="text-primary mt-5 mb-0 ps-0">
                     &nbsp;{{'acceptance.returnReasons'|translate|uppercase}}
-                  </h3>
+                  </h3>-->
                   <h3 *ngIf="queueName === 'multipleClients'" class="text-primary mt-5 mb-0 ps-0">
                     &nbsp;{{'queues.clientStake'|translate|uppercase}}
                   </h3>
@@ -187,9 +187,6 @@
                               </th>
                               <th scope="col" *ngIf="queueName === 'risk'" class="text-center bg-white">
                                 {{'queues.risk'|translate}}
-                              </th>
-                              <th scope="col" *ngIf="queueName === 'eligibility'" class="text-center bg-white">
-                                {{'generalKeywords.restrictions'|translate}}
                               </th>
                             </tr>
                           </thead>
@@ -539,7 +536,7 @@
                   </p>
                   <div class="col pb-4" style="padding-left: 0px !important;">
                     <!-- [(ngModel)]="fillComments" -->
-                    <textarea *ngIf="queueName!=='MCCTreatment'" formControlName="observation" id="text1"
+                    <textarea *ngIf="queueName!=='MCCTreatment'" formControlName="observation" name="observation" id="text1"
                               class="form-control"></textarea>
                     <!-- Botões Final de Página consoante as Filas de Trabalho -->
                     <div class="col mt-4 ms-0 ps-0">
@@ -551,13 +548,10 @@
                                   wappler-command="editContent">
                             {{'generalKeywords.exit'|translate|uppercase}}&nbsp;
                             <span class="exit-to-app icon-exit-to-app"></span>
-                            <!--<img src="assets/images/exit_to_app.svg"
-              style="height: 25px !important; vertical-align: sub;">-->
                           </button>
-
                           <button id="btn5a2"
                                   *ngIf="queueName==='compliance' || queueName==='risk' || queueName==='eligibility'"
-                                  [disabled]="(!(fillComments?.length > 0) && queueName==='compliance') || ((queueName==='eligibility' || queueName==='risk') && !form.valid)"
+                                  [disabled]="!form.valid"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                   (click)="concludeOpinion()" wappler-command="editContent">
                             {{'queues.completed'|translate|uppercase}}&nbsp;
@@ -566,27 +560,27 @@
                           </button>
 
                           <button id="btn5a2" *ngIf="queueName==='DOValidation'"
-                                  [disabled]="!(fillComments?.length > 0)"
+                                  [disabled]="!form.valid"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                                  wappler-command="editContent">
+                                  wappler-command="editContent" (click)="concludeOpinion('ReturnToBackOffice')">
                             {{'queues.returnBackoffice'|translate|uppercase}}&nbsp;
                             <img src="assets/images/assignment_return_white.svg"
                                  style="height: 25px !important; vertical-align: sub;">
                           </button>
 
                           <button id="btn5a2" *ngIf="queueName==='DOValidation'"
-                                  [disabled]="!(fillComments?.length > 0)"
+                                  [disabled]="!form.valid"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                                  wappler-command="editContent">
+                                  wappler-command="editContent" (click)="concludeOpinion('ReturnToFrontOffice')">
                             {{'queues.returnComercial'|translate|uppercase}}&nbsp;
                             <img src="assets/images/queues/return_comercial.svg"
                                  style="height: 25px !important; vertical-align: sub;">
                           </button>
 
                           <button id="btn5a2" *ngIf="queueName==='DOValidation'"
-                                  [disabled]="!(fillComments?.length > 0)"
+                                  [disabled]="!form.valid"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                                  wappler-command="editContent">
+                                  wappler-command="editContent" (click)="concludeOpinion('ReturnToRiskEvaluation')">
                             {{'queues.returnCoff'|translate|uppercase}}&nbsp;
                             <img src="assets/images/queues/return_coff.svg"
                                  style="height: 25px !important; vertical-align: sub;">

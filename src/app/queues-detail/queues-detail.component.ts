@@ -9,7 +9,7 @@ import { LoggerService } from 'src/app/logger.service';
 import { QueuesService } from './queues.service';
 import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 import { ShopDetailsAcquiring, ShopEquipment } from '../store/IStore.interface';
-import { EligibilityAssessment, RiskAssessment, StandardIndustryClassificationChoice, State, StateResultDiscriminatorEnum } from './IQueues.interface';
+import { ComplianceEvaluation, EligibilityAssessment, OperationsEvaluation, RiskAssessment, StandardIndustryClassificationChoice, State, StateResultDiscriminatorEnum } from './IQueues.interface';
 import { PostDocument } from '../submission/document/ISubmission-document';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -94,6 +94,12 @@ export class QueuesDetailComponent implements OnInit {
     });
   }
 
+  initializeComplianceForm() {
+    this.form = new FormGroup({
+      observation: new FormControl('', Validators.required)
+    });
+  }
+
   updateStakeForm() {
     var formGroupStakeholdersEligibility = new FormGroup({});
     this.stakesList.forEach(function (value, idx) {
@@ -114,11 +120,14 @@ export class QueuesDetailComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.historyStream$.next(true);
-    if (this.queueName === 'eligibility' || this.queueName === 'risk' || this.queueName === 'compliance' || this.queueName === 'multipleClients') {
+    if (this.queueName === 'eligibility' || this.queueName === 'risk' || this.queueName === 'multipleClients') {
       this.initializeElegibilityForm();
     }
     if (this.queueName === 'negotiationAproval' || this.queueName === 'MCCTreatment' || this.queueName === 'validationSIBS') {
       this.initializeMCCForm();
+    }
+    if (this.queueName === 'compliance' || this.queueName === 'DOValidation') {
+      this.initializeComplianceForm();
     }
   }
 
@@ -283,7 +292,8 @@ export class QueuesDetailComponent implements OnInit {
         this.logger.info("Get stakeholders list from process result: " + JSON.stringify(success));
         var stakeholdersList = success;
         this.stakesList = stakeholdersList;
-        this.updateStakeForm();
+        if (this.queueName !== 'compliance')
+          this.updateStakeForm();
       });
     }
     if (this.queueName === 'negotiationAproval' || this.queueName === 'MCCTreatment' || this.queueName === 'validationSIBS') {
@@ -375,7 +385,7 @@ export class QueuesDetailComponent implements OnInit {
     this.checkButton = false;
   }
 
-  concludeOpinion(/*state, externalState*/) {
+  concludeOpinion(type?:string) {
     var context = this;
     var queueModel;
     if (this.queueName === 'eligibility') {
@@ -422,7 +432,7 @@ export class QueuesDetailComponent implements OnInit {
       queueModel = {} as RiskAssessment;
 
       var observation = this.form.get('observation').value;
-      queueModel.$type = StateResultDiscriminatorEnum.ELIGIBILITY_ASSESSMENT;
+      queueModel.$type = StateResultDiscriminatorEnum.RISK_ASSESSMENT;
       queueModel.userObservations = observation;
 
       var stakeholders = this.form.get("stakeholdersEligibility") as FormGroup;
@@ -437,16 +447,30 @@ export class QueuesDetailComponent implements OnInit {
       }
       queueModel.merchantAssessment = {
         accepted: true,
-        merchantId: null
+        merchantId: this.merchant.id
       };
 
-      queueModel.stakeholderAssessment.forEach(stake => {
-        if (stake.accepted == false) {
-          context.queuesInfo.markToCancel(context.processId).then(res => {
-            context.route.navigate(['/']);
-          });
-        }
-      });
+      if (queueModel.merchantAssessment.accepted == false) {
+        context.queuesInfo.markToCancel(context.processId).then(res => {
+          context.route.navigate(['/']);
+        });
+      } else {
+        queueModel.stakeholderAssessment.forEach(stake => {
+          if (stake.accepted == false) {
+            context.queuesInfo.markToCancel(context.processId).then(res => {
+              context.route.navigate(['/']);
+            });
+          }
+        });
+      }
+
+    } else if (this.queueName === 'compliance') {
+      this.state = State.COMPLIANCE_EVALUATION;
+      queueModel = {} as ComplianceEvaluation;
+
+      var observation = this.form.get('observation').value;
+      queueModel.$type = StateResultDiscriminatorEnum.COMPLIANCE_EVALUATION;
+      queueModel.userObservations = observation;
 
     } else if (this.queueName === 'MCC') {
       this.state = State.STANDARD_INDUSTRY_CLASSIFICATION_CHOICE;
@@ -466,6 +490,34 @@ export class QueuesDetailComponent implements OnInit {
           classification: control.value
         });
       }
+    } else if (this.queueName === 'DOValidation') {
+      this.state = State.OPERATIONS_EVALUATION;
+      queueModel = {} as OperationsEvaluation;
+
+      var observation = this.form.get('observation').value;
+      queueModel.$type = StateResultDiscriminatorEnum.OPERATIONS_EVALUATION;
+      queueModel.userObservations = observation;
+      queueModel.decision = type;
+
+    } else if (this.queueName === 'multipleClients') {
+      this.state = State.CLIENT_CHOICE;
+      queueModel = {} as OperationsEvaluation;
+
+      var observation = this.form.get('observation').value;
+      queueModel.$type = StateResultDiscriminatorEnum.CLIENT_CHOICE;
+      queueModel.userObservations = observation;
+      queueModel.merchantChoice = {
+        id: this.merchant.id,
+        decision: "", //Success, ReturnToBackOffice, ReturnToFrontOffice
+        clientNumber: ""
+      };
+
+      queueModel.stakeholdersChoice = [];
+      queueModel.stakeholdersChoice.push({
+        id: "",
+        decision: "", //Success, ReturnToBackOffice, ReturnToFrontOffice
+        clientNumber: ""
+      })
     }
 
     if (this.files.length > 0) {

@@ -139,12 +139,12 @@
                         <tbody>
                           <tr>
                             <td class="text-primary text-center">{{merchant?.legalName}}</td>
-                            <td class="text-primary text-start">{{merchant?.fiscalId}}</td>
-                            <td class="text-primary text-start">{{merchant?.clientId}}</td>
-                            <td class="text-primary text-start">-</td>
-                            <td class="text-primary text-start">-</td>
-                            <td class="text-primary text-start">-</td>
-                            <td class="text-primary text-start">-</td>
+                            <td class="text-primary text-start text-center">{{merchant?.fiscalId}}</td>
+                            <td class="text-primary text-start text-center">{{merchant?.clientId}}</td>
+                            <td class="text-primary text-start text-center">-</td>
+                            <td class="text-primary text-start text-center">-</td>
+                            <td class="text-primary text-start text-center">-</td>
+                            <td class="text-primary text-start text-center">-</td>
                           </tr>
                         </tbody>
                       </table>
@@ -170,12 +170,12 @@
                         <tbody>
                           <tr *ngFor="let stakeholder of stakeholdersList">
                             <td class="text-primary text-center">{{stakeholder?.shortName}}</td>
-                            <td class="text-primary text-start">{{stakeholder?.fiscalId}}</td>
-                            <td class="text-primary text-start">{{stakeholder?.clientId}}</td>
-                            <td class="text-primary text-start">{{(stakeholder?.isBeneficiary == true  ? 'generalKeywords.yes' : 'generalKeywords.no') | translate}}</td>
-                            <td class="text-primary text-start">{{(stakeholder?.pep?.kind == 'Pep'  ? 'generalKeywords.yes' : 'generalKeywords.no') | translate}}</td>
-                            <td class="text-primary text-start">-</td>
-                            <td class="text-primary text-start">-</td>
+                            <td class="text-primary text-start text-center">{{stakeholder?.fiscalId}}</td>
+                            <td class="text-primary text-start text-center">{{stakeholder?.clientId}}</td>
+                            <td class="text-primary text-start text-center">{{(stakeholder?.isBeneficiary == true  ? 'generalKeywords.yes' : 'generalKeywords.no') | translate}}</td>
+                            <td class="text-primary text-start text-center">{{(stakeholder?.pep?.kind == 'Pep'  ? 'generalKeywords.yes' : 'generalKeywords.no') | translate}}</td>
+                            <td class="text-primary text-start text-center">-</td>
+                            <td class="text-primary text-start text-center">-</td>
                           </tr>
                         </tbody>
                       </table>

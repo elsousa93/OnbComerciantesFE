@@ -32,6 +32,7 @@ export interface StakeholderRiskAssessment {
 }
 
 export interface ContractAcceptance {
+  $type: StateResultDiscriminatorEnum,
   userObservations?: string,
   contractAcceptanceResult: ContractAcceptanceEnum
 }
@@ -78,11 +79,13 @@ export interface OperationsEvaluation {
 }
 
 export interface ContractDigitalAcceptance {
+  $type: StateResultDiscriminatorEnum,
   userObservations?: string,
   contractDigitalAcceptanceResult?: ContractDigitalAcceptanceEnum
 }
 
 export interface DigitalIdentification {
+  $type: StateResultDiscriminatorEnum,
   userObservations?: string,
   digitalIdentificationResult?: DigitalIdentificationEnum
 }

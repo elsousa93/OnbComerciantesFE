@@ -190,10 +190,12 @@ export class PackContratualComponent implements OnInit {
         this.updatedInfo = true;
       externalState = {} as ContractDigitalAcceptance;
       stateType = State.CONTRACT_DIGITAL_ACCEPTANCE;
+      externalState.$type = stateType;
       externalState.contractDigitalAcceptanceResult = state;
     } else { //manual
       externalState = {} as ContractAcceptance;
       stateType = State.CONTRACT_ACCEPTANCE;
+      externalState.$type = stateType;
       externalState.contractAcceptanceResult = state;
     }
     externalState.userObservations = this.form.get("observations").value;

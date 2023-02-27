@@ -125,6 +125,7 @@ export class AceitacaoComponent implements OnInit {
 
     externalState = {} as ContractAcceptance;
     stateType = State.CONTRACT_ACCEPTANCE;
+    externalState.$type = stateType;
     externalState.contractAcceptanceResult = state;
 
     externalState.userObservations = "";

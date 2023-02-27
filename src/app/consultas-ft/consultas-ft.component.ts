@@ -228,6 +228,8 @@ export class ConsultasFTComponent implements OnInit {
           process.state = this.translate.instant('searches.contractDigitalAcceptance')
         } else if (process.state === 'DigitalIdentification') {
           process.state = this.translate.instant('searches.digitalIdentification')
+        } else if (process.state === 'ComplianceEvaluation') {
+          process.state = this.translate.instant('searches.complianceDoubts')
         }
 
         return {
