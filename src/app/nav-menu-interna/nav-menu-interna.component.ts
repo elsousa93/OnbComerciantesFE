@@ -3,9 +3,10 @@ import { ViewChildren } from '@angular/core';
 import { Component, Input, OnInit } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 import { DataService } from './data.service';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { AutoHideSidenavAdjustBarraTopo } from '../animation';
 import { LoggerService } from 'src/app/logger.service';
+import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 
 @Component({
   selector: 'app-nav-menu-interna',
@@ -42,7 +43,7 @@ export class NavMenuInternaComponent implements OnInit {
   resizeObservable$;
   isMinWidth: boolean;
 
-  constructor(private logger: LoggerService, private data: DataService, private route: Router) {
+  constructor(private logger: LoggerService, private data: DataService, private route: Router, private processNrService: ProcessNumberService) {
   }
 
   ngOnInit(): void {
@@ -231,8 +232,26 @@ export class NavMenuInternaComponent implements OnInit {
 
   goToAppDevolucao() {
     if (this.currentPage > 0 || this.map.get(0) != undefined) {
-      this.logger.info("Redirecting to Devolucao page");
-      this.route.navigate(['/app-devolucao']);
+      var queueName = "";
+      var processId = "";
+      this.processNrService.queueName.subscribe(name => queueName = name);
+      this.processNrService.processId.subscribe(id => processId = id);
+      if (queueName == 'devolucao') {
+        this.logger.info('Redirecting to Devolucao page');
+        this.route.navigate(['/app-devolucao/', processId]);
+      } else if (queueName == 'aceitacao') {
+        this.logger.info("Redirecting to Aceitacao page");
+        this.route.navigate(['/app-aceitacao/', processId]);
+      } else {
+        let navigationExtras: NavigationExtras = {
+          state: {
+            queueName: queueName,
+            processId: processId
+          }
+        };
+        this.logger.info('Redirecting to Queues Detail page');
+        this.route.navigate(["/queues-detail"], navigationExtras);
+      }
     }
   }
 

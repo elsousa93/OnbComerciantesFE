@@ -512,7 +512,7 @@
                   <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
-                      <a [routerLink]="['/app-devolucao/', row.processId]" (click)="streamHistoryMenu()">
+                      <a (click)="streamHistoryMenu(row)">
                         <span class="material-symbols-rounded edit-icon icon-edit-square">
                           <!--<img src="assets/images/edit_square.svg">-->
                         </span>

@@ -543,6 +543,8 @@ export class DashboardComponent implements OnInit {
         processId: processId
       }
     };
+    this.processNrService.changeProcessId(processId);
+    this.processNrService.changeQueueName(queue);
     this.logger.info('Redirecting to Queues Detail page');
     this.router.navigate(["/queues-detail"], navigationExtras);
   }
@@ -568,6 +570,8 @@ export class DashboardComponent implements OnInit {
 
   openProcessAceitacao(process) {
     localStorage.setItem("processNumber", process.processNumber);
+    this.processNrService.changeProcessId(process.processId);
+    this.processNrService.changeQueueName("aceitacao");
     this.logger.info("Redirecting to Aceitacao page");
     this.router.navigate(['/app-aceitacao/', process.processId]);
   }
@@ -594,6 +598,8 @@ export class DashboardComponent implements OnInit {
     this.dataService.changeUpdatedClient(false);
     this.dataService.changeCurrentFirstTimeStake(true);
     this.processNrService.changeProcessNumber(null);
+    this.processNrService.changeProcessId(null);
+    this.processNrService.changeQueueName(null);
 
     this.dataSourcePendentes.filterPredicate = function (record, filterValue) {
       return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
@@ -652,8 +658,12 @@ export class DashboardComponent implements OnInit {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
 
-  streamHistoryMenu() {
+  streamHistoryMenu(process) {
     this.dataService.historyStream$.next(true);
+    this.processNrService.changeProcessId(process.processId);
+    this.processNrService.changeQueueName("devolucao");
+    this.logger.info('Redirecting to Devolucao page');
+    this.router.navigate(['/app-devolucao/', process.processId]);
   }
 
   ngAfterViewInit() {

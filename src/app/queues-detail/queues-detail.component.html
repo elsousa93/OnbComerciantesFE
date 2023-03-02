@@ -80,8 +80,6 @@
                   </div>
                   <h3 class="text-primary mt-5 mb-0 ps-0">
                     <span class="assignment_returned icon-assignment-returned"></span>
-                    <!--<img src="assets/images/assignment_returned.svg"
-    style="height: 30px; vertical-align: bottom;">-->
                     &nbsp;{{'acceptance.returnReasons'|translate|uppercase}}
                   </h3>
                   <div class="row mt-0 ms-0 me-0 pt-0">
@@ -132,8 +130,8 @@
                     &nbsp;{{'homepage.risk'|translate|uppercase}}
                   </h3>
                   <!--<h3 *ngIf="queueName === 'DOValidation'" class="text-primary mt-5 mb-0 ps-0">
-                    &nbsp;{{'acceptance.returnReasons'|translate|uppercase}}
-                  </h3>-->
+    &nbsp;{{'acceptance.returnReasons'|translate|uppercase}}
+  </h3>-->
                   <h3 *ngIf="queueName === 'multipleClients'" class="text-primary mt-5 mb-0 ps-0">
                     &nbsp;{{'queues.clientStake'|translate|uppercase}}
                   </h3>
@@ -144,26 +142,66 @@
                     &nbsp;MCC
                   </h3>
 
+                  <!-- Tabela de Intervenientes/Merchant que tenham mais do que um valor -->
+                  <div *ngIf="queueName==='multipleClients'" class="row mt-0 ms-0 me-0 pt-0">
+                    <div class="col-12 mt-4 pt-0 ps-0 pe-0">
+                      <div class="table-responsive mb-5 pb-4">
+                        <table class="table">
+                          <thead class="text-primary table-primary">
+                            <tr class="table-white text-primary">
+                              <th scope="col" class="text-center text-primary bg-light table-white">
+                                {{'stakeholder.name'|translate}}
+                              </th>
+                              <th scope="col" class="text-center bg-light">NIF</th>
+                              <th scope="col" class="text-center bg-white">{{'stakeholder.clientNumber'|translate}}</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngIf="merchant.potentialClientIds != null && merchant?.potentialClientIds?.length > 0">
+                              <td class="text-primary text-center">{{merchant?.legalName}}</td>
+                              <td class="text-primary text-center">{{merchant?.fiscalId}}</td>
+                              <td class="text-primary text-center">{{(merchant?.clientId == null || merchant?.clientId == "") ? "-" : merchant?.clientId}}</td>
+                            </tr>
+                            <tr *ngFor="let stake of stakesList">
+                              <ng-container *ngIf="stake?.potentialClientIds != null && stake?.potentialClientIds?.length > 0">
+                                <td class="text-primary text-center">{{stake.shortName}}</td>
+                                <td class="text-primary text-center">{{stake.fiscalId}}</td>
+                                <td class="text-primary text-center">{{stake.clientId}}</td>
+                              </ng-container>
+                            </tr>
+                            <tr></tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+
                   <!-- Pesquisa da Fila Múltiplos Clientes -->
                   <div *ngIf="queueName === 'multipleClients'" class="offset-1 bg-white align-self-center col-10 ps-3"
                        style="margin-top: 15px; margin-left: 0px;">
                     <div class="row ms-0 me-0">
                       <div class="col-6 ms-0 me-0 ps-0 pe-5">
-                        <p class="titulo-form-simples mt-0">{{'searches.documentType'|translate}}</p><select id="select3" disabled class="form-select campo_form">
-                          <!--formControlName=-->
+                        <p class="titulo-form-simples mt-0">{{'searches.documentType'|translate}}</p>
+                        <select id="select3" name="documentType" formControlName="documentType" class="form-select campo_form">
+                          <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
+                            {{docType.description}}
+                          </option>
                         </select>
                       </div>
                       <div class="col-6 ms-0 me-0 ps-0 pe-5">
                         <p class="titulo-form-simples" style="margin-top: 0px;">
                           {{'searches.documentNumber'|translate}}
                         </p>
-                        <input id="text3" name="text3" type="text" class="form-control campo_form" disabled><!--formControlName=-->
+                        <input id="text3" name="documentNumber" formControlName="documentNumber" type="text" class="form-control campo_form"><!--formControlName=-->
                       </div>
                     </div>
-                    <button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1" wappler-command="editContent">
+                    <button id="btn5a6" class="btn botao_azul btn-lg ms-0 me-1" wappler-command="editContent" (click)="searchClient()" [disabled]="canSearch == false || form.get('documentType').value.length == 0 || form.get('documentNumber').value.length == 0">
                       {{'searches.search'|translate|uppercase}}
                       &nbsp;<img src="assets/images/search_white.svg" style="height: 30px; vertical-align: bottom;">
                     </button>
+                    <div *ngIf="notFound" class="mt-3">
+                      <p class="titulo-form-simples-erro">{{'client.searchError'|translate}}</p>
+                    </div>
                   </div>
 
                   <!-- Tabela semelhante nas filas Elegibilidade e Risco -->
@@ -224,9 +262,6 @@
                                        name="{{stake.id}}" (click)="uncheck()"><label class="form-check-label radio pe-5"
                                                                                       for="{{stake.id}}">{{'queues.unfavorable'|translate}}&nbsp;</label>
                               </td>
-                              <!--<td *ngIf="queueName === 'eligibility'" class="text-primary text-center">
-                  <span class="description icon-description"></span>
-                </td>-->
                             </tr>
                             <tr></tr>
                           </tbody>
@@ -235,32 +270,46 @@
                     </div>
                   </div>
                   <!-- Tabela da fila de Múltiplos Clientes -->
-                  <div *ngIf="queueName === 'multipleClients'" class="row mt-0 ms-0 me-0 pt-0">
+                  <div *ngIf="queueName === 'multipleClients' && showFoundClient" class="row mt-0 ms-0 me-0 pt-0">
                     <div class="col-12 mt-4 pt-0 ps-0 pe-0">
                       <div class="table-responsive mb-5 pb-4">
-                        <table class="table">
-                          <thead class="text-primary table-primary">
-                            <tr class="table-white text-primary">
-                              <th scope="col" class="text-center text-primary bg-light table-white">
-                                {{'stakeholder.clientNumber'|translate}}
-                              </th>
-                              <th scope="col" class="text-center bg-light">{{'queues.stakeName'|translate}}</th>
-                              <th scope="col" class="text-center bg-white">NIF</th>
-                              <th scope="col" class="text-center bg-white">{{'searches.documentType'|translate}}</th>
-                              <th scope="col" class="text-center bg-white">{{'queues.documentNumber'|translate}}</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let stake of stakesList">
-                              <td class="text-primary text-center">{{stake.clientId}}</td>
-                              <td class="text-primary text-center">{{stake.shortName}}</td>
-                              <td class="text-primary text-center">{{stake.fiscalId}}</td>
-                              <td class="text-primary text-center">Cartão de Cidadão</td>
-                              <td class="text-primary text-center">212151</td>
-                            </tr>
-                            <tr></tr>
-                          </tbody>
-                        </table>
+                        <mat-table [dataSource]="clientsMat" class="table-responsive" matSort style="margin-left: auto; margin-right: auto; width: 95%;">
+                          <ng-container matColumnDef="clientId">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                              {{'client.number'|translate}}
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let client"> {{client.clientId}} </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="commercialName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                              {{'client.nameSocialDesignation'|translate}}
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let client">{{client.commercialName}}</mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="fiscalId">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                              NIF
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let client"> {{client.fiscalId}} </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="documentType">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                              {{'searches.documentType'|translate}}
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let client"> {{client.documentType}} </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="documentNumber">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                              {{'searches.documentNumber'|translate}}
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let client"> {{client.documentNumber}} </mat-cell>
+                          </ng-container>
+                          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                          <mat-row *matRowDef="let client; let idx = index; columns: displayedColumns;">
+                          </mat-row>
+                        </mat-table>
+                        <mat-paginator #paginator [pageSizeOptions]="[3, 10, 20]" showFirstLastButtons>
+                        </mat-paginator>
                       </div>
                     </div>
                   </div>
@@ -271,33 +320,30 @@
                         <table class="table">
                           <thead class="text-primary table-primary">
                             <tr class="table-white text-primary">
-                              <th scope="col" class="text-center text-primary bg-light table-white">
-                                {{'stores.name'|translate}}
-                              </th>
+                              <th scope="col" class="text-center text-primary bg-light table-white">{{'stores.name'|translate}}</th>
                               <th scope="col" class="text-center bg-light">{{'stores.requestNumber'|translate}}</th>
                               <th scope="col" class="text-center bg-white">{{'stores.activity'|translate}}</th>
                               <th scope="col" class="text-center bg-white">{{'stores.subActivity'|translate}}</th>
                               <th scope="col" class="text-center bg-white">{{'queues.functionalityType'|translate}}</th>
-                              <th scope="col" class="text-center bg-white">{{'queues.subFunctionality'|translate}}</th>
                               <th scope="col" class="text-center bg-white">MCC</th>
                             </tr>
                           </thead>
-                          <tbody formGroupName="shopsMCC">
-                            <tr *ngFor="let shop of shopsList">
-                              <td class="text-primary text-center">{{shop.name}}</td>
-                              <td class="text-primary text-center">{{processId}}</td>
-                              <td class="text-primary text-center">{{shop.activity}}</td>
-                              <td class="text-primary text-center">{{shop.subActivity}}</td>
-                              <td class="text-primary text-center">JCB</td>
-                              <td class="text-primary text-center">-</td>
-                              <td class="text-primary text-center">
-                                <select name="{{shop.id}}" formControlName="{{shop.id}}">
-                                  <option value="" disabled>A definir</option>
-                                  <option>Opção</option><!-- Quando tivermos a reference data do MCC -->
-                                </select>
-                              </td>
-                            </tr>
-                            <tr></tr>
+                          <tbody>
+                            <ng-container *ngFor="let shop of shopsList" formGroupName="shopsMCC">
+                              <tr *ngFor="let attr of shop?.pack?.paymentSchemes?.attributes">
+                                <td class="text-primary text-center">{{shop?.name}}</td>
+                                <td class="text-primary text-center">{{processId}}</td>
+                                <td class="text-primary text-center">{{getActivityDescription(shop?.activity)}}</td> <!--shop?.activity-->
+                                <td class="text-primary text-center">{{getSubActivityDescription(shop?.subActivity)}}</td> <!--shop?-subActivity-->
+                                <td class="text-primary text-center">{{attr?.description}}</td>
+                                <td class="text-primary text-center">
+                                  <select name="{{shop.id + attr.id}}" formControlName="{{shop.id + attr.id}}">
+                                    <option value="" disabled>A definir</option>
+                                    <option>Opção</option><!-- Quando tivermos a reference data do MCC -->
+                                  </select>
+                                </td>
+                              </tr>
+                            </ng-container>                           
                           </tbody>
                         </table>
                       </div>
@@ -326,19 +372,20 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td class="text-primary text-center">Tarifa</td>
-                              <td class="text-primary text-center">VISA Electron Domestico</td>
-                              <td class="text-primary text-center">0,05</td>
-                              <td class="text-primary text-center">0,05</td>
-                              <td class="text-primary text-center">9,99€</td>
-                              <td class="text-primary text-center">9,99€</td>
-                              <td class="text-primary text-center">0,35€</td>
-                              <td class="text-primary text-center">0,11€</td>
-                              <td class="text-primary text-center">0,8%</td>
-                              <td class="text-primary text-center">0,8%</td>
-                            </tr>
-                            <tr></tr>
+                            <ng-container *ngFor="let shop of shopsList">
+                              <tr *ngFor="let commissionAttr of shop?.pack?.commission?.attributes">
+                                <td class="text-primary text-center">{{shop?.pack?.packId}}</td>
+                                <td class="text-primary text-center">{{commissionAttr?.description}}</td>
+                                <td class="text-primary text-center" [ngStyle]="{'color': commissionAttr?.minValue?.originalValue != commissionAttr?.minValue?.finalValue ? 'red !important' : ''}">{{commissionAttr?.minValue?.originalValue}}</td>
+                                <td class="text-primary text-center" [ngStyle]="{'color': commissionAttr?.minValue?.originalValue != commissionAttr?.minValue?.finalValue ? 'red !important' : ''}">{{commissionAttr?.minValue?.finalValue}}</td>
+                                <td class="text-primary text-center" [ngStyle]="{'color': commissionAttr?.maxValue?.originalValue != commissionAttr?.maxValue?.finalValue ? 'red !important' : ''}">{{commissionAttr?.maxValue?.originalValue}}</td>
+                                <td class="text-primary text-center" [ngStyle]="{'color': commissionAttr?.maxValue?.originalValue != commissionAttr?.maxValue?.finalValue ? 'red !important' : ''}">{{commissionAttr?.maxValue?.finalValue}}</td>
+                                <td class="text-primary text-center" [ngStyle]="{'color': commissionAttr?.fixedValue?.originalValue != commissionAttr?.fixedValue?.finalValue ? 'red !important' : ''}">{{commissionAttr?.fixedValue?.originalValue}}</td>
+                                <td class="text-primary text-center" [ngStyle]="{'color': commissionAttr?.fixedValue?.originalValue != commissionAttr?.fixedValue?.finalValue ? 'red !important' : ''}">{{commissionAttr?.fixedValue?.finalValue}}</td>
+                                <td class="text-primary text-center" [ngStyle]="{'color': commissionAttr?.percentageValue?.originalValue != commissionAttr?.percentageValue?.finalValue ? 'red !important' : ''}">{{commissionAttr?.percentageValue?.originalValue}}</td>
+                                <td class="text-primary text-center" [ngStyle]="{'color': commissionAttr?.percentageValue?.originalValue != commissionAttr?.percentageValue?.finalValue ? 'red !important' : ''}">{{commissionAttr?.percentageValue?.finalValue}}</td>
+                              </tr>
+                            </ng-container>
                           </tbody>
                         </table>
                       </div>
@@ -355,13 +402,14 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr>
-                              <td class="text-primary text-center">TPA</td>
-                              <td class="text-primary text-center">Mensalidade 1</td>
-                              <td class="text-primary text-center">10€</td>
-                              <td class="text-primary text-center">10€</td>
-                            </tr>
-                            <tr></tr>
+                            <ng-container *ngFor="let equipment of equipmentList">
+                              <tr *ngFor="let pricingAttr of equipment?.pricing?.attribute">
+                                <td class="text-primary text-center">TPA</td>
+                                <td class="text-primary text-center">Mensalidade 1</td>
+                                <td class="text-primary text-center" [ngStyle]="{'color': pricingAttr?.originalValue != pricingAttr?.finalValue ? 'red !important' : ''}">{{pricingAttr?.originalValue}}</td>
+                                <td class="text-primary text-center" [ngStyle]="{'color': pricingAttr?.originalValue != pricingAttr?.finalValue ? 'red !important' : ''}">{{pricingAttr?.finalValue}}</td>
+                              </tr>
+                            </ng-container>
                           </tbody>
                         </table>
                       </div>
@@ -378,7 +426,7 @@
                               <th scope="col" class="text-center text-primary bg-light table-white">
                                 {{'queues.merchantName'|translate}}
                               </th>
-                              <th scope="col" class="text-center bg-light">
+                              <th scope="col" class="text-center bg-light" style="white-space: nowrap;">
                                 {{'queues.enrollmentMerchantNumber'|translate}}
                               </th>
                             </tr>
@@ -386,10 +434,10 @@
                           <tbody>
                             <tr>
                               <td class="text-primary text-center">
-                                EMPRESA TESTE UNIPESSOAL LDA
+                                {{merchant?.legalName}}
                               </td>
-                              <td class="text-primary text-center" [(ngModel)]="enrollmentMerchantNumber">
-                                <input type="text"
+                              <td class="text-primary text-center">
+                                <input type="text" name="enrollmentMerchantNumber" formControlName="enrollmentMerchantNumber"
                                        class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
                               </td>
                             </tr>
@@ -413,10 +461,10 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngFor="let shop of shopsList">
+                            <tr *ngFor="let shop of shopsList" formGroupName="shops">
                               <td class="text-primary text-center">{{shop.name}}</td>
-                              <td class="text-primary text-center" [(ngModel)]="enrollmentStoreNumber">
-                                <input type="text"
+                              <td class="text-primary text-center">
+                                <input type="text"name="{{shop.id}}" formControlName="{{shop.id}}"
                                        class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
                               </td>
                             </tr>
@@ -442,35 +490,18 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr>
-                                <td class="text-primary text-center bg-primary bg-opacity-10">Teste 1, LDA</td>
-                                <td class="text-primary text-center bg-primary bg-opacity-10">01</td>
-                                <td class="text-center text-primary bg-opacity-10 bg-light"
-                                    [(ngModel)]="enrollmentTerminalNumber">
-                                  <input type="text"
-                                         class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="text-primary text-center bg-primary bg-opacity-10">Teste 2, LDA</td>
-                                <td class="text-primary text-center bg-primary bg-opacity-10">02</td>
-                                <td class="text-center text-primary bg-opacity-10 bg-light"
-                                    [(ngModel)]="enrollmentTerminalNumber">
-                                  <input type="text"
-                                         class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
-                                </td>
-                              </tr>
-                              <tr>
-                                <td class="text-primary text-center bg-primary bg-opacity-10">Teste 3, LDA</td>
-                                <td class="text-primary text-center bg-primary bg-opacity-10">03</td>
-                                <td class="text-center text-primary bg-opacity-10 bg-light"
-                                    [(ngModel)]="enrollmentTerminalNumber">
-                                  <input type="text"
-                                         class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
-                                </td>
-                              </tr>
-                              <tr>
-                              </tr>
+                              <ng-container *ngFor="let shop of shopsList">
+                                <tr *ngFor="let equip of equipmentList" formGroupName="equipments">
+                                  <ng-container *ngIf="shop.id === equip['shopId']">
+                                    <td class="text-primary text-center bg-primary bg-opacity-10">{{shop.name}}</td>
+                                    <td class="text-primary text-center bg-primary bg-opacity-10">{{equip.id}}</td>
+                                    <td class="text-center text-primary bg-opacity-10 bg-light">
+                                      <input type="text" name="{{equip.id}}" formControlName="{{equip.id}}"
+                                             class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
+                                    </td>
+                                  </ng-container>
+                                </tr>
+                              </ng-container>
                             </tbody>
                           </table>
                         </div>
@@ -503,7 +534,7 @@
                             <td>
                               <span class="search-blue icon-search-blue" (click)="openFile(files[0])">
                                 <!--<img src="assets/images/search_blue.svg" (click)="openFile(files[0])"
-                  style="height: 25px !important; vertical-align: sub; cursor: pointer;">-->
+                style="height: 25px !important; vertical-align: sub; cursor: pointer;">-->
                               </span>
                             </td>
                           </tr>
@@ -580,7 +611,7 @@
                           <button id="btn5a2" *ngIf="queueName==='DOValidation'"
                                   [disabled]="!form.valid"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                                  wappler-command="editContent" (click)="concludeOpinion('ReturnToRiskEvaluation')">
+                                  wappler-command="editContent" (click)="concludeOpinion('ReturnToComplianceEvaluation')">
                             {{'queues.returnCoff'|translate|uppercase}}&nbsp;
                             <img src="assets/images/queues/return_coff.svg"
                                  style="height: 25px !important; vertical-align: sub;">
@@ -596,7 +627,7 @@
 
                           <button id="btn5a2" *ngIf="queueName === 'negotiationAproval'"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                                  wappler-command="editContent">
+                                  wappler-command="editContent" (click)="concludeOpinion('Approve')">
                             {{'queues.approve'|translate|uppercase}}&nbsp;
                             <img src="assets/images/queues/aprovar.svg"
                                  style="height: 25px !important; vertical-align: sub;">
@@ -604,7 +635,7 @@
 
                           <button id="btn5a2"
                                   *ngIf="queueName === 'negotiationAproval' || queueName === 'validationSIBS'"
-                                  [disabled]="!(fillComments?.length > 0)"
+                                  [disabled]="form.get('observation').value.length == 0" (click)="concludeOpinion('ReturnToFrontOffice')"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                   wappler-command="editContent">
                             {{'queues.return'|translate|uppercase}}&nbsp;
@@ -613,7 +644,7 @@
                           </button>
 
                           <button id="btn5a2" *ngIf="queueName === 'validationSIBS'"
-                                  [disabled]="(!(enrollmentMerchantNumber?.length > 0) || !(enrollmentStoreNumber?.length > 0) || !(enrollmentTerminalNumber?.length > 0))"
+                                  [disabled]="!form.valid" (click)="concludeOpinion('Continue')"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                   wappler-command="editContent">
                             {{'queues.conclude'|translate|uppercase}}&nbsp;

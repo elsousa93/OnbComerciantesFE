@@ -87,7 +87,8 @@ export interface Client {
   businessGroup?: BusinessGroup,
   clientId?: string,
   merchantRegistrationId?: string,
-  documents?: PostDocument[]
+  documents?: PostDocument[],
+  potentialClientIds?: string[]
 }
 export interface HeadquartersAddress {
   address?: string,

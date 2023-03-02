@@ -53,6 +53,10 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
 
     this.returned = localStorage.getItem("returned");
 
+    if (this.returned == 'consult') {
+      this.form.disable();
+    }
+
     this.tableInfoService.GetContractualPackLanguage().subscribe(result => {
       this.contractLanguage = result;
     });
@@ -122,43 +126,49 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   }
 
   sendFinalSubmission() {
-    if (this.form.valid) {
-      var context = this;
-      this.submissionStakeholders.forEach((stake, index) => {
-        var signType = "";
-        if (context.isVisible) {
-          signType = "CitizenCard";
-        } else {
-          signType = context.form.get(stake.id).value;
-        }
-        stake["signType"] = signType;
-        this.stakeholderService.UpdateStakeholder(this.submissionId, stake.id, stake).subscribe(res => {
+    if (this.returned != 'consult') {
+      if (this.form.valid) {
+        var context = this;
+        this.submissionStakeholders.forEach((stake, index) => {
+          var signType = "";
+          if (context.isVisible) {
+            signType = "CitizenCard";
+          } else {
+            signType = context.form.get(stake.id).value;
+          }
+          stake["signType"] = signType;
+          this.stakeholderService.UpdateStakeholder(this.submissionId, stake.id, stake).subscribe(res => {
+          });
         });
-      });
 
-      this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
-        this.submissionAnswer = result.result;
+        this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
+          this.submissionAnswer = result.result;
 
-        var submissionToSend = {
-          submissionType: "DigitalComplete",
-          processNumber: this.submissionAnswer.processNumber,
-          processKind: this.submissionAnswer.processKind,
-          processType: this.submissionAnswer.processType,
-          signType: this.isVisible ? "Manual" : "Digital",
-          isClientAwaiting: this.submissionAnswer.isClientAwaiting,
-          submissionUser: this.submissionAnswer.submissionUser,
-          id: this.submissionAnswer.id,
-          bank: this.submissionAnswer.bank,
-          state: "Ready",
-          startedAt: new Date().toISOString(),
-          contractPackLanguage: this.form.get("language").value
-        }
-        this.logger.info("Updated submission data: " + JSON.stringify(submissionToSend));
-        this.submissionService.EditSubmission(this.submissionId, submissionToSend).subscribe(result => {
-          this.logger.info("Submission updated: " + JSON.stringify(result));
+          var submissionToSend = {
+            submissionType: "DigitalComplete",
+            processNumber: this.submissionAnswer.processNumber,
+            processKind: this.submissionAnswer.processKind,
+            processType: this.submissionAnswer.processType,
+            signType: this.isVisible ? "Manual" : "Digital",
+            isClientAwaiting: this.submissionAnswer.isClientAwaiting,
+            submissionUser: this.submissionAnswer.submissionUser,
+            id: this.submissionAnswer.id,
+            bank: this.submissionAnswer.bank,
+            state: "Ready",
+            startedAt: new Date().toISOString(),
+            contractPackLanguage: this.form.get("language").value
+          }
+          this.logger.info("Updated submission data: " + JSON.stringify(submissionToSend));
+          this.submissionService.EditSubmission(this.submissionId, submissionToSend).subscribe(result => {
+            this.logger.info("Submission updated: " + JSON.stringify(result));
+          });
         });
-      });
+      }
+    } else {
+      this.router.navigate(["/"]);
+      this.data.reset();
     }
+
   }
 
   goBack() {

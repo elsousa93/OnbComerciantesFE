@@ -437,9 +437,9 @@
       "compliance": "Evidence of Clarification of Doubts Compliance",
       "DOValidation": "Evidence of Clarification of Doubt DO",
       "risk": "Evidence of Approval Risk",
-      "negotiationAproval": "Evidence of Business Approval",
+      "negotiationApproval": "Evidence of Business Approval",
       "success": "Successful attachment"
-    } ,
+    },
     "completed": "Complete opinion",
     "favorable": "Favorable",
     "unfavorable": "Not Favorable",

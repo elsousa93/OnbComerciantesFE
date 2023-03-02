@@ -14,6 +14,7 @@ import { TableInfoService } from '../table-info/table-info.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppConfigService } from '../app-config.service';
 import { DatePipe } from '@angular/common';
+import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 interface ProcessFT {
   processId: string;
   processNumber: string;
@@ -63,7 +64,7 @@ export class ConsultasFTComponent implements OnInit {
   ListaDocType;
 
   constructor(private logger: LoggerService, private datePipe: DatePipe,
-    private route: Router, private tableInfo: TableInfoService, private snackBar: MatSnackBar, private data: DataService, private processService: ProcessService, private translate: TranslateService, public appComponent: AppComponent, private configuration: AppConfigService) {
+    private route: Router, private tableInfo: TableInfoService, private snackBar: MatSnackBar, private data: DataService, private processService: ProcessService, private translate: TranslateService, public appComponent: AppComponent, private configuration: AppConfigService, private processNrService: ProcessNumberService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.appComponent.toggleSideNav(false);
     this.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
@@ -265,6 +266,8 @@ export class ConsultasFTComponent implements OnInit {
         processId: process.processId
       }
     };
+    this.processNrService.changeProcessId(process.processId);
+    this.processNrService.changeQueueName(this.queueName);
     this.logger.info("Redirecting to Queues Detail page");
     this.route.navigate(['/queues-detail'], navigationExtras);
   }

@@ -438,9 +438,9 @@
       "compliance": "Evidência de Esclarecimento de Dúvidas Compliance",
       "DOValidation": "Evidência de Esclarecimento de Dúvidas DO",
       "risk": "Evidência de Aprovação Risco",
-      "negotiationAproval": "Evidência de Aprovação Negocial",
+      "negotiationApproval": "Evidência de Aprovação Negocial",
       "success": "Upload efetuado com sucesso"
-    } ,
+    },
     "completed": "Concluir parecer",
     "favorable": "Favorável",
     "unfavorable": "Não Favorável",

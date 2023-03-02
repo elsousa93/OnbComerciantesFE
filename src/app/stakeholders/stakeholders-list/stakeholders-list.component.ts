@@ -216,35 +216,72 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         if (AcquiringStakeholder.fiscalId != "" && !this.isInfoDeclarativa && this.firstTimeStake) {
           context.stakeholderService.SearchStakeholderByQuery(AcquiringStakeholder.fiscalId, '0501', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658', "AcquiringUserID").then(res => {
             context.logger.info("Search stakeholder by query result: " + JSON.stringify(res));
-            if (res.result[0].stakeholderId != null) {
-              stakeholderToInsert.stakeholderAcquiring.stakeholderId = res.result[0].stakeholderId;
-              stakeholderToInsert.stakeholderAcquiring.clientId = res.result[0].stakeholderId;
-              context.stakeholderService.getStakeholderByID(res.result[0].stakeholderId, '0501', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658', "AcquiringUserID").then(r => {
-                context.logger.info("Get stakeholder by id result: " + JSON.stringify(r));
-                stakeholderToInsert.stakeholderOutbound = r.result;
-                stakeholderToInsert.stakeholderAcquiring.birthDate = stakeholderToInsert.stakeholderOutbound.birthDate;
-                stakeholderToInsert.stakeholderAcquiring.contactName = stakeholderToInsert.stakeholderOutbound.shortName;
-                stakeholderToInsert.stakeholderAcquiring.email = stakeholderToInsert.stakeholderOutbound.contacts.email;
-                stakeholderToInsert.stakeholderAcquiring.fiscalAddress = stakeholderToInsert.stakeholderOutbound.address;
-                stakeholderToInsert.stakeholderAcquiring.fullName = stakeholderToInsert.stakeholderOutbound.fullName;
-                stakeholderToInsert.stakeholderAcquiring.identificationDocument = stakeholderToInsert.stakeholderOutbound.identificationDocument;
-                stakeholderToInsert.stakeholderAcquiring.pep = stakeholderToInsert.stakeholderOutbound.pep;
-                stakeholderToInsert.stakeholderAcquiring.phone1 = stakeholderToInsert.stakeholderOutbound.contacts.phone1;
-                stakeholderToInsert.stakeholderAcquiring.phone2 = stakeholderToInsert.stakeholderOutbound.contacts.phone2;
-                stakeholderToInsert.stakeholderAcquiring.shortName = stakeholderToInsert.stakeholderOutbound.shortName;
-                context.logger.info("Stakeholder data to update: " + JSON.stringify(stakeholderToInsert.stakeholderAcquiring));
-                context.stakeholderService.UpdateStakeholder(context.submissionId, stakeholderToInsert.stakeholderAcquiring.id, stakeholderToInsert.stakeholderAcquiring).subscribe(stake => {
-                  context.logger.info("Updated stakeholder result: " + JSON.stringify(stake));
-                  resolve(null);
+            if (res.result.length == 1) {
+              if (res.result[0].stakeholderId != null) {
+                stakeholderToInsert.stakeholderAcquiring.stakeholderId = res.result[0].stakeholderId;
+                stakeholderToInsert.stakeholderAcquiring.clientId = res.result[0].stakeholderId;
+                context.stakeholderService.getStakeholderByID(res.result[0].stakeholderId, '0501', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658', "AcquiringUserID").then(r => {
+                  context.logger.info("Get stakeholder by id result: " + JSON.stringify(r));
+                  stakeholderToInsert.stakeholderOutbound = r.result;
+                  stakeholderToInsert.stakeholderAcquiring.birthDate = stakeholderToInsert.stakeholderOutbound.birthDate;
+                  stakeholderToInsert.stakeholderAcquiring.contactName = stakeholderToInsert.stakeholderOutbound.shortName;
+                  stakeholderToInsert.stakeholderAcquiring.email = stakeholderToInsert.stakeholderOutbound.contacts.email;
+                  stakeholderToInsert.stakeholderAcquiring.fiscalAddress = stakeholderToInsert.stakeholderOutbound.address;
+                  stakeholderToInsert.stakeholderAcquiring.fullName = stakeholderToInsert.stakeholderOutbound.fullName;
+                  stakeholderToInsert.stakeholderAcquiring.identificationDocument = stakeholderToInsert.stakeholderOutbound.identificationDocument;
+                  stakeholderToInsert.stakeholderAcquiring.pep = stakeholderToInsert.stakeholderOutbound.pep;
+                  stakeholderToInsert.stakeholderAcquiring.phone1 = stakeholderToInsert.stakeholderOutbound.contacts.phone1;
+                  stakeholderToInsert.stakeholderAcquiring.phone2 = stakeholderToInsert.stakeholderOutbound.contacts.phone2;
+                  stakeholderToInsert.stakeholderAcquiring.shortName = stakeholderToInsert.stakeholderOutbound.shortName;
+                  context.logger.info("Stakeholder data to update: " + JSON.stringify(stakeholderToInsert.stakeholderAcquiring));
+                  context.stakeholderService.UpdateStakeholder(context.submissionId, stakeholderToInsert.stakeholderAcquiring.id, stakeholderToInsert.stakeholderAcquiring).subscribe(stake => {
+                    context.logger.info("Updated stakeholder result: " + JSON.stringify(stake));
+                    resolve(null);
+                  }, rej => {
+                    context.logger.error(rej, "", "Error updating stakeholder");
+                    resolve(null);
+                  });
                 }, rej => {
-                  context.logger.error(rej, "", "Error updating stakeholder");
+                  context.logger.error(rej, "", "Error getting stakeholder");
+                  resolve(null);
+                }).then(res => {
                   resolve(null);
                 });
-              }, rej => {
-                context.logger.error(rej, "", "Error getting stakeholder");
-                resolve(null);
-              }).then(res => {
-                resolve(null);
+              }
+            }
+            if (res.result.length > 1) { 
+              res.result.forEach(stake => {
+                if (stake.stakeholderId != null && stake.stakeholderId === AcquiringStakeholder.clientId) {
+                  stakeholderToInsert.stakeholderAcquiring.stakeholderId = stake.stakeholderId;
+                  stakeholderToInsert.stakeholderAcquiring.clientId = stake.stakeholderId;
+                  context.stakeholderService.getStakeholderByID(stake.stakeholderId, '0501', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658', "AcquiringUserID").then(r => {
+                    context.logger.info("Get stakeholder by id result: " + JSON.stringify(r));
+                    stakeholderToInsert.stakeholderOutbound = r.result;
+                    stakeholderToInsert.stakeholderAcquiring.birthDate = stakeholderToInsert.stakeholderOutbound.birthDate;
+                    stakeholderToInsert.stakeholderAcquiring.contactName = stakeholderToInsert.stakeholderOutbound.shortName;
+                    stakeholderToInsert.stakeholderAcquiring.email = stakeholderToInsert.stakeholderOutbound.contacts.email;
+                    stakeholderToInsert.stakeholderAcquiring.fiscalAddress = stakeholderToInsert.stakeholderOutbound.address;
+                    stakeholderToInsert.stakeholderAcquiring.fullName = stakeholderToInsert.stakeholderOutbound.fullName;
+                    stakeholderToInsert.stakeholderAcquiring.identificationDocument = stakeholderToInsert.stakeholderOutbound.identificationDocument;
+                    stakeholderToInsert.stakeholderAcquiring.pep = stakeholderToInsert.stakeholderOutbound.pep;
+                    stakeholderToInsert.stakeholderAcquiring.phone1 = stakeholderToInsert.stakeholderOutbound.contacts.phone1;
+                    stakeholderToInsert.stakeholderAcquiring.phone2 = stakeholderToInsert.stakeholderOutbound.contacts.phone2;
+                    stakeholderToInsert.stakeholderAcquiring.shortName = stakeholderToInsert.stakeholderOutbound.shortName;
+                    context.logger.info("Stakeholder data to update: " + JSON.stringify(stakeholderToInsert.stakeholderAcquiring));
+                    context.stakeholderService.UpdateStakeholder(context.submissionId, stakeholderToInsert.stakeholderAcquiring.id, stakeholderToInsert.stakeholderAcquiring).subscribe(stake => {
+                      context.logger.info("Updated stakeholder result: " + JSON.stringify(stake));
+                      resolve(null);
+                    }, rej => {
+                      context.logger.error(rej, "", "Error updating stakeholder");
+                      resolve(null);
+                    });
+                  }, rej => {
+                    context.logger.error(rej, "", "Error getting stakeholder");
+                    resolve(null);
+                  }).then(res => {
+                    resolve(null);
+                  });
+                }
               });
             }
           }, rej => {

@@ -114,6 +114,10 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       }
       this.listValue.get("cellphone").get("phoneNumber").updateValueAndValidity();
     });
+
+    if (this.returned == 'consult') {
+      this.listValue.disable();
+    }
   }
 
   get emailValid() {
@@ -137,25 +141,30 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   }
 
   submit() {
-    if (this.listValue.valid) {
-      this.selectedStore.email = this.listValue.get("email").value;
-      this.selectedStore.phone1 = new Phone();
-      this.selectedStore.phone2 = new Phone();
-      this.selectedStore.phone1.countryCode = this.listValue.get("cellphone").get("countryCode").value;
-      this.selectedStore.phone1.phoneNumber = this.listValue.get("cellphone").get("phoneNumber").value;
-      this.selectedStore.phone2.countryCode = this.listValue.get("telephone").get("countryCode").value;
-      this.selectedStore.phone2.phoneNumber = this.listValue.get("telephone").get("phoneNumber").value;
-      this.logger.info("Shop data to send " + JSON.stringify(this.selectedStore));
-      this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.selectedStore.id, this.selectedStore).subscribe(result => {
-        if (this.currentIdx < (this.storesLength - 1)) {
-          this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
-          this.onActivate();
-          this.logger.info("Updated shop: " + JSON.stringify(result));
-        } else {
-          this.logger.info("Redirecting to Info Declarativa Assinatura page");
-          this.route.navigate(['/info-declarativa-assinatura']);
-        }
-      });
+    if (this.returned != 'consult') {
+      if (this.listValue.valid) {
+        this.selectedStore.email = this.listValue.get("email").value;
+        this.selectedStore.phone1 = new Phone();
+        this.selectedStore.phone2 = new Phone();
+        this.selectedStore.phone1.countryCode = this.listValue.get("cellphone").get("countryCode").value;
+        this.selectedStore.phone1.phoneNumber = this.listValue.get("cellphone").get("phoneNumber").value;
+        this.selectedStore.phone2.countryCode = this.listValue.get("telephone").get("countryCode").value;
+        this.selectedStore.phone2.phoneNumber = this.listValue.get("telephone").get("phoneNumber").value;
+        this.logger.info("Shop data to send " + JSON.stringify(this.selectedStore));
+        this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.selectedStore.id, this.selectedStore).subscribe(result => {
+          if (this.currentIdx < (this.storesLength - 1)) {
+            this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
+            this.onActivate();
+            this.logger.info("Updated shop: " + JSON.stringify(result));
+          } else {
+            this.logger.info("Redirecting to Info Declarativa Assinatura page");
+            this.route.navigate(['/info-declarativa-assinatura']);
+          }
+        });
+      }
+    } else {
+      this.logger.info("Redirecting to Info Declarativa Assinatura page");
+      this.route.navigate(['/info-declarativa-assinatura']);
     }
   }
 

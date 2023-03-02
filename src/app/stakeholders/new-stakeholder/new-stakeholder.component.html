@@ -89,7 +89,7 @@
             <div class="row" id="address">
               <p class="titulo-form-simples">{{'stakeholder.address'|translate|uppercase}} *</p>
               <input class="form-control" id="countryBillingAdressStakeholder" type="text" formControlName="Address"
-                     [readonly]="returned === 'consult'">
+                     [disabled]="returned === 'consult'">
             </div>
           </div>
           <div class="col-6">
@@ -97,12 +97,12 @@
               <p class="titulo-form-simples">{{'stakeholder.postalCode'|translate|uppercase}} *</p>
               <input class="form-control" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode"
                      (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8"
-                     [readonly]="returned === 'consult'">
+                     [disabled]="returned === 'consult'">
             </div>
             <div class="row ms-0" id="locale">
               <p class="titulo-form-simples">{{'stakeholder.locale'|translate|uppercase}} *</p>
               <input class="form-control" id="areaBillingAdressStakeholder" type="text" formControlName="Locality"
-                     [readonly]="canEditLocality() === false">
+                     [readonly]="canEditLocality() === false || returned === 'consult'">
             </div>
           </div>
         </div>

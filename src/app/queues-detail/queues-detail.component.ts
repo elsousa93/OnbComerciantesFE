@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -8,14 +8,20 @@ import { BusinessIssueViewModel, ProcessList, ProcessService, SearchProcessHisto
 import { LoggerService } from 'src/app/logger.service';
 import { QueuesService } from './queues.service';
 import { IStakeholders } from '../stakeholders/IStakeholders.interface';
-import { ShopDetailsAcquiring, ShopEquipment } from '../store/IStore.interface';
-import { ComplianceEvaluation, EligibilityAssessment, OperationsEvaluation, RiskAssessment, StandardIndustryClassificationChoice, State, StateResultDiscriminatorEnum } from './IQueues.interface';
+import { ShopActivities, ShopDetailsAcquiring, ShopEquipment, ShopSubActivities } from '../store/IStore.interface';
+import { ClientChoice, ComplianceEvaluation, EligibilityAssessment, MerchantRegistration, NegotiationApproval, OperationsEvaluation, RiskAssessment, StandardIndustryClassificationChoice, State, StateResultDiscriminatorEnum } from './IQueues.interface';
 import { PostDocument } from '../submission/document/ISubmission-document';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { DatePipe } from '@angular/common';
 import { Client } from '../client/Client.interface';
+import { ClientService } from '../client/client.service';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
+import { UserTypes } from '../table-info/ITable-info.interface';
+import { TableInfoService } from '../table-info/table-info.service';
 
 @Component({
   selector: 'queues-detail',
@@ -65,9 +71,28 @@ export class QueuesDetailComponent implements OnInit {
   //public merchant: Client;
   public stakeholdersList: IStakeholders[] = [];
   public ready: boolean = false;
-
+  canSearch: boolean = true;
+  notFound: boolean = false;
+  showFoundClient: boolean = false;
+  clientsToShow: Client[] = [];
+  @ViewChild(MatSort) sort: MatSort;
+  displayedColumns: string[] = ['clientId', 'commercialName', 'fiscalId', 'documentType', 'documentNumber'];
+  ListaDocType;
+  ListaDocTypeENI;
+  activities: ShopActivities[];
+  subActivities: ShopSubActivities[];
+  clientsMat = new MatTableDataSource<any>();
+  documentType: string = "";
+  @ViewChild('paginator') set paginator(pager: MatPaginator) {
+    if (pager) {
+      this.clientsMat.paginator = pager;
+      this.clientsMat.paginator._intl = new MatPaginatorIntl();
+      this.clientsMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, private http: HttpClient,
-    private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService, private datePipe: DatePipe, private queuesService: QueuesService, private processService: ProcessService) {
+    private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService,
+    private datePipe: DatePipe, private queuesService: QueuesService, private processService: ProcessService, private clientService: ClientService, private tableInfo: TableInfoService) {
 
     //Gets Queue Name and processId from the Dashboard component 
     if (this.route.getCurrentNavigation().extras.state) {
@@ -78,6 +103,14 @@ export class QueuesDetailComponent implements OnInit {
     // Preencher os dados da fila de trabalho consoante o processId recebido
     this.fetchStartingInfo();
     this.data.updateData(true, 0);
+
+    this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
+      this.ListaDocType = result;
+      this.ListaDocType = this.ListaDocType.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+    }), (this.tableInfo.GetAllSearchTypes(UserTypes.STAKEHOLDER).subscribe(result => {
+      this.ListaDocTypeENI = result;
+      this.ListaDocTypeENI = this.ListaDocTypeENI.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+    })));
   }
 
   initializeElegibilityForm() {
@@ -100,6 +133,23 @@ export class QueuesDetailComponent implements OnInit {
     });
   }
 
+  initializeMultipleClientsForm() {
+    this.form = new FormGroup({
+      documentType: new FormControl(''),
+      documentNumber: new FormControl(''),
+      observation: new FormControl('')
+    });
+  }
+
+  initializeValidationSIBSForm() {
+    this.form = new FormGroup({
+      observation: new FormControl(''),
+      enrollmentMerchantNumber: new FormControl('', Validators.required),
+      shops: new FormGroup({}),
+      equipments: new FormGroup({})
+    });
+  }
+
   updateStakeForm() {
     var formGroupStakeholdersEligibility = new FormGroup({});
     this.stakesList.forEach(function (value, idx) {
@@ -111,23 +161,61 @@ export class QueuesDetailComponent implements OnInit {
   updateShopForm() {
     var formGroupShop = new FormGroup({});
     this.shopsList.forEach(function (value, idx) {
-      formGroupShop.addControl(value.id, new FormControl('', Validators.required));
+      value.pack.paymentSchemes.attributes.forEach(attr => {
+        formGroupShop.addControl(value.id + attr.id, new FormControl('', Validators.required));
+      });
     });
     this.form.setControl("shopsMCC", formGroupShop);
+  }
+
+  updateShopValidationForm() {
+    var context = this;
+    var formGroupShop = new FormGroup({});
+    this.shopsList.forEach(function (value, idx) {
+      formGroupShop.addControl(value.id, new FormControl('', Validators.required));
+      var formGroupEquip = new FormGroup({});
+      context.equipmentList.forEach(equip => {
+        if (equip["shopId"] === value.id) {
+          formGroupEquip.addControl(equip.id, new FormControl('', Validators.required));
+        }
+      });
+      context.form.setControl("equipments", formGroupEquip);
+    });
+    this.form.setControl("shops", formGroupShop);
+    console.log('FORM STORE ', this.form);
   }
 
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.historyStream$.next(true);
-    if (this.queueName === 'eligibility' || this.queueName === 'risk' || this.queueName === 'multipleClients') {
+    if (this.queueName === 'eligibility' || this.queueName === 'risk') {
       this.initializeElegibilityForm();
     }
     if (this.queueName === 'negotiationAproval' || this.queueName === 'MCCTreatment' || this.queueName === 'validationSIBS') {
-      this.initializeMCCForm();
+      if (this.queueName === 'negotiationAproval') 
+        this.initializeComplianceForm();
+      
+      if (this.queueName === 'MCCTreatment')
+        this.initializeMCCForm();
+
+      if (this.queueName === 'validationSIBS')
+        this.initializeValidationSIBSForm();
+
+      this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
+        this.logger.info("Get all shop activities result: " + JSON.stringify(result));
+        this.activities = result;
+      }, error => {
+        this.logger.error(error, "", "Error getting all shop activities");
+      }));
+
     }
     if (this.queueName === 'compliance' || this.queueName === 'DOValidation') {
       this.initializeComplianceForm();
+    }
+    if (this.queueName === 'multipleClients') {
+      this.initializeMultipleClientsForm();
+
     }
   }
 
@@ -179,6 +267,7 @@ export class QueuesDetailComponent implements OnInit {
       this.queuesInfo.getProcessShopEquipmentDetails(processId, shopId, shopEquipmentId).then(r => {
         this.logger.info("Get shop equipment list from process result: " + JSON.stringify(r));
         var equipment = r.result;
+        equipment["shopId"] = shopId;
         this.equipmentList.push(equipment);
         resolve;
       });
@@ -192,9 +281,13 @@ export class QueuesDetailComponent implements OnInit {
       this.queuesInfo.getProcessShopDetails(processId, shopId).then(result => {
         this.logger.info("Get shop from process result: " + JSON.stringify(result));
         var shop = result.result;
-        var shopMCC = this.form.get("shopsMCC") as FormGroup;
-        shopMCC.addControl(shopId, new FormControl('', Validators.required));
         this.shopsList.push(shop);
+        if (this.queueName === 'MCCTreatment') {
+          this.updateShopForm();
+        }
+        if (this.queueName === 'validationSIBS') {
+          this.updateShopValidationForm();
+        }
         this.queuesInfo.getShopEquipmentConfigurationsFromProcess(this.processId, shop.id).then(eq => {
           this.logger.info("Get shop equipments list from process result: " + JSON.stringify(result));
           var equipments = eq.result;
@@ -205,6 +298,7 @@ export class QueuesDetailComponent implements OnInit {
           })
 
           Promise.all(shopEquipmentPromisses).then(res => {
+            //se o código estiver todo OK, a chamada que está a ser feita na linha 281 até 286 deve ser feita AQUI
             resolve;
           })
         });
@@ -385,6 +479,75 @@ export class QueuesDetailComponent implements OnInit {
     this.checkButton = false;
   }
 
+  getActivityDescription(activityCode) {
+    this.activities.forEach(act => {
+      if (activityCode == act.activityCode) {
+        this.subActivities = act.subActivities;
+      }
+    })
+    return this.activities.find(a => a.activityCode == activityCode).activityDescription;
+  }
+
+  getSubActivityDescription(subActivityCode) {
+    return this.subActivities.find(s => s.subActivityCode == subActivityCode).subActivityDescription;
+  }
+
+  searchClient() {
+    var context = this;
+    if (this.canSearch) {
+      this.canSearch = false;
+      var documentNumber = this.form.get("documentNumber").value;
+      var documentType = this.form.get("documentType").value;
+      this.clientService.SearchClientByQuery(documentNumber, documentType, "por mudar", "por mudar").subscribe(o => {
+        this.logger.info("Search client by ID result: " + JSON.stringify(o));
+        this.showFoundClient = true;
+        var clients = o;
+        var context2 = this;
+        context.clientsToShow = [];
+        context.clientsMat.data = context.clientsToShow;
+        if (clients.length > 0) {
+          if (clients.length === 1) {
+            context.snackBar.open(context.translate.instant('client.find'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
+          } else {
+            context.snackBar.open(context.translate.instant('client.multipleClients'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
+          }
+          clients.forEach(function (value, index) {
+            context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").then(c => {
+              context.logger.info("Get Merchant Outbound result: " + JSON.stringify(c));
+              var client = {
+                "clientId": c.result.merchantId,
+                "commercialName": c.result.commercialName,
+                "fiscalId": c.result.fiscalIdentification.fiscalId,
+                "documentType": documentType,
+                "documentNumber": documentNumber
+              }
+              context.clientsToShow.push(client);
+              context.logger.info("Clients found from search: " + JSON.stringify(context.clientsToShow));
+              context.clientsMat.data = context.clientsToShow;
+            }).then(res => {
+              context.notFound = false;
+              context.canSearch = true;
+            });
+          });
+        } else {
+          this.showFoundClient = false;
+          this.notFound = true;
+          this.canSearch = true;
+        }
+      }, error => {
+        context.showFoundClient = false;
+        this.notFound = true;
+        this.canSearch = true;
+      });
+    }
+  }
+
   concludeOpinion(type?:string) {
     var context = this;
     var queueModel;
@@ -394,7 +557,7 @@ export class QueuesDetailComponent implements OnInit {
       var observation = this.form.get('observation').value;
       queueModel.$type = StateResultDiscriminatorEnum.ELIGIBILITY_ASSESSMENT;
       queueModel.userObservations = observation;
-
+      this.documentType = "0058";
       queueModel.merchantAssessment = {
         merchantId: this.merchant.id,
         accepted: this.form.get("merchantEligibility").value
@@ -411,22 +574,6 @@ export class QueuesDetailComponent implements OnInit {
         });
       }
 
-      if (queueModel.merchantAssessment.accepted == false) {
-        context.queuesInfo.markToCancel(context.processId).then(res => {
-          context.route.navigate(['/']);
-        });
-      } else {
-        queueModel.stakeholderAssessment.forEach(stake => {
-          if (stake.accepted == false) {
-            context.queuesInfo.markToCancel(context.processId).then(res => {
-              context.route.navigate(['/']);
-            });
-          }
-        });
-      }
-
-
-
     } else if (this.queueName === 'risk') {
       this.state = State.RISK_ASSESSMENT;
       queueModel = {} as RiskAssessment;
@@ -434,7 +581,7 @@ export class QueuesDetailComponent implements OnInit {
       var observation = this.form.get('observation').value;
       queueModel.$type = StateResultDiscriminatorEnum.RISK_ASSESSMENT;
       queueModel.userObservations = observation;
-
+      this.documentType = "0059";
       var stakeholders = this.form.get("stakeholdersEligibility") as FormGroup;
       queueModel.stakeholderAssessment = [];
 
@@ -471,7 +618,7 @@ export class QueuesDetailComponent implements OnInit {
       var observation = this.form.get('observation').value;
       queueModel.$type = StateResultDiscriminatorEnum.COMPLIANCE_EVALUATION;
       queueModel.userObservations = observation;
-
+      this.documentType = "0060";
     } else if (this.queueName === 'MCC') {
       this.state = State.STANDARD_INDUSTRY_CLASSIFICATION_CHOICE;
       queueModel = {} as StandardIndustryClassificationChoice;
@@ -498,10 +645,10 @@ export class QueuesDetailComponent implements OnInit {
       queueModel.$type = StateResultDiscriminatorEnum.OPERATIONS_EVALUATION;
       queueModel.userObservations = observation;
       queueModel.decision = type;
-
+      this.documentType = "0061";
     } else if (this.queueName === 'multipleClients') {
       this.state = State.CLIENT_CHOICE;
-      queueModel = {} as OperationsEvaluation;
+      queueModel = {} as ClientChoice;
 
       var observation = this.form.get('observation').value;
       queueModel.$type = StateResultDiscriminatorEnum.CLIENT_CHOICE;
@@ -518,13 +665,48 @@ export class QueuesDetailComponent implements OnInit {
         decision: "", //Success, ReturnToBackOffice, ReturnToFrontOffice
         clientNumber: ""
       })
+    } else if (this.queueName === 'validationSIBS') {
+      this.state = State.MERCHANT_REGISTRATION;
+      queueModel = {} as MerchantRegistration;
+
+      var observation = this.form.get('observation').value;
+      queueModel.$type = StateResultDiscriminatorEnum.MERCHANT_REGISTRATION;
+      queueModel.userObservations = observation;
+
+      queueModel.merchantRegistrationId = this.form.get("enrollmentMerchantNumber").value;
+      this.shopsList.forEach(shop => {
+        var equips = [];
+
+        this.equipmentList.forEach(equip => {
+          if (shop.id === equip["shopId"]) {
+            equips.push({
+              equipmentId: equip.id,
+              equipmentRegistrationId: context.form.get("equipments").get(equip.id).value
+            });
+          }
+        });
+        var model = {
+          shopId: shop.id,
+          shopRegistrationId: context.form.get("shops").get(shop.id).value,
+          equipments: equips
+        };
+        queueModel.shops.push(model);
+      });
+    } else if (this.queueName === 'negotiationAproval') {
+      this.state = State.NEGOTIATION_APPROVAL;
+      queueModel = {} as NegotiationApproval;
+
+      var observation = this.form.get('observation').value;
+      queueModel.$type = StateResultDiscriminatorEnum.NEGOTIATION_APPROVAL;
+      queueModel.userObservations = observation;
+      this.documentType = "0062";
     }
 
     if (this.files.length > 0) {
       this.files.forEach(function (value, idx) {
         context.documentService.readBase64(value).then(data => {
           var document: PostDocument = {
-            documentType: null,
+            documentType: context.documentType,
             file: {
               fileType: "PDF",
               binary: data.split(',')[1]

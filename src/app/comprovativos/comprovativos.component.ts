@@ -396,10 +396,14 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.pageName = String(this.router.snapshot.params['pageName']);
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-    this.subscription = this.data.updatedComprovativos.subscribe(updatedComps => this.updatedComps = updatedComps);
     this.returned = localStorage.getItem("returned");
     this.submissionId = localStorage.getItem("submissionId");
     this.data.updateData(true, 4, 1);
+    if (this.returned == 'consult') {
+      this.updatedComps = true;
+    } else {
+      this.subscription = this.data.updatedComprovativos.subscribe(updatedComps => this.updatedComps = updatedComps);
+    }
   }
 
   getLegalNatureDescription() {
@@ -549,42 +553,48 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   continue() {
-    this.firstSubmissionModalRef?.hide();
-    this.files.forEach(doc => {
-      this.comprovativoService.readBase64(doc).then((data) => {
-        var docToSend: PostDocument = {
-          "documentType": "0000", //antes estava "1001"
-          "documentPurpose": "Identification",
-          "file": {
-            "fileType": "PDF",
-            "binary": data.split(',')[1] //para retirar a parte inicial "data:application/pdf;base64"
-          },
-          "validUntil": "2022-07-20T11:03:13.001Z",
-          "data": {}
-        }
-        this.logger.info("Sent document: " + JSON.stringify(docToSend));
-        this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(result => {
-          this.logger.info('Document submitted ' + JSON.stringify(result));
-        });
-      })
-    });
+    if (this.returned != 'consult') {
+      this.firstSubmissionModalRef?.hide();
+      this.files.forEach(doc => {
+        this.comprovativoService.readBase64(doc).then((data) => {
+          var docToSend: PostDocument = {
+            "documentType": "0000", //antes estava "1001"
+            "documentPurpose": "Identification",
+            "file": {
+              "fileType": "PDF",
+              "binary": data.split(',')[1] //para retirar a parte inicial "data:application/pdf;base64"
+            },
+            "validUntil": "2022-07-20T11:03:13.001Z",
+            "data": {}
+          }
+          this.logger.info("Sent document: " + JSON.stringify(docToSend));
+          this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(result => {
+            this.logger.info('Document submitted ' + JSON.stringify(result));
+          });
+        })
+      });
 
-    var loginUser = this.authService.GetCurrentUser();
-    this.submissionPut.submissionUser = {
-      user: loginUser.userName,
-      branch: loginUser.bankLocation,
-      partner: loginUser.bankName
-    }
+      var loginUser = this.authService.GetCurrentUser();
+      this.submissionPut.submissionUser = {
+        user: loginUser.userName,
+        branch: loginUser.bankLocation,
+        partner: loginUser.bankName
+      }
 
-    this.submissionPut.processNumber = localStorage.getItem("processNumber");
-    this.logger.info('Submission data:  ' + JSON.stringify(this.submissionPut));
-    this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPut).subscribe(result => {
-      this.logger.info('Updated submission ' + JSON.stringify(result));
+      this.submissionPut.processNumber = localStorage.getItem("processNumber");
+      this.logger.info('Submission data:  ' + JSON.stringify(this.submissionPut));
+      this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPut).subscribe(result => {
+        this.logger.info('Updated submission ' + JSON.stringify(result));
+        this.data.updateData(true, 4);
+        this.data.changeUpdatedComprovativos(true);
+        this.logger.info("Redirecting to Commercial Offer List page");
+        this.route.navigate(['/commercial-offert-list']);
+      });
+    } else {
       this.data.updateData(true, 4);
-      this.data.changeUpdatedComprovativos(true);
       this.logger.info("Redirecting to Commercial Offer List page");
       this.route.navigate(['/commercial-offert-list']);
-    });
+    }
   }
 
   getDocumentDescription(documentType: string) {

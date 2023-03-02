@@ -79,6 +79,8 @@ export class NavMenuPresencialComponent implements OnInit {
   ngOnInit(): void {
     this.dataService.changeData(new Map());
     this.dataService.updateData(null, null, null);
+    this.processNrService.changeProcessId('');
+    this.processNrService.changeQueueName('');
 
     this.authService.currentUser.subscribe(user => {
       this.currentUser = user;

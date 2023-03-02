@@ -282,7 +282,7 @@ export class StakeholdersComponent implements OnInit {
         if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress === null || this.currentStakeholder.stakeholderAcquiring.fiscalAddress === undefined)
           this.currentStakeholder.stakeholderAcquiring.fiscalAddress = {};
 
-        if (stakeForm.get("documentType") == null) { 
+        if (stakeForm.get("documentType") == null) {
           this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address = stakeForm.get("Address").value;
           this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country = stakeForm.get("Country").value;
           if (stakeForm.get("ZIPCode").value?.includes(" ")) {
@@ -332,6 +332,10 @@ export class StakeholdersComponent implements OnInit {
           this.logger.error(error, "", "Error updating stakeholder");
         });
       }
+    } else {
+      this.data.updateData(true, 2);
+      this.logger.info("Redirecting to Store Comp page");
+      this.route.navigate(['store-comp']);
     }
   }
 

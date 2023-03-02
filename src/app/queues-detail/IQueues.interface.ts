@@ -58,6 +58,7 @@ export interface ClientChoice {
   userObservations?: string,
   merchantChoice?: ClientNumberDecision,
   stakeholdersChoice?: ClientNumberDecision[]
+  decision?: string
 }
 
 export interface ClientNumberDecision {

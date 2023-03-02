@@ -194,7 +194,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   ngOnInit(): void {
     this.data.updateData(false, 2, 2);
     //this.initializeFormWithoutCC();
-
+    this.returned = localStorage.getItem("returned");
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
       if (this.returned == 'consult') {

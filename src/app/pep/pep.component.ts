@@ -90,7 +90,7 @@ export class PepComponent implements OnInit {
   ngOnInit(): void {
     this.submissionId = localStorage.getItem("submissionId");
     this.data.updateData(false, 6, 3);
-
+    this.returned = localStorage.getItem("returned");
     this.initForm();
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.setControl('pep', this.form);

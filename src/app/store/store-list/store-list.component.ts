@@ -263,108 +263,114 @@ export class StoreComponent implements AfterViewInit {
   }
 
   submit(addStore: boolean, isEditButton?: boolean) {
-    if (this.editStores.valid) {
-      var infoStores = this.editStores.get("infoStores");
+    if (this.returned != 'consult') {
+      if (this.editStores.valid) {
+        var infoStores = this.editStores.get("infoStores");
 
-      if (!infoStores.get("replicate").value) {
-        this.currentStore.address.address.postalArea = infoStores.get("localeStore").value;
-        this.currentStore.address.address.address = infoStores.get("addressStore").value;
-        this.currentStore.address.address.country = infoStores.get("countryStore").value;
-        this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
-        this.currentStore.address.useMerchantAddress = false;
-      } else {
-        this.currentStore.address.useMerchantAddress = true;
-        if (this.submissionClient.headquartersAddress.address != null) {
-          this.currentStore.address.address.address = this.submissionClient.headquartersAddress.address;
-          this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
-          this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
-          this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
-        } else {
+        if (!infoStores.get("replicate").value) {
+          this.currentStore.address.address.postalArea = infoStores.get("localeStore").value;
+          this.currentStore.address.address.address = infoStores.get("addressStore").value;
+          this.currentStore.address.address.country = infoStores.get("countryStore").value;
           this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
+          this.currentStore.address.useMerchantAddress = false;
+        } else {
+          this.currentStore.address.useMerchantAddress = true;
+          if (this.submissionClient.headquartersAddress.address != null) {
+            this.currentStore.address.address.address = this.submissionClient.headquartersAddress.address;
+            this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
+            this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
+            this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
+          } else {
+            this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
+          }
         }
-      }
 
-      if (infoStores.get("commercialCenter").value) {
-        this.currentStore.address.shoppingCenter = infoStores.get("subZoneStore").value;
-        this.currentStore.address.isInsideShoppingCenter = true;
-      } else {
-        this.currentStore.address.shoppingCenter = null; 
-        this.currentStore.address.isInsideShoppingCenter = false;
-      }
+        if (infoStores.get("commercialCenter").value) {
+          this.currentStore.address.shoppingCenter = infoStores.get("subZoneStore").value;
+          this.currentStore.address.isInsideShoppingCenter = true;
+        } else {
+          this.currentStore.address.shoppingCenter = null;
+          this.currentStore.address.isInsideShoppingCenter = false;
+        }
 
-      this.currentStore.name = infoStores.get("storeName").value;
-      this.currentStore.activity = infoStores.get("activityStores").value;
-      this.currentStore.subActivity = infoStores.get("subactivityStore").value;
-      this.currentStore.contactPerson = infoStores.get("contactPoint").value;
+        this.currentStore.name = infoStores.get("storeName").value;
+        this.currentStore.activity = infoStores.get("activityStores").value;
+        this.currentStore.subActivity = infoStores.get("subactivityStore").value;
+        this.currentStore.contactPerson = infoStores.get("contactPoint").value;
 
-      var bankStores = this.editStores.controls["bankStores"];
+        var bankStores = this.editStores.controls["bankStores"];
 
-      this.currentStore.bank = {
-        bank: {
-          bank: bankStores.get("supportBank").value,
-          iban: this.currentStore.bank?.bank?.iban
-        },
-        useMerchantBank: bankStores.get("bankInformation").value
-      }
+        this.currentStore.bank = {
+          bank: {
+            bank: bankStores.get("supportBank").value,
+            iban: this.currentStore.bank?.bank?.iban
+          },
+          useMerchantBank: bankStores.get("bankInformation").value
+        }
 
-      var productStores = this.editStores.controls["productStores"];
+        var productStores = this.editStores.controls["productStores"];
 
-      this.currentStore.productCode = productStores.get("solutionType").value;
-      this.currentStore.subproductCode = productStores.get("subProduct").value;
-      this.currentStore.website = productStores.get("url").value;
+        this.currentStore.productCode = productStores.get("solutionType").value;
+        this.currentStore.subproductCode = productStores.get("subProduct").value;
+        this.currentStore.website = productStores.get("url").value;
 
-      if (this.currentUser.permissions == "UNICRE") {
-        this.currentStore.supportEntity = TerminalSupportEntityEnum.ACQUIRER;
-      } else {
-        this.currentStore.supportEntity = TerminalSupportEntityEnum.OTHER;
-      }
+        if (this.currentUser.permissions == "UNICRE") {
+          this.currentStore.supportEntity = TerminalSupportEntityEnum.ACQUIRER;
+        } else {
+          this.currentStore.supportEntity = TerminalSupportEntityEnum.OTHER;
+        }
 
-      if (addStore) {
-        this.logger.info("Shop to add: " + JSON.stringify(this.currentStore));
-        this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
-          this.logger.info("Added shop result: " + JSON.stringify(result));
-          this.currentStore.id = result["id"];
-          this.addDocumentToShop(result["id"], this.currentStore);
-          this.emitInsertedStore(this.currentStore);
-          this.resetForm();
-          this.currentStore = null;
-          this.currentIdx = -2;
-        });
-      } else {
-
-        this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
-          this.logger.info("Updated shop result: " + JSON.stringify(result));
-          if (isEditButton) {
-            this.addDocumentToShop(this.currentStore.id, this.currentStore);
+        if (addStore) {
+          this.logger.info("Shop to add: " + JSON.stringify(this.currentStore));
+          this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
+            this.logger.info("Added shop result: " + JSON.stringify(result));
+            this.currentStore.id = result["id"];
+            this.addDocumentToShop(result["id"], this.currentStore);
+            this.emitInsertedStore(this.currentStore);
             this.resetForm();
             this.currentStore = null;
             this.currentIdx = -2;
-          } else {
-            if (this.currentIdx < (this.storesLength - 1)) {
-              this.addDocumentToShop(this.currentStore.id, this.currentStore);
-              this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-              this.resetForm();
-            } else {
+          });
+        } else {
+
+          this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
+            this.logger.info("Updated shop result: " + JSON.stringify(result));
+            if (isEditButton) {
               this.addDocumentToShop(this.currentStore.id, this.currentStore);
               this.resetForm();
               this.currentStore = null;
               this.currentIdx = -2;
-              this.logger.info("Redirecting to Comprovativos page");
-              this.data.updateData(true, 3);
-              this.route.navigate(['comprovativos']);
+            } else {
+              if (this.currentIdx < (this.storesLength - 1)) {
+                this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                this.resetForm();
+              } else {
+                this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                this.resetForm();
+                this.currentStore = null;
+                this.currentIdx = -2;
+                this.logger.info("Redirecting to Comprovativos page");
+                this.data.updateData(true, 3);
+                this.route.navigate(['comprovativos']);
+              }
             }
-          }
-        });
-      }
+          });
+        }
 
-    } else {
-      if (this.currentStore == null) {
-        this.logger.info("Redirecting to Comprovativos page");
-        this.data.updateData(true, 3);
-        this.route.navigate(['comprovativos']);
+      } else {
+        if (this.currentStore == null) {
+          this.logger.info("Redirecting to Comprovativos page");
+          this.data.updateData(true, 3);
+          this.route.navigate(['comprovativos']);
+        }
       }
+      this.onActivate();
+    } else {
+      this.logger.info("Redirecting to Comprovativos page");
+      this.data.updateData(true, 3);
+      this.route.navigate(['comprovativos']);
     }
-    this.onActivate();
   }
 
   resetForm() {

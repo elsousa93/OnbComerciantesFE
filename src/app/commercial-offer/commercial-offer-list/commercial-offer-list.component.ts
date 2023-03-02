@@ -610,6 +610,10 @@ export class CommercialOfferListComponent implements OnInit {
           this.route.navigate(['info-declarativa']);
         }
       });
+    } else {
+      this.data.updateData(true, 5);
+      this.logger.info("Redirecting to Info Declarativa page");
+      this.route.navigate(['info-declarativa']);
     }
     this.onActivate();
   }
