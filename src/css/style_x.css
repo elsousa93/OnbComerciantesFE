@@ -1651,3 +1651,11 @@ mat-paginator {
   top: 135px;
   right: 108px;
 }
+
+input.ng-invalid.ng-touched {
+  border: 1px solid #fa6e00;
+}
+
+select.ng-invalid.ng-touched {
+  border: 1px solid #fa6e00;
+}

@@ -86,9 +86,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       this.currentIdx = info.idx;
       this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
       this.logger.info("Selected stakeholder index: " + this.currentIdx);
-      this.getCountryInternationalCallingCode().then(result => {
-        setTimeout(() => this.setFormData(), 500);
-      });
+      setTimeout(() => this.setFormData(), 500);
     }
   }
 
@@ -220,20 +218,20 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     }
   }
 
-  getCountryInternationalCallingCode() {
-    return new Promise(resolve => {
-      if (this.currentStakeholder.stakeholderAcquiring?.phone1?.countryCode != null && !this.currentStakeholder?.stakeholderAcquiring?.phone1?.countryCode.startsWith("+")) {
-        this.tableInfo.GetCountryById(this.currentStakeholder?.stakeholderAcquiring?.phone1?.countryCode).subscribe(result => {
-          this.logger.info("Get country by id result: " + JSON.stringify(result));
-          if (result != null) {
-            this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = result.internationalCallingCode;
-          }
-          resolve(true);
-        }, error => resolve(false));
-      } else {
-        resolve(false);
-      }
-    });
-  }
+  //getCountryInternationalCallingCode() {
+  //  return new Promise(resolve => {
+  //    if (this.currentStakeholder.stakeholderAcquiring?.phone1?.countryCode != null && !this.currentStakeholder?.stakeholderAcquiring?.phone1?.countryCode.startsWith("+")) {
+  //      this.tableInfo.GetCountryById(this.currentStakeholder?.stakeholderAcquiring?.phone1?.countryCode).subscribe(result => {
+  //        this.logger.info("Get country by id result: " + JSON.stringify(result));
+  //        if (result != null) {
+  //          this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = result.internationalCallingCode;
+  //        }
+  //        resolve(true);
+  //      }, error => resolve(false));
+  //    } else {
+  //      resolve(false);
+  //    }
+  //  });
+  //}
 
 }

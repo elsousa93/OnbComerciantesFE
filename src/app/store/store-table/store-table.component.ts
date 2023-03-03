@@ -85,11 +85,11 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
         this.subActivities = act.subActivities;
       }
     })
-    return this.activities.find(a => a.activityCode == activityCode).activityDescription;
+    return this.activities?.find(a => a.activityCode == activityCode)?.activityDescription;
   }
 
   getSubActivityDescription(subActivityCode) {
-    return this.subActivities.find(s => s.subActivityCode == subActivityCode).subActivityDescription;
+    return this.subActivities?.find(s => s.subActivityCode == subActivityCode)?.subActivityDescription;
   }
 
   getBank(bankCode) {

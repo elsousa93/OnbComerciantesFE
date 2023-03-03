@@ -447,6 +447,7 @@
     "risk": "Risco",
     "amlLevel": "Nível AML",
     "returnBackoffice": "Devolver BackOffice",
+    "returnFrontOffice": "Devolver FrontOffice",
     "returnComercial": "Devolver Comercial",
     "returnCoff": "Devolver COFF",
     "clientStake": "Cliente/Interveniente",

@@ -34,10 +34,17 @@
                 </div>
               </div>
               <div class="col-5">
-                <p class="titulo-form-simples" wappler-command="editContent">{{'stores.contactPointName'|translate}}*
+                <p class="titulo-form-simples" wappler-command="editContent">
+                  {{'stores.contactPointName'|translate}}*
                 </p>
                 <input formControlName="contactPoint" id="text5" name="contactPoint" type="text"
-                  class="form-control campo_form">
+                       class="form-control campo_form">
+                <div class="alert alert-danger"
+                     *ngIf="this.formStores.get('contactPoint').touched && !this.formStores.get('contactPoint').valid">
+                  <div *ngIf="this.formStores.get('contactPoint').errors && this.formStores.get('contactPoint').errors?.['required']">
+                    {{'generalKeywords.mandatoryParameter'|translate}}
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row" *ngIf="!clientHasCAE">
@@ -48,6 +55,12 @@
                     {{activity.activityDescription}}
                   </option>
                 </select>
+                <div class="alert alert-danger"
+                     *ngIf="this.formStores.get('activityStores').touched && !this.formStores.get('activityStores').valid">
+                  <div *ngIf="this.formStores.get('activityStores').errors && this.formStores.get('activityStores').errors?.['required']">
+                    {{'generalKeywords.mandatoryParameter'|translate}}
+                  </div>
+                </div>
               </div>
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">{{'stores.subActivity'|translate}}*</p>
@@ -56,6 +69,12 @@
                     {{subActivity.subActivityDescription}}
                   </option>
                 </select>
+                <div class="alert alert-danger"
+                     *ngIf="this.formStores.get('subactivityStore').touched && !this.formStores.get('subactivityStore').valid">
+                  <div *ngIf="this.formStores.get('subactivityStore').errors && this.formStores.get('subactivityStore').errors?.['required']">
+                    {{'generalKeywords.mandatoryParameter'|translate}}
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row" *ngIf="clientHasCAE">
@@ -66,6 +85,12 @@
                     {{activity.activityDescription}}
                   </option>
                 </select>
+                <div class="alert alert-danger"
+                     *ngIf="this.formStores.get('activityStores').touched && !this.formStores.get('activityStores').valid">
+                  <div *ngIf="this.formStores.get('activityStores').errors && this.formStores.get('activityStores').errors?.['required']">
+                    {{'generalKeywords.mandatoryParameter'|translate}}
+                  </div>
+                </div>
               </div>
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">{{'stores.subActivity'|translate}}*</p>
@@ -74,6 +99,12 @@
                     {{subActivity.subActivityDescription}}
                   </option>
                 </select>
+                <div class="alert alert-danger"
+                     *ngIf="this.formStores.get('subactivityStore').touched && !this.formStores.get('subactivityStore').valid">
+                  <div *ngIf="this.formStores.get('subactivityStore').errors && this.formStores.get('subactivityStore').errors?.['required']">
+                    {{'generalKeywords.mandatoryParameter'|translate}}
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row">
@@ -98,6 +129,12 @@
                     </div>
                   </span>
                 </nav>
+                <div class="alert alert-danger"
+                     *ngIf="this.formStores.get('replicate').touched && !this.formStores.get('replicate').valid">
+                  <div *ngIf="this.formStores.get('replicate').errors && this.formStores.get('replicate').errors?.['required']">
+                    {{'generalKeywords.mandatoryParameter'|translate}}
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row" *ngIf="!replicateAddress">
@@ -111,6 +148,12 @@
                     {{country.description}}
                   </option>
                 </select>
+                <div class="alert alert-danger"
+                     *ngIf="this.formStores.get('countryStore').touched && !this.formStores.get('countryStore').valid">
+                  <div *ngIf="this.formStores.get('countryStore').errors && this.formStores.get('countryStore').errors?.['required']">
+                    {{'generalKeywords.mandatoryParameter'|translate}}
+                  </div>
+                </div>
               </div>
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">
@@ -119,6 +162,12 @@
                 <input formControlName="zipCodeStore" id="text4" name="text3" type="text"
                   class="form-control campo_form" maxlength="8" (keyup)="GetCountryByZipCode()"
                   (keypress)="numericOnly($event)">
+                <div class="alert alert-danger"
+                     *ngIf="this.formStores.get('zipCodeStore').touched && !this.formStores.get('zipCodeStore').valid">
+                  <div *ngIf="this.formStores.get('zipCodeStore').errors && this.formStores.get('zipCodeStore').errors?.['required']">
+                    {{'generalKeywords.mandatoryParameter'|translate}}
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row" *ngIf="!replicateAddress">
@@ -127,14 +176,26 @@
                   {{'stores.address'|translate}} *
                 </p>
                 <input formControlName="addressStore" id="text5" name="text4" type="text"
-                  class="form-control campo_form">
+                       class="form-control campo_form">
+                <div class="alert alert-danger"
+                     *ngIf="this.formStores.get('addressStore').touched && !this.formStores.get('addressStore').valid">
+                  <div *ngIf="this.formStores.get('addressStore').errors && this.formStores.get('addressStore').errors?.['required']">
+                    {{'generalKeywords.mandatoryParameter'|translate}}
+                  </div>
+                </div>
               </div>
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">
                   {{'stores.locale'|translate}} *
                 </p>
                 <input formControlName="localeStore" id="text5" name="text4" type="text" class="form-control campo_form"
-                  [readonly]="canEditLocality() === false">
+                       [readonly]="canEditLocality() === false">
+                <div class="alert alert-danger"
+                     *ngIf="this.formStores.get('localeStore').touched && !this.formStores.get('localeStore').valid">
+                  <div *ngIf="this.formStores.get('localeStore').errors && this.formStores.get('localeStore').errors?.['required']">
+                    {{'generalKeywords.mandatoryParameter'|translate}}
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row">
@@ -146,19 +207,25 @@
                   <span class="navbar-text">
                     <div class="form-check">
                       <input formControlName="commercialCenter" (click)="comercialCentre(true)" class="form-check-input"
-                        type="radio" [value]=true id="radio2" name="commercialCenter">
+                             type="radio" [value]=true id="radio2" name="commercialCenter">
                       <label class="form-check-label radio pe-5" for="radio2"
-                        wappler-command="editContent">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                             wappler-command="editContent">{{'generalKeywords.yes'|translate|uppercase}}</label>
                     </div>
                   </span><span class="navbar-text">
                     <div class="form-check">
                       <input formControlName="commercialCenter" (click)="comercialCentre(false)"
-                        class="form-check-input" type="radio" [value]=false id="radio2" name="commercialCenter">
+                             class="form-check-input" type="radio" [value]=false id="radio2" name="commercialCenter">
                       <label class="form-check-label radio" for="radio2"
-                        wappler-command="editContent">{{'generalKeywords.no'|translate|uppercase}}</label>
+                             wappler-command="editContent">{{'generalKeywords.no'|translate|uppercase}}</label>
                     </div>
                   </span>
                 </nav>
+                <div class="alert alert-danger"
+                     *ngIf="this.formStores.get('commercialCenter').touched && !this.formStores.get('commercialCenter').valid">
+                  <div *ngIf="this.formStores.get('commercialCenter').errors && this.formStores.get('commercialCenter').errors?.['required']">
+                    {{'generalKeywords.mandatoryParameter'|translate}}
+                  </div>
+                </div>
               </div>
             </div>
             <div class="row" *ngIf="noAddress && isComercialCentreStore">
@@ -169,6 +236,12 @@
                 <input formControlName="zipCodeStore" id="text4" name="text3" type="text"
                        class="form-control campo_form" maxlength="8" (keyup)="GetComercialCenterByZipCode()"
                        (keypress)="numericOnly($event)">
+                <div class="alert alert-danger"
+                     *ngIf="this.formStores.get('zipCodeStore').touched && !this.formStores.get('zipCodeStore').valid">
+                  <div *ngIf="this.formStores.get('zipCodeStore').errors && this.formStores.get('zipCodeStore').errors?.['required']">
+                    {{'generalKeywords.mandatoryParameter'|translate}}
+                  </div>
+                </div>
               </div>
             </div>
             <div *ngIf="foundComercialCentre == false && showError">
@@ -185,6 +258,12 @@
                     {{subzone.description}}
                   </option>
                 </select>
+                <div class="alert alert-danger"
+                     *ngIf="this.formStores.get('subZoneStore').touched && !this.formStores.get('subZoneStore').valid">
+                  <div *ngIf="this.formStores.get('subZoneStore').errors && this.formStores.get('subZoneStore').errors?.['required']">
+                    {{'generalKeywords.mandatoryParameter'|translate}}
+                  </div>
+                </div>
               </div>
             </div>
           </div>

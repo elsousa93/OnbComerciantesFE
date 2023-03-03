@@ -8,19 +8,25 @@
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" formControlName="contractAssociation" name="contractAssociation"
-                  type="radio" value="true" id="contractAssociation" />
+                       type="radio" value="true" id="contractAssociation" />
                 <label class="form-check-label radio pe-5"
-                  for="radio8">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                       for="radio8">{{'generalKeywords.yes'|translate|uppercase}}</label>
               </div>
             </span>
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" formControlName="contractAssociation" name="contractAssociation"
-                  type="radio" value="false" id="contractAssociation" />
+                       type="radio" value="false" id="contractAssociation" />
                 <label class="form-check-label radio" for="radio2">{{'generalKeywords.no'|translate|uppercase}}</label>
               </div>
             </span>
           </nav>
+          <div class="alert alert-danger"
+               *ngIf="formNewStakeholder.get('contractAssociation').touched && !formNewStakeholder.get('contractAssociation').valid">
+            <div *ngIf="formNewStakeholder.get('contractAssociation').errors && formNewStakeholder.get('contractAssociation').errors?.['required']">
+              {{'generalKeywords.mandatoryParameter'|translate}}
+            </div>
+          </div>
           <p class="titulo-form-simples mb-1">
             {{'citizenCard.updateData'|translate|uppercase}}*
           </p>
@@ -28,23 +34,29 @@
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" formControlName="flagRecolhaEletronica" name="flagRecolhaEletronica"
-                  type="radio" [value]=true id="flagRecolhaEletronica" [checked]="flagRecolhaEletronica"
-                  [attr.disabled]="(flagRecolhaEletronica || returned === 'consult') ? true : null"
-                  (click)="validateCC(true)" />
+                       type="radio" [value]=true id="flagRecolhaEletronica" [checked]="flagRecolhaEletronica"
+                       [attr.disabled]="(flagRecolhaEletronica || returned === 'consult') ? true : null"
+                       (click)="validateCC(true)" />
                 <label class="form-check-label radio pe-5"
-                  for="radio2">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                       for="radio2">{{'generalKeywords.yes'|translate|uppercase}}</label>
               </div>
             </span>
             <span class="navbar-text">
               <div class="form-check">
                 <input input class="form-check-input" formControlName="flagRecolhaEletronica"
-                  name="flagRecolhaEletronica" type="radio" [value]=false id="flagRecolhaEletronica"
-                  [attr.disabled]="(flagRecolhaEletronica || returned === 'consult') ? true : null"
-                  (click)="validateCC(false)" />
+                       name="flagRecolhaEletronica" type="radio" [value]=false id="flagRecolhaEletronica"
+                       [attr.disabled]="(flagRecolhaEletronica || returned === 'consult') ? true : null"
+                       (click)="validateCC(false)" />
                 <label class="form-check-label radio" for="radio2">{{'generalKeywords.no'|translate|uppercase}}</label>
               </div>
             </span>
           </nav>
+          <div class="alert alert-danger"
+               *ngIf="formNewStakeholder.get('flagRecolhaEletronica').touched && !formNewStakeholder.get('flagRecolhaEletronica').valid">
+            <div *ngIf="formNewStakeholder.get('flagRecolhaEletronica').errors && formNewStakeholder.get('flagRecolhaEletronica').errors?.['required']">
+              {{'generalKeywords.mandatoryParameter'|translate}}
+            </div>
+          </div>
           <p class="titulo-form-simples"></p>
         </div>
         <div class="offset-1 ms-0 me-0 ps-5 pe-0 col-6">
@@ -53,19 +65,25 @@
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" formControlName="proxy" name="proxy" type="radio" value="true"
-                  id="proxy" [attr.disabled]="returned === 'consult' ? true : null" />
+                       id="proxy" [attr.disabled]="returned === 'consult' ? true : null" />
                 <label class="form-check-label radio pe-5"
-                  for="radio1">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                       for="radio1">{{'generalKeywords.yes'|translate|uppercase}}</label>
               </div>
             </span>
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" formControlName="proxy" name="proxy" type="radio" value="false"
-                  id="proxy" [attr.disabled]="returned === 'consult' ? true : null" />
+                       id="proxy" [attr.disabled]="returned === 'consult' ? true : null" />
                 <label class="form-check-label radio" for="radio1">{{'generalKeywords.no'|translate|uppercase}}</label>
               </div>
             </span>
           </nav>
+          <div class="alert alert-danger"
+               *ngIf="formNewStakeholder.get('proxy').touched && !formNewStakeholder.get('proxy').valid">
+            <div *ngIf="formNewStakeholder.get('proxy').errors && formNewStakeholder.get('proxy').errors?.['required']">
+              {{'generalKeywords.mandatoryParameter'|translate}}
+            </div>
+          </div>
         </div>
         <div class="row" *ngIf="!showYesCC && showNoCC">
           <div class="col-6" id="nif">
@@ -85,11 +103,23 @@
                   {{country.description}}
                 </option>
               </select>
+              <div class="alert alert-danger"
+                   *ngIf="formNewStakeholder.get('Country').touched && !formNewStakeholder.get('Country').valid">
+                <div *ngIf="formNewStakeholder.get('Country').errors && formNewStakeholder.get('Country').errors?.['required']">
+                  {{'generalKeywords.mandatoryParameter'|translate}}
+                </div>
+              </div>
             </div>
             <div class="row" id="address">
               <p class="titulo-form-simples">{{'stakeholder.address'|translate|uppercase}} *</p>
               <input class="form-control" id="countryBillingAdressStakeholder" type="text" formControlName="Address"
                      [disabled]="returned === 'consult'">
+              <div class="alert alert-danger"
+                   *ngIf="formNewStakeholder.get('Address').touched && !formNewStakeholder.get('Address').valid">
+                <div *ngIf="formNewStakeholder.get('Address').errors && formNewStakeholder.get('Address').errors?.['required']">
+                  {{'generalKeywords.mandatoryParameter'|translate}}
+                </div>
+              </div>
             </div>
           </div>
           <div class="col-6">
@@ -98,11 +128,23 @@
               <input class="form-control" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode"
                      (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8"
                      [disabled]="returned === 'consult'">
+              <div class="alert alert-danger"
+                   *ngIf="formNewStakeholder.get('ZIPCode').touched && !formNewStakeholder.get('ZIPCode').valid">
+                <div *ngIf="formNewStakeholder.get('ZIPCode').errors && formNewStakeholder.get('ZIPCode').errors?.['required']">
+                  {{'generalKeywords.mandatoryParameter'|translate}}
+                </div>
+              </div>
             </div>
             <div class="row ms-0" id="locale">
               <p class="titulo-form-simples">{{'stakeholder.locale'|translate|uppercase}} *</p>
               <input class="form-control" id="areaBillingAdressStakeholder" type="text" formControlName="Locality"
                      [readonly]="canEditLocality() === false || returned === 'consult'">
+              <div class="alert alert-danger"
+                   *ngIf="formNewStakeholder.get('Locality').touched && !formNewStakeholder.get('Locality').valid">
+                <div *ngIf="formNewStakeholder.get('Locality').errors && formNewStakeholder.get('Locality').errors?.['required']">
+                  {{'generalKeywords.mandatoryParameter'|translate}}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -157,24 +199,48 @@
               <option *ngFor="let country of countries" value="{{country.code}}">
                 {{country.description}}</option>
             </select>
+            <div class="alert alert-danger"
+              *ngIf="formNewStakeholder.get('Country').touched && !formNewStakeholder.get('Country').valid">
+              <div *ngIf="formNewStakeholder.get('Country').errors && formNewStakeholder.get('Country').errors?.['required']">
+                {{'generalKeywords.mandatoryParameter'|translate}}
+              </div>
+            </div>
           </div>
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.locale'|translate|uppercase}}</p>
             <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text"
-              formControlName="Locality" [readonly]="canEditLocality() === false">
+                   formControlName="Locality" [readonly]="canEditLocality() === false">
+            <div class="alert alert-danger"
+                 *ngIf="formNewStakeholder.get('Locality').touched && !formNewStakeholder.get('Locality').valid">
+              <div *ngIf="formNewStakeholder.get('Locality').errors && formNewStakeholder.get('Locality').errors?.['required']">
+                {{'generalKeywords.mandatoryParameter'|translate}}
+              </div>
+            </div>
           </div>
         </div>
         <div class="row" *ngIf="showYesCC && !showNoCC">
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.postalCode'|translate|uppercase}}</p>
             <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode"
-              (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8"
-              [readonly]="returned === 'consult'">
+                   (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8"
+                   [readonly]="returned === 'consult'">
+            <div class="alert alert-danger"
+                 *ngIf="formNewStakeholder.get('ZIPCode').touched && !formNewStakeholder.get('ZIPCode').valid">
+              <div *ngIf="formNewStakeholder.get('ZIPCode').errors && formNewStakeholder.get('ZIPCode').errors?.['required']">
+                {{'generalKeywords.mandatoryParameter'|translate}}
+              </div>
+            </div>
           </div>
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.address'|translate|uppercase}}</p>
             <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text"
-              formControlName="Address" [readonly]="returned === 'consult'">
+                   formControlName="Address" [readonly]="returned === 'consult'">
+            <div class="alert alert-danger"
+                 *ngIf="formNewStakeholder.get('Address').touched && !formNewStakeholder.get('Address').valid">
+              <div *ngIf="formNewStakeholder.get('Address').errors && formNewStakeholder.get('Address').errors?.['required']">
+                {{'generalKeywords.mandatoryParameter'|translate}}
+              </div>
+            </div>
           </div>
         </div>
       </div>

@@ -127,4 +127,8 @@ export class StoreService {
   updateShopEquipmentConfigurationsInSubmission(submissionId: string, shopId: string, equipId: string, newShopEquipment: ShopEquipment) {
     return this.http.put<SimplifiedReference>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment/' + equipId, newShopEquipment);
   }
+
+  deleteShopEquipmentConfigurationFromSubmission(submissionId: string, shopId: string, equipId: string) {
+    return this.http.delete(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId + '/equipment/' + equipId);
+  }
 }

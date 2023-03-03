@@ -104,6 +104,10 @@ export class AceitacaoComponent implements OnInit {
           process.processState = this.translate.instant('searches.cancelled');
         } else if (process.processState === 'ContractAcceptance') {
           process.processState = this.translate.instant('searches.contractAcceptance')
+        } else if (process.processState === 'ContractDigitalAcceptance') {
+          process.processState = this.translate.instant('searches.contractDigitalAcceptance')
+        } else if (process.processState === 'DigitalIdentification') {
+          process.processState = this.translate.instant('searches.digitalIdentification')
         }
         this.ready = true;
       });

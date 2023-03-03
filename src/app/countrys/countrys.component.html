@@ -25,32 +25,30 @@
           <div class="col-6 ms-0 me-0 ps-0 pe-5">
             <p class="titulo-form-simples mt-0">{{'client.faturation'|translate|uppercase}}*</p>
             <input type="number" (keypress)="numericOnly($event)" class="form-control campo_form"
-              formControlName="expectableAnualInvoicing" name="expectableAnualInvoicing" id="expectableAnualInvoicing"
-              [readonly]="returned == 'consult'">
+                   formControlName="expectableAnualInvoicing" name="expectableAnualInvoicing" id="expectableAnualInvoicing"
+                   [readonly]="returned == 'consult'">
             <div class="alert alert-danger"
-              *ngIf="this.form.get('expectableAnualInvoicing').touched && !this.form.get('expectableAnualInvoicing').valid">
-              <div
-                *ngIf="this.form.get('expectableAnualInvoicing').errors && this.form.get('expectableAnualInvoicing').errors?.['required']">
+                 *ngIf="this.form.get('expectableAnualInvoicing').touched && !this.form.get('expectableAnualInvoicing').valid">
+              <div *ngIf="this.form.get('expectableAnualInvoicing').errors && this.form.get('expectableAnualInvoicing').errors?.['required']">
                 {{'generalKeywords.mandatoryParameter'|translate}}
               </div>
             </div>
             <p class="titulo-form-simples">{{'client.products'|translate|uppercase}}*</p>
             <input formControlName="services" name="services" type="text" id="services" class="form-control campo_form"
-              [readonly]="returned == 'consult'">
+                   [readonly]="returned == 'consult'">
             <div class="alert alert-danger"
-              *ngIf="this.form.get('services').touched && !this.form.get('services').valid">
+                 *ngIf="this.form.get('services').touched && !this.form.get('services').valid">
               <div *ngIf="this.form.get('services').errors && this.form.get('services').errors?.['required']">
                 {{'generalKeywords.mandatoryParameter'|translate}}
               </div>
             </div>
             <p class="titulo-form-simples mb-1">{{'client.mediaTransactions'|translate}}*</p>
             <input formControlName="transactionsAverage" name="transactionsAverage" type="number"
-              (keypress)="numericOnly($event)" id="transactionsAverage" class="form-control campo_form"
-              [readonly]="returned == 'consult'">
+                   (keypress)="numericOnly($event)" id="transactionsAverage" class="form-control campo_form"
+                   [readonly]="returned == 'consult'">
             <div class="alert alert-danger"
-              *ngIf="this.form.get('transactionsAverage').touched && !this.form.get('transactionsAverage').valid">
-              <div
-                *ngIf="this.form.get('transactionsAverage').errors && this.form.get('transactionsAverage').errors?.['required']">
+                 *ngIf="this.form.get('transactionsAverage').touched && !this.form.get('transactionsAverage').valid">
+              <div *ngIf="this.form.get('transactionsAverage').errors && this.form.get('transactionsAverage').errors?.['required']">
                 {{'generalKeywords.mandatoryParameter'|translate}}
               </div>
             </div>
@@ -59,40 +57,52 @@
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" name="preferenceDocuments" type="radio" value="Portal"
-                    formControlName="preferenceDocuments" id="preferenceDocuments"
-                    [attr.disabled]="returned == 'consult' ? true : null">
+                         formControlName="preferenceDocuments" id="preferenceDocuments"
+                         [attr.disabled]="returned == 'consult' ? true : null">
                   <label class="form-check-label radio pe-5" for="preferenceDocuments">100% DIGITAL</label>
                 </div>
               </span><span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" name="preferenceDocuments" type="radio" value="Mail"
-                    formControlName="preferenceDocuments" id="preferenceDocuments"
-                    [attr.disabled]="returned == 'consult' ? true : null">
+                         formControlName="preferenceDocuments" id="preferenceDocuments"
+                         [attr.disabled]="returned == 'consult' ? true : null">
                   <label class="form-check-label radio"
-                    for="preferenceDocuments">{{'client.letter'|translate|uppercase}}</label>
+                         for="preferenceDocuments">{{'client.letter'|translate|uppercase}}</label>
                 </div>
               </span>
             </nav>
+            <div class="alert alert-danger"
+                 *ngIf="this.form.get('preferenceDocuments').touched && !this.form.get('preferenceDocuments').valid">
+              <div *ngIf="this.form.get('preferenceDocuments').errors && this.form.get('preferenceDocuments').errors?.['required']">
+                {{'generalKeywords.mandatoryParameter'|translate}}
+              </div>
+            </div>
             <p class="titulo-form-simples mb-1">{{'client.franchise'|translate|uppercase}} *</p>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
               <span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" name="associatedWithGroupOrFranchise" type="radio" [value]=true
-                    formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise"
-                    (click)="setAssociatedWith(true)" [attr.disabled]="returned === 'consult' ? true : null">
+                         formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise"
+                         (click)="setAssociatedWith(true)" [attr.disabled]="returned === 'consult' ? true : null">
                   <label class="form-check-label radio pe-5"
-                    for="associatedWithGroupOrFranchise">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                         for="associatedWithGroupOrFranchise">{{'generalKeywords.yes'|translate|uppercase}}</label>
                 </div>
               </span><span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" name="associatedWithGroupOrFranchise" type="radio" [value]=false
-                    formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise"
-                    (click)="setAssociatedWith(false)" [attr.disabled]="returned === 'consult' ? true : null">
+                         formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise"
+                         (click)="setAssociatedWith(false)" [attr.disabled]="returned === 'consult' ? true : null">
                   <label class="form-check-label radio"
-                    for="associatedWithGroupOrFranchise">{{'generalKeywords.no'|translate|uppercase}}</label>
+                         for="associatedWithGroupOrFranchise">{{'generalKeywords.no'|translate|uppercase}}</label>
                 </div>
               </span>
             </nav>
+            <div class="alert alert-danger"
+                 *ngIf="this.form.get('associatedWithGroupOrFranchise').touched && !this.form.get('associatedWithGroupOrFranchise').valid">
+              <div *ngIf="this.form.get('associatedWithGroupOrFranchise').errors && this.form.get('associatedWithGroupOrFranchise').errors?.['required']">
+                {{'generalKeywords.mandatoryParameter'|translate}}
+              </div>
+            </div>
             <p class="titulo-form-simples"></p>
           </div>
           <div [ngClass]="{'col-6' : window.outerWidth > 768, 'pe-0' : window.outerWidth > 768, 'ps-5' : window.outerWidth > 768, 'me-0' : window.outerWidth > 768, 'ms-0': window.outerWidth > 768, 'offset-1': window.outerWidth > 768 }">
@@ -177,7 +187,8 @@
             <p class="titulo-form-simples"></p>
           </div>
           <div class="col-6 ms-0 me-0 ps-5 pe-0" *ngIf="associatedWithGroupOrFranchise == true">
-            <p class="titulo-form-simples mt-0">NIPC GRUPO
+            <p class="titulo-form-simples mt-0">
+              NIPC GRUPO
               <span class="titulo-form-error" *ngIf="incorrectNIPCSize" class="titulo-form-simples-erro">
                 {{'client.incorrectNIPCSize'|translate}}
               </span>
@@ -186,8 +197,14 @@
               </span>
             </p>
             <input #NIPCGroup class="form-control campo_form" formControlName="NIPCGroup" name="NIPCGroup" type="text"
-              (keypress)="numericOnly($event)" id="NIPCGroup"
-              [readonly]="isAssociatedWithFranchise || returned == 'consult'">
+                   (keypress)="numericOnly($event)" id="NIPCGroup"
+                   [readonly]="isAssociatedWithFranchise || returned == 'consult'">
+            <div class="alert alert-danger"
+                 *ngIf="this.form.get('NIPCGroup').touched && !this.form.get('NIPCGroup').valid">
+              <div *ngIf="this.form.get('NIPCGroup').errors && this.form.get('NIPCGroup').errors?.['required']">
+                {{'generalKeywords.mandatoryParameter'|translate}}
+              </div>
+            </div>
           </div>
           <div *ngIf="!inline" class="col ms-0 ps-0">
             <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">

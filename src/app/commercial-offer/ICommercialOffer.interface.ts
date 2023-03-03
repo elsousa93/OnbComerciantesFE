@@ -92,9 +92,9 @@ export interface ProductPackRootAttributeProductPackKind {
 interface ProductPackRootAttribute {
   id?: string
   description?: string
-  value?: boolean
-  originalValue?: boolean
-  finalValue?: boolean
+  value?: string
+  //originalValue?: boolean
+  //finalValue?: boolean
   isReadOnly?: boolean
   isVisible?: boolean
   isSelected?: boolean
@@ -110,9 +110,9 @@ export interface ProductPackAttributeProductPackKind {
 export interface ProductPackAttribute {
   id?: string
   description?: string
-  value?: boolean
-  originalValue?: boolean
-  finalValue?: boolean
+  value?: string
+  //originalValue?: boolean
+  //finalValue?: boolean
   isReadOnly?: boolean
   isVisible?: boolean
   isSelected?: boolean
@@ -181,7 +181,7 @@ export interface ProductPackPaymentSchemes {
   description?: string
   //originalValue?: boolean
   //finalValue?: boolean
-  value?: boolean
+  value?: string
   isReadOnly?: boolean
   isVisible?: boolean
   isSelected?: boolean

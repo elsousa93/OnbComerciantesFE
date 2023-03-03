@@ -168,17 +168,19 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           context.submission.shops.forEach(function (value, index) {
             context.shopService.getSubmissionShopDetails(context.submissionId, value.id).then(shop => {
               context.logger.info("Get shop from submission: " + JSON.stringify(shop));
-              context.compsToShow.push({
-                id: shop.result.documents[0].id,
-                type: "pdf",
-                expirationDate: context.datepipe.transform(shop.result.documents[0].validUntil, 'dd-MM-yyyy'),
-                stakeholder: shop.result.name,
-                status: "não definido",
-                uploadDate: latest_date,
-                file: shop.result.documents[0]?.id,
-                documentPurpose: shop.result.documents[0].purposes[0],
-                documentType: shop.result.documents[0].documentType
-              });
+              if (shop.result.documents.length > 0) { 
+                context.compsToShow.push({
+                  id: shop.result.documents[0].id,
+                  type: "pdf",
+                  expirationDate: context.datepipe.transform(shop.result.documents[0].validUntil, 'dd-MM-yyyy'),
+                  stakeholder: shop.result.name,
+                  status: "não definido",
+                  uploadDate: latest_date,
+                  file: shop.result.documents[0]?.id,
+                  documentPurpose: shop.result.documents[0].purposes[0],
+                  documentType: shop.result.documents[0].documentType
+                });
+              }
               //context.shopList.push(shop.result);
             });
           });
@@ -400,6 +402,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.submissionId = localStorage.getItem("submissionId");
     this.data.updateData(true, 4, 1);
     if (this.returned == 'consult') {
+      this.validatedDocuments = true;
       this.updatedComps = true;
     } else {
       this.subscription = this.data.updatedComprovativos.subscribe(updatedComps => this.updatedComps = updatedComps);
@@ -601,7 +604,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     if (documentType == undefined) {
       return 'desconhecido';
     } else {
-      return this.documents?.find(doc => doc.code === documentType).description;
+      return this.documents?.find(doc => doc.code === documentType)?.description;
     }
   }
 

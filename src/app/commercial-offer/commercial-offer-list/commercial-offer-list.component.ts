@@ -358,18 +358,18 @@ export class CommercialOfferListComponent implements OnInit {
             if (curr.id === value.id) {
               curr.attributes.forEach((curr, index) => {
                 value.attributes.forEach((value, index) => {
-                  if (curr.value) {
+                  if (curr.isSelected) {
                     if (curr.id === value.id) {
-                      value.value = curr.value;
+                      value.isSelected = curr.isSelected;
                       if (curr.bundles != undefined || curr.bundles != null || curr.bundles.length > 0) {
                         curr.bundles.forEach((curr, index) => {
                           value.bundles.forEach((value, index) => {
                             if (curr.id === value.id) {
                               curr.attributes.forEach((curr, index) => {
                                 value.attributes.forEach((value, index) => {
-                                  if (curr.value) {
+                                  if (curr.isSelected) {
                                     if (curr.id === value.id) {
-                                      value.value = curr.value;
+                                      value.isSelected = curr.isSelected;
                                     }
                                   }
                                 });
@@ -509,24 +509,28 @@ export class CommercialOfferListComponent implements OnInit {
 
     var group = context.form.get("formGroupPayment" + this.paymentSchemes.id);
     this.paymentSchemes.attributes.forEach(payment => {
-      payment.value = group.get("formControlPayment" + payment.id).value;
+      payment.isSelected = group.get("formControlPayment" + payment.id).value;
     });
 
-    var finalPaymentAttributes = this.paymentSchemes.attributes.filter(payment => payment.value);
+    var finalPaymentAttributes = this.paymentSchemes.attributes.filter(payment => payment.isSelected);
     this.paymentSchemes.attributes = finalPaymentAttributes;
 
     //atualizar a lista dos pacotes comerciais com os valores selecionados no front
     this.groupsList.forEach((group) => {
       group.attributes.forEach((attr) => {
         if (attr["aggregatorId"] !== null) {
-          attr.value = this.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value;
+          if (attr.description === this.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value) {
+            attr.isSelected = true;
+          } else {
+            attr.isSelected = false;
+          }
         } else {
-          attr.value = this.form.get("formGroup" + group.id)?.get("formControl" + attr.id)?.value;
+          attr.isSelected = this.form.get("formGroup" + group.id)?.get("formControl" + attr.id)?.value;
         }
-        if (attr.value && (attr.bundles != null || attr.bundles.length > 0)) { // se tiver sido selecionado
+        if (attr.isSelected && (attr.bundles != null || attr.bundles.length > 0)) { // se tiver sido selecionado
           attr.bundles.forEach((bundle) => {
             bundle.attributes.forEach((bundleAttr) => {
-              bundleAttr.value = this.form.get("formGroup" + group.id)?.get("formGroupBundle" + bundle.id)?.get("formControlBundle" + bundleAttr.id)?.value;
+              bundleAttr.isSelected = this.form.get("formGroup" + group.id)?.get("formGroupBundle" + bundle.id)?.get("formControlBundle" + bundleAttr.id)?.value;
             });
           });
         }
@@ -534,9 +538,9 @@ export class CommercialOfferListComponent implements OnInit {
     });
 
     var finalGroupsList = this.groupsList.filter(group => group.attributes.filter(attr => {
-      if (attr.value) {
+      if (attr.isSelected) {
         if (attr.bundles != null || attr.bundles.length > 0) {
-          attr.bundles.filter(bundle => bundle.attributes.filter(bundleAttr => bundleAttr.value));
+          attr.bundles.filter(bundle => bundle.attributes.filter(bundleAttr => bundleAttr.isSelected));
         }
         return true;
       } else {
@@ -545,12 +549,12 @@ export class CommercialOfferListComponent implements OnInit {
     }));
 
     this.groupsList.forEach(group => {
-      var groupList = group.attributes.filter(attr => attr.value == true || (attr["aggregatorId"] != null && attr["aggregatorId"] != undefined && attr["aggregatorId"] != "" && attr.value == this.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value));
+      var groupList = group.attributes.filter(attr => attr.isSelected == true || (attr["aggregatorId"] != null && attr["aggregatorId"] != undefined && attr["aggregatorId"] != "" && attr.isSelected == this.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value));
       context.finalList.push(group);
       context.finalList.find(l => l.id == group.id).attributes = groupList;
       group.attributes.forEach(attr => {
         attr.bundles.forEach(bundle => {
-          var bundleList = bundle.attributes.filter(bundleAttr => bundleAttr.value == true);
+          var bundleList = bundle.attributes.filter(bundleAttr => bundleAttr.isSelected == true);
           context.finalList.find(l => l.id == group.id).attributes.find(a => a.id == attr.id).bundles.find(b => b.id == bundle.id).attributes = bundleList;
         });
       });
@@ -562,19 +566,19 @@ export class CommercialOfferListComponent implements OnInit {
     this.groupsList.forEach((group) => {
       group.attributes.forEach((attr, ind) => {
         if (attr["aggregatorId"] != null && attr["aggregatorId"] != undefined && attr["aggregatorId"] != "") {
-          if (attr.value !== this.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value) {
+          if (attr.isSelected !== this.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value) {
             var removedGroup = group.attributes.splice(ind, 1);
             return;
           }
         } else {
-          if (attr.value === false || attr.value == undefined) {
+          if (attr.isSelected === false || attr.isSelected == undefined) {
             var removedGroup = group.attributes.splice(ind, 1);
             return;
           } else {
             if (attr.bundles != null || attr.bundles != undefined || attr.bundles.length > 0) {
               attr.bundles.forEach((bundle, index) => {
                 bundle.attributes.forEach((bundleAttr, i) => {
-                  if (bundleAttr.value === false) {
+                  if (bundleAttr.isSelected === false) {
                     var removedBundle = bundle.attributes.splice(i, 1);
                     return;
                   }
@@ -642,7 +646,7 @@ export class CommercialOfferListComponent implements OnInit {
 
   deleteConfiguration(shopEquipment: ShopEquipment) {
     if (this.returned != 'consult') {
-      //CHAMADA À API QUE REMOVE UMA CONFUGURAÇÃO DE UM TERMINAL
+      this.storeService.deleteShopEquipmentConfigurationFromSubmission(this.submissionId, this.currentStore.id, shopEquipment.id).subscribe(result => this.logger.info("Deleted shop equipment with id " + shopEquipment.id));
     }
   }
 

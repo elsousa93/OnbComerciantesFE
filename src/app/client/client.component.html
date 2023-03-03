@@ -103,7 +103,7 @@
                       <input id="clientId" type="text" (keyup)="checkValidationType(clientId.value)"
                         (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId" name="clientId"
                         #clientId="ngModel" (ngModelChange)="clearNewForm()" [class]="errorInput"
-                        [hidden]="isCC && isNoDataReadable">
+                        [hidden]="isCC && isNoDataReadable" required>
                     </div>
                   </div>
                 </div>
@@ -153,7 +153,7 @@
                       <input id="clientId" type="text" (keypress)="numericOnly($event)"
                         (keyup)="checkValidationType(clientId.value)" [(ngModel)]="newClient.clientId" name="clientId"
                         #clientId="ngModel" (ngModelChange)="clearNewForm()" [class]="errorInput"
-                        [hidden]="isCC && isNoDataReadable">
+                        [hidden]="isCC && isNoDataReadable" required>
                     </div>
                   </div>
                 </div>

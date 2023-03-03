@@ -22,7 +22,7 @@ export interface RiskAssessment {
   stakeholderAssessment?: StakeholderRiskAssessment[]
 }
 export interface MerchantRiskAssessment {
-  stakeholderId?: string,
+  merchantId?: string,
   accepted: boolean
 }
 
@@ -40,7 +40,7 @@ export interface ContractAcceptance {
 export interface StandardIndustryClassificationChoice {
   $type: StateResultDiscriminatorEnum,
   userObservations?: string,
-  shopsClassification?: ShopClassifications
+  shopsClassification?: ShopClassifications[]
 }
 
 export interface ShopClassifications {
@@ -58,12 +58,12 @@ export interface ClientChoice {
   userObservations?: string,
   merchantChoice?: ClientNumberDecision,
   stakeholdersChoice?: ClientNumberDecision[]
-  decision?: string
+  decision?: ClientChoiceDecisionEnum //Accepted, ReturnToBackOffice, ReturnToFrontOffice
 }
 
 export interface ClientNumberDecision {
   id?: string,
-  decision?: ClientNumberDecisionEnum,
+  //decision?: ClientNumberDecisionEnum,
   clientNumber?: string
 }
 
@@ -107,7 +107,8 @@ export interface MerchantRegistration {
   $type?: StateResultDiscriminatorEnum,
   userObservations?: string,
   merchantRegistrationId?: string,
-  shops?: ShopRegistration[]
+  shops?: ShopRegistration[],
+  decision?: MerchantRegistrationEnum
 }
 
 export interface ShopRegistration {
@@ -190,30 +191,45 @@ export enum ClientNumberDecisionEnum {
 }
 
 export enum NegotiationApprovalEnum {
-  APPROVE = "Approve",
+  ACCEPTED = "Accepted", //Estava "approved"
   RETURN_TO_FRONT_OFFICE = "ReturnToFrontOffice"
 }
 
 export enum OperationsEvaluationEnum {
-  CONTINUE = "Continue",
-  RETURN = "Return"
+  //Antes estava CONTINUE E RETURN
+  RETURN_TO_FRONT_OFFICE = "ReturnToFrontOffice",
+  RETURN_TO_BACK_OFFICE = "ReturnToBackOffice",
+  RETURN_TO_COMPLIANCE_EVALUATION = "ReturnToComplianceEvaluation"
 }
 
 export enum ContractDigitalAcceptanceEnum {
   RETURN_TO_FRONT_OFFICE = "ReturnToFrontOffice",
-  UPDATE_INFORMATION = "UpdateInformation",
-  ACCEPTED = "Accepted"
+  RETURN_TO_BACK_OFFICE = "ReturnToBackOffice",
+  CANCEL_DIGITAL_SIGNATURE = "CancelDigitalSignature",
+  CANCEL = "Cancel"
 }
 
 export enum DigitalIdentificationEnum {
   RETURN_TO_FRONT_OFFICE = "ReturnToFrontOffice",
-  UPDATE_INFORMATION = "UpdateInformation",
-  ACCEPTED = "Accepted"
+  RETURN_TO_BACK_OFFICE = "ReturnToBackOffice",
+  CANCEL_IDENTIFICATION = "CancelDigitalIdentification",
+  CANCEL = "Cancel"
 }
 
 export enum ContractAcceptanceEnum {
   RETURN_TO_FRONT_OFFICE = "ReturnToFrontOffice",
   RETURN_TO_BACK_OFFICE = "ReturnToBackOffice",
+  CHANGE_TO_MANUAL_SIGNATURE = "ChangeToManualSignature",
   CANCEL = "Cancel",
-  ACCEPTED = "Accepted"
+  CONTINUE = "Continue"
+}
+
+export enum ClientChoiceDecisionEnum {
+  CONTINUE = "Continue",
+  RETURN_TO_FRONT_OFFICE = "ReturnToFrontOffice"
+}
+
+export enum MerchantRegistrationEnum {
+  CONTINUE = "Continue",
+  RETURN_TO_FRONT_OFFICE = "ReturnToFrontOffice"
 }

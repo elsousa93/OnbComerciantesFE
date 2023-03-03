@@ -617,7 +617,15 @@
                                  style="height: 25px !important; vertical-align: sub;">
                           </button>
 
-                          <button id="btn5a2" *ngIf="queueName === 'multipleClients'"
+                          <button id="btn5a2" *ngIf="queueName === 'multipleClients'" (click)="concludeOpinion('ReturnToFrontOffice')"
+                                  class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
+                                  wappler-command="editContent">
+                            {{'queues.returnFrontOffice'|translate|uppercase}}&nbsp;
+                            <img src="assets/images/queues/return_comercial.svg.svg"
+                                 style="height: 25px !important; vertical-align: sub;">
+                          </button>
+
+                          <button id="btn5a2" *ngIf="queueName === 'multipleClients'" (click)="concludeOpinion('Continue')"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                   wappler-command="editContent">
                             {{'queues.treated'|translate|uppercase}}&nbsp;
@@ -627,7 +635,7 @@
 
                           <button id="btn5a2" *ngIf="queueName === 'negotiationAproval'"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                                  wappler-command="editContent" (click)="concludeOpinion('Approve')">
+                                  wappler-command="editContent" (click)="concludeOpinion('Accepted')">
                             {{'queues.approve'|translate|uppercase}}&nbsp;
                             <img src="assets/images/queues/aprovar.svg"
                                  style="height: 25px !important; vertical-align: sub;">

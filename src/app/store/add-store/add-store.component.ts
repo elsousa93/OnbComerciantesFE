@@ -333,7 +333,7 @@ export class AddStoreComponent implements OnInit {
       countryStore: new FormControl('PT'),
       zipCodeStore: new FormControl(''),
       subZoneStore: new FormControl(''),
-      contactPoint: new FormControl(''),
+      contactPoint: new FormControl('', Validators.required),
       subactivityStore: new FormControl('', [Validators.required]),
       localeStore: new FormControl(''),
       addressStore: new FormControl(''),

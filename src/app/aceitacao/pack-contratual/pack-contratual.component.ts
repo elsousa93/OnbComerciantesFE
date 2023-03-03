@@ -55,6 +55,7 @@ export class PackContratualComponent implements OnInit {
   observations: string = "";
   updatedInfo: boolean = false;
   manualSignature: boolean = false;
+  firstTime: boolean = true;
 
   constructor(private logger: LoggerService,
     private modalService: BsModalService, private translate: TranslateService, private snackBar: MatSnackBar,
@@ -73,6 +74,9 @@ export class PackContratualComponent implements OnInit {
   }
 
   fetchStartingInfo() {
+    if (this.firstTime == false) {
+      this.updatedInfo = true;
+    }
     this.queuesInfo.getProcessStakeholdersList(this.processId).then(result => {
       this.logger.info("Get stakeholders list from process result: " + JSON.stringify(result));
       var stakeholders = result.result;
@@ -82,6 +86,7 @@ export class PackContratualComponent implements OnInit {
         });
       });
     });
+    this.firstTime = false;
   }
 
   validatedDocumentsChange(value: boolean) {
@@ -169,15 +174,17 @@ export class PackContratualComponent implements OnInit {
     this.submeterPedidoModalRef?.hide();
   }
 
-  cancelDigitalSignature() {
+  changeToManual() {
     this.manualSignature = true;
-    this.submit('Cancel');
+    this.submit('ChangeToManualSignature'); 
   }
 
   cancelIdentification() {
     if (this.updatedInfo) {
       this.canceled = true;
-      this.submit('Cancel');
+      this.submit('CancelDigitalSignature');
+    } else {
+      this.submit('CancelDigitalIdentification');
     }
   }
 
@@ -186,8 +193,6 @@ export class PackContratualComponent implements OnInit {
     var externalState;
     var stateType;
     if (!this.manualSignature) { //digital
-      if (state == 'UpdateInformation') 
-        this.updatedInfo = true;
       externalState = {} as ContractDigitalAcceptance;
       stateType = State.CONTRACT_DIGITAL_ACCEPTANCE;
       externalState.$type = stateType;
@@ -219,16 +224,16 @@ export class PackContratualComponent implements OnInit {
 
     this.queuesInfo.postExternalState(this.processId, stateType, externalState).then(res => {
       console.log("Resultado: ", res);
-      if (state == 'Cancel') {
-        let navigationExtras = {
-          state: {
-            returnedFrontOffice: true
-          }
-        } as NavigationExtras;
-        this.queuesInfo.markToCancel(this.processId).then(res => {
-          this.route.navigate(['/info-declarativa'], navigationExtras);
-        });
-      }
+      //if (state == 'Cancel') {
+      //  let navigationExtras = {
+      //    state: {
+      //      returnedFrontOffice: true
+      //    }
+      //  } as NavigationExtras;
+      //  this.queuesInfo.markToCancel(this.processId).then(res => {
+      //    this.route.navigate(['/info-declarativa'], navigationExtras);
+      //  });
+      //}
       //this.route.navigate(['/']);
     });
   }

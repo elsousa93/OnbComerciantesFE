@@ -60,27 +60,34 @@
                 <div class="col-7 ms-0 me-0 pt-2 ps-3 pe-0">
                   <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
                   <p class="titulo-form-simples mb-3" wappler-command="editContent">
-                    {{'commercialOffer.replicate'|translate}}*</p>
+                    {{'commercialOffer.replicate'|translate}}*
+                  </p>
                   <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-4">
                     <span class="navbar-text">
                       <div class="form-check">
                         <input class="form-check-input" type="radio" [value]=true id="radio1"
-                          formControlName="replicateProducts" name="replicateProducts"
-                          (click)="changeReplicateProducts(true)">
+                               formControlName="replicateProducts" name="replicateProducts"
+                               (click)="changeReplicateProducts(true)">
                         <label class="form-check-label radio pe-5" for="radio1"
-                          wappler-command="editContent">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                               wappler-command="editContent">{{'generalKeywords.yes'|translate|uppercase}}</label>
                       </div>
                     </span>
                     <span class="navbar-text">
                       <div class="form-check">
                         <input class="form-check-input" type="radio" [value]=false id="radio1"
-                          formControlName="replicateProducts" name="replicateProducts"
-                          (click)="changeReplicateProducts(false)">
+                               formControlName="replicateProducts" name="replicateProducts"
+                               (click)="changeReplicateProducts(false)">
                         <label class="form-check-label radio" for="radio1"
-                          wappler-command="editContent">{{'generalKeywords.no'|translate|uppercase}}</label>
+                               wappler-command="editContent">{{'generalKeywords.no'|translate|uppercase}}</label>
                       </div>
                     </span>
                   </nav>
+                  <div class="alert alert-danger"
+                       *ngIf="this.form.get('replicateProducts').touched && !this.form.get('replicateProducts').valid">
+                    <div *ngIf="this.form.get('replicateProducts').errors && this.form.get('replicateProducts').errors?.['required']">
+                      {{'generalKeywords.mandatoryParameter'|translate}}
+                    </div>
+                  </div>
                 </div>
                 <div class="col-7 ms-0 me-0 ps-3 pe-0" *ngIf="replicate">
                   <p class="titulo-form-simples pb-4" wappler-command="editContent">
@@ -93,25 +100,32 @@
                 <div class="col-7 ms-0 me-0 pt-2 ps-3 pe-0">
                   <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
                   <p class="titulo-form-simples mb-3" wappler-command="editContent">
-                    {{'commercialOffer.EATUnicre'|translate}}*</p>
+                    {{'commercialOffer.EATUnicre'|translate}}*
+                  </p>
                   <nav class="navbar navbar-expand-lg navbar-light bg-light mb-2 pb-4">
                     <span class="navbar-text">
                       <div class="form-check">
                         <input (click)="changeUnicre(true)" class="form-check-input" type="radio" [value]=true
-                          id="radio2" formControlName="isUnicre" name="isUnicre">
+                               id="radio2" formControlName="isUnicre" name="isUnicre">
                         <label class="form-check-label radio pe-5" for="radio2"
-                          wappler-command="editContent">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                               wappler-command="editContent">{{'generalKeywords.yes'|translate|uppercase}}</label>
                       </div>
                     </span>
                     <span class="navbar-text">
                       <div class="form-check">
                         <input (click)="changeUnicre(false)" class="form-check-input" type="radio" [value]=false
-                          id="radio2" formControlName="isUnicre" name="isUnicre">
+                               id="radio2" formControlName="isUnicre" name="isUnicre">
                         <label class="form-check-label radio" for="radio2"
-                          wappler-command="editContent">{{'generalKeywords.no'|translate|uppercase}}</label>
+                               wappler-command="editContent">{{'generalKeywords.no'|translate|uppercase}}</label>
                       </div>
                     </span>
                   </nav>
+                  <div class="alert alert-danger"
+                       *ngIf="this.form.get('isUnicre').touched && !this.form.get('isUnicre').valid">
+                    <div *ngIf="this.form.get('isUnicre').errors && this.form.get('isUnicre').errors?.['required']">
+                      {{'generalKeywords.mandatoryParameter'|translate}}
+                    </div>
+                  </div>
                 </div>
                 <div *ngIf="!isUnicre" class="col-7 ms-0 me-0 ps-3 pe-0">
                   <p class="titulo-form-simples pb-4" wappler-command="editContent">
@@ -513,14 +527,10 @@
                 class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
                 wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;
                 <span class="exit-to-app icon-exit-to-app"></span>
-                <!--<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">-->
               </button><button id="btn5a1" *ngIf="returned != 'consult'" [routerLink]="['/']"
                 class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
                 wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;
                 <span class="cancel icon-cancel"></span>
-                <!--<img
-                  src="assets/images/exit_to_app.svg"
-                  style="height: 25px !important; vertical-align: sub;">-->
                 </button><button (click)="goToComprovativos()"
                 id="btn5a1"
                 class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"

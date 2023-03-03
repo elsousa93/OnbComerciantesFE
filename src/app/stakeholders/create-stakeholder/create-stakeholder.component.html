@@ -13,12 +13,18 @@
             <div class="col">
               <p class="titulo-form-simples">{{'stakeholder.type'|translate}}: *</p>
               <select class="form-select campo-form-select"
-                (click)="changeListElementStakeType(stakeholderType, $event)" id="stakeholderType"
-                formControlName="type">
+                      (click)="changeListElementStakeType(stakeholderType, $event)" id="stakeholderType"
+                      formControlName="type">
                 <option *ngFor="let stakeType of ListStakeholderType" value={{stakeType.stakeTypeOption}}>
                   {{stakeType.stakeTypeOption}}
                 </option>
               </select>
+              <div class="alert alert-danger"
+                   *ngIf="formStakeholderSearch.get('type').touched && !formStakeholderSearch.get('type').valid">
+                <div *ngIf="formStakeholderSearch.get('type').errors && formStakeholderSearch.get('type').errors?.['required']">
+                  {{'generalKeywords.mandatoryParameter'|translate}}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -30,7 +36,7 @@
               <p class="titulo-form-simples">{{'searches.documentType'|translate}}: *</p>
               <div *ngIf="isParticular">
                 <select class="form-select campo-form-select" (click)="changeListElementDocType(documentType, $event)"
-                  id="documentType" formControlName="documentType">
+                        id="documentType" formControlName="documentType">
                   <option *ngFor="let docType of ListDocTypeP" value={{docType.code}}>
                     {{docType.description}}
                   </option>
@@ -38,11 +44,17 @@
               </div>
               <div *ngIf="!isParticular">
                 <select class="form-select campo-form-select" (click)="changeListElementDocType(documentType, $event)"
-                  id="documentType" formControlName="documentType">
+                        id="documentType" formControlName="documentType">
                   <option *ngFor="let docType of ListDocTypeE" value={{docType.code}}>
                     {{docType.description}}
                   </option>
                 </select>
+              </div>
+              <div class="alert alert-danger"
+                   *ngIf="formStakeholderSearch.get('documentType').touched && !formStakeholderSearch.get('documentType').valid">
+                <div *ngIf="formStakeholderSearch.get('documentType').errors && formStakeholderSearch.get('documentType').errors?.['required']">
+                  {{'generalKeywords.mandatoryParameter'|translate}}
+                </div>
               </div>
             </div>
           </div>
@@ -84,6 +96,12 @@
                      (keypress)="numericOnly($event)" [(ngModel)]="stakeholderNumber" id="text1" name="text1"
                      style="padding: .200rem;" type="text" (ngModelChange)="clearNewForm()" class="form-control campo_form"
                      formControlName="documentNumber">
+              <div class="alert alert-danger"
+                   *ngIf="formStakeholderSearch.get('documentNumber').touched && !formStakeholderSearch.get('documentNumber').valid">
+                <div *ngIf="formStakeholderSearch.get('documentNumber').errors && formStakeholderSearch.get('documentNumber').errors?.['required']">
+                  {{'generalKeywords.mandatoryParameter'|translate}}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -162,12 +180,24 @@
                   </span>
                 </p>
                 <input name="nipc" #nipc (keypress)="numericOnly($event)" (keyup)="validateNIPC(nipc.value)" type="text"
-                  class="form-control campo_form" formControlName="nipc">
+                       class="form-control campo_form" formControlName="nipc">
+                <div class="alert alert-danger"
+                     *ngIf="formNewStakeholder.get('nipc').touched && !formNewStakeholder.get('nipc').valid">
+                  <div *ngIf="formNewStakeholder.get('nipc').errors && formNewStakeholder.get('nipc').errors?.['required']">
+                    {{'generalKeywords.mandatoryParameter'|translate}}
+                  </div>
+                </div>
               </div>
               <div class="col-md-6">
                 <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:</p>
                 <input name="socialDenomination" type="text" class="form-control campo_form"
-                  formControlName="socialDenomination">
+                       formControlName="socialDenomination">
+                <div class="alert alert-danger"
+                     *ngIf="formNewStakeholder.get('socialDenomination').touched && !formNewStakeholder.get('socialDenomination').valid">
+                  <div *ngIf="formNewStakeholder.get('socialDenomination').errors && formNewStakeholder.get('socialDenomination').errors?.['required']">
+                    {{'generalKeywords.mandatoryParameter'|translate}}
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -188,11 +218,23 @@
                 </span>
               </p>
               <input name="nif" #nif type="text" (keypress)="numericOnly($event)" (keyup)="validateNIF(nif.value)"
-                class="form-control campo_form" formControlName="nif">
+                     class="form-control campo_form" formControlName="nif">
+              <div class="alert alert-danger"
+                   *ngIf="formNewStakeholder.get('nif').touched && !formNewStakeholder.get('nif').valid">
+                <div *ngIf="formNewStakeholder.get('nif').errors && formNewStakeholder.get('nif').errors?.['required']">
+                  {{'generalKeywords.mandatoryParameter'|translate}}
+                </div>
+              </div>
             </div>
             <div class="col-md-6">
               <p class="titulo-form-simples">{{'stakeholder.name'|translate|uppercase}}:</p>
               <input name="name" type="text" class="form-control campo_form" formControlName="name">
+              <div class="alert alert-danger"
+                   *ngIf="formNewStakeholder.get('name').touched && !formNewStakeholder.get('name').valid">
+                <div *ngIf="formNewStakeholder.get('name').errors && formNewStakeholder.get('name').errors?.['required']">
+                  {{'generalKeywords.mandatoryParameter'|translate}}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -307,14 +349,11 @@
             wappler-command="editContent">
             {{'generalKeywords.exit'|translate|uppercase}}&nbsp;
             <span class="exit-to-app icon-exit-to-app"></span>
-            <!--<img src="assets/images/exit_to_app.svg"
-              style="height: 25px !important; vertical-align: sub;">-->
           </button>
           <button *ngIf="returned != 'consult'" [routerLink]="['/']" id="btn5a5"
             class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 me-2 pt-3 pb-3 ps-3 pe-3"
             wappler-command="editContent">
             <span class="exit-to-app icon-exit-to-app"></span>
-            <!--<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">-->
             {{'generalButtons.cancel'|translate|uppercase}}&nbsp;
           </button>
           <button id="btn5a4"

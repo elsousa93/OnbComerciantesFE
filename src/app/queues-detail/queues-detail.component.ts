@@ -282,12 +282,12 @@ export class QueuesDetailComponent implements OnInit {
         this.logger.info("Get shop from process result: " + JSON.stringify(result));
         var shop = result.result;
         this.shopsList.push(shop);
-        if (this.queueName === 'MCCTreatment') {
-          this.updateShopForm();
-        }
-        if (this.queueName === 'validationSIBS') {
-          this.updateShopValidationForm();
-        }
+        //if (this.queueName === 'MCCTreatment') {
+        //  this.updateShopForm();
+        //}
+        //if (this.queueName === 'validationSIBS') {
+        //  this.updateShopValidationForm();
+        //}
         this.queuesInfo.getShopEquipmentConfigurationsFromProcess(this.processId, shop.id).then(eq => {
           this.logger.info("Get shop equipments list from process result: " + JSON.stringify(result));
           var equipments = eq.result;
@@ -298,7 +298,13 @@ export class QueuesDetailComponent implements OnInit {
           })
 
           Promise.all(shopEquipmentPromisses).then(res => {
-            //se o código estiver todo OK, a chamada que está a ser feita na linha 281 até 286 deve ser feita AQUI
+            //se o código estiver todo OK, a chamada deve ser feita AQUI
+            if (this.queueName === 'MCCTreatment') {
+              this.updateShopForm();
+            }
+            if (this.queueName === 'validationSIBS') {
+              this.updateShopValidationForm();
+            }
             resolve;
           })
         });
@@ -653,16 +659,15 @@ export class QueuesDetailComponent implements OnInit {
       var observation = this.form.get('observation').value;
       queueModel.$type = StateResultDiscriminatorEnum.CLIENT_CHOICE;
       queueModel.userObservations = observation;
+      queueModel.decision = type;
       queueModel.merchantChoice = {
         id: this.merchant.id,
-        decision: "", //Success, ReturnToBackOffice, ReturnToFrontOffice
         clientNumber: ""
       };
 
       queueModel.stakeholdersChoice = [];
       queueModel.stakeholdersChoice.push({
         id: "",
-        decision: "", //Success, ReturnToBackOffice, ReturnToFrontOffice
         clientNumber: ""
       })
     } else if (this.queueName === 'validationSIBS') {
@@ -672,6 +677,8 @@ export class QueuesDetailComponent implements OnInit {
       var observation = this.form.get('observation').value;
       queueModel.$type = StateResultDiscriminatorEnum.MERCHANT_REGISTRATION;
       queueModel.userObservations = observation;
+
+      queueModel.decision = type;
 
       queueModel.merchantRegistrationId = this.form.get("enrollmentMerchantNumber").value;
       this.shopsList.forEach(shop => {
@@ -699,6 +706,7 @@ export class QueuesDetailComponent implements OnInit {
       var observation = this.form.get('observation').value;
       queueModel.$type = StateResultDiscriminatorEnum.NEGOTIATION_APPROVAL;
       queueModel.userObservations = observation;
+      queueModel.decision = type;
       this.documentType = "0062";
     }
 

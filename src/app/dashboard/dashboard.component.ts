@@ -205,7 +205,11 @@ export class DashboardComponent implements OnInit {
     if (this.FTPermissions?.acceptance) {
       this.processService.searchProcessByState('ContractAcceptance', 0, 1).subscribe(result => {
         this.logger.info('Pendentes de Aceitação' + JSON.stringify(result));
-        this.contractAcceptanceCount = result.pagination.total;
+        this.processService.searchProcessByState('ContractDigitalAcceptance', 0, 1).subscribe(res => {
+          this.processService.searchProcessByState('DigitalIdentification', 0, 1).subscribe(r => {
+            this.contractAcceptanceCount = result.pagination.total + res.pagination.total + r.pagination.total;
+          });
+        });
       });
     }
 
@@ -346,6 +350,32 @@ export class DashboardComponent implements OnInit {
             process.state = this.translate.instant('searches.contractAcceptance')
           }
         });
+      });
+
+      this.processService.searchProcessByState('ContractDigitalAcceptance', 0, this.contractAcceptanceCount).subscribe(resul => {
+        this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
+        var contractAcceptanceProcessess = resul;
+        contractAcceptanceProcessess.items.forEach(process => {
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'ContractDigitalAcceptance') {
+            process.state = this.translate.instant('searches.contractDigitalAcceptance')
+          }
+        });
+        this.contractAcceptanceProcessess.items.push(...contractAcceptanceProcessess.items);
+      });
+
+      this.processService.searchProcessByState('DigitalIdentification', 0, this.contractAcceptanceCount).subscribe(resul => {
+        this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
+        var contractAcceptanceProcessess = resul;
+        contractAcceptanceProcessess.items.forEach(process => {
+          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
+          // mapear os estados para aparecer em PT ou EN
+          if (process.state === 'DigitalIdentification') {
+            process.state = this.translate.instant('searches.digitalIdentification')
+          }
+        });
+        this.contractAcceptanceProcessess.items.push(...contractAcceptanceProcessess.items);
         this.orderProcesses(this.dataSourceAceitacao, this.empTbSortAceitacao, this.contractAcceptanceProcessess);
       });
     }
