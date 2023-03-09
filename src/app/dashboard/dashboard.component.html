@@ -32,7 +32,7 @@
       <div class="row">
         <button *ngIf="FTPermissions.pending" type="button"
                 class="col mt-2 mb-2 ms-3 me-2 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
-                data-bs-target="#flush-collapsePending">
+                data-bs-target="#flush-collapsePending" (click)="callIncompleteCount()">
           <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
             <app-number-counter [number]="incompleteCount"
                                 *ngIf="incompleteCount !== undefined && incompleteCount !== null"></app-number-counter>
@@ -48,7 +48,7 @@
         </button>
         <button *ngIf="FTPermissions.backOffice" type="button"
                 class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseBackOffice">
+                data-bs-target="#flush-collapseBackOffice" (click)="callBackOfficeCount()">
           <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
             <app-number-counter [number]="ongoingCount" *ngIf="ongoingCount !== undefined && ongoingCount !== null">
             </app-number-counter>
@@ -64,7 +64,7 @@
         </button>
         <button *ngIf="FTPermissions.returned" type="button"
                 class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseReturned">
+                data-bs-target="#flush-collapseReturned" (click)="callReturnedCount()">
           <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
             <app-number-counter [number]="returnedCount" *ngIf="returnedCount !== undefined && returnedCount !== null">
             </app-number-counter>
@@ -80,7 +80,7 @@
         </button>
         <button *ngIf="FTPermissions.acceptance" type="button"
                 class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseAcceptance">
+                data-bs-target="#flush-collapseAcceptance" (click)="callAcceptanceCount()">
           <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
             <app-number-counter [number]="contractAcceptanceCount"
                                 *ngIf="contractAcceptanceCount !== undefined && contractAcceptanceCount !== null"></app-number-counter>
@@ -96,7 +96,7 @@
         </button>
         <button *ngIf="FTPermissions.pendingSent" type="button" id="finalBtn"
                 class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center " data-bs-toggle="collapse"
-                data-bs-target="#flush-collapsePendingSent">
+                data-bs-target="#flush-collapsePendingSent" (click)="callPendingSentCount()">
           <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
             <app-number-counter [number]="pendingSentCount"
                                 *ngIf="pendingSentCount !== undefined && pendingSentCount !== null">
@@ -113,7 +113,7 @@
         </button>
         <button *ngIf="FTPermissions.pendingEligibility" type="button" id="finalBtn2"
                 class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center " data-bs-toggle="collapse"
-                data-bs-target="#flush-collapsePendingEligibility">
+                data-bs-target="#flush-collapsePendingEligibility" (click)="callPendingEligibilityCount()">
           <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
             <app-number-counter [number]="pendingEligibilityCount"
                                 *ngIf="pendingEligibilityCount !== undefined && pendingEligibilityCount !== null">
@@ -130,7 +130,7 @@
         </button>
         <button *ngIf="FTPermissions.multipleClientes" type="button"
                 class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseMultipleClients">
+                data-bs-target="#flush-collapseMultipleClients" (click)="callMultipleClientsCount()">
           <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
             <app-number-counter [number]="multipleClientesCount"
                                 *ngIf="multipleClientesCount !== undefined && multipleClientesCount !== null">
@@ -147,7 +147,7 @@
         </button>
         <button *ngIf="FTPermissions.DOValidation" type="button"
                 class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseDOValidation">
+                data-bs-target="#flush-collapseDOValidation" (click)="callDOValidationCount()">
           <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
             <app-number-counter [number]="DOValidationCount"
                                 *ngIf="DOValidationCount !== undefined && DOValidationCount !== null">
@@ -164,7 +164,7 @@
         </button>
         <button *ngIf="FTPermissions.negotiationAproval" type="button"
                 class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseNegotiationAproval">
+                data-bs-target="#flush-collapseNegotiationAproval" (click)="callNegotiationApprovalCount()">
           <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
             <app-number-counter [number]="negotiationAprovalCount"
                                 *ngIf="negotiationAprovalCount !== undefined && negotiationAprovalCount !== null">
@@ -181,7 +181,7 @@
         </button>
         <button *ngIf="FTPermissions.MCCTreatment" type="button"
                 class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseMCCTreatment">
+                data-bs-target="#flush-collapseMCCTreatment" (click)="callMCCTreatmentCount()">
           <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
             <app-number-counter [number]="MCCTreatmentCount"
                                 *ngIf="MCCTreatmentCount !== undefined && MCCTreatmentCount !== null">
@@ -198,7 +198,7 @@
         </button>
         <button *ngIf="FTPermissions.validationSIBS" type="button"
                 class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseValidationSIBS">
+                data-bs-target="#flush-collapseValidationSIBS" (click)="callValidationSIBSCount()">
           <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
             <app-number-counter [number]="validationSIBSCount"
                                 *ngIf="validationSIBSCount !== undefined && validationSIBSCount !== null">
@@ -215,7 +215,7 @@
         </button>
         <button *ngIf="FTPermissions.riskOpinion" type="button"
                 class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseRiskOpinion">
+                data-bs-target="#flush-collapseRiskOpinion" (click)="callRiskOpinionCount()">
           <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
             <app-number-counter [number]="riskOpinionCount"
                                 *ngIf="riskOpinionCount !== undefined && riskOpinionCount !== null">
@@ -232,7 +232,7 @@
         </button>
         <button *ngIf="FTPermissions.complianceDoubts" type="button"
                 class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center" data-bs-toggle="collapse"
-                data-bs-target="#flush-collapseComplianceDoubts">
+                data-bs-target="#flush-collapseComplianceDoubts" (click)="callComplianceDoubtsCount()">
           <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
             <app-number-counter [number]="complianceDoubtsCount"
                                 *ngIf="complianceDoubtsCount !== undefined && complianceDoubtsCount !== null">
@@ -284,7 +284,7 @@
             <div *ngIf="FTPermissions.pending" class="accordion1-item" (click)="callIncompleteCount()">
               <h2 class="accordion1-header" id="flush-headingPending">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapsePending" aria-expanded="false" aria-controls="flush-collapsePending">
+                        data-bs-target="#flush-collapsePending" aria-expanded="false" aria-controls="flush-collapsePending" id="accordionButton1">
                   <span class="material-symbols-outlined icon-accordion move-up icon-move-up">
                     <!--<img src="assets/images/queues/move_up.svg">-->
                   </span>&nbsp;&nbsp;{{'homepage.processes.pending'|translate|uppercase}}
@@ -376,7 +376,7 @@
               <h2 class="accordion1-header" id="flush-headingBackOffice">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseBackOffice" aria-expanded="false"
-                        aria-controls="flush-collapseBackOffice">
+                        aria-controls="flush-collapseBackOffice" id="accordionButton2">
                   <span class="material-symbols-outlined icon-accordion assignment_returned icon-assignment-returned">
                     <!--<img class="assignment_returned">-->
                   </span>&nbsp;&nbsp;{{'homepage.processes.backOffice'|translate|uppercase}}
@@ -464,7 +464,7 @@
             <div *ngIf="FTPermissions.returned" class="accordion1-item" (click)="callReturnedCount()">
               <h2 class="accordion1-header" id="flush-headingReturned">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapseReturned" aria-expanded="false" aria-controls="flush-collapseReturned">
+                        data-bs-target="#flush-collapseReturned" aria-expanded="false" aria-controls="flush-collapseReturned" id="accordionButton3">
                   <span class="material-symbols-outlined icon-accordion assignment-return icon-assignment-return">
                     <!-- <img src="assets/images/queues/assignment_return.svg">-->
                   </span>&nbsp;&nbsp;{{'homepage.processes.returned'|translate|uppercase}}
@@ -552,7 +552,7 @@
               <h2 class="accordion1-header" id="flush-headingAcceptance">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseAcceptance" aria-expanded="false"
-                        aria-controls="flush-collapseAcceptance">
+                        aria-controls="flush-collapseAcceptance" id="accordionButton4">
                   <span class="material-symbols-outlined icon-accordion assignment-turned-in icon-assignment-turned-in">
                     <!--<img src="assets/images/queues/assignment_turned_in.svg">-->
                   </span>&nbsp;&nbsp;{{'homepage.processes.acceptance'|translate|uppercase}}
@@ -643,7 +643,7 @@
               <h2 class="accordion1-header" id="flush-headingPendingSent">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapsePendingSent" aria-expanded="false"
-                        aria-controls="flush-collapsePendingSent">
+                        aria-controls="flush-collapsePendingSent" id="accordionButton5">
                   <span class="material-symbols-outlined icon-accordion pending-sent icon-pending-sent">
                     <!--<img src="assets/images/queues/pending_sent.svg">-->
                   </span>&nbsp;&nbsp;{{'homepage.processes.pendingSent'|translate|uppercase}}
@@ -733,7 +733,7 @@
               <h2 class="accordion1-header" id="flush-headingPendingEligibility">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapsePendingEligibility" aria-expanded="false"
-                        aria-controls="flush-collapsePendingEligibility">
+                        aria-controls="flush-collapsePendingEligibility" id="accordionButton6">
                   <span class="material-symbols-outlined icon-accordion inventory-2 icon-inventory-2">
                     <!--<img src="assets/images/queues/inventory_2.svg">-->
                   </span>&nbsp;&nbsp;{{'homepage.processes.pendingEligibility'|translate|uppercase}}
@@ -830,7 +830,7 @@
               <h2 class="accordion1-header" id="flush-headingMultipleClients">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseMultipleClients" aria-expanded="false"
-                        aria-controls="flush-collapseMultipleClients">
+                        aria-controls="flush-collapseMultipleClients" id="accordionButton7">
                   <span class="material-symbols-outlined icon-accordion multiple-clients icon-multiple-clients">
                     <!--<img src="assets/images/queues/multiple_clients.svg">-->
                   </span>&nbsp;&nbsp;{{'homepage.processes.multipleClients'|translate|uppercase}}
@@ -926,7 +926,7 @@
               <h2 class="accordion1-header" id="flush-headingDOValidation">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseDOValidation" aria-expanded="false"
-                        aria-controls="flush-collapseDOValidation">
+                        aria-controls="flush-collapseDOValidation" id="accordionButton8">
                   <span class="material-symbols-outlined icon-accordion do-validation icon-do-validation">
                     <!--<img src="assets/images/queues/DO_Validation.svg">-->
                   </span>&nbsp;&nbsp;{{'homepage.processes.DOValidation'|translate|uppercase}}
@@ -1023,7 +1023,7 @@
               <h2 class="accordion1-header" id="flush-headingNegotiationAproval">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseNegotiationAproval" aria-expanded="false"
-                        aria-controls="flush-collapseNegotiationAproval">
+                        aria-controls="flush-collapseNegotiationAproval" id="accordionButton9">
                   <span class="material-symbols-outlined icon-accordion negotiation-approval icon-negotiation-approval">
                     <!--<img src="assets/images/queues/negotiation_approval.svg">-->
                   </span>&nbsp;&nbsp;{{'homepage.processes.negotiationAproval'|translate|uppercase}}
@@ -1120,7 +1120,7 @@
               <h2 class="accordion1-header" id="flush-headingMCCTreatment">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseMCCTreatment" aria-expanded="false"
-                        aria-controls="flush-collapseMCCTreatment">
+                        aria-controls="flush-collapseMCCTreatment" id="accordionButton10">
                   <span class="material-symbols-outlined icon-accordion mcc-treatment icon-mcc-treatment">
                     <!--<img src="assets/images/queues/MCC_treatment.svg">-->
                   </span>&nbsp;&nbsp;{{'homepage.processes.MCCTreatment'|translate|uppercase}}
@@ -1216,7 +1216,7 @@
               <h2 class="accordion1-header" id="flush-headingValidationSIBS">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseValidationSIBS" aria-expanded="false"
-                        aria-controls="flush-collapseValidationSIBS">
+                        aria-controls="flush-collapseValidationSIBS" id="accordionButton11">
                   <span class="material-symbols-outlined icon-accordion validation-sibs icon-validation-sibs">
                     <!--<img src="assets/images/queues/validation_sibs.svg">-->
                   </span>&nbsp;&nbsp;{{'homepage.processes.validationSIBS'|translate|uppercase}}
@@ -1312,7 +1312,7 @@
               <h2 class="accordion1-header" id="flush-headingRiskOpinion">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseRiskOpinion" aria-expanded="false"
-                        aria-controls="flush-collapseRiskOpinion">
+                        aria-controls="flush-collapseRiskOpinion" id="accordionButton12">
                   <span class="material-symbols-outlined icon-accordion risk-opinion icon-risk-opinion">
                     <!--<img src="assets/images/queues/risk_opinion.svg">-->
                   </span>&nbsp;&nbsp;{{'homepage.processes.riskOpinion'|translate|uppercase}}
@@ -1409,7 +1409,7 @@
               <h2 class="accordion1-header" id="flush-headingComplianceDoubts">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseComplianceDoubts" aria-expanded="false"
-                        aria-controls="flush-collapseComplianceDoubts">
+                        aria-controls="flush-collapseComplianceDoubts" id="accordionButton13">
                   <span class="material-symbols-outlined icon-accordion compliance icon-compliance">
                     <!--<img src="assets/images/queues/compliance.svg">-->
                   </span>&nbsp;&nbsp;{{'homepage.processes.complianceDoubts'|translate|uppercase}}

@@ -15,6 +15,7 @@ import { DatePipe } from '@angular/common';
 import { ContractAcceptance, ContractAcceptanceEnum, ContractDigitalAcceptance, ContractDigitalAcceptanceEnum, State } from '../../queues-detail/IQueues.interface';
 import { ComprovativosService } from '../../comprovativos/services/comprovativos.services';
 import { PostDocument } from '../../submission/document/ISubmission-document';
+import { ProcessService } from '../../process/process.service';
 
 @Component({
   selector: 'app-pack-contratual',
@@ -56,37 +57,97 @@ export class PackContratualComponent implements OnInit {
   updatedInfo: boolean = false;
   manualSignature: boolean = false;
   firstTime: boolean = true;
+  state: string = "";
+  manualSignatureFileId: string = "";
 
   constructor(private logger: LoggerService,
     private modalService: BsModalService, private translate: TranslateService, private snackBar: MatSnackBar,
     private tableInfoService: TableInfoService, private router: ActivatedRoute, private queuesInfo: QueuesService, private datepipe: DatePipe,
-    private route: Router, private documentService: ComprovativosService) {
-
+    private route: Router, private documentService: ComprovativosService, private processService: ProcessService) {
+    if (this.route?.getCurrentNavigation()?.extras?.state) {
+      this.state = this.route.getCurrentNavigation().extras.state["state"];
+    }
   }
 
   ngOnInit(): void {
     var context = this;
     this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
     this.fetchStartingInfo();
+    this.getDocuments();
     this.form = new FormGroup({
       observations: new FormControl('')
     })
+    if (this.state == 'ContractAcceptance') {
+      this.manualSignature = true;
+    }
   }
 
   fetchStartingInfo() {
+    var context = this;
     if (this.firstTime == false) {
       this.updatedInfo = true;
     }
+    this.stakeholdersList = [];
     this.queuesInfo.getProcessStakeholdersList(this.processId).then(result => {
       this.logger.info("Get stakeholders list from process result: " + JSON.stringify(result));
       var stakeholders = result.result;
       stakeholders.forEach(value => {
         this.queuesInfo.getProcessStakeholderDetails(this.processId, value.id).then(result => {
+          if (result.result.signType == "NotSign") {
+            result.result.signType = context.translate.instant('acceptance.contratualPack.notSign');
+          } else if (result.result.signType == "CitizenCard") {
+            result.result.signType = context.translate.instant('acceptance.contratualPack.citizenCard');
+          } else if (result.result.signType == "DigitalCitizenCard") {
+            result.result.signType = context.translate.instant('acceptance.contratualPack.digitalCitizenCard');
+          } else if (result.result.signType == "OneTimePassword") {
+            result.result.signType = context.translate.instant('acceptance.contratualPack.oneTimePassword');
+          } else if (result.result.signType == "Biometric") {
+            result.result.signType = context.translate.instant('acceptance.contratualPack.biometric');
+          }
+
+          if (result.result.identificationState != "Identified" && result.result.signatureState == "NotSigned") {
+            if (result.result.identificationState == "NotIdentified") {
+              result.result.identificationState = context.translate.instant('acceptance.contratualPack.notIdentified');
+            } else if (result.result.identificationState == "Identified") {
+              result.result.identificationState = context.translate.instant('acceptance.contratualPack.identified');
+            } else if (result.result.identificationState == "Pending") {
+              result.result.identificationState = context.translate.instant('acceptance.contratualPack.pending');
+            } else if (result.result.identificationState == "Cancelled") {
+              result.result.identificationState = context.translate.instant('acceptance.contratualPack.canceled');
+            } else if (result.result.identificationState == "Refused") {
+              result.result.identificationState = context.translate.instant('acceptance.contratualPack.refused');
+            }
+          } else {
+            if (result.result.signatureState == "NotSigned") {
+              result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.notSigned');
+            } else if (result.result.signatureState == "Signed") {
+              result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.signed');
+            } else if (result.result.signatureState == "Pending") {
+              result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.pending');
+            } else if (result.result.signatureState == "Cancelled") {
+              result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.canceled');
+            } else if (result.result.signatureState == "Refused") {
+              result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.refused');
+            }
+          }
+
           this.stakeholdersList.push(result.result);
         });
       });
     });
     this.firstTime = false;
+  }
+
+  getDocuments() {
+    this.processService.getDocumentFromProcess(this.processId).subscribe(result => {
+      if (result.length > 0) {
+        result.forEach(doc => {
+          if (doc.type == "1101") {
+            this.manualSignatureFileId = doc.id;
+          }
+        });
+      }
+    });
   }
 
   validatedDocumentsChange(value: boolean) {
@@ -188,6 +249,14 @@ export class PackContratualComponent implements OnInit {
     }
   }
 
+  downloadAll() {
+    if (this.manualSignatureFileId != "") {
+      this.processService.getDocumentImageFromProcess(this.processId, this.manualSignatureFileId).subscribe(result => {
+        this.b64toBlob(result.binary, 'application/pdf', 512, true);
+      });
+    }
+  }
+
   submit(state: string) {
     var context = this;
     var externalState;
@@ -236,5 +305,38 @@ export class PackContratualComponent implements OnInit {
       //}
       //this.route.navigate(['/']);
     });
+  }
+
+  b64toBlob(b64Data: any, contentType: string, sliceSize: number, download: boolean = false) {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, { type: contentType });
+    const blobUrl = window.URL.createObjectURL(blob);
+    if (download) {
+      const link = document.createElement('a');
+      link.href = blobUrl;
+      link.download = 'contrato';
+      link.click();
+    } else {
+      window.open(blobUrl, '_blank',
+        `margin: auto;
+      width: 50%;
+      padding: 10px;
+      text-align: center;
+      border: 3px solid green;` );
+    }
   }
 }

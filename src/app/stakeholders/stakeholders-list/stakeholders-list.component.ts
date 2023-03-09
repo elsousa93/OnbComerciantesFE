@@ -201,7 +201,6 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
   getAllStakeholderInfo(submissionID, stakeholderID) {
     var context = this;
-
     return new Promise((resolve, reject) => {
       context.stakeholderService.GetStakeholderFromSubmission(submissionID, stakeholderID).then(res => {
         context.logger.info("Get stakeholder from submission result: " + JSON.stringify(res));

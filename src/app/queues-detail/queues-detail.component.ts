@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { BusinessIssueViewModel, ProcessList, ProcessService, SearchProcessHistory } from '../process/process.service';
@@ -28,11 +28,23 @@ import { TableInfoService } from '../table-info/table-info.service';
   templateUrl: './queues-detail.component.html'
 })
 
-export class QueuesDetailComponent implements OnInit {
+export class QueuesDetailComponent implements OnInit, AfterViewInit {
   form: FormGroup;
-
   @Input() queueName: string;
   @Input() processId: string;
+
+  @ViewChild('sortStore') sortStore: MatSort;
+  displayedColumnsStore: string[] = ['name', 'activity', 'subActivity'];
+  storesMat = new MatTableDataSource<ShopDetailsAcquiring>();
+  @ViewChild('paginatorStore') set paginatorStore(pager: MatPaginator) {
+    if (pager) {
+      this.storesMat.paginator = pager;
+      this.storesMat.paginator._intl = new MatPaginatorIntl();
+      this.storesMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+  currentStore: ShopDetailsAcquiring = null;
+  currentIdx: number;
 
   private baseUrl;
   localUrl: any;
@@ -161,8 +173,8 @@ export class QueuesDetailComponent implements OnInit {
   updateShopForm() {
     var formGroupShop = new FormGroup({});
     this.shopsList.forEach(function (value, idx) {
-      value.pack.paymentSchemes.attributes.forEach(attr => {
-        formGroupShop.addControl(value.id + attr.id, new FormControl('', Validators.required));
+      value.industryClassifications.forEach(val => {
+        formGroupShop.addControl(value.id + val.industryClassificationCode, new FormControl('', Validators.required));
       });
     });
     this.form.setControl("shopsMCC", formGroupShop);
@@ -282,6 +294,7 @@ export class QueuesDetailComponent implements OnInit {
         this.logger.info("Get shop from process result: " + JSON.stringify(result));
         var shop = result.result;
         this.shopsList.push(shop);
+        context.loadStores(context.shopsList);
         //if (this.queueName === 'MCCTreatment') {
         //  this.updateShopForm();
         //}
@@ -415,8 +428,24 @@ export class QueuesDetailComponent implements OnInit {
     });
   }
 
+  emitSelectedStore(store, idx) {
+    this.currentStore = store;
+    this.currentIdx = idx;
+    
+  }
+
+  loadStores(storesValues: ShopDetailsAcquiring[]) {
+    this.storesMat.data = storesValues;
+    this.storesMat.sort = this.sortStore;
+  }
+
+  ngAfterViewInit(): void {
+    this.storesMat.sort = this.sortStore;
+  }
+
   nextPage() {
     localStorage.setItem('returned', 'consult');
+    this.data.changeQueueName(this.queueName);
     this.logger.info("Redirecting to Client By Id page");
     this.route.navigate(['/clientbyid']);
   }
@@ -491,11 +520,11 @@ export class QueuesDetailComponent implements OnInit {
         this.subActivities = act.subActivities;
       }
     })
-    return this.activities.find(a => a.activityCode == activityCode).activityDescription;
+    return this.activities?.find(a => a.activityCode == activityCode)?.activityDescription;
   }
 
   getSubActivityDescription(subActivityCode) {
-    return this.subActivities.find(s => s.subActivityCode == subActivityCode).subActivityDescription;
+    return this.subActivities?.find(s => s.subActivityCode == subActivityCode)?.subActivityDescription;
   }
 
   searchClient() {
@@ -545,11 +574,19 @@ export class QueuesDetailComponent implements OnInit {
           this.showFoundClient = false;
           this.notFound = true;
           this.canSearch = true;
+          context.snackBar.open(context.translate.instant('client.notFound'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
         }
       }, error => {
         context.showFoundClient = false;
         this.notFound = true;
         this.canSearch = true;
+        context.snackBar.open(context.translate.instant('client.notFound'), '', {
+          duration: 4000,
+          panelClass: ['snack-bar']
+        });
       });
     }
   }
@@ -708,6 +745,24 @@ export class QueuesDetailComponent implements OnInit {
       queueModel.userObservations = observation;
       queueModel.decision = type;
       this.documentType = "0062";
+    } else if (this.queueName === 'MCCTreatment') {
+      this.state = State.STANDARD_INDUSTRY_CLASSIFICATION_CHOICE;
+      queueModel = {} as StandardIndustryClassificationChoice;
+
+      var observation = this.form.get('observation').value;
+      queueModel.$type = StateResultDiscriminatorEnum.STANDARD_INDUSTRY_CLASSIFICATION_MODEL;
+      queueModel.userObservations = observation;
+
+      this.shopsList.forEach(shop => {
+        shop.industryClassifications.forEach(industry => {
+          var classification = context.form.get("shopsMCC").get(shop.id + industry.industryClassificationCode).value;
+          queueModel.shopId = shop.id;
+          queueModel.schemaClassifications.push({
+            paymentSchemaId: industry.paymentSchemesAttributeId,
+            classification: classification
+          });
+        });
+      });
     }
 
     if (this.files.length > 0) {
@@ -729,6 +784,12 @@ export class QueuesDetailComponent implements OnInit {
 
     this.queuesInfo.postExternalState(this.processId, this.state, queueModel).then(result => {
       this.logger.info("Queue post external state result: " + JSON.stringify(queueModel));
-    })
+      let navigationExtras = {
+        state: {
+          queueName: this.queueName
+        }
+      } as NavigationExtras;
+      this.route.navigate(['/'], navigationExtras);
+    });
   }
 }

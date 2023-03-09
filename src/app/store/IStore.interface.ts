@@ -79,6 +79,7 @@ export class ShopDetailsAcquiring {
   phone1?: Phone
   phone2?: Phone
   email?: string
+  industryClassifications?: IndustryClassifications[]
 }
 
 //Interfaces auxiliares
@@ -170,6 +171,12 @@ export class ShopEquipment {
 interface ShopProductPackPricingViewModel {
   id?: string
   attribute?: ProductPackPricingAttribute
+}
+
+export interface IndustryClassifications {
+  paymentSchemesAttributeId?: string,
+  industryClassificationCode: string,
+  industryClassificationPotentialCodes?: string[]
 }
 
 export enum CommunicationOwnershipTypeEnum {

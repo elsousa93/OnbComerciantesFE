@@ -66,8 +66,8 @@
                    id="crcCode" class="form-control campo_form" (keyup)="searchByCRC()"
                    [attr.disabled]="returned === 'consult' ? true : null" />
             <div class="alert alert-danger"
-                 *ngIf="this.form.get('crcCode').touched && !this.form.get('crcCode').valid">
-              <div *ngIf="this.form.get('crcCode').errors && this.form.get('crcCode').errors?.['required']">
+                 *ngIf="this.form?.get('crcCode')?.touched && !this.form?.get('crcCode')?.valid">
+              <div *ngIf="this.form?.get('crcCode')?.errors && this.form?.get('crcCode')?.errors?.['required']">
                 {{'generalKeywords.mandatoryParameter'|translate}}
               </div>
             </div>

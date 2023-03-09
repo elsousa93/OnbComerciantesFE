@@ -72,6 +72,7 @@
     "found": "Selecione um cliente:",
     "find": "Cliente Existente",
     "multipleClients": "Existem múltiplos clientes",
+    "notFound": "Não foi encontrado nenhum cliente para os dados inseridos",
     "number": "Nº de Cliente",
     "nameSocialDesignation": "Nome/Designação Social",
     "address": "Morada",
@@ -403,6 +404,7 @@
     "stakeIdentification": "Identificação do interveniente presencial?",
     "contratualPack": {
       "title": "Identificação & Assinatura Pack",
+      "title2": "Pack Contratual",
       "documentation": "Documentação Gerada no Processo",
       "step": "Neste passo, deve entregar a documentação gerada ao cliente para assinar",
       "reduniq": "Contrato de adesão ao sistema reduniq de aceitação de pagamentos com cartões",
@@ -428,7 +430,24 @@
       "identificationAndSign": "Identificação e assinatura de contrato",
       "representatives": "Representantes e Estado de identificação & assinatura",
       "processDocuments": "Documentos do processo",
-      "signType": "Modo Assinatura"
+      "signType": "Modo Assinatura",
+      "notSign": "Manual",
+      "citizenCard": "CC",
+      "digitalCitizenCard": "CC Digital",
+      "oneTimePassword": "Palavra passe única",
+      "biometric": "Traço Biométrico",
+      "notIdentified": "Em Identificação",
+      "identified": "Concluído",
+      "pending": "Em Identificação",
+      "canceled": "Identificação Cancelada",
+      "refused": "Identificação Recusada",
+      "signature": {
+        "notSigned": "Recolha Assinatura",
+        "signed": "Assinatura Concluída",
+        "pending": "Recolha Assinatura",
+        "canceled": "Assinatura Cancelada",
+        "refused": "Assinatura Recusada"
+      }
     }
   },
   "queues": {

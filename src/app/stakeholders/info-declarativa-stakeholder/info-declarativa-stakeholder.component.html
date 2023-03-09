@@ -23,8 +23,12 @@
         </g>
         </svg>
         <span class="navbar-text">
-          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0">
-            {{'declarativeInformation.title'|translate|uppercase}}</h5>
+          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0" *ngIf="queueName == ''">
+            {{'declarativeInformation.title'|translate|uppercase}}
+          </h5>
+          <h5 class="subtitulo_barras_horizontais align-self-center text-success mt-0 mb-0 pt-0 pb-0" *ngIf="queueName != ''">
+            {{queueName + ' | ' + title |uppercase}}
+          </h5>
         </span>
       </nav>
     </div>

@@ -14,6 +14,7 @@ import { validPhoneNumber, validPhoneAndMobileNumber } from '../info-declarativa
 import { LoggerService } from 'src/app/logger.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../../commercial-offer/ICommercialOffer.interface';
 import { distinctUntilChanged, Observable, of, Subscription } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-info-declarativa-lojas',
@@ -50,6 +51,9 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
   storesLength: number;
   updatedStoreEvent: Observable<{ store: ShopDetailsAcquiring, idx: number }>;
+  queueName: string = "";
+  title: string;
+  public subscription: Subscription;
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -58,7 +62,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   public subs: Subscription[] = [];
   returnedFrontOffice: boolean = false;
 
-  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService) {
+  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService, private translate: TranslateService) {
     if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.returnedFrontOffice = this.route.getCurrentNavigation().extras.state["returnedFrontOffice"];
     }
@@ -79,6 +83,14 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.data.updateData(false, 6, 3);
+    this.subscription = this.data.currentQueueName.subscribe(queueName => {
+      if (queueName != null) {
+        this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
+          this.queueName = this.translate.instant('homepage.' + queueName);
+          this.title = this.translate.instant('declarativeInformation.title');
+        });
+      }
+    });
     this.returned = localStorage.getItem("returned");
     this.submissionId = localStorage.getItem("submissionId");
     this.processNumber = localStorage.getItem("processNumber");

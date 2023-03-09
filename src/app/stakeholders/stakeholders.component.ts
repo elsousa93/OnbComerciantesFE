@@ -18,6 +18,7 @@ import { DocumentSearchType } from '../table-info/ITable-info.interface';
 import { Client } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
 import { LoggerService } from '../logger.service';
+import { TranslateService } from '@ngx-translate/core';
 
 /** Listagem Intervenientes / Intervenientes
  *
@@ -114,10 +115,12 @@ export class StakeholdersComponent implements OnInit {
 
   isClient: boolean;
   contractAssociated: boolean = false;
+  queueName: string = "";
+  title: string;
 
   constructor(public modalService: BsModalService, private datePipe: DatePipe,
     private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService,
-    private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private clientService: ClientService, private logger: LoggerService) {
+    private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private clientService: ClientService, private logger: LoggerService, private translate: TranslateService) {
 
     if (this.route.getCurrentNavigation().extras.state) {
       this.editStakeInfo = this.route.getCurrentNavigation().extras.state["editStakeInfo"];
@@ -169,6 +172,14 @@ export class StakeholdersComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.subscription = this.data.currentQueueName.subscribe(queueName => {
+      if (queueName != null) {
+        this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
+          this.queueName = this.translate.instant('homepage.' + queueName);
+          this.title = this.translate.instant('stakeholder.title');
+        });
+      }
+    });
     this.data.updateData(false, 2, 1);
     this.submissionId = localStorage.getItem('submissionId');
     this.processNumber = localStorage.getItem("processNumber");

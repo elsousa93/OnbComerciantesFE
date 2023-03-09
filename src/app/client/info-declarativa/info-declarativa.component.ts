@@ -12,6 +12,7 @@ import { SubmissionService } from '../../submission/service/submission-service.s
 import { ClientService } from '../client.service';
 import { infoDeclarativaForm, validPhoneNumber, validPhoneAndMobileNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
 import { LoggerService } from 'src/app/logger.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-info-declarativa',
@@ -49,6 +50,8 @@ export class InfoDeclarativaComponent implements OnInit {
 
   public emailRegex: string;
   returnedFrontOffice: boolean = false;
+  queueName: string = "";
+  title: string;
 
   setForm(client: Client) {
     this.newClient = client;
@@ -67,7 +70,7 @@ export class InfoDeclarativaComponent implements OnInit {
 
   public subs: Subscription[] = [];
 
-  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService) {
+  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService, private translate: TranslateService) {
 
     if (this.router?.getCurrentNavigation()?.extras?.state) {
       this.returnedFrontOffice = this.router.getCurrentNavigation().extras.state["returnedFrontOffice"];
@@ -121,6 +124,14 @@ export class InfoDeclarativaComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.subscription = this.data.currentQueueName.subscribe(queueName => {
+      if (queueName != null) {
+        this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
+          this.queueName = this.translate.instant('homepage.' + queueName);
+          this.title = this.translate.instant('declarativeInformation.title');
+        });
+      }
+    });
     this.data.updateData(false, 6, 1);
     this.returned = localStorage.getItem("returned");
     this.newClient = JSON.parse(localStorage.getItem("info-declarativa"))?.client ?? this.newClient;

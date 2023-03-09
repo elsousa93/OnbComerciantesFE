@@ -83,6 +83,8 @@ export class StoreComponent implements AfterViewInit {
   currentUser: User = {};
   previousStoreEvent: Observable<number>;
   public ibansToShow: { tipo: string, dataDocumento: string, file: File, id: string };
+  queueName: string = "";
+  title: string;
 
   emitRemovedStore(store) {
     this.removedStoreSubject.next(store);
@@ -129,6 +131,14 @@ export class StoreComponent implements AfterViewInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.subscription = this.data.currentQueueName.subscribe(queueName => {
+      if (queueName != null) {
+        this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
+          this.queueName = this.translate.instant('homepage.' + queueName);
+          this.title = this.translate.instant('stores.title');
+        });
+      }
+    });
     this.submissionId = localStorage.getItem("submissionId");
     this.processNumber = localStorage.getItem("processNumber");
     this.returned = localStorage.getItem("returned");

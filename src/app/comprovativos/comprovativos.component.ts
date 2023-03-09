@@ -86,6 +86,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   mandatoryDocs: string;
   documents: DocumentSearchType[];
   wnd: any = window;
+  queueName: string = "";
+  title: string;
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number, download: boolean = false) {
     const byteCharacters = atob(b64Data);
@@ -398,6 +400,14 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.pageName = String(this.router.snapshot.params['pageName']);
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.subscription = this.data.currentQueueName.subscribe(queueName => {
+      if (queueName != null) {
+        this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
+          this.queueName = this.translate.instant('homepage.' + queueName);
+          this.title = this.translate.instant('supportingDocuments.title');
+        });
+      }
+    });
     this.returned = localStorage.getItem("returned");
     this.submissionId = localStorage.getItem("submissionId");
     this.data.updateData(true, 4, 1);

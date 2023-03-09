@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef, HostBinding, ViewChild } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, HostBinding, ViewChild, AfterViewInit, AfterViewChecked } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { MediaMatcher } from '@angular/cdk/layout';
@@ -23,7 +23,7 @@ import { ProcessNumberService } from '../nav-menu-presencial/process-number.serv
   styleUrls: ['./dashboard.component.css'],
   animations: [onSideNavChange, AutoHideSidenavAdjust]
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
 
   dataSourcePendentes: MatTableDataSource<ProcessList> = new MatTableDataSource();
   dataSourceTratamento: MatTableDataSource<ProcessList> = new MatTableDataSource();
@@ -163,6 +163,7 @@ export class DashboardComponent implements OnInit {
   date: string;
   nipc: string;
   name: string;
+  queueName: string = "";
 
   constructor(private logger: LoggerService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
@@ -282,6 +283,10 @@ export class DashboardComponent implements OnInit {
         this.logger.info('ComplianceEvaluation ' + JSON.stringify(result));
         this.complianceDoubtsCount = result.pagination.total;
       });
+    }
+
+    if (this.router?.getCurrentNavigation()?.extras?.state) {
+      this.queueName = this.router.getCurrentNavigation().extras.state["queueName"];
     }
   }
 
@@ -627,6 +632,7 @@ export class DashboardComponent implements OnInit {
     this.dataService.changeUpdatedComprovativos(false);
     this.dataService.changeUpdatedClient(false);
     this.dataService.changeCurrentFirstTimeStake(true);
+    this.dataService.changeQueueName(null);
     this.processNrService.changeProcessNumber(null);
     this.processNrService.changeProcessId(null);
     this.processNrService.changeQueueName(null);
@@ -684,6 +690,52 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  ngAfterViewInit() {
+    if (this.queueName != undefined && this.queueName != null && this.queueName != "") {
+      if (this.queueName == "eligibility") {
+        document.getElementById("flush-collapsePendingEligibility").className = "accordion-collapse collapse show";
+        document.getElementById("accordionButton6").className = "accordion1-button";
+        this.pendingEligibilityCount = 100;
+        this.callPendingEligibilityCount();
+      } else if (this.queueName == "multipleClients") {
+        document.getElementById("flush-collapseMultipleClients").className = "accordion-collapse collapse show";
+        document.getElementById("accordionButton7").className = "accordion1-button";
+        this.multipleClientesCount = 100;
+        this.callMultipleClientsCount();
+      } else if (this.queueName == "DOValidation") {
+        document.getElementById("flush-collapseDOValidation").className = "accordion-collapse collapse show";
+        document.getElementById("accordionButton8").className = "accordion1-button";
+        this.DOValidationCount = 100;
+        this.callDOValidationCount();
+      } else if (this.queueName == "negotiationAproval") {
+        document.getElementById("flush-collapseNegotiationAproval").className = "accordion-collapse collapse show";
+        document.getElementById("accordionButton9").className = "accordion1-button";
+        this.negotiationAprovalCount = 100;
+        this.callNegotiationApprovalCount();
+      } else if (this.queueName == "MCCTreatment") {
+        document.getElementById("flush-collapseMCCTreatment").className = "accordion-collapse collapse show";
+        document.getElementById("accordionButton10").className = "accordion1-button";
+        this.MCCTreatmentCount = 100;
+        this.callMCCTreatmentCount();
+      } else if (this.queueName == "validationSIBS") {
+        document.getElementById("flush-collapseValidationSIBS").className = "accordion-collapse collapse show";
+        document.getElementById("accordionButton11").className = "accordion1-button";
+        this.validationSIBSCount = 100;
+        this.callValidationSIBSCount();
+      } else if (this.queueName == "risk") {
+        document.getElementById("flush-collapseRiskOpinion").className = "accordion-collapse collapse show";
+        document.getElementById("accordionButton12").className = "accordion1-button";
+        this.riskOpinionCount = 100;
+        this.callRiskOpinionCount();
+      } else if (this.queueName == "compliance") {
+        document.getElementById("flush-collapseComplianceDoubts").className = "accordion-collapse collapse show";
+        document.getElementById("accordionButton13").className = "accordion1-button";
+        this.complianceDoubtsCount = 100;
+        this.callComplianceDoubtsCount();
+      }
+    }
+  }
+
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
   }
@@ -694,10 +746,6 @@ export class DashboardComponent implements OnInit {
     this.processNrService.changeQueueName("devolucao");
     this.logger.info('Redirecting to Devolucao page');
     this.router.navigate(['/app-devolucao/', process.processId]);
-  }
-
-  ngAfterViewInit() {
-
   }
 
   applyFilter(filterValue: string) {

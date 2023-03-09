@@ -31,6 +31,7 @@ export class DataService {
   private comprovativoCC = new BehaviorSubject(null);
   private updateClient = new BehaviorSubject(false);
   private firstTimeStake = new BehaviorSubject(true);
+  private queueName = new BehaviorSubject(null);
 
   currentData = this.dataSource.asObservable();
   currentPage = this.dataPage.asObservable();
@@ -43,6 +44,7 @@ export class DataService {
   currentDataCC = this.dataCC.asObservable();
   currentComprovativoCC = this.comprovativoCC.asObservable();
   currentFirstTimeStake = this.firstTimeStake.asObservable();
+  currentQueueName = this.queueName.asObservable();
 
   historyStream = this.historyStream$.asObservable();
 
@@ -101,6 +103,10 @@ export class DataService {
     this.firstTimeStake.next(value);
   }
 
+  changeQueueName(value: string) {
+    this.queueName.next(value);
+  }
+
   reset() {
     this.dataSource = new BehaviorSubject(new Map().set(0, undefined)
       .set(1, undefined)
@@ -120,6 +126,7 @@ export class DataService {
     this.updatedClient = this.updateClient.asObservable();
     this.currentFirstTimeStake = this.firstTimeStake.asObservable();
     this.historyStream$.next(false);
+    this.currentQueueName = this.queueName.asObservable();
   }
 
   ngOnDestroy() {

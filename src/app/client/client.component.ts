@@ -260,6 +260,8 @@ export class ClientComponent implements OnInit {
   incorrectCC: boolean = false;
   incorrectCCFormat: boolean = false;
   potentialClientIds: string[] = [];
+  queueName: string = "";
+  title: string;
 
   constructor(private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder, private translate: TranslateService,
     private route: Router, private data: DataService, private clientService: ClientService,
@@ -277,6 +279,14 @@ export class ClientComponent implements OnInit {
     this.clientsMat.sort = this.sort;
     this.initializeForm();
     this.data.updateData(false, 1);
+    this.subscription = this.data.currentQueueName.subscribe(queueName => {
+      if (queueName != null) {
+        this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
+          this.queueName = this.translate.instant('homepage.' + queueName);
+          this.title = this.translate.instant('client.title');
+        });
+      }
+    });
     this.errorInput = "form-control campo_form_coment";
 
     if (localStorage.getItem("submissionId") != null) {

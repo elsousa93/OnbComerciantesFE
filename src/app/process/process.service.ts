@@ -64,11 +64,15 @@ export class ProcessService {
 
   //ACQUIRING API
 
-  getDocumentDetailsFromProcess(processId: string, documentId: string) {
+  getDocumentFromProcess(processId: string) : any {
+    return this.http.get(this.baseUrl + 'process/' + processId + '/document');
+  }
+
+  getDocumentDetailsFromProcess(processId: string, documentId: string) : any {
     return this.http.get(this.baseUrl + 'process/' + processId + '/document/' + documentId);
   }
 
-  getDocumentImageFromProcess(processId: string, documentId: string) {
+  getDocumentImageFromProcess(processId: string, documentId: string) : any {
     return this.http.get(this.baseUrl + 'process/' + processId + '/document/' + documentId + '/image');
   }
 

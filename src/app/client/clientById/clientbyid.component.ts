@@ -26,6 +26,7 @@ import { IStakeholders, OutboundDocument } from '../../stakeholders/IStakeholder
 import { AuthService } from '../../services/auth.service';
 import { ISubmissionDocument } from '../../submission/document/ISubmission-document';
 import { SubmissionPostDocumentTemplate } from '../../submission/ISubmission.interface';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-client',
   templateUrl: './clientbyid.component.html',
@@ -129,6 +130,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   shortName: string;
   submissionDocs: ISubmissionDocument[] = [];
   error: boolean = false;
+  queueName: string = "";
+  title: string; 
 
   updateBasicForm() {
     this.form.get("clientCharacterizationForm").get("natJuridicaNIFNIPC").setValue(this.NIFNIPC);
@@ -137,7 +140,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   constructor(private logger: LoggerService, private datepipe: DatePipe, private formBuilder: FormBuilder,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService,
     private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
-    private stakeholderService: StakeholderService, private storeService: StoreService, private authService: AuthService) {
+    private stakeholderService: StakeholderService, private storeService: StoreService, private authService: AuthService, private translate: TranslateService) {
 
     //Gets Tipologia from the Client component 
     if (this.route?.getCurrentNavigation()?.extras?.state) {
@@ -241,6 +244,16 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.subscription = this.data.historyStream.subscribe(historyStream => this.historyStream = historyStream);
     this.subscription = this.data.updatedClient.subscribe(updateClient => this.updateClient = updateClient);
+    this.subscription = this.data.currentQueueName.subscribe(queueName => {
+      if (queueName != null) { 
+        this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
+          this.queueName = this.translate.instant('homepage.' + queueName);
+          this.title = this.translate.instant('client.title');
+        });
+      }
+    });
+
+
     if (this.isClient == null) {
       this.subscription = this.data.currentIsClient.subscribe(isClient => this.isClient = isClient);
     }
@@ -752,19 +765,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         this.error = true;
       });
 
-      //if (!this.updateClient && this.returned == null) {
-      //  var stakeholder = this.clientContext.newSubmission.stakeholders;
-      //  stakeholder.forEach(function (value, idx) {
-      //    if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
-      //      if (value.fiscalId === client.fiscalId) {
-      //        context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
-      //          value.id = result.id;
-      //        });
-      //      }
-      //    }
-      //  });
-      //}
-
       if (!this.compareArraysStakes(this.submissionStakeholders, this.clientContext.newSubmission.stakeholders)) {
         var stakeholders = this.clientContext.newSubmission.stakeholders;
         if (stakeholders.length == 0) {
@@ -792,8 +792,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 stakeholders = stakeholders.filter(item => item.fiscalId !== found.fiscalId);
               }
             }
-          }); 
-
+          });
           stakeholders.forEach(function (value, idx) {
             if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
               if (value.fiscalId !== client.fiscalId) {
@@ -892,7 +891,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       if (!this.error) {
         this.data.updateData(true, 1);
         this.logger.info("Redirecting to Stakeholders page");
-        this.route.navigateByUrl('/stakeholders', navigationExtras);
+        setTimeout(() => this.route.navigateByUrl('/stakeholders', navigationExtras), 500);
       }
     } else {
       this.data.updateData(true, 1);

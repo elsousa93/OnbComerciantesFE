@@ -64,8 +64,8 @@ interface StoreCatalog {
   supportEntity?: string
 }
 interface EquipmentCatalog {
-  equipmentOwnership?: EquipmentOwnershipTypeEnum
-  communicationOwnership?: CommunicationOwnershipTypeEnum
+  equipmentOwnership?: string
+  communicationOwnership?: string
   equipmentType?: string
   communicationType?: string
   quantity?: number

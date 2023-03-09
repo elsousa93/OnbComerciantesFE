@@ -72,6 +72,7 @@
     "found": "Select the merchant:",
     "find": "Existing Client",
     "multipleClients": "There are multiple customers",
+    "notFound": "No client was found for the inserted data",
     "number": "Client Number",
     "nif": "Fiscal Identification Number",
     "nipc": "Legal Person Identification Number",
@@ -402,6 +403,7 @@
     "stakeIdentification": "Stakeholder identification in person?",
     "contratualPack": {
       "title": "Identification and signature pack",
+      "title2": "Contractual Pack",
       "documentation": "Documentation Generated in the Process",
       "step": "In this step, you must deliver the generated documentation to the customer to sign",
       "reduniq": "Contract for joining the reduniq card payment acceptance system",
@@ -427,7 +429,24 @@
       "identificationAndSign": "Identification and signature of contract",
       "representatives": "Identification State and Signature of representatives",
       "processDocuments": "Process documents",
-      "signType": "Sign Type"
+      "signType": "Sign Type",
+      "notSign": "Manual",
+      "citizenCard": "CC",
+      "digitalCitizenCard": "Digital CC",
+      "oneTimePassword": "One Time Password",
+      "biometric": "Biometric Trait",
+      "notIdentified": "In Identification",
+      "identified": "Done",
+      "pending": "In Identification",
+      "canceled": "Identification Canceled",
+      "refused": "Identification Refused",
+      "signature": {
+        "notSigned": "Collect Signature",
+        "signed": "Finished Signature",
+        "pending": "Collect Signature",
+        "canceled": "Canceled Signature",
+        "refused": "Refused Signature"
+      }
     }
   },
   "queues": {

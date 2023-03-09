@@ -56,6 +56,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   @Input() packs: ProductPackEntry[];
   @Input() merchantCatalog: MerchantCatalog;
   @Input() groupsList: ProductPackRootAttributeProductPackKind[];
+  @Input() changedPackValue: boolean;
 
   @Output() changedStoreEvent = new EventEmitter<boolean>();
   @Output() storeEquipEvent = new EventEmitter<ShopEquipment>();
@@ -65,6 +66,8 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   firstTime: boolean = true;
   selectedMensalidadeId: string = "";
   firstTimeEdit: boolean = true;
+  calledMensalidades: boolean = false;
+  formValid: boolean = false;
 
   loadReferenceData() {
     this.subs.push(this.tableInfo.GetTenantCommunications().subscribe(result => {
@@ -94,6 +97,15 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     if (changes["storeEquip"]) {
       if (changes["storeEquip"].previousValue != null) {
       }
+    }
+    if (changes["groupsList"]) {
+      this.groupsList = changes["groupsList"].currentValue;
+      if (this.changedPackValue == true && this.calledMensalidades == true && this.formConfig.valid) {
+        this.loadMensalidades();
+      }
+    }
+    if (changes["changedPackValue"]) {
+      this.changedPackValue = changes["changedPackValue"].currentValue;
     }
   }
 
@@ -172,6 +184,21 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.formConfig.get('communicationType').updateValueAndValidity({ emitEvent: false });
       this.formConfig.get('terminalAmount').updateValueAndValidity({ emitEvent: false });
     });
+
+    this.formConfig.statusChanges.subscribe(res => {
+      if (res === 'VALID') {
+        if (this.calledMensalidades) {
+          this.loadMensalidades();
+        }
+        this.formValid = true;
+      } else {
+        if (this.formValid) {
+          this.pricingOptions = [];
+          this.pricingAttributeList = [];
+        }
+        this.formValid = false;
+      }
+    })
   }
 
   updateFormData() {
@@ -185,6 +212,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   //chamar tabela onde podemos selecionar a mensalidade que pretendemos
   loadMensalidades() {
+    this.calledMensalidades = true;
     this.productPackPricingFilter = {
       processorId: this.packs[0].processors[0],
       productCode: this.currentStore.productCode,
@@ -194,14 +222,14 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       store: {
         activity: this.currentStore.activity,
         subActivity: this.currentStore.subActivity,
-        supportEntity: TerminalSupportEntityEnum[this.currentStore.supportEntity] as TerminalSupportEntityEnum,
+        supportEntity: this.currentStore.supportEntity,
         referenceStore: this.currentStore.shopId,
         supportBank: this.currentStore.supportEntity
       },
       equipment: {
-        communicationOwnership: CommunicationOwnershipTypeEnum[this.formConfig.get("communicationOwnership").value] as CommunicationOwnershipTypeEnum,
+        communicationOwnership: this.formConfig.get("communicationOwnership").value == 'self' ? 'Acquirer' : 'Client',
         communicationType: this.formConfig.get('communicationType').value,
-        equipmentOwnership: EquipmentOwnershipTypeEnum[this.formConfig.get("terminalProperty").value] as EquipmentOwnershipTypeEnum,
+        equipmentOwnership: this.formConfig.get("terminalProperty").value == 'self' ? 'Acquirer' : 'Client',
         equipmentType: this.formConfig.get('terminalType').value,
         quantity: this.formConfig.get('terminalAmount').value
       }

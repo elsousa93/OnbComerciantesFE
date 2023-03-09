@@ -40,6 +40,9 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   public submissionAnswer: SubmissionGetTemplate;
   public contractLanguage: ContractPackLanguage[];
   returnedFrontOffice: boolean = false;
+  queueName: string = "";
+  title: string;
+
 
   constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService, private tableInfoService: TableInfoService) {
     if (this.router?.getCurrentNavigation()?.extras?.state) {
@@ -65,6 +68,14 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.subscription = this.data.currentQueueName.subscribe(queueName => {
+      if (queueName != null) {
+        this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
+          this.queueName = this.translate.instant('homepage.' + queueName);
+          this.title = this.translate.instant('declarativeInformation.title');
+        });
+      }
+    });
     this.data.updateData(false, 6, 3);
   }
 

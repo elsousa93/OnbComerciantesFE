@@ -9,9 +9,10 @@ import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { StakeholderService } from '../stakeholder.service';
 import { IPep, KindPep } from 'src/app/pep/IPep.interface';
 import { PepComponent } from '../../pep/pep.component';
-import { Observable, of } from 'rxjs';
+import { Observable, of, Subscription } from 'rxjs';
 import { InfoStakeholderComponent } from '../info-stakeholder/info-stakeholder.component';
 import { LoggerService } from '../../logger.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -48,6 +49,9 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   previousStakeholderEvent: Observable<number>;
   public visitedStakes: string[] = [];
   returnedFrontOffice: boolean = false;
+  queueName: string = "";
+  title: string;
+  public subscription: Subscription;
 
   emitPreviousStakeholder(idx) {
     this.previousStakeholderEvent = idx;
@@ -60,7 +64,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   ngAfterViewInit() {
   }
 
-  constructor(private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService, private logger: LoggerService) {
+  constructor(private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService, private logger: LoggerService, private translate: TranslateService) {
     if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.returnedFrontOffice = this.route.getCurrentNavigation().extras.state["returnedFrontOffice"];
     }
@@ -75,6 +79,14 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
   ngOnInit(): void {
     this.data.updateData(false, 6, 2);
+    this.subscription = this.data.currentQueueName.subscribe(queueName => {
+      if (queueName != null) {
+        this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
+          this.queueName = this.translate.instant('homepage.' + queueName);
+          this.title = this.translate.instant('declarativeInformation.title');
+        });
+      }
+    });
     this.returned = localStorage.getItem("returned");
     this.submissionId = localStorage.getItem("submissionId");
     this.processNumber = localStorage.getItem("processNumber");

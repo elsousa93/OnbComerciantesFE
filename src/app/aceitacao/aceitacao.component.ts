@@ -148,4 +148,13 @@ export class AceitacaoComponent implements OnInit {
     });
   }
 
+  nextPage() {
+    let navigationExtras = {
+      state: {
+       state : this.process.state 
+      }
+    } as NavigationExtras;
+    this.route.navigate(['/app-pack-contratual/', this.processId], navigationExtras);
+  }
+
 }
