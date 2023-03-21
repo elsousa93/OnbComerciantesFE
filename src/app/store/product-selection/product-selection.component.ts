@@ -46,23 +46,21 @@ export class ProductSelectionComponent implements OnInit {
 
   constructor(private logger: LoggerService, private router: ActivatedRoute, private route: Router, private data: DataService,
     private storeService: StoreService, private rootFormGroup: FormGroupDirective, private COService: CommercialOfferService) {
-    setTimeout(() => this.data.updateData(true, 3, 3), 0);
-
     this.COService.OutboundGetProductsAvailable().then(result => {
       this.logger.info("Get store products result: " + JSON.stringify(result));
       this.products = result.result;
     }, error => {
       this.logger.error(error, "", "Error fetching store products");
-    }).then(res => { });
-
+    });
+    setTimeout(() => this.data.updateData(true, 3, 3), 0);
     if (this.route.getCurrentNavigation()?.extras?.state) {
       this.store = this.route.getCurrentNavigation().extras.state["store"];
     }
   }
 
   ngOnInit(): void {
-    this.returned = localStorage.getItem("returned");
     this.initializeForm();
+    this.returned = localStorage.getItem("returned");
 
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.setControl('productStores', this.formStores);
@@ -76,21 +74,21 @@ export class ProductSelectionComponent implements OnInit {
     }
   }
 
-  chooseSolutionAPI(productDescription: any) {
+  chooseSolutionAPI(productCode: any) {
     this.formStores.get('subProduct').setValue('');
     this.products?.forEach(Prod => {
-      var subProductToSearch = productDescription;
-      if (subProductToSearch == Prod.name) {
+      if (productCode == Prod.code) {
         this.subProducts = Prod.subProducts;
         this.exists = true;
       }
     })
     if (!this.exists) {
-      this.subProducts = [];
+      //this.subProducts = [];
     }
   }
 
   chooseSubSolutionAPI(subproduct: any) {
+    this.exists = true;
     this.formStores.get('subProduct').setValue(subproduct);
   }
 
@@ -101,7 +99,7 @@ export class ProductSelectionComponent implements OnInit {
   initializeForm() {
     this.formStores = new FormGroup({
       solutionType: new FormControl((this.store.productCode != null) ? this.store.productCode : '', Validators.required),
-      subProduct: new FormControl((this.store.subproductCode != null) ? this.store.subproductCode : '', Validators.required),
+      subProduct: new FormControl((this.store.subProductCode != null) ? this.store.subProductCode : '', Validators.required),
       url: new FormControl((this.store.website != null) ? this.store.website : '', Validators.email)
     });
 
@@ -122,7 +120,7 @@ export class ProductSelectionComponent implements OnInit {
 
   submit() {
     this.store.productCode = this.formStores.get("solutionType").value;
-    this.store.subproductCode = this.formStores.get("subProduct").value;
+    this.store.subProductCode = this.formStores.get("subProduct").value;
     this.store.website = this.formStores.get("url").value;
     this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.store).subscribe(result => {
       

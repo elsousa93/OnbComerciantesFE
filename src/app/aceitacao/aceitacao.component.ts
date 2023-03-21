@@ -104,10 +104,26 @@ export class AceitacaoComponent implements OnInit {
           process.processState = this.translate.instant('searches.cancelled');
         } else if (process.processState === 'ContractAcceptance') {
           process.processState = this.translate.instant('searches.contractAcceptance')
+        } else if (process.processState === 'StandardIndustryClassificationChoice') {
+          process.processState = this.translate.instant('searches.MCCTreatment');
+        } else if (process.processState === 'RiskAssessment') {
+          process.processState = this.translate.instant('searches.riskOpinion');
+        } else if (process.processState === 'EligibilityAssessment') {
+          process.processState = this.translate.instant('searches.eligibility');
+        } else if (process.processState === 'ClientChoice') {
+          process.processState = this.translate.instant('searches.multipleClients');
+        } else if (process.processState === 'NegotiationApproval') {
+          process.processState = this.translate.instant('searches.negotiationApproval');
+        } else if (process.processState === 'MerchantRegistration') {
+          process.processState = this.translate.instant('searches.merchantRegistration');
+        } else if (process.processState === 'OperationsEvaluation') {
+          process.processState = this.translate.instant('searches.DOValidation');
+        } else if (process.processState === 'ComplianceEvaluation') {
+          process.processState = this.translate.instant('searches.complianceDoubts');
         } else if (process.processState === 'ContractDigitalAcceptance') {
-          process.processState = this.translate.instant('searches.contractDigitalAcceptance')
+          process.processState = this.translate.instant('searches.contractDigitalAcceptance');
         } else if (process.processState === 'DigitalIdentification') {
-          process.processState = this.translate.instant('searches.digitalIdentification')
+          process.processState = this.translate.instant('searches.digitalIdentification');
         }
         this.ready = true;
       });
@@ -135,16 +151,17 @@ export class AceitacaoComponent implements OnInit {
     externalState.userObservations = "";
     this.queuesInfo.postExternalState(this.processId, stateType, externalState).then(res => {
       console.log("Resultado: ", res);
-      if (state == 'Cancel') {
-        let navigationExtras = {
-          state: {
-            returnedFrontOffice: true
-          }
-        } as NavigationExtras;
-        this.queuesInfo.markToCancel(this.processId).then(res => {
-          this.route.navigate(['/info-declarativa'], navigationExtras);
-        });
-      }
+      //if (state == 'Cancel') {
+      //  let navigationExtras = {
+      //    state: {
+      //      returnedFrontOffice: true
+      //    }
+      //  } as NavigationExtras;
+      //  this.queuesInfo.markToCancel(this.processId).then(res => {
+      //    this.route.navigate(['/info-declarativa'], navigationExtras);
+      //  });
+      //}
+      this.route.navigate(['/']);
     });
   }
 

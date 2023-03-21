@@ -18,6 +18,7 @@ import { TableInfoService } from '../../table-info/table-info.service';
 import { TenantCommunication, TenantTerminal } from '../../table-info/ITable-info.interface';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../logger.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-commercial-offer-list',
@@ -66,7 +67,7 @@ export class CommercialOfferListComponent implements OnInit {
   storeEquipColumns: string[] = ['equipmentOwnership', 'equipmentType', 'communicationType', 'quantity', 'monthlyFee', 'delete', 'edit'];
 
   currentUser: User = {};
-  replicate: boolean;
+  replicate: boolean = false;
   disableNewConfiguration: boolean;
   public storeEquip: ShopEquipment;
   public returned: string;
@@ -113,6 +114,7 @@ export class CommercialOfferListComponent implements OnInit {
   changedEAT: boolean = true;
   list: ProductPackRootAttributeProductPackKind[] = [];
   changedPackValue: boolean = true;
+  paymentList: ProductPackAttributeProductPackKind;
 
   emitPreviousStore(idx) {
     this.previousStoreEvent = idx;
@@ -122,7 +124,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.storeEquipMat.sort = this.storeEquipSort;
   }
 
-  constructor(private translate: TranslateService, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private clientService: ClientService, private tableInfo: TableInfoService, private logger: LoggerService) {
+  constructor(private translate: TranslateService, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private clientService: ClientService, private tableInfo: TableInfoService, private logger: LoggerService, private snackBar: MatSnackBar) {
     this.ngOnInit();
     this.loadReferenceData();
     authService.currentUser.subscribe(user => this.currentUser = user);
@@ -254,11 +256,20 @@ export class CommercialOfferListComponent implements OnInit {
       var attributes = value.attributes;
 
       attributes.forEach(function (value, idx) {
-        if (value["aggregatorId"] !== null) {
-          if (value.isSelected)
-            group.addControl("formControl" + value["aggregatorId"], new FormControl(value.description));
-          else
-            group.addControl("formControl" + value["aggregatorId"], new FormControl(''));
+        if (value["aggregatorId"] !== null && value["aggregatorId"] !== '') {
+          if (value.isSelected) {
+            if (group.get("formControl" + value["aggregatorId"])) {
+              group.setControl("formControl" + value["aggregatorId"], new FormControl(value.description));
+            } else {
+              group.addControl("formControl" + value["aggregatorId"], new FormControl(value.description));
+            }
+          } else {
+            if (group.get("formControl" + value["aggregatorId"])) {
+              
+            } else {
+              group.addControl("formControl" + value["aggregatorId"], new FormControl(''));
+            }
+          }
         } else {
           group.addControl("formControl" + value.id, new FormControl(value.isSelected));
         }
@@ -322,12 +333,12 @@ export class CommercialOfferListComponent implements OnInit {
       this.paymentSchemes = null;
       this.groupsList = [];
       this.productPack.productCode = this.currentStore.productCode;
-      this.productPack.subproductCode = this.currentStore.subproductCode;
+      this.productPack.subproductCode = this.currentStore.subProductCode;
       this.productPack.merchant = this.merchantCatalog;
       this.productPack.store = {
         activity: this.currentStore.activity,
         subActivity: this.currentStore.subActivity,
-        supportEntity: this.currentStore.supportEntity.toLocaleLowerCase(),
+        supportEntity: this.form.get("isUnicre").value ? "acquirer" : "other",
         referenceStore: this.currentStore.shopId,
         supportBank: this.currentStore?.bank?.bank?.bank
       }
@@ -358,10 +369,12 @@ export class CommercialOfferListComponent implements OnInit {
         res.result.otherGroups.forEach(group => {
           context.groupsList.push(group);
         });
+        context.joinSameIdGroups();
         context.addFormGroups();
+        context.changedValue();
       });
     } else {
-      context.paymentSchemes = this.currentStore.pack.paymentSchemes;
+      context.paymentSchemes = context.currentStore.pack.paymentSchemes;
       context.addPaymentFormGroups();
       this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
         context.logger.info("Get pack details " + JSON.stringify(res));
@@ -401,7 +414,9 @@ export class CommercialOfferListComponent implements OnInit {
             }
           });
         });
+        context.joinSameIdGroups();
         context.addFormGroups();
+        context.changedValue();
       });
     }
     this.form.get("productPackKind").setValue(packId);
@@ -431,12 +446,13 @@ export class CommercialOfferListComponent implements OnInit {
     //atualizar a lista dos pacotes comerciais com os valores selecionados no front
     this.finalList = [];
     this.list = [];
+
     var oldArray = JSON.stringify(this.groupsList);
     this.list = JSON.parse(oldArray);
 
     this.list.forEach((group) => {
       group.attributes.forEach((attr) => {
-        if (attr["aggregatorId"] !== null) {
+        if (attr["aggregatorId"] !== null && attr["aggregatorId"] !== "") {
           if (attr.description === this.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value) {
             attr.isSelected = true;
           } else {
@@ -467,7 +483,7 @@ export class CommercialOfferListComponent implements OnInit {
     }));
 
     this.list.forEach(group => {
-      var groupList = group.attributes.filter(attr => attr.isSelected == true || (attr["aggregatorId"] != null && attr["aggregatorId"] != undefined && attr["aggregatorId"] != "" && attr.description == this.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value));
+      var groupList = group.attributes.filter(attr => attr.isSelected == true || (attr["aggregatorId"] != null && attr["aggregatorId"] != undefined && attr["aggregatorId"] != "" && attr.description == context.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value));
       context.finalList.push(group);
       context.finalList.find(l => l.id == group.id).attributes = groupList;
       group.attributes.forEach(attr => {
@@ -507,45 +523,82 @@ export class CommercialOfferListComponent implements OnInit {
         }
       });
     });
+
+    var oldPayment = JSON.stringify(this.paymentSchemes);
+    this.paymentList = JSON.parse(oldPayment);
+
+    var group = context.form.get("formGroupPayment" + this.paymentList.id);
+    this.paymentList.attributes.forEach(payment => {
+      payment.isSelected = group.get("formControlPayment" + payment.id).value;
+    });
+
+    var finalPaymentAttributes = this.paymentList.attributes.filter(payment => payment.isSelected);
+    this.paymentList.attributes = finalPaymentAttributes;
+
+    this.list.push(this.paymentList);
+  }
+
+  joinSameIdGroups() {
+    var context = this;
+    this.groupsList.forEach(group => {
+      var list = context.groupsList.filter(g => group.id == g.id && group.attributes[0].id != g.attributes[0].id);
+      list.forEach(g => {
+        group.attributes.push(...g.attributes);
+        var index = context.groupsList.findIndex(gr => group.id == gr.id && group.attributes[0].id != gr.attributes[0].id);
+        if (index > -1) {
+          context.groupsList.splice(index, 1);
+        }
+      });
+    });
   }
 
   //Utilizado para mostrar os valores na tabela do PREÇARIO LOJA
   getCommissionsList() {
-    if (this.changedPackValue) {
-      this.changedPackValue = false;
-      this.commissionFilter = {
-        productCode: this.currentStore.productCode,
-        subproductCode: this.currentStore.subproductCode,
-        processorId: this.packs[0].processors[0],
-        merchant: this.merchantCatalog,
-        store: {
-          activity: this.currentStore.activity,
-          subActivity: this.currentStore.subActivity,
-          supportEntity: TerminalSupportEntityEnum[this.currentStore.supportEntity] as TerminalSupportEntityEnum,
-          referenceStore: this.currentStore.shopId,
-          supportBank: this.currentStore.supportEntity
-        },
-        packAttributes: this.list //ter em atenção se os valores são alterados à medida que vamos interagindo com a interface
-      }
-      this.logger.info("Filter sent to get commercial pack commission list: " + JSON.stringify(this.commissionFilter));
-      this.COService.ListProductCommercialPackCommission(this.packId, this.commissionFilter).then(result => {
-        this.logger.info("Get commercial pack commission list result: " + JSON.stringify(result));
-        this.commissionOptions = [];
-        if (this.currentStore.pack == null) {
-          if (result.result.length == 1) {
-            this.commissionOptions.push(result.result[0]);
-            this.chooseCommission(result.result[0].id);
+    if (this.packId != "") {
+      if (this.changedPackValue) {
+        this.changedPackValue = false;
+        this.commissionFilter = {
+          productCode: this.currentStore.productCode,
+          subproductCode: this.currentStore.subProductCode,
+          processorId: this.packs[0].processors[0],
+          merchant: this.merchantCatalog,
+          store: {
+            activity: this.currentStore.activity,
+            subActivity: this.currentStore.subActivity,
+            supportEntity: this.form.get("isUnicre").value ? "acquirer" : "other",
+            referenceStore: this.currentStore.shopId,
+            supportBank: this.currentStore.supportEntity
+          },
+          packAttributes: this.list //ter em atenção se os valores são alterados à medida que vamos interagindo com a interface
+        }
+        this.logger.info("Filter sent to get commercial pack commission list: " + JSON.stringify(this.commissionFilter));
+        this.COService.ListProductCommercialPackCommission(this.packId, this.commissionFilter).then(result => {
+          this.logger.info("Get commercial pack commission list result: " + JSON.stringify(result));
+          this.commissionOptions = [];
+          if (this.currentStore.pack == null) {
+            if (result.result.length == 1) {
+              this.commissionOptions.push(result.result[0]);
+              this.chooseCommission(result.result[0].id);
+            } else {
+              result.result.forEach(options => {
+                this.commissionOptions.push(options);
+              });
+            }
           } else {
             result.result.forEach(options => {
               this.commissionOptions.push(options);
             });
+            this.chooseCommission(this.currentStore.pack.commission.commissionId);
           }
-        } else {
-          result.result.forEach(options => {
-            this.commissionOptions.push(options);
-          });
-          this.chooseCommission(this.currentStore.pack.commission.commissionId);
-        }
+        });
+      }
+    } else {
+      //mandar pop-up e fechar tabulador
+      document.getElementById("flush-collapseFour").className = "accordion-collapse collapse";
+      document.getElementById("accordionButton4").className = "accordion1-button collapsed";
+      this.snackBar.open(this.translate.instant('commercialOffer.openError'), '', {
+        duration: 4000,
+        panelClass: ['snack-bar']
       });
     }
   }
@@ -572,8 +625,19 @@ export class CommercialOfferListComponent implements OnInit {
     this.storesLength = length;
   }
 
+  configurationTerminal() {
+    if (this.packId == "") {
+      document.getElementById("flush-collapseThree").className = "accordion-collapse collapse";
+      document.getElementById("accordionButton3").className = "accordion1-button collapsed";
+      this.snackBar.open(this.translate.instant('commercialOffer.openError'), '', {
+        duration: 4000,
+        panelClass: ['snack-bar']
+      });
+    }
+  }
+
   setFormData() {
-    this.form.get("replicateProducts").setValue(null);
+    this.form.get("replicateProducts").setValue(false);
     this.form.get("isUnicre").setValue(this.currentStore.supportEntity.toLowerCase() == 'acquirer' ? true : false);
     this.form.get("terminalRegistrationNumber").setValue(this.currentStore.registrationId != '' ? this.currentStore.registrationId : '');
 
@@ -597,6 +661,10 @@ export class CommercialOfferListComponent implements OnInit {
     this.disableNewConfiguration = !bool;
     this.isNewConfig = null;
     this.changedEAT = true;
+    this.packs = [];
+    this.packId = "";
+    this.isPackSelected = false;
+    this.form.get("productPackKind").setValue("");
     if (!bool) {
       this.form.get("terminalRegistrationNumber").setValue(null);
       this.form.get("terminalRegistrationNumber").setValidators(Validators.required);
@@ -628,15 +696,10 @@ export class CommercialOfferListComponent implements OnInit {
       commission.percentageValue.finalValue = currentValue.get("commissionPercentage" + commission.id).value;
     });
 
-    var group = context.form.get("formGroupPayment" + this.paymentSchemes.id);
-    this.paymentSchemes.attributes.forEach(payment => {
-      payment.isSelected = group.get("formControlPayment" + payment.id).value;
-    });
-
-    var finalPaymentAttributes = this.paymentSchemes.attributes.filter(payment => payment.isSelected);
-    this.paymentSchemes.attributes = finalPaymentAttributes;
-
     //estava aqui antes os valores do changedValue()
+    var index = this.list.findIndex(group => group.id == this.paymentSchemes.id);
+    if(index > -1)
+      this.list.splice(index, 1);
     
     if (this.returned != 'consult') {
       this.currentStore.equipments = this.storeEquipList;
@@ -646,7 +709,7 @@ export class CommercialOfferListComponent implements OnInit {
           commissionId: this.commissionId,
           attributes: this.commissionAttributeList
         },
-        paymentSchemes: this.paymentSchemes,
+        paymentSchemes: this.paymentList,
         otherPackDetails: this.list
       }
       this.currentStore.registrationId = this.form.get("terminalRegistrationNumber")?.value?.toString();

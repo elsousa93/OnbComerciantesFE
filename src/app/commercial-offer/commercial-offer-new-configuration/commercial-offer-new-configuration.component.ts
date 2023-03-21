@@ -9,6 +9,8 @@ import { TenantCommunication, TenantTerminal } from '../../table-info/ITable-inf
 import { TableInfoService } from '../../table-info/table-info.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum, ProductPackPricingFilter, TerminalSupportEntityEnum, MerchantCatalog, ProductPackRootAttributeProductPackKind, ProductPackPricingEntry, ProductPackPricingAttribute, ProductPackEntry } from '../../commercial-offer/ICommercialOffer.interface';
 import { CommercialOfferService } from '../commercial-offer.service';
+import { TranslateService } from '@ngx-translate/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-commercial-offer-new-configuration',
@@ -52,7 +54,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   @Input() isNewConfig: boolean;
   @Input() currentStore: ShopDetailsAcquiring;
   @Input() storeEquip: ShopEquipment;
-  @Input() packId: string;
+  @Input() packId: string = "";
   @Input() packs: ProductPackEntry[];
   @Input() merchantCatalog: MerchantCatalog;
   @Input() groupsList: ProductPackRootAttributeProductPackKind[];
@@ -83,7 +85,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   public subs: Subscription[] = [];
 
-  constructor(private logger: LoggerService, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService, private COService: CommercialOfferService) {
+  constructor(private logger: LoggerService, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService, private COService: CommercialOfferService, private translate: TranslateService, private snackBar: MatSnackBar) {
     this.data.updateData(false, 5, 2);
   }
 
@@ -112,7 +114,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   disableForm() {
     if (this.currentStore.productCode.toLowerCase() == "card present" || this.currentStore.productCode.toLowerCase() == "cardpresent") {
       if (this.currentStore.supportEntity.toLowerCase() == "acquirer") { //caso o ETA seja UNICRE
-        if (this.currentStore.subproductCode.toLowerCase() == "easy" || this.currentStore.subproductCode.toLowerCase() == "Easy") {
+        if (this.currentStore.subProductCode.toLowerCase() == "easy" || this.currentStore.subProductCode.toLowerCase() == "Easy") {
           this.formConfig.get("terminalProperty").setValue("self");
           this.formConfig.get("terminalProperty").disable();
 
@@ -212,51 +214,60 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   //chamar tabela onde podemos selecionar a mensalidade que pretendemos
   loadMensalidades() {
-    this.calledMensalidades = true;
-    this.productPackPricingFilter = {
-      processorId: this.packs[0].processors[0],
-      productCode: this.currentStore.productCode,
-      subproductCode: this.currentStore.subproductCode,
-      merchant: this.merchantCatalog,
-      packAttributes: this.groupsList,
-      store: {
-        activity: this.currentStore.activity,
-        subActivity: this.currentStore.subActivity,
-        supportEntity: this.currentStore.supportEntity,
-        referenceStore: this.currentStore.shopId,
-        supportBank: this.currentStore.supportEntity
-      },
-      equipment: {
-        communicationOwnership: this.formConfig.get("communicationOwnership").value == 'self' ? 'Acquirer' : 'Client',
-        communicationType: this.formConfig.get('communicationType').value,
-        equipmentOwnership: this.formConfig.get("terminalProperty").value == 'self' ? 'Acquirer' : 'Client',
-        equipmentType: this.formConfig.get('terminalType').value,
-        quantity: this.formConfig.get('terminalAmount').value
+    if (this.packId != "") {
+      this.calledMensalidades = true;
+      this.productPackPricingFilter = {
+        processorId: this.packs[0].processors[0],
+        productCode: this.currentStore.productCode,
+        subproductCode: this.currentStore.subProductCode,
+        merchant: this.merchantCatalog,
+        packAttributes: this.groupsList,
+        store: {
+          activity: this.currentStore.activity,
+          subActivity: this.currentStore.subActivity,
+          supportEntity: this.currentStore.supportEntity,
+          referenceStore: this.currentStore.shopId,
+          supportBank: this.currentStore.supportEntity
+        },
+        equipment: {
+          communicationOwnership: this.formConfig.get("communicationOwnership").value == 'self' ? 'Acquirer' : 'Client',
+          communicationType: this.formConfig.get('communicationType').value,
+          equipmentOwnership: this.formConfig.get("terminalProperty").value == 'self' ? 'Acquirer' : 'Client',
+          equipmentType: this.formConfig.get('terminalType').value,
+          quantity: this.formConfig.get('terminalAmount').value
+        }
       }
-    }
-    this.logger.info("Filter to get commercial pack pricing list" + JSON.stringify(this.productPackPricingFilter));
-    this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
-      this.logger.info("Get commercial pack pricing list result: " + JSON.stringify(result));
-      this.pricingOptions = [];
-      if (this.storeEquip?.pricing == null) {
-        if (result.result.length == 1) {
-          this.pricingOptions.push(result.result[0]);
-          this.chooseMensalidade(result.result[0].id);
+      this.logger.info("Filter to get commercial pack pricing list" + JSON.stringify(this.productPackPricingFilter));
+      this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
+        this.logger.info("Get commercial pack pricing list result: " + JSON.stringify(result));
+        this.pricingOptions = [];
+        if (this.storeEquip?.pricing == null) {
+          if (result.result.length == 1) {
+            this.pricingOptions.push(result.result[0]);
+            this.chooseMensalidade(result.result[0].id);
+          } else {
+            result.result.forEach(options => {
+              this.pricingOptions.push(options);
+            });
+          }
         } else {
           result.result.forEach(options => {
             this.pricingOptions.push(options);
           });
+          if (this.firstTimeEdit) {
+            this.firstTimeEdit = false;
+            this.chooseMensalidade(this.storeEquip.pricing.id);
+          }
         }
-      } else {
-        result.result.forEach(options => {
-          this.pricingOptions.push(options);
-        });
-        if (this.firstTimeEdit) {
-          this.firstTimeEdit = false;
-          this.chooseMensalidade(this.storeEquip.pricing.id);
-        }
-      }
-    });
+      });
+    } else {
+      document.getElementById("flush-collapseThree").className = "accordion-collapse collapse";
+      document.getElementById("accordionButton3").className = "accordion1-button collapsed";
+      this.snackBar.open(this.translate.instant('commercialOffer.openError'), '', {
+        duration: 4000,
+        panelClass: ['snack-bar']
+      });
+    }
   }
 
   //ao escolher uma mensalidade, é carregado os valores associados a essa mensalidade escolhida

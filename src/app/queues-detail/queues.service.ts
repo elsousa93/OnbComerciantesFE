@@ -91,13 +91,13 @@ export class QueuesService {
 
   // Shop Equipments List
   getShopEquipmentConfigurationsFromProcess(processId: string, shopId: string) {
-    var url = this.acquiringUrl + 'process/' + processId + '/shop/' + shopId + '/equipment';
+    var url = this.acquiringUrl + 'process/' + processId + '/merchant/shop/' + shopId + '/equipment';
     return this.APIService.callAPIAcquiring(HttpMethod.GET, url);
   }
 
   // Shop Equipments Detail
   getProcessShopEquipmentDetails(processId: string, shopId: string, equipmentId: string) {
-    var url = this.acquiringUrl + 'process/' + processId + '/shop/' + shopId + '/equipment/' + equipmentId;
+    var url = this.acquiringUrl + 'process/' + processId + '/merchant/shop/' + shopId + '/equipment/' + equipmentId;
     return this.APIService.callAPIAcquiring(HttpMethod.GET, url);
   }
 

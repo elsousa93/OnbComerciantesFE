@@ -141,7 +141,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService,
     private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
     private stakeholderService: StakeholderService, private storeService: StoreService, private authService: AuthService, private translate: TranslateService) {
-
     //Gets Tipologia from the Client component 
     if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
@@ -210,11 +209,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       return new Promise((resolve, reject) => {
         context.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(function (result) {
           context.logger.info("Get submission by process number result: " + JSON.stringify(result));
-          context.submissionType = result.result[0].submissionType;
-          localStorage.setItem("submissionId", result.result[0].submissionId);
+          context.submissionType = result?.result[0]?.submissionType;
+          localStorage.setItem("submissionId", result?.result[0]?.submissionId);
           return result;
         }).then(function (resul) {
-          context.clientService.GetClientByIdAcquiring(resul.result[0].submissionId).then(function (res) {
+          context.clientService.GetClientByIdAcquiring(resul?.result[0]?.submissionId).then(function (res) {
             context.logger.info("Get client by id result: " + JSON.stringify(res));
             context.merchantInfo = res;
             return context.merchantInfo;
@@ -244,6 +243,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.subscription = this.data.historyStream.subscribe(historyStream => this.historyStream = historyStream);
     this.subscription = this.data.updatedClient.subscribe(updateClient => this.updateClient = updateClient);
+    this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
     this.subscription = this.data.currentQueueName.subscribe(queueName => {
       if (queueName != null) { 
         this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
@@ -648,8 +648,24 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         this.route.navigate(["/client"], navigationExtras);
       }
     } else {
-      this.logger.info("Redirecting to Devolucao page");
-      this.route.navigate(["/app-devolucao/"]);
+      var queueName = "";
+      this.subscription = this.processNrService.queueName.subscribe(name => queueName = name);
+      if (queueName == "devolucao") {
+        this.logger.info("Redirecting to Devolucao page");
+        this.route.navigate(["/app-devolucao/"]);
+      } else if (queueName == 'aceitacao') {
+        this.logger.info("Redirecting to Aceitacao page");
+        this.route.navigate(['/app-aceitacao/', this.processId]);
+      } else {
+        let navigationExtras: NavigationExtras = {
+          state: {
+            queueName: queueName,
+            processId: this.processId
+          }
+        };
+        this.logger.info('Redirecting to Queues Detail page');
+        this.route.navigate(["/queues-detail"], navigationExtras);
+      }
     }
   }
 

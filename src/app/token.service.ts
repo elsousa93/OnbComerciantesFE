@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { AuthService } from './services/auth.service';
 import { AppConfigService } from './app-config.service';
+import { retry } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -70,4 +71,19 @@ export class TokenService {
     var URI = this.neyondBackURL + 'BEToken/GetToken';
     return this.http.post(URI, object).toPromise();
   }
+
+  getToken() {
+    var URI = this.neyondBackURL + 'BEToken/Token';
+    return this.http.get(URI).pipe(retry(3));
+  }
+
+  teste() {
+    var URI = 'http://localhost:7269/' + 'BEToken/Listen';
+    var object = {
+      SIBSTokenID: "abcdef"
+    };
+    return this.http.post(URI, object).toPromise();
+  }
+
+
 }

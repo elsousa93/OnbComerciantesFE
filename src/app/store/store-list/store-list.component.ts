@@ -233,29 +233,30 @@ export class StoreComponent implements AfterViewInit {
       if (!this.currentStore.bank.useMerchantBank) {
         this.storeIbanComponent.isIBAN(this.currentStore.bank.useMerchantBank);
         bankStores.get("bankIban").setValue(this.currentStore.bank.bank.iban);
-        //this.documentService.GetSubmissionDocumentById(this.submissionId, this.currentStore.bank.bank.iban).subscribe(val => {
         context.documentService.GetDocumentImage(context.submissionId, context.currentStore.documents[0].id).then(async res => {
-            context.logger.info("Get document image result: " + JSON.stringify(res));
-            res.blob().then(data => {
-              var blob = new Blob([data], { type: 'application/pdf' });
-              var file = new File([blob], context.translate.instant('supportingDocuments.checklistModal.IBAN'), { 'type': 'application/pdf' });
-              context.ibansToShow = {
-                dataDocumento: context.currentStore.documents[0].validUntil == null ? "desconhecido" : context.datePipe.transform(context.currentStore.documents[0].validUntil, 'dd-MM-yyyy'),
-                file: file,
-                id: context.currentStore.documents[0].id,
-                tipo: context.translate.instant('supportingDocuments.checklistModal.IBAN')
-              };
-            }); 
-          });
-        //});
+          context.logger.info("Get document image result: " + JSON.stringify(res));
+          res.blob().then(data => {
+            var blob = new Blob([data], { type: 'application/pdf' });
+            var file = new File([blob], context.translate.instant('supportingDocuments.checklistModal.IBAN'), { 'type': 'application/pdf' });
+            context.ibansToShow = {
+              dataDocumento: context.currentStore.documents[0].validUntil == null ? "desconhecido" : context.datePipe.transform(context.currentStore.documents[0].validUntil, 'dd-MM-yyyy'),
+              file: file,
+              id: context.currentStore.documents[0].id,
+              tipo: context.translate.instant('supportingDocuments.checklistModal.IBAN')
+            };
+          }); 
+        });
 
       }
-      var productStores = this.editStores.controls["productStores"];
-      productStores.get("solutionType").setValue(this.currentStore.productCode);
-      this.productSelectionComponent.chooseSolutionAPI(this.currentStore.productCode);
-      productStores.get("subProduct").setValue(this.currentStore.subproductCode);
-      this.productSelectionComponent.chooseSubSolutionAPI(this.currentStore.subproductCode);
-      productStores.get("url").setValue(this.currentStore.website);
+      setTimeout(() => {
+        var productStores = this.editStores.controls["productStores"];
+
+        productStores.get("solutionType").setValue(this.currentStore.productCode);
+        this.productSelectionComponent.chooseSolutionAPI(this.currentStore.productCode);
+        productStores.get("subProduct").setValue(this.currentStore.subProductCode);
+        this.productSelectionComponent.chooseSubSolutionAPI(this.currentStore.subProductCode);
+        productStores.get("url")?.setValue(this.currentStore.website);
+      }, 1000);
     }
   }
 
@@ -321,7 +322,7 @@ export class StoreComponent implements AfterViewInit {
         var productStores = this.editStores.controls["productStores"];
 
         this.currentStore.productCode = productStores.get("solutionType").value;
-        this.currentStore.subproductCode = productStores.get("subProduct").value;
+        this.currentStore.subProductCode = productStores.get("subProduct").value;
         this.currentStore.website = productStores.get("url").value;
 
         if (this.currentUser.permissions == "UNICRE") {

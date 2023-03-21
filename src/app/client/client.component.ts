@@ -739,7 +739,7 @@ export class ClientComponent implements OnInit {
   }
 
   numericOnly(event): boolean {
-    if (this.docType === '0501' || this.docType === '0502') {
+    if (this.docType === '0501' || this.docType === '0502' || this.docType === '1010' || this.docType === '0101' || this.docType === '0302') {
       var ASCIICode = (event.which) ? event.which : event.keyCode;
 
       if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))

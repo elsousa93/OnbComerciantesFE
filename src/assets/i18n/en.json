@@ -55,7 +55,7 @@
   "auth": {
     "title": "Autentication",
     "identification": "Identification",
-    "username":"Username",
+    "username": "Username",
     "bankName": "Bank Name",
     "bankLocation": "Bank Location",
     "role": "Role",
@@ -179,7 +179,8 @@
     "documents": "Stakeholder's Documents",
     "emptyList": "There are no stakeholders",
     "addSuccess": "Stakeholder successfully added",
-    "sameNIF": "It's not possible to add an already existing stakeholder"
+    "sameNIF": "It's not possible to add an already existing stakeholder",
+    "particular": "Private"
   },
   "stores": {
     "title": "Stores",
@@ -208,7 +209,7 @@
     "bankAccount": "Identification of the bank account associated with the store",
     "productSelection": "Products Selection",
     "solutionType": "Solution Type",
-    "selectSolutionType":"Choose UNICRE selection type",
+    "selectSolutionType": "Choose UNICRE selection type",
     "presencialTransaction": "Presencial Transactions",
     "noPresencialTransaction": "No Presencial Transactions",
     "combinedOffer": "Combined Offer",
@@ -297,7 +298,8 @@
     "terminal": "Terminal",
     "discount": "Discount",
     "finalValue": "Final Value",
-    "cancelConfiguration": "Cancel Configuration"
+    "cancelConfiguration": "Cancel Configuration",
+    "openError": "You must select a commercial pack to open this tab"
   },
   "declarativeInformation": {
     "title": "Declarative Information",
@@ -310,7 +312,7 @@
     "client": {
       "name": "Merchant's Name"
     },
-    "stakeholder":{
+    "stakeholder": {
       "contacts": "contacts",
       "pep": {
         "title": "PEP",
@@ -546,7 +548,7 @@
       "contactType": "Contact Type",
       "subject": "Subject",
       "message": "Message"
-    }   
+    }
   },
   "errorMessages": {
     "bothFieldsPhone": "Both fields are required",
@@ -579,5 +581,14 @@
       "document": "The document's image was not found.",
       "postalCode": "The postal code is invalid."
     }
+  },
+  "registration": {
+    "title": "Pre Registration",
+    "identification": "Registration",
+    "username": "Username",
+    "NIF": "NIF/NIPC",
+    "email": "Email",
+    "contact": "Cellphone",
+    "register": "Register"
   }
 }

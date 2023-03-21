@@ -238,7 +238,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   changeValueCC(){
     if (this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type === '0018') {
       this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = '0018';
-      this.formNewStakeholder.get('documentType').setValue(this.getDocumentDescription(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type));
+      this.formNewStakeholder.get('documentType').setValue(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type);
     }
   }
 

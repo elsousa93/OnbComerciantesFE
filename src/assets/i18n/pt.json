@@ -179,7 +179,8 @@
     "documents": "Documentos do Interveniente",
     "emptyList": "Não existem intervenientes",
     "addSuccess": "Interveniente adicionado com sucesso",
-    "sameNIF": "Não é possivel adicionar um interveniente já existente"
+    "sameNIF": "Não é possivel adicionar um interveniente já existente",
+    "particular": "Particular"
   },
   "stores": {
     "title": "Lojas",
@@ -298,7 +299,8 @@
     "terminal": "Terminal",
     "discount": "Desconto",
     "finalValue": "Valor Final",
-    "cancelConfiguration": "Cancelar Configuração"
+    "cancelConfiguration": "Cancelar Configuração",
+    "openError": "É necessário selecionar um pacote comercial para abrir este tabulador"
   },
   "declarativeInformation": {
     "title": "Informação Declarativa",
@@ -397,9 +399,9 @@
     "state": "Estado",
     "stateDate": "Data do Estado",
     "returnReasons": "Motivos de Devolução",
-    "returnReason0": "Motivo Devolução N0",
-    "returnReason1": "Motivo Devolução N1",
-    "returnReason2": "Motivo Devolução N2",
+    "returnReason0": "Entidade",
+    "returnReason1": "Documento",
+    "returnReason2": "Motivos de Devolução",
     "actions": "Ações",
     "stakeIdentification": "Identificação do interveniente presencial?",
     "contratualPack": {
@@ -581,5 +583,14 @@
       "document": "A imagem do documento não foi encontrada.",
       "postalCode": "O código postal é inválido."
     }
+  },
+  "registration": {
+    "title": "Pré-Registo",
+    "identification": "Registo",
+    "username": "Nome de Utilizador",
+    "NIF": "NIF/NIPC",
+    "email": "Email",
+    "contact": "Telemóvel",
+    "register": "Registo"
   }
 }

@@ -182,7 +182,7 @@
                           <input class="form-check-input" type="checkbox" id="{{'formControlPayment' + attribute.id}}"
                             name="{{'formControlPayment' + attribute.id}}"
                             formControlName="{{'formControlPayment' + attribute.id}}"
-                            [attr.disabled]="attribute.isReadOnly ? true : null">
+                            [attr.disabled]="attribute.isReadOnly ? true : null" (change)="changedValue()">
                           <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
                         </div>
                       </span>
@@ -190,10 +190,10 @@
                   </div>
                 </div>
                 <ng-container *ngFor="let group of groupsList">
-                  <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngIf="!existsNotVisibleAttr(group)"
+                  <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngIf="!existsNotVisibleAttr(group) && group.kind == 'simple'"
                        formGroupName="{{'formGroup' + group.id}}">
                     <div class="row">
-                      <div class="row" *ngIf="group.kind == 'simple'">
+                      <div class="row">
                         <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">
                           {{group.description}}
                         </p>
@@ -201,12 +201,12 @@
                              *ngFor="let attribute of group.attributes">
                           <span class="navbar-text text-start align-self-start">
                             <div class="form-check" *ngIf="attribute.isVisible">
-                              <input *ngIf="attribute.aggregatorId!==null" class="form-check-input" type="radio"
+                              <input *ngIf="attribute.aggregatorId!==null && attribute.aggregatorId!==''" class="form-check-input" type="radio"
                                      id="{{'formControl' + attribute.aggregatorId}}"
                                      name="{{'formControl' + attribute.aggregatorId}}" value="{{attribute.description}}"
                                      formControlName="{{'formControl' + attribute.aggregatorId}}"
                                      [attr.disabled]="attribute.isReadOnly ? true : null" (change)="changedValue()">
-                              <input *ngIf="attribute.aggregatorId===null" [value]="attribute.isSelected"
+                              <input *ngIf="attribute.aggregatorId===null || attribute.aggregatorId===''" [value]="attribute.isSelected"
                                      class="form-check-input" type="checkbox" id="{{'formControl' + attribute.id}}"
                                      name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}"
                                      [attr.disabled]="attribute.isReadOnly ? true : null" (change)="changedValue()">
@@ -273,7 +273,7 @@
                           <input class="form-check-input" type="checkbox" id="{{'formControlPayment' + attribute.id}}"
                             name="{{'formControlPayment' + attribute.id}}"
                             formControlName="{{'formControlPayment' + attribute.id}}"
-                            [attr.disabled]="attribute.isReadOnly ? true : null">
+                            [attr.disabled]="attribute.isReadOnly ? true : null" (change)="changedValue()">
                           <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
                         </div>
                       </span>
@@ -290,12 +290,12 @@
                                *ngFor="let attribute of group.attributes">
                             <span class="navbar-text text-start align-self-start">
                               <div class="form-check" *ngIf="attribute.isVisible">
-                                <input *ngIf="attribute.aggregatorId!==null" class="form-check-input" type="radio"
+                                <input *ngIf="attribute.aggregatorId!==null && attribute.aggregatorId!==''" class="form-check-input" type="radio"
                                        id="{{'formControl' + attribute.aggregatorId}}"
                                        name="{{'formControl' + attribute.aggregatorId}}" value="{{attribute.description}}"
                                        formControlName="{{'formControl' + attribute.aggregatorId}}"
                                        [attr.disabled]="attribute.isReadOnly ? true : null" (change)="changedValue()">
-                                <input *ngIf="attribute.aggregatorId===null" class="form-check-input" type="checkbox"
+                                <input *ngIf="attribute.aggregatorId===null || attribute.aggregatorId===''" class="form-check-input" type="checkbox"
                                        id="{{'formControl' + attribute.id}}" name="{{'formControl' + attribute.id}}"
                                        formControlName="{{'formControl' + attribute.id}}"
                                        [attr.disabled]="attribute.isReadOnly ? true : null" (change)="changedValue()">
@@ -340,7 +340,7 @@
           <div class="accordion1-item">
             <h2 class="accordion-header" id="flush-headingThree">
               <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" id="accordionButton3"
-                data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree" (click)="configurationTerminal()">
                 <span class="material-symbols-outlined icon-accordion point-of-sale icon-point-of-sale">
                   <!--<img src="assets/images/point_of_sale.svg" />-->
                 </span>
@@ -349,7 +349,7 @@
             </h2>
             <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
               data-bs-parent="#accordionFlushExample">
-              <div class="mb-2 ps-2 pe-3">
+              <div class="mb-2 ps-2 pe-3" *ngIf="packId != ''">
                 <mat-table [dataSource]="storeEquipMat" class="table" matSort #storeEquipSort="matSort" style=" margin-left: auto; margin-right: auto; width: 95%;">
                   <ng-container matColumnDef="equipmentOwnership">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>

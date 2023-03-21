@@ -125,23 +125,23 @@ export class ConsultasComponent implements OnInit {
     var encodedCode = encodeURIComponent(processNumber);
     this.url = this.baseUrl + 'process?';
 
-    if (processStateToSearch != '') {
+    if (processStateToSearch != '' && processStateToSearch != null) {
       this.checkAdvancedSearch(this.search);
       this.url += 'state=' + processStateToSearch;
       this.search = true;
-    } if (processNumber != '') {
+    } if (processNumber != '' && processNumber != null) {
       this.checkAdvancedSearch(this.search);
       this.url += 'number=' + encodedCode;
       this.search = true;
-    } if (processDocType != '' && processDocNumber != '') {
+    } if (processDocType != '' && processDocNumber != '' && processDocType != null && processDocNumber != null) {
       this.checkAdvancedSearch(this.search);
       this.url += 'documentType=' + processDocType + '&documentNumber=' + processDocNumber;
       this.search = true;
-    } if (processDateStart != '') {
+    } if (processDateStart != '' && processDateStart != null) {
       this.checkAdvancedSearch(this.search);
       this.url += 'fromStartedAt=' + processDateStart;
       this.search = true;
-    } if (processDateUntil != '') {
+    } if (processDateUntil != '' && processDateUntil != null) {
       this.checkAdvancedSearch(this.search);
       this.url += 'untilStartedAt=' + processDateUntil;
       this.search = true;
@@ -215,19 +215,19 @@ export class ConsultasComponent implements OnInit {
         //this.checkAdvancedSearch(this.search);
         this.url += 'state=ContractDigitalAcceptance';
         this.search = true;
-        if (processNumber != '') {
+        if (processNumber != '' && processNumber != null) {
           this.checkAdvancedSearch(this.search);
           this.url += 'number=' + encodedCode;
           this.search = true;
-        } if (processDocType != '' && processDocNumber != '') {
+        } if (processDocType != '' && processDocNumber != '' && processDocType != null && processDocNumber != null) {
           this.checkAdvancedSearch(this.search);
           this.url += 'documentType=' + processDocType + '&documentNumber=' + processDocNumber;
           this.search = true;
-        } if (processDateStart != '') {
+        } if (processDateStart != '' && processDateStart != null) {
           this.checkAdvancedSearch(this.search);
           this.url += 'fromStartedAt=' + processDateStart;
           this.search = true;
-        } if (processDateUntil != '') {
+        } if (processDateUntil != '' && processDateUntil != null) {
           this.checkAdvancedSearch(this.search);
           this.url += 'untilStartedAt=' + processDateUntil;
           this.search = true;
@@ -277,19 +277,19 @@ export class ConsultasComponent implements OnInit {
         //this.checkAdvancedSearch(this.search);
         this.url += 'state=DigitalIdentification';
         this.search = true;
-        if (processNumber != '') {
+        if (processNumber != '' && processNumber != null) {
           this.checkAdvancedSearch(this.search);
           this.url += 'number=' + encodedCode;
           this.search = true;
-        } if (processDocType != '' && processDocNumber != '') {
+        } if (processDocType != '' && processDocNumber != '' && processDocType != null && processDocNumber != null) {
           this.checkAdvancedSearch(this.search);
           this.url += 'documentType=' + processDocType + '&documentNumber=' + processDocNumber;
           this.search = true;
-        } if (processDateStart != '') {
+        } if (processDateStart != '' && processDateStart != null) {
           this.checkAdvancedSearch(this.search);
           this.url += 'fromStartedAt=' + processDateStart;
           this.search = true;
-        } if (processDateUntil != '') {
+        } if (processDateUntil != '' && processDateUntil != null) {
           this.checkAdvancedSearch(this.search);
           this.url += 'untilStartedAt=' + processDateUntil;
           this.search = true;

@@ -51,3 +51,6 @@ import 'zone.js';  // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+import * as Buffer from '../node_modules/buffer/index';
+(window as any).global = window;
+(window as any).global.Buffer = Buffer.Buffer;

@@ -303,7 +303,7 @@ export class PackContratualComponent implements OnInit {
       //    this.route.navigate(['/info-declarativa'], navigationExtras);
       //  });
       //}
-      //this.route.navigate(['/']);
+      this.route.navigate(['/']);
     });
   }
 

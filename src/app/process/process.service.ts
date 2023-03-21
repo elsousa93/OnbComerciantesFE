@@ -16,6 +16,7 @@ import { Process } from './process.interface';
 export class ProcessService {
   private baseUrl: string;
   private urlOutbound: string;
+  private neyondBackURL: string;
   currentLanguage: string;
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
@@ -23,6 +24,7 @@ export class ProcessService {
     private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private API: APIRequestsService, public translate: TranslateService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.urlOutbound = configuration.getConfig().outboundUrl;
+    this.neyondBackURL = configuration.getConfig().neyondBackUrl;
     this.languageStream$.subscribe((val) => {
       this.currentLanguage = val
     });
@@ -163,9 +165,16 @@ interface ShopIssueViewModel {
 }
 
 interface DocumentIssueViewModel {
-  document?: SimplifiedReference
+  document?: SimplifiedReferenceIssueDoc
   issues?: IssueViewModel[]
 }
+
+interface SimplifiedReferenceIssueDoc {
+  id?: string
+  href?: string
+  type?: string
+}
+
 export interface ClientForProcess {
   legalName?: string,
   commercialName?: string,

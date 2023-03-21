@@ -167,7 +167,7 @@
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentType'|translate}}:*</p>
             <input readonly name="documentType" formControlName="documentType"
-              class="form-control campo_form">
+              class="form-control campo_form" [value]="getDocumentDescription(currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type)">
           </div>
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>

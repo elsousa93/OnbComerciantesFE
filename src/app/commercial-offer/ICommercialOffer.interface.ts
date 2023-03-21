@@ -31,7 +31,7 @@ export interface Product {
 export interface ProductOutbound {
   code?: string
   name?: string
-  subProducts?: string
+  subProducts?: SubproductOutbound[]
 }
 
 export interface SubproductOutbound {

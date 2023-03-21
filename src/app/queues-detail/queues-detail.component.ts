@@ -20,7 +20,7 @@ import { ClientService } from '../client/client.service';
 import { MatSort } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { UserTypes } from '../table-info/ITable-info.interface';
+import { DocumentSearchType, UserTypes } from '../table-info/ITable-info.interface';
 import { TableInfoService } from '../table-info/table-info.service';
 
 @Component({
@@ -95,6 +95,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
   subActivities: ShopSubActivities[];
   clientsMat = new MatTableDataSource<any>();
   documentType: string = "";
+  docTypes: DocumentSearchType[] = [];
   @ViewChild('paginator') set paginator(pager: MatPaginator) {
     if (pager) {
       this.clientsMat.paginator = pager;
@@ -102,6 +103,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
       this.clientsMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
     }
   }
+
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, private http: HttpClient,
     private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService,
     private datePipe: DatePipe, private queuesService: QueuesService, private processService: ProcessService, private clientService: ClientService, private tableInfo: TableInfoService) {
@@ -188,11 +190,12 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
       var formGroupEquip = new FormGroup({});
       context.equipmentList.forEach(equip => {
         if (equip["shopId"] === value.id) {
-          formGroupEquip.addControl(equip.id, new FormControl('', Validators.required));
+          formGroupEquip.addControl(equip.shopEquipmentId, new FormControl('', Validators.required));
         }
       });
       context.form.setControl("equipments", formGroupEquip);
     });
+    
     this.form.setControl("shops", formGroupShop);
     console.log('FORM STORE ', this.form);
   }
@@ -279,9 +282,10 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
       this.queuesInfo.getProcessShopEquipmentDetails(processId, shopId, shopEquipmentId).then(r => {
         this.logger.info("Get shop equipment list from process result: " + JSON.stringify(r));
         var equipment = r.result;
+        equipment.shopEquipmentId = shopEquipmentId;
         equipment["shopId"] = shopId;
         this.equipmentList.push(equipment);
-        resolve;
+        resolve(equipment);
       });
     });
   }
@@ -295,12 +299,6 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
         var shop = result.result;
         this.shopsList.push(shop);
         context.loadStores(context.shopsList);
-        //if (this.queueName === 'MCCTreatment') {
-        //  this.updateShopForm();
-        //}
-        //if (this.queueName === 'validationSIBS') {
-        //  this.updateShopValidationForm();
-        //}
         this.queuesInfo.getShopEquipmentConfigurationsFromProcess(this.processId, shop.id).then(eq => {
           this.logger.info("Get shop equipments list from process result: " + JSON.stringify(result));
           var equipments = eq.result;
@@ -318,7 +316,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
             if (this.queueName === 'validationSIBS') {
               this.updateShopValidationForm();
             }
-            resolve;
+            resolve(processId);
           })
         });
       })
@@ -343,6 +341,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
   }
 
   async getNames(issues: BusinessIssueViewModel) {
+    var context = this;
     await this.queuesService.getProcessMerchant(this.processId).then(res => {
       issues.merchant.merchant["name"] = res.result.legalName;
       this.merchant = res.result;
@@ -358,10 +357,19 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
         this.stakeholdersList.push(res.result);
       });
     });
+    issues.documents.forEach(val => {
+      var found = context.docTypes.find(doc => doc.code == val.document.type);
+      if (found != undefined)
+        val.document.type = found.description;
+    });
   }
 
 
   fetchStartingInfo() {
+    this.tableInfo.GetDocumentsDescription().subscribe(result => {
+      this.docTypes = result;
+    });
+
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.logger.info("Get process by id result: " + JSON.stringify(result));
       this.process = result;
@@ -392,6 +400,26 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
           process.processState = this.translate.instant('searches.cancelled');
         } else if (process.processState === 'ContractAcceptance') {
           process.processState = this.translate.instant('searches.contractAcceptance')
+        } else if (process.processState === 'StandardIndustryClassificationChoice') {
+          process.processState = this.translate.instant('searches.MCCTreatment');
+        } else if (process.processState === 'RiskAssessment') {
+          process.processState = this.translate.instant('searches.riskOpinion');
+        } else if (process.processState === 'EligibilityAssessment') {
+          process.processState = this.translate.instant('searches.eligibility');
+        } else if (process.processState === 'ClientChoice') {
+          process.processState = this.translate.instant('searches.multipleClients');
+        } else if (process.processState === 'NegotiationApproval') {
+          process.processState = this.translate.instant('searches.negotiationApproval');
+        } else if (process.processState === 'MerchantRegistration') {
+          process.processState = this.translate.instant('searches.merchantRegistration');
+        } else if (process.processState === 'OperationsEvaluation') {
+          process.processState = this.translate.instant('searches.DOValidation');
+        } else if (process.processState === 'ComplianceEvaluation') {
+          process.processState = this.translate.instant('searches.complianceDoubts');
+        } else if (process.processState === 'ContractDigitalAcceptance') {
+          process.processState = this.translate.instant('searches.contractDigitalAcceptance');
+        } else if (process.processState === 'DigitalIdentification') {
+          process.processState = this.translate.instant('searches.digitalIdentification');
         }
         this.ready = true;
       });

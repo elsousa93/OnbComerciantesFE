@@ -16,6 +16,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { State } from '../queues-detail/IQueues.interface';
 import { AppComponent } from '../app.component';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
+import { QueuesService } from '../queues-detail/queues.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { TokenService } from '../token.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,6 +27,9 @@ import { ProcessNumberService } from '../nav-menu-presencial/process-number.serv
   animations: [onSideNavChange, AutoHideSidenavAdjust]
 })
 export class DashboardComponent implements OnInit, AfterViewInit {
+
+  deleteModalRef: BsModalRef | undefined;
+  @ViewChild('deleteModal') deleteModal;
 
   dataSourcePendentes: MatTableDataSource<ProcessList> = new MatTableDataSource();
   dataSourceTratamento: MatTableDataSource<ProcessList> = new MatTableDataSource();
@@ -164,10 +170,27 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   nipc: string;
   name: string;
   queueName: string = "";
+  processToDelete: string = "";
+  timeout;
 
   constructor(private logger: LoggerService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
-    private datePipe: DatePipe, private authService: AuthService, private translate: TranslateService, public appComponent: AppComponent, private processNrService: ProcessNumberService) {
+    private datePipe: DatePipe, private authService: AuthService, private translate: TranslateService, public appComponent: AppComponent, private processNrService: ProcessNumberService, private queueService: QueuesService, private modalService: BsModalService, private tokenService: TokenService) {
+    if (this.authService.GetToken() == "" || this.authService.GetToken() == null) {
+      var user: User = {};
+      this.tokenService.getToken().subscribe(r => {
+        user.token = r["token"];
+        this.tokenService.getLoginTokenInfo(user.token).then(res => {
+          user.userName = res.name;
+          user.bankName = res["ext-bank"];
+          user.bankLocation = res["ext-bankLocation"];
+          var newDate = new Date(res.exp * 1000);
+          this.timeout = newDate.getTime() - new Date().getTime();
+          this.expirationCounter(this.timeout);
+          this.authService.changeUser(user);
+        });
+      });
+    }
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -618,6 +641,18 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/clientbyid']);
   }
 
+  deleteProcess(processId: string) {
+    this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-lg' });
+    this.processToDelete = processId;
+  }
+
+  delete() {
+    if (this.processToDelete != "") {
+      this.deleteModalRef?.hide();
+      this.queueService.markToCancel(this.processToDelete).then(res => { });
+    }
+  }
+
   ngOnInit(): void {
     this.authService.currentUser.subscribe(user => {
       this.currentUser = user;
@@ -798,5 +833,21 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   applyFilterComplianceDoubts(filterValue: string) {
     this.dataSourceComplianceDoubts.filter = filterValue;
+  }
+
+  closeDeleteModal() {
+    this.deleteModalRef?.hide();
+  }
+
+  expirationCounter(timeout) {
+    setTimeout(() => {
+      this.logger.info('Token expired');
+      this.logout();
+    }, timeout)
+  }
+
+  logout() {
+    localStorage.removeItem('auth');
+    this.authService.reset();
   }
 }

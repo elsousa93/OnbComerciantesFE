@@ -2,6 +2,10 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": {
+      "crypto": [ "./node_modules/crypto-browserify" ],
+      "stream": [ "./node_modules/stream-browserify" ]
+    },
     "allowJs": true,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
@@ -9,7 +13,7 @@
     "strict": false,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns":false,
+    "noImplicitReturns": false,
     "noFallthroughCasesInSwitch": false,
     "sourceMap": true,
     "declaration": false,
@@ -34,6 +38,6 @@
     "strictNullChecks": false,
     "fullTemplateTypeCheck": true,
     "strictInjectionParameters": false
-    
+
   }
 }

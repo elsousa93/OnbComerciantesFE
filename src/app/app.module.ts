@@ -78,6 +78,7 @@ import { InterceptorModule } from './interceptor/interceptor.module';
 import { AppConfigService } from './app-config.service';
 import { MbscModule } from '@mobiscroll/angular-lite';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { PreRegistrationComponent } from './pre-registration/pre-registration.component';
 registerLocaleData(localePT);
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -135,7 +136,8 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     ProductSelectionComponent,
     StakeholdersListComponent,
     SearchStakeholdersComponent,
-    StoreTableComponent
+    StoreTableComponent,
+    PreRegistrationComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -207,7 +209,8 @@ const appInitializerFn = (appConfig: AppConfigService) => {
       { path: 'auth', component: AuthComponent },
       { path: 'client-power-representation/:id', component: RepresentationPowerComponent },
       { path: 'client-power-representation/', component: RepresentationPowerComponent },
-      { path: 'add-store-product', component: ProductSelectionComponent }
+      { path: 'add-store-product', component: ProductSelectionComponent },
+      { path: 'pre-registration', component: PreRegistrationComponent }
 
     ], { onSameUrlNavigation: 'reload' }),
     TranslateModule.forRoot({

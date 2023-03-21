@@ -68,7 +68,7 @@ export class ShopDetailsAcquiring {
   bank?: ShopBank
   website?: string
   productCode?: string
-  subproductCode?: string
+  subProductCode?: string
   equipments: ShopEquipment[]
   pack?: ShopProductPackViewModel
   product?: Product

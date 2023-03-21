@@ -613,11 +613,11 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       this.addStakeholderWithCC();
     }
     else {
-      var fullName = this.formNewStakeholder.get("name")?.value != '' ? this.formNewStakeholder.get("name")?.value : this.formNewStakeholder.get("socialDenomination")?.value
+      var fullName = (this.formNewStakeholder.get("name")?.value != '' && this.formNewStakeholder.get("name")?.value != null) ? this.formNewStakeholder.get("name")?.value : this.formNewStakeholder.get("socialDenomination")?.value
       var nameArray = fullName.split(" ").filter(element => element);
       var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
       var stakeholderToInsert: IStakeholders = {
-        "fiscalId": this.formNewStakeholder.get("nif")?.value != '' ? this.formNewStakeholder.get("nif")?.value : this.formNewStakeholder.get("nipc")?.value,
+        "fiscalId": (this.formNewStakeholder.get("nif")?.value != '' && this.formNewStakeholder.get("nif")?.value != null) ? this.formNewStakeholder.get("nif")?.value : this.formNewStakeholder.get("nipc")?.value,
         "phone1": {},
         "phone2": {},
         "fiscalAddress": null,

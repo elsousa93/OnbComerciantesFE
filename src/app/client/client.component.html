@@ -66,7 +66,7 @@
                   <div class="row">
                     <div class="col-5">
                       <p class="titulo-form-simples">{{'searches.documentType'|translate}}:*</p>
-                      <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
+                      <select class="form-select campo-form-select" (change)="changeListElementDocType(docType, $event)"
                         id="docType" [(ngModel)]="newClient.documentationDeliveryMethod" name="docType"
                         #docType="ngModel">
                         <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
@@ -116,7 +116,7 @@
                   <div class="row">
                     <div class="col-5">
                       <p class="titulo-form-simples">{{'searches.documentType'|translate}}:*</p>
-                      <select class="form-select campo-form-select" (click)="changeListElementDocType(docType, $event)"
+                      <select class="form-select campo-form-select" (change)="changeListElementDocType(docType, $event)"
                         id="documentType" [(ngModel)]="newClient.documentationDeliveryMethod" name="docType"
                         #docType="ngModel">
                         <option *ngFor="let docType of ListaDocTypeENI" value={{docType.code}}>

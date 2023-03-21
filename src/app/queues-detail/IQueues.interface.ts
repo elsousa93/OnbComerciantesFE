@@ -50,6 +50,7 @@ export interface ShopClassifications {
 
 export interface PaymentSchemaClassification {
   paymentSchemaId?: string
+  //subPaymentSchemaId?: string
   classification?: string
 }
 

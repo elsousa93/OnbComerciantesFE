@@ -78,11 +78,11 @@
                       </div>
                     </div>
                   </div>
-                  <h3 class="text-primary mt-5 mb-0 ps-0">
+                  <h3 class="text-primary mt-5 mb-0 ps-0" *ngIf="queueName !== 'negotiationAproval' && queueName !== 'multipleClients' && queueName !== 'MCCTreatment' && queueName !== 'validationSIBS'">
                     <span class="assignment_returned icon-assignment-returned"></span>
                     &nbsp;{{'acceptance.returnReasons'|translate|uppercase}}
                   </h3>
-                  <div class="row mt-0 ms-0 me-0 pt-0">
+                  <div class="row mt-0 ms-0 me-0 pt-0" *ngIf="queueName !== 'negotiationAproval' && queueName !== 'multipleClients' && queueName !== 'MCCTreatment' && queueName !== 'validationSIBS'">
                     <div class="col-12 mt-4 pt-0 ps-0 pe-0">
                       <div class="table-responsive mb-5 pb-4">
                         <table class="table">
@@ -91,28 +91,36 @@
                               <th scope="col" class="text-center text-primary bg-light table-white">
                                 {{'acceptance.returnReason0'|translate}}
                               </th>
+                              <th scope="col" class="text-center text-primary bg-light table-white">
+                                {{'acceptance.returnReason1'|translate}}
+                              </th>
                               <th scope="col" class="text-center bg-white">{{'acceptance.returnReason2'|translate}}</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr *ngFor="let issue of issues?.process">
                               <td class="text-primary text-center">Processo</td>
+                              <td class="text-primary text-center">-</td>
                               <td class="text-primary text-start">{{issue?.issueDescription}}</td>
                             </tr>
                             <tr>
                               <td class="text-primary text-center">{{issues?.merchant?.merchant?.name}}</td>
+                              <td class="text-primary text-center">-</td>
                               <td class="text-primary text-start">{{issues?.merchant?.issues[0]?.issueDescription}}</td>
                             </tr>
                             <tr *ngFor="let issue of issues?.stakeholders">
                               <td class="text-primary text-center">{{issue?.stakeholder?.name}}</td>
+                              <td class="text-primary text-center">-</td>
                               <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
                             </tr>
                             <tr *ngFor="let issue of issues?.shops">
                               <td class="text-primary text-center">{{issue?.shop?.name}}</td>
+                              <td class="text-primary text-center">-</td>
                               <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
                             </tr>
                             <tr *ngFor="let issue of issues?.documents">
                               <td class="text-primary text-center">{{issue?.document?.name}}</td>
+                              <td class="text-primary text-center">{{issue?.document?.type}}</td>
                               <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
                             </tr>
                           </tbody>
@@ -136,7 +144,7 @@
                     &nbsp;{{'queues.clientStake'|translate|uppercase}}
                   </h3>
                   <h3 *ngIf="queueName === 'negotiationAproval'" class="text-primary mt-5 mb-0 ps-0">
-                    &nbsp;{{'queues.precarious'|translate|uppercase}}
+                    &nbsp;{{'stores.title'|translate|uppercase}}
                   </h3>
                   <h3 *ngIf="queueName === 'MCCTreatment'" class="text-primary mt-5 mb-0 ps-0">
                     &nbsp;MCC
@@ -341,7 +349,7 @@
                     </div>
                   </div>
                   <!-- Tabela da fila de MCC -->
-                  <div *ngIf="queueName === 'MCCTreatment'" class="row mt-0 ms-0 me-0 pt-0">
+                  <div *ngIf="queueName === 'MCCTreatment' || queueName === 'negotiationAproval'" class="row mt-0 ms-0 me-0 pt-0">
                     <div class="col-12 mt-4 pt-0 ps-0 pe-0">
                       <div class="table-responsive mb-2 ps-2 pe-2">
                         <table mat-table [dataSource]="storesMat" class="table-responsive" matSort #sortStore="matSort" style=" margin-left: auto; margin-right: auto; width: 95%;">
@@ -389,11 +397,11 @@
                               <ng-container *ngFor="let attr of currentStore?.pack?.paymentSchemes?.attributes">
                                 <td class="text-primary text-center" *ngIf="industry.paymentSchemesAttributeId == attr.id">{{attr.description}}</td>
                               </ng-container>
-                                <td class="text-primary text-center">
-                                  <select class="form-select campo-form-select" name="{{currentStore.id + industry.industryClassificationCode}}" formControlName="{{currentStore.id + industry.industryClassificationCode}}" [disabled]="industry.industryClassificationPotentialCodes.length == 1">
-                                    <option *ngFor="let code of industry.industryClassificationPotentialCodes" value="{{industry.industryClassificationCode}}">{{industry.industryClassificationCode}}</option>
-                                  </select>
-                                </td>
+                              <td class="text-primary text-center">
+                                <select class="form-select campo-form-select" name="{{currentStore.id + industry.industryClassificationCode}}" formControlName="{{currentStore.id + industry.industryClassificationCode}}" [disabled]="industry.industryClassificationPotentialCodes.length == 1">
+                                  <option *ngFor="let code of industry.industryClassificationPotentialCodes" value="{{industry.industryClassificationCode}}">{{industry.industryClassificationCode}}</option>
+                                </select>
+                              </td>
                             </tr>
                           </tbody>
                         </table>
@@ -402,7 +410,10 @@
                   </div>
 
                   <!-- Tabela da Fila de Negociação -->
-                  <div *ngIf="queueName === 'negotiationAproval'" class="row mt-0 ms-0 me-0 pt-0">
+                  <h3 *ngIf="queueName === 'negotiationAproval' && currentStore != null" class="text-primary mt-5 mb-0 ps-0">
+                    &nbsp;{{'queues.precarious'|translate|uppercase}}
+                  </h3>
+                  <div *ngIf="queueName === 'negotiationAproval' && currentStore != null" class="row mt-0 ms-0 me-0 pt-0">
                     <div class="col-12 mt-4 pt-0 ps-0 pe-0">
                       <div class="table-responsive mb-5 pb-4">
                         <table class="table">
@@ -423,20 +434,18 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <ng-container *ngFor="let shop of shopsList">
-                              <tr *ngFor="let commissionAttr of shop?.pack?.commission?.attributes">
-                                <td class="text-primary text-center">{{shop?.pack?.packId}}</td>
-                                <td class="text-primary text-center">{{commissionAttr?.description}}</td>
-                                <td class="text-primary text-center" [ngStyle]="{'color': commissionAttr?.minValue?.originalValue != commissionAttr?.minValue?.finalValue ? 'red !important' : ''}">{{commissionAttr?.minValue?.originalValue}}</td>
-                                <td class="text-primary text-center" [ngStyle]="{'color': commissionAttr?.minValue?.originalValue != commissionAttr?.minValue?.finalValue ? 'red !important' : ''}">{{commissionAttr?.minValue?.finalValue}}</td>
-                                <td class="text-primary text-center" [ngStyle]="{'color': commissionAttr?.maxValue?.originalValue != commissionAttr?.maxValue?.finalValue ? 'red !important' : ''}">{{commissionAttr?.maxValue?.originalValue}}</td>
-                                <td class="text-primary text-center" [ngStyle]="{'color': commissionAttr?.maxValue?.originalValue != commissionAttr?.maxValue?.finalValue ? 'red !important' : ''}">{{commissionAttr?.maxValue?.finalValue}}</td>
-                                <td class="text-primary text-center" [ngStyle]="{'color': commissionAttr?.fixedValue?.originalValue != commissionAttr?.fixedValue?.finalValue ? 'red !important' : ''}">{{commissionAttr?.fixedValue?.originalValue}}</td>
-                                <td class="text-primary text-center" [ngStyle]="{'color': commissionAttr?.fixedValue?.originalValue != commissionAttr?.fixedValue?.finalValue ? 'red !important' : ''}">{{commissionAttr?.fixedValue?.finalValue}}</td>
-                                <td class="text-primary text-center" [ngStyle]="{'color': commissionAttr?.percentageValue?.originalValue != commissionAttr?.percentageValue?.finalValue ? 'red !important' : ''}">{{commissionAttr?.percentageValue?.originalValue}}</td>
-                                <td class="text-primary text-center" [ngStyle]="{'color': commissionAttr?.percentageValue?.originalValue != commissionAttr?.percentageValue?.finalValue ? 'red !important' : ''}">{{commissionAttr?.percentageValue?.finalValue}}</td>
-                              </tr>
-                            </ng-container>
+                            <tr *ngFor="let commissionAttr of currentStore?.pack?.commission?.attributes">
+                              <td class="text-primary text-center">{{currentStore?.pack?.packId}}</td>
+                              <td class="text-primary text-center">{{commissionAttr?.description}}</td>
+                              <td class="text-primary text-center" [style]="commissionAttr?.minValue?.originalValue != commissionAttr?.minValue?.finalValue ? 'color: red !important;' : ''">{{commissionAttr?.minValue?.originalValue}}</td>
+                              <td class="text-primary text-center" [style]="commissionAttr?.minValue?.originalValue != commissionAttr?.minValue?.finalValue ? 'color: red !important;' : ''">{{commissionAttr?.minValue?.finalValue}}</td>
+                              <td class="text-primary text-center" [style]="commissionAttr?.maxValue?.originalValue != commissionAttr?.maxValue?.finalValue ? 'color: red !important;' : ''">{{commissionAttr?.maxValue?.originalValue}}</td>
+                              <td class="text-primary text-center" [style]="commissionAttr?.maxValue?.originalValue != commissionAttr?.maxValue?.finalValue ? 'color: red !important;' : ''">{{commissionAttr?.maxValue?.finalValue}}</td>
+                              <td class="text-primary text-center" [style]="commissionAttr?.fixedValue?.originalValue != commissionAttr?.fixedValue?.finalValue ? 'color: red !important;' : ''">{{commissionAttr?.fixedValue?.originalValue}}</td>
+                              <td class="text-primary text-center" [style]="commissionAttr?.fixedValue?.originalValue != commissionAttr?.fixedValue?.finalValue ? 'color: red !important;' : ''">{{commissionAttr?.fixedValue?.finalValue}}</td>
+                              <td class="text-primary text-center" [style]="commissionAttr?.percentageValue?.originalValue != commissionAttr?.percentageValue?.finalValue ? 'color: red !important;' : ''">{{commissionAttr?.percentageValue?.originalValue}}</td>
+                              <td class="text-primary text-center" [style]="commissionAttr?.percentageValue?.originalValue != commissionAttr?.percentageValue?.finalValue ? 'color: red !important;' : ''">{{commissionAttr?.percentageValue?.finalValue}}</td>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -513,11 +522,11 @@
                           </thead>
                           <tbody>
                             <tr *ngFor="let shop of shopsList" formGroupName="shops">
-                              <td class="text-primary text-center">{{shop.name}}</td>
-                              <td class="text-primary text-center">
-                                <input type="text" name="{{shop.id}}" formControlName="{{shop.id}}"
-                                       class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
-                              </td>
+                                <td class="text-primary text-center">{{shop.name}}</td>
+                                <td class="text-primary text-center">
+                                  <input type="text" name="{{shop.id}}" formControlName="{{shop.id}}"
+                                         class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
+                                </td>
                             </tr>
                           </tbody>
                         </table>
@@ -542,12 +551,12 @@
                             </thead>
                             <tbody>
                               <ng-container *ngFor="let shop of shopsList">
-                                <tr *ngFor="let equip of equipmentList" formGroupName="equipments">
-                                  <ng-container *ngIf="shop.id === equip['shopId']">
-                                    <td class="text-primary text-center bg-primary bg-opacity-10">{{shop.name}}</td>
-                                    <td class="text-primary text-center bg-primary bg-opacity-10">{{equip.id}}</td>
-                                    <td class="text-center text-primary bg-opacity-10 bg-light">
-                                      <input type="text" name="{{equip.id}}" formControlName="{{equip.id}}"
+                                <tr *ngFor="let equip of equipmentList" >
+                                  <ng-container *ngIf="shop.id === equip['shopId']" formGroupName="equipments">
+                                    <td class="text-primary text-center">{{shop.name}}</td>
+                                    <td class="text-primary text-center">{{equip.shopEquipmentId}}</td>
+                                    <td class="text-center text-primary">
+                                      <input type="text" name="{{equip.shopEquipmentId}}" formControlName="{{equip.shopEquipmentId}}"
                                              class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
                                     </td>
                                   </ng-container>
@@ -671,7 +680,7 @@
                           <button id="btn5a2" *ngIf="queueName === 'multipleClients'" (click)="concludeOpinion('ReturnToFrontOffice')"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                   wappler-command="editContent">
-                            {{'queues.returnFrontOffice'|translate|uppercase}}&nbsp;
+                            {{'queues.returnComercial'|translate|uppercase}}&nbsp;
                             <img src="assets/images/queues/return_comercial.svg.svg"
                                  style="height: 25px !important; vertical-align: sub;">
                           </button>
@@ -779,29 +788,37 @@
                             {{'acceptance.returnReason0'|translate}}
                           </th>
                           <th scope="col" class="text-center bg-light">{{'acceptance.returnReason1'|translate}}</th>
+                          <th scope="col" class="text-center text-primary bg-light table-white">
+                            {{'acceptance.returnReason2'|translate}}
+                          </th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr *ngFor="let issue of selectedIssue?.process">
                           <td class="text-primary text-center">Processo</td>
+                          <td class="text-primary text-center">-</td>
                           <td class="text-primary text-start">{{issue?.issueDescription}}</td>
                         </tr>
                         <tr>
                           <td class="text-primary text-center">
                             {{ selectedIssue?.merchant?.merchant?.name }}
                           </td>
+                          <td class="text-primary text-center">-</td>
                           <td class="text-primary text-start">{{selectedIssue?.merchant?.issues[0]?.issueDescription}}</td>
                         </tr>
                         <tr *ngFor="let issue of selectedIssue?.stakeholders">
                           <td class="text-primary text-center">{{issue?.stakeholder?.name}}</td>
+                          <td class="text-primary text-center">-</td>
                           <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
                         </tr>
                         <tr *ngFor="let issue of selectedIssue?.shops">
                           <td class="text-primary text-center">{{issue?.shop?.name}}</td>
+                          <td class="text-primary text-center">-</td>
                           <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
                         </tr>
                         <tr *ngFor="let issue of selectedIssue?.documents">
                           <td class="text-primary text-center">{{issue?.document?.name}}</td>
+                          <td class="text-primary text-center">{{issue?.document?.type}}</td>
                           <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
                         </tr>
                       </tbody>
