@@ -108,13 +108,34 @@ export class CountrysComponent implements OnInit {
     },
   ];
 
-  dropDownSetting: IDropdownSettings = {}
+  continentOptions = [
+    {
+      "value": "EUROPA"
+    },
+    {
+      "value": "AFRICA"
+    },
+    {
+      "value": "ASIA"
+    },
+    {
+      "value": "AMERICA DO NORTE / SUL"
+    },
+    {
+      "value": "OCEANIA"
+    }
+  ]
+
+  dropDownSettings = {};
 
   comprovativoCC: FileAndDetailsCC;
   countryError: boolean;
   errorMsg: string;
   rootForm: FormGroup;
   window: any = window;
+  lst = [];
+  lstPreenchido = [];
+  finalList = null;
 
   ngOnInit() {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
@@ -127,10 +148,19 @@ export class CountrysComponent implements OnInit {
       if (!this.clientContext.clientExists && this.map.get(2) == undefined) { // garantir que só adicionamos Portugal por default, se o cliente não existir E se o tabulador dos intervenientes ainda não foi visitado
         this.subs.push(this.tableInfo.GetCountryById('PT').subscribe(result => {
           this.logger.info("Get country by id result: " + JSON.stringify(result));
-          var index = this.contPais.findIndex(elem => elem.code == result.code);
+          var index = this.lstPreenchido.findIndex(elem => elem.item_id == result.code);
           if (index == -1) {
-            this.contPais.push(result);
-            this.inserirText(null);
+            this.countrys({ target: { value: "EUROPA" } });
+            this.addCountry({
+              item_id: result.code,
+              item_text: result.description
+            });
+            this.finalList = [];
+            this.finalList.push({
+              item_id: result.code,
+              item_text: result.description
+            });
+            this.form.get("countries").patchValue(this.lstPreenchido);
           }
         }, error => this.logger.error(error, "", "Error fetching country")));
       }
@@ -206,7 +236,17 @@ export class CountrysComponent implements OnInit {
       this.logger.info("Get all countries result: " + JSON.stringify(result));
       this.countryList = result;
       this.countryList = this.countryList.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+      this.countrys({ target: { value: "EUROPA" } });
     }, error => this.logger.error(error, "", "Error fetching countries")));
+
+    this.dropDownSettings = {
+      singleSelection: false,
+      idField: 'item_id',
+      textField: 'item_text',
+      allowSearchFilter: true,
+      searchPlaceholderText: 'Pesquisar',
+      itemsShowLimit: 20
+    } as IDropdownSettings
   }
 
   changeFormStructure(newForm: FormGroup) {
@@ -228,7 +268,8 @@ export class CountrysComponent implements OnInit {
         inputOceania: new FormControl(this.inputOceania),
         inputAsia: new FormControl(this.inputTypeAsia),
         franchiseName: new FormControl(this.client?.businessGroup?.type == 'Franchise' ? this.client?.businessGroup?.branch : null),
-        NIPCGroup: new FormControl(this.client?.businessGroup?.type == 'Group' ? this.client?.businessGroup?.branch : '')
+        NIPCGroup: new FormControl(this.client?.businessGroup?.type == 'Group' ? this.client?.businessGroup?.branch : ''),
+        countries: new FormControl([])
       }));
       this.editCountries(true);
     } else {
@@ -244,7 +285,8 @@ export class CountrysComponent implements OnInit {
         inputOceania: new FormControl(this.inputOceania),
         inputAsia: new FormControl(this.inputTypeAsia),
         franchiseName: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo?.businessGroup != null && this.merchantInfo?.businessGroup?.type == 'Franchise') ? this.merchantInfo?.businessGroup?.branch : null),
-        NIPCGroup: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo?.businessGroup != null && this.merchantInfo?.businessGroup?.type == 'Group') ? this.merchantInfo?.businessGroup?.branch : '')
+        NIPCGroup: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo?.businessGroup != null && this.merchantInfo?.businessGroup?.type == 'Group') ? this.merchantInfo?.businessGroup?.branch : ''),
+        countries: new FormControl([])
       }));
       if (this.returned != null) {
         this.editCountries(false);
@@ -299,7 +341,8 @@ export class CountrysComponent implements OnInit {
       inputOceania: new FormControl(this.inputOceania),
       inputAsia: new FormControl(this.inputTypeAsia),
       franchiseName: new FormControl(null),
-      NIPCGroup: new FormControl('')
+      NIPCGroup: new FormControl(''),
+      countries: new FormControl([])
     }));
 
     this.form.get("franchiseName").valueChanges.pipe(distinctUntilChanged()).subscribe(v => {
@@ -360,7 +403,7 @@ export class CountrysComponent implements OnInit {
     client["knowYourSales"]["estimatedAnualRevenue"] = this.form.get("expectableAnualInvoicing").value;
     client["knowYourSales"]["transactionsAverage"] = this.form.get("transactionsAverage").value;
     client["knowYourSales"]["servicesOrProductsSold"] = [this.form.get("services").value]; //
-    client["knowYourSales"]["servicesOrProductsDestinations"] = this.lstPaisPreenchido.map(country => country.code);
+    client["knowYourSales"]["servicesOrProductsDestinations"] = this.lstPreenchido.map(country => country.item_id); // antes estava lstPaisPreenchido
     client["documentationDeliveryMethod"] = this.form.get("preferenceDocuments").value;
 
     if (!this.form.get("associatedWithGroupOrFranchise").value) {
@@ -462,22 +505,11 @@ export class CountrysComponent implements OnInit {
   }
 
   countrys(item) {
-    this.countriesCheckBox.forEach(val => {
-      if (val.value == item.value) {
-        val.isSelected = !val.isSelected;
-      } else {
-        val.isSelected = false;
-      }
-    });
-
-    this.lstCountry.splice(0, this.lstCountry.length);
-    this.lstCountry1.splice(0, this.lstCountry1.length);
-    this.lstCountry2.splice(0, this.lstCountry2.length);
-    this.lstCountry3.splice(0, this.lstCountry3.length);
+    this.lst.splice(0, this.lst.length);
 
     this.valueInput();
     var count = 0;
-    switch (item.value) {
+    switch (item.target.value) {
       case 'EUROPA':
         if (this.inputEuropa == false) {
           this.inputEuropa = true;
@@ -487,20 +519,10 @@ export class CountrysComponent implements OnInit {
           this.inputOceania = false;
           this.countryList.forEach(country => {
             if (country.continent == "Europa") {
-              if (count <= 11) {
-                this.lstCountry.push(country)
-              } else {
-                if (count <= 23) {
-                  this.lstCountry1.push(country);
-                } else {
-                  if (count <= 35) {
-                    this.lstCountry2.push(country);
-                  } else {
-                    this.lstCountry3.push(country);
-                  }
-                }
-              }
-              count++;
+              this.lst = this.lst.concat({
+                item_id: country.code,
+                item_text: country.description
+              });
             }
           });
 
@@ -517,20 +539,10 @@ export class CountrysComponent implements OnInit {
           this.inputOceania = false;
           this.countryList.forEach(country => {
             if (country.continent == "Africa") {
-              if (count <= 11) {
-                this.lstCountry.push(country)
-              } else {
-                if (count <= 23) {
-                  this.lstCountry1.push(country);
-                } else {
-                  if (count <= 35) {
-                    this.lstCountry2.push(country);
-                  } else {
-                    this.lstCountry3.push(country);
-                  }
-                }
-              }
-              count++;
+              this.lst = this.lst.concat({
+                item_id: country.code,
+                item_text: country.description
+              });;
             }
           });
 
@@ -547,20 +559,10 @@ export class CountrysComponent implements OnInit {
           this.inputEuropa = false;
           this.countryList.forEach(country => {
             if (country.continent == "Oceania") {
-              if (count <= 11) {
-                this.lstCountry.push(country)
-              } else {
-                if (count <= 23) {
-                  this.lstCountry1.push(country);
-                } else {
-                  if (count <= 35) {
-                    this.lstCountry2.push(country);
-                  } else {
-                    this.lstCountry3.push(country);
-                  }
-                }
-              }
-              count++;
+              this.lst = this.lst.concat({
+                item_id: country.code,
+                item_text: country.description
+              });
             }
           });
 
@@ -577,20 +579,10 @@ export class CountrysComponent implements OnInit {
           this.inputOceania = false;
           this.countryList.forEach(country => {
             if (country.continent == "Ásia") {
-              if (count <= 11) {
-                this.lstCountry.push(country)
-              } else {
-                if (count <= 23) {
-                  this.lstCountry1.push(country);
-                } else {
-                  if (count <= 35) {
-                    this.lstCountry2.push(country);
-                  } else {
-                    this.lstCountry3.push(country);
-                  }
-                }
-              }
-              count++;
+              this.lst = this.lst.concat({
+                item_id: country.code,
+                item_text: country.description
+              });
             }
           });
         } else {
@@ -606,20 +598,10 @@ export class CountrysComponent implements OnInit {
           this.inputOceania = false;
           this.countryList.forEach(country => {
             if (country.continent == "América Norte" || country.continent == "América Central" || country.continent == "América Sul") {
-              if (count <= 11) {
-                this.lstCountry.push(country)
-              } else {
-                if (count <= 23) {
-                  this.lstCountry1.push(country);
-                } else {
-                  if (count <= 35) {
-                    this.lstCountry2.push(country);
-                  } else {
-                    this.lstCountry3.push(country);
-                  }
-                }
-              }
-              count++;
+              this.lst = this.lst.concat({
+                item_id: country.code,
+                item_text: country.description
+              });
             }
           });
 
@@ -683,19 +665,65 @@ export class CountrysComponent implements OnInit {
 
   editCountries(normalSubmssion: boolean) {
     if (normalSubmssion) {
+      this.finalList = [];
       this.client.knowYourSales.servicesOrProductsDestinations.forEach(countryID => {
         this.subs.push(this.tableInfo.GetCountryById(countryID).subscribe(result => {
           this.logger.info("Get country by id result: " + JSON.stringify(result));
-          this.contPais.push(result);
-          this.inserirText(null);
+          if (result.continent == "Europa") {
+            this.countrys({ target: { value: "EUROPA" } });
+          }
+          if (result.continent == "Ásia") {
+            this.countrys({ target: { value: "ASIA" } });
+          }
+          if (result.continent == "América Sul" || result.continent == "América Central" || result.continent == "América Norte") {
+            this.countrys({ target: { value: "AMERICA DO NORTE / SUL" } });
+          }
+          if (result.continent == "Africa") {
+            this.countrys({ target: { value: "AFRICA" } });
+          }
+          if (result.continent == "Oceânia") {
+            this.countrys({ target: { value: "OCEANIA" } });
+          }
+          this.addCountry({
+            item_id: result.code,
+            item_text: result.description
+          });
+          this.finalList.push({
+            item_id: result.code,
+            item_text: result.description
+          });
+          this.form.get("countries").patchValue(this.lstPreenchido);
         }, error => this.logger.error(error, "", "Error fetching country")));
       });
     } else {
+      this.finalList = [];
       this.merchantInfo.knowYourSales.servicesOrProductsDestinations.forEach(countryID => {
         this.subs.push(this.tableInfo.GetCountryById(countryID).subscribe(result => {
           this.logger.info("Get country by id result: " + JSON.stringify(result));
-          this.contPais.push(result);
-          this.inserirText(null);
+          if (result.continent == "Europa") {
+            this.countrys({ target: { value: "EUROPA" } });
+          }
+          if (result.continent == "Ásia") {
+            this.countrys({ target: { value: "ASIA" } });
+          }
+          if (result.continent == "América Sul" || result.continent == "América Central" || result.continent == "América Norte") {
+            this.countrys({ target: { value: "AMERICA DO NORTE / SUL" } });
+          }
+          if (result.continent == "Africa") {
+            this.countrys({ target: { value: "AFRICA" } });
+          }
+          if (result.continent == "Oceânia") {
+            this.countrys({ target: { value: "OCEANIA" } });
+          }
+          this.addCountry({
+            item_id: result.code,
+            item_text: result.description
+          });
+          this.finalList.push({
+            item_id: result.code,
+            item_text: result.description
+          });
+          this.form.get("countries").patchValue(this.lstPreenchido);
         }, error => this.logger.error(error, "", "Error fetching country")));
       });
     }
@@ -712,7 +740,7 @@ export class CountrysComponent implements OnInit {
   }
 
   emitteCountrySize() {
-    this.countryIsValid.emit((this.lstPaisPreenchido.length > 0)); // antes estava countryList
+    this.countryIsValid.emit((this.lstPreenchido.length > 0)); // antes estava countryList
   }
 
   getCurrentClientAsync() {
@@ -736,10 +764,19 @@ export class CountrysComponent implements OnInit {
       if (this.client?.knowYourSales?.servicesOrProductsDestinations?.length == 0) {
         this.subs.push(this.tableInfo.GetCountryById('PT').subscribe(result => {
           this.logger.info("Get country by id result: " + JSON.stringify(result));
-          var index = this.contPais.findIndex(elem => elem.code == result.code);
+          var index = this.lstPreenchido.findIndex(elem => elem.item_id == result.code);
           if (index == -1) {
-            this.contPais.push(result);
-            this.inserirText(null);
+            this.countrys({ target: { value: "EUROPA" } });
+            this.addCountry({
+              item_id: result.code,
+              item_text: result.description
+            });
+            this.finalList = [];
+            this.finalList.push({
+              item_id: result.code,
+              item_text: result.description
+            });
+            this.form.get("countries").patchValue(this.lstPreenchido);
           }
         }, error => this.logger.error(error, "", "Error fetching country")));
       }
@@ -757,5 +794,19 @@ export class CountrysComponent implements OnInit {
 
       this.formCountrysReady.emit(this.form);
     });
+  }
+
+  addCountry(item: any) {
+    var index = this.lstPreenchido.findIndex(country => country.item_id == item.item_id);
+    if (index == -1)
+      this.lstPreenchido = this.lstPreenchido.concat(item);
+    this.emitteCountrySize();
+  }
+
+  removeCountry(item: any) {
+    var index = this.lstPreenchido.findIndex(country => country.item_id == item.item_id);
+    if (index != -1)
+      this.lstPreenchido.splice(index, 1);
+    this.emitteCountrySize();
   }
 }

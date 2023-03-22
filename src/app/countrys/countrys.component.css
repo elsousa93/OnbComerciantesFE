@@ -1,0 +1,25 @@
+:host ::ng-deep .multiselect-dropdown .dropdown-btn {
+  display: inline-block;
+  border: 1px solid var(--bs-gray-600) !important;
+  width: 100%;
+  padding: 6px 12px;
+  margin-bottom: 0;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 1.1;
+  text-align: left;
+  vertical-align: middle;
+  cursor: pointer;
+  background-image: none;
+  border-radius: 4px;
+}
+
+:host ::ng-deep .multiselect-dropdown .dropdown-btn .selected-item-container .selected-item {
+  border: 1px solid rgb(var(--bs-primary-rgb)) !important;
+  background: rgb(var(--bs-primary-rgb)) !important;
+}
+
+:host ::ng-deep .multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret{
+  line-height: 30px !important;
+}
+

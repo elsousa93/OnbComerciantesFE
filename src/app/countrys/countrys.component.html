@@ -14,10 +14,11 @@
         </nav>
       </div>
       <div class="offset-1 center-align bg-white col-10 ps-3" style="margin-left: 0px;">
-        <h4 *ngIf="!inline" class="text-primary mt-5 ps-0 "><span class="manage-accounts icon-manage-accounts"></span>
+        <h4 *ngIf="!inline" class="text-primary mt-5 ps-0 ">
+          <span class="manage-accounts icon-manage-accounts"></span>
           <!--<img src="assets/images/manage_accounts.svg"
             class="img_add">-->
-        &nbsp;{{'client.companyInformation'|translate|uppercase}}
+          &nbsp;{{'client.companyInformation'|translate|uppercase}}
         </h4>
         <h2 class="text-primary mt-5 ps-3"> </h2>
         <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
@@ -106,80 +107,42 @@
             <p class="titulo-form-simples"></p>
           </div>
           <div [ngClass]="{'col-6' : window.outerWidth > 768, 'pe-0' : window.outerWidth > 768, 'ps-5' : window.outerWidth > 768, 'me-0' : window.outerWidth > 768, 'ms-0': window.outerWidth > 768, 'offset-1': window.outerWidth > 768 }">
-            <p class="titulo-form-simples mt-0 mb-3">{{'client.destinationCountry'|translate|uppercase}}*
+            <p class="titulo-form-simples mt-0">
+              {{'client.destinationCountry'|translate|uppercase}}*
               <span class="titulo-form-error" *ngIf="countryError == true" class="titulo-form-simples-erro">
                 {{'client.countryError'|translate}}
               </span>
             </p>
-            <textarea id="text5" class="form_control campo_form" [ngClass]="{'w-75': window.outerWidth > 768}" [ngStyle]="{'width': window.outerWidth <= 768 ? '63%' : null}" readonly></textarea>
-            <div class="row ms-0 me-0">
-              <div class="row ms-0 me-0">
-                <div class="col quadro_paises_tracejado">
-                  <p class="titulo-form-simples vertical-align"></p>
-                  <p class="titulo_paises mt-0"></p>
-                  <div *ngFor="let item of countriesCheckBox">
-                    <div class="form-check">
-                      <input type="checkbox" formControlName="{{item.formControlName}}" value="{{item.value}}"
-                        id="{{item.value}}" name="{{item.value}}" class="form-check-input" (click)="countrys(item)"
-                        [checked]="item.isSelected" [attr.disabled]="returned == 'consult' ? true : null">
-                      <label class="form-check-label radio" for="{{item.value}}">{{item.value}}</label>
-                    </div>
-                  </div>
-                </div>
-                <div class="col ps-5">
-                  <div class="form-check" *ngFor="let item of lstCountry; index as i">
-                    <input class="form-check-input" type="checkbox" [checked]="countryExists(item)" name="input16"
-                           (change)="onCountryChange(item)"
-                           [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
-                  </div>
-                  <!--<ng-multiselect-dropdown [data]="lstCountry"
-                                           [(ngModel)]="lstPaisPreenchido"
-                                           [settings]="dropdownSettings"
+            <div class="row me-0">
+              <div class="ms-0 me-0">
+                <select class="form-select campo-form-select" (change)="countrys($event)" style="font-size: 20px;">
+                  <option *ngFor="let item of continentOptions">{{item.value}}</option>
+                </select>
+
+
+                <div class="col mt-4" *ngIf="finalList?.length > 0">
+                  <ng-multiselect-dropdown formControlName="countries" name="countries" style="font-size: 20px;" placeholder="Selecione" [settings]="dropDownSettings"
+                                           [data]="lst"
+                                           
                                            (onSelect)="addCountry($event)"
                                            (onDeSelect)="removeCountry($event)">
-                  </ng-multiselect-dropdown>-->
-                </div>
-                <div class="col">
-                  <div class="form-check" *ngFor="let item of lstCountry1; index as i">
-                    <input class="form-check-input" type="checkbox" [checked]="countryExists(item)" name="input16"
-                      (change)="onCountryChange(item)"
-                      [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="form-check" *ngFor="let item of lstCountry2; index as i">
-                    <input class="form-check-input" type="checkbox" [checked]="countryExists(item)" name="input16"
-                      (change)="onCountryChange(item)"
-                      [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
-                  </div>
-                </div>
-                <div class="col">
-                  <div class="form-check" *ngFor="let item of lstCountry3; index as i">
-                    <input class="form-check-input" type="checkbox" [checked]="countryExists(item)" name="input16"
-                      (change)="onCountryChange(item)"
-                      [attr.disabled]="returned == 'consult' ? true : null">{{item.description | uppercase}}
-                  </div>
+                  </ng-multiselect-dropdown>
                 </div>
               </div>
-            </div><button id="btn5a3"
-              class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-0 me-1 pt-3 pb-3 ps-3"
-              wappler-command="editContent" (click)="inserirText(this.form)" type="button"
-              [disabled]="returned == 'consult'">
-              <img src="assets/images/public.svg" style="height: 23px;" class="img_add">
-              {{'client.choose'|translate|uppercase}}&nbsp;
-            </button>
+            </div>
           </div>
           <div class="col-6 ms-0 me-0 ps-0 pe-5" *ngIf="associatedWithGroupOrFranchise == true">
             <p class="titulo-form-simples mt-0">{{'client.franchiseName'|translate|uppercase}}</p>
             <select class="form-select campo_form" formControlName="franchiseName" name="franchiseName"
-              id="franchiseName"
-              [attr.disabled]="returned == 'consult' || isAssociatedWithFranchise == false ? 'disabled' :  null ">
+                    id="franchiseName"
+                    [attr.disabled]="returned == 'consult' || isAssociatedWithFranchise == false ? 'disabled' :  null ">
               <option value=""></option>
-              <option *ngFor="let franchise of franchises" value={{franchise.description}}>{{franchise.description}}
+              <option *ngFor="let franchise of franchises" value={{franchise.description}}>
+                {{franchise.description}}
               </option>
             </select>
             <div class="alert alert-danger"
-              *ngIf="this.form.get('franchiseName').touched && !this.form.get('franchiseName').valid">
+                 *ngIf="this.form.get('franchiseName').touched && !this.form.get('franchiseName').valid">
               <div *ngIf="this.form.get('franchiseName').errors && this.form.get('franchiseName').errors?.['required']">
                 {{'generalKeywords.mandatoryParameter'|translate}}
               </div>
@@ -210,23 +173,23 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
               <span class="navbar-text align-self-center ms-0 me-0">
                 <button id="btn5a1"
-                  class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 pt-3 pb-3 ps-3 pe-3"
-                  wappler-command="editContent" type="button" (click)="goBackToHomePage()">
+                        class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 pt-3 pb-3 ps-3 pe-3"
+                        wappler-command="editContent" type="button" (click)="goBackToHomePage()">
                   {{'generalKeywords.exit'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align exit-to-app icon-exit-to-app">
                     <!--<img src="assets/images/exit_to_app.svg" style="height: 25px !important;">-->
                   </span>
                 </button>
               </span>
               <button id="btn5a4"
-                class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"
-                wappler-command="editContent" type="button" (click)="redirectToClientById()">
+                      class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"
+                      wappler-command="editContent" type="button" (click)="redirectToClientById()">
                 <span class="material-symbols-rounded m-align">
                   <img src="assets/images/arrow_back_ios_white.svg" style="height: 25px !important;">
                 </span>{{'generalKeywords.back'|translate|uppercase}}&nbsp;
               </button>
               <button id="btn5a2"
-                class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
-                wappler-command="editContent" type="submit">
+                      class="btn botao_azul center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 ps-3 btn-lg"
+                      wappler-command="editContent" type="submit">
                 {{'generalKeywords.next'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
                   <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important;">
                 </span>
