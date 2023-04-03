@@ -74,16 +74,21 @@ export class TokenService {
 
   getToken() {
     var URI = this.neyondBackURL + 'BEToken/Token';
-    return this.http.get(URI).pipe(retry(3));
+    var testeURI = 'http://localhost:7269/' + 'BEToken/Token';
+    return this.http.get(testeURI).pipe(retry(3));
   }
 
   teste() {
-    var URI = 'http://localhost:7269/' + 'BEToken/Listen';
+    var URI = 'http://localhost:7269/' + 'BEToken';
     var object = {
       SIBSTokenID: "abcdef"
     };
-    return this.http.post(URI, object).toPromise();
+    return this.http.post(URI, object);
   }
 
+  getTeste() {
+    var URI = 'http://localhost:7269/' + 'BEToken';
+    return this.http.get(URI);
+  }
 
 }

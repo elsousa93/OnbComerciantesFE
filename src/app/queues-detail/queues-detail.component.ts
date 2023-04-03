@@ -299,6 +299,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
         var shop = result.result;
         this.shopsList.push(shop);
         context.loadStores(context.shopsList);
+        context.emitSelectedStore(context.shopsList[0], 0);
         this.queuesInfo.getShopEquipmentConfigurationsFromProcess(this.processId, shop.id).then(eq => {
           this.logger.info("Get shop equipments list from process result: " + JSON.stringify(result));
           var equipments = eq.result;
@@ -459,7 +460,6 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
   emitSelectedStore(store, idx) {
     this.currentStore = store;
     this.currentIdx = idx;
-    
   }
 
   loadStores(storesValues: ShopDetailsAcquiring[]) {
@@ -530,6 +530,13 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
       text-align: center;
       border: 3px solid green;
       `);
+  }
+
+  deleteFile(fileToDelete: File) {
+    let index = this.files.findIndex(f => f.lastModified === fileToDelete.lastModified);
+    if (index > -1)
+      this.files.splice(index, 1);
+    this.attach = undefined;
   }
 
   check() {
@@ -794,7 +801,9 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
     }
 
     if (this.files.length > 0) {
+      let length = 0;
       this.files.forEach(function (value, idx) {
+        length++;
         context.documentService.readBase64(value).then(data => {
           var document: PostDocument = {
             documentType: context.documentType,
@@ -805,19 +814,33 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
             validUntil: new Date().toISOString(),
             data: {}
           }
-          context.queuesInfo.postProcessDocuments(document, context.processId, context.state).then(res => { });
+          context.queuesInfo.postProcessDocuments(document, context.processId, context.state).then(res => {
+            if (context.files.length == length) {
+              context.queuesInfo.postExternalState(context.processId, context.state, queueModel).then(result => {
+                context.logger.info("Queue post external state result: " + JSON.stringify(queueModel));
+                let navigationExtras = {
+                  state: {
+                    queueName: context.queueName
+                  }
+                } as NavigationExtras;
+                context.route.navigate(['/'], navigationExtras);
+              });
+            }
+          });
         });
-      })
+      });
+    } else {
+      this.queuesInfo.postExternalState(this.processId, this.state, queueModel).then(result => {
+        this.logger.info("Queue post external state result: " + JSON.stringify(queueModel));
+        let navigationExtras = {
+          state: {
+            queueName: this.queueName
+          }
+        } as NavigationExtras;
+        this.route.navigate(['/'], navigationExtras);
+      });
     }
 
-    this.queuesInfo.postExternalState(this.processId, this.state, queueModel).then(result => {
-      this.logger.info("Queue post external state result: " + JSON.stringify(queueModel));
-      let navigationExtras = {
-        state: {
-          queueName: this.queueName
-        }
-      } as NavigationExtras;
-      this.route.navigate(['/'], navigationExtras);
-    });
+   
   }
 }

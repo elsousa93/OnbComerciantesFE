@@ -13,7 +13,7 @@
             <div class="col">
               <p class="titulo-form-simples">{{'stakeholder.type'|translate}}: *</p>
               <select class="form-select campo-form-select"
-                      (click)="changeListElementStakeType(stakeholderType, $event)" id="stakeholderType"
+                      (change)="changeListElementStakeType(stakeholderType, $event)" id="stakeholderType"
                       formControlName="type">
                 <option *ngFor="let stakeType of ListStakeholderType" value={{stakeType.stakeTypeOption}}>
                   {{stakeType.stakeTypeOption}}
@@ -35,7 +35,7 @@
             <div class="col">
               <p class="titulo-form-simples">{{'searches.documentType'|translate}}: *</p>
               <div *ngIf="isParticular">
-                <select class="form-select campo-form-select" (click)="changeListElementDocType(documentType, $event)"
+                <select class="form-select campo-form-select" (change)="changeListElementDocType(documentType, $event)"
                         id="documentType" formControlName="documentType">
                   <option *ngFor="let docType of ListDocTypeP" value={{docType.code}}>
                     {{docType.description}}
@@ -43,7 +43,7 @@
                 </select>
               </div>
               <div *ngIf="!isParticular">
-                <select class="form-select campo-form-select" (click)="changeListElementDocType(documentType, $event)"
+                <select class="form-select campo-form-select" (change)="changeListElementDocType(documentType, $event)"
                         id="documentType" formControlName="documentType">
                   <option *ngFor="let docType of ListDocTypeE" value={{docType.code}}>
                     {{docType.description}}
@@ -160,7 +160,7 @@
     <form [formGroup]="formNewStakeholder">
       <h5 *ngIf="isShown && foundStakeholders" class="text-primary mb-4">{{'client.found'|translate|uppercase}}</h5>
       <div *ngIf="isShown" class="row container-fluid" id="divshow" style="padding-left: 0px;">
-        <app-search-stakeholders [clientID]="testEvent" [searchType]="docType"
+        <app-search-stakeholders [clientID]="testEvent" [searchType]="docType" [stakeholderType]="stakeholderType"
           (selectedStakeholderEmitter)="selectNewStakeholder($event)"
           (searchAditionalInfoEmitter)="searchResultNotifier($event)"></app-search-stakeholders>
       </div>

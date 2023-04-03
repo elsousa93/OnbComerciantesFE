@@ -27,6 +27,7 @@ export class AppComponent {
   hasAuthenticated: boolean = true;
   wantsLogin: boolean = false;
   translationLanguages = translationLanguages;
+  expired: boolean = false;
 
   constructor(private logger: LoggerService, public translate: TranslateService, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService, private tableInfo: TableInfoService) {
@@ -49,6 +50,11 @@ export class AppComponent {
     authService.hasAuthenticated.subscribe(auth => {
       this.hasAuthenticated = auth;
     });
+
+    authService.hasExpired.subscribe(expired => {
+      this.expired = expired;
+    });
+
   }
 
   @Input() url: string;

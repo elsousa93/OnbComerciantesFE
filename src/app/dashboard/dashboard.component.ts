@@ -13,13 +13,15 @@ import { DatePipe } from '@angular/common';
 import { LoggerService } from 'src/app/logger.service';
 import { User } from '../userPermissions/user';
 import { TranslateService } from '@ngx-translate/core';
-import { State } from '../queues-detail/IQueues.interface';
+import { ReassingWorkQueue, State, WorkQueue } from '../queues-detail/IQueues.interface';
 import { AppComponent } from '../app.component';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 import { QueuesService } from '../queues-detail/queues.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { TokenService } from '../token.service';
-
+import * as CryptoJS from 'crypto-js';
+import CryptoAES from 'crypto-js/aes';
+import CryptoHex from 'crypto-js/enc-utf8';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -30,6 +32,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   deleteModalRef: BsModalRef | undefined;
   @ViewChild('deleteModal') deleteModal;
+  userModalRef: BsModalRef | undefined;
+  @ViewChild('userModal') userModal;
 
   dataSourcePendentes: MatTableDataSource<ProcessList> = new MatTableDataSource();
   dataSourceTratamento: MatTableDataSource<ProcessList> = new MatTableDataSource();
@@ -171,26 +175,44 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   name: string;
   queueName: string = "";
   processToDelete: string = "";
+  processQueueToDelete: ProcessList = null;
   timeout;
+  processToAssign: string = "";
+  queue: string = "";
+  jobId: number = 0;
+  workQueue: WorkQueue = null;
+  existsUser: boolean;
+  username: string = "";
 
   constructor(private logger: LoggerService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
     private datePipe: DatePipe, private authService: AuthService, private translate: TranslateService, public appComponent: AppComponent, private processNrService: ProcessNumberService, private queueService: QueuesService, private modalService: BsModalService, private tokenService: TokenService) {
     if (this.authService.GetToken() == "" || this.authService.GetToken() == null) {
-      var user: User = {};
-      this.tokenService.getToken().subscribe(r => {
-        user.token = r["token"];
+      var split = window.location.href.split("=");
+      if (split[1] != undefined) {
+        var decode = decodeURIComponent(split[1]);
+        var token = this.decryptData("Zq4t7w!z$C&F)J@N", decode);
+        var user: User = {};
+        user.token = token;
         this.tokenService.getLoginTokenInfo(user.token).then(res => {
-          user.userName = res.name;
-          user.bankName = res["ext-bank"];
-          user.bankLocation = res["ext-bankLocation"];
-          var newDate = new Date(res.exp * 1000);
-          this.timeout = newDate.getTime() - new Date().getTime();
-          this.expirationCounter(this.timeout);
-          this.authService.changeUser(user);
+          if (res.active == false) {
+            this.authService.changeExpired(true);
+            this.authService.reset();
+          } else {
+            user.userName = res.name;
+            user.bankName = res["ext-bank"];
+            user.bankLocation = res["ext-bankLocation"];
+            user.permissions = UserPermissions.UNICRE;
+            var newDate = new Date(res.exp * 1000);
+            this.timeout = newDate.getTime() - new Date().getTime();
+            this.expirationCounter(this.timeout);
+            this.authService.changeUser(user);
+            this.router.navigate(['/']);
+          }
         });
-      });
+      }
     }
+
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -595,16 +617,20 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   FTSearch(queue: string, processId: string) {
-    let navigationExtras: NavigationExtras = {
-      state: {
-        queueName: queue,
-        processId: processId
+    this.processToAssign = processId;
+    this.queue = queue;
+    this.username = this.authService.GetCurrentUser().userName;
+    this.queueService.getActiveWorkQueue(processId).then(result => {
+      this.workQueue = result.result;
+      if (result.result.lockedBy == "" || result.result.lockedBy == null) {
+        this.existsUser = false;
+      } else {
+        this.existsUser = true;
       }
-    };
-    this.processNrService.changeProcessId(processId);
-    this.processNrService.changeQueueName(queue);
-    this.logger.info('Redirecting to Queues Detail page');
-    this.router.navigate(["/queues-detail"], navigationExtras);
+      this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
+    }, error => {
+      this.logger.error(error, "Error while searching for active work queue");
+    });
   }
 
   cancelProcess(processId: string) {
@@ -641,15 +667,76 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/clientbyid']);
   }
 
+  deleteQueueProcess(process: ProcessList) {
+    this.processQueueToDelete = null;
+    this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-lg' });
+    this.processQueueToDelete = process;
+  }
+
   deleteProcess(processId: string) {
+    this.processToDelete = "";
     this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-lg' });
     this.processToDelete = processId;
+  }
+
+  assign() {
+    let navigationExtras: NavigationExtras = {
+      state: {
+        queueName: this.queue,
+        processId: this.processToAssign
+      }
+    };
+    var reassignWorkQueue: ReassingWorkQueue = {};
+    reassignWorkQueue.forceReassign = true;
+    reassignWorkQueue.jobId = this.workQueue.id;
+    reassignWorkQueue.username = this.username;
+    this.queueService.postReassignWorkQueue(this.processToAssign, reassignWorkQueue).then(res => {
+      this.processNrService.changeProcessId(this.processToAssign);
+      this.processNrService.changeQueueName(this.queue);
+      this.processToAssign = "";
+      this.jobId = 0;
+      this.queue = "";
+      this.userModalRef?.hide();
+      this.logger.info('Redirecting to Queues Detail page');
+      this.router.navigate(["/queues-detail"], navigationExtras);
+    });
   }
 
   delete() {
     if (this.processToDelete != "") {
       this.deleteModalRef?.hide();
-      this.queueService.markToCancel(this.processToDelete).then(res => { });
+      this.queueService.markToCancel(this.processToDelete).then(res => {
+        
+      });
+    }
+    if (this.processQueueToDelete != null) {
+      this.deleteModalRef?.hide();
+      var state: State;
+      var queueModel;
+      if (this.processQueueToDelete["tenantState"] == "ContractDigitalAcceptance") {
+        state = State.CONTRACT_DIGITAL_ACCEPTANCE;
+        queueModel = {
+          $type: "ContractDigitalAcceptance",
+          contractDigitalAcceptanceResult: 'Cancel'
+        };
+      }
+      if (this.processQueueToDelete["tenantState"] == "ContractAcceptance") {
+        state = State.CONTRACT_ACCEPTANCE;
+        queueModel = {
+          $type: "ContractAcceptanceModel",
+          contractAcceptanceResult: 'Cancel'
+        };
+      }
+      if (this.processQueueToDelete["tenantState"] == "DigitalIdentification") {
+        state = State.DIGITAL_IDENTIFICATION;
+        queueModel = {
+          $type: "DigitalIdentification",
+          digitalIdentificationResult: 'Cancel'
+        };
+      }
+      this.queueService.postExternalState(this.processQueueToDelete.processId, state, queueModel).then(result => {
+        
+      });
     }
   }
 
@@ -839,6 +926,10 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.deleteModalRef?.hide();
   }
 
+  closeUserModal() {
+    this.userModalRef?.hide();
+  }
+
   expirationCounter(timeout) {
     setTimeout(() => {
       this.logger.info('Token expired');
@@ -850,4 +941,11 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     localStorage.removeItem('auth');
     this.authService.reset();
   }
+
+  decryptData(key, ciphertextB64) {// Base64 encoded ciphertext, 32 bytes string as key
+    var key = CryptoHex.parse(key);                             // Convert into WordArray (using Utf8)
+    var iv = CryptoJS.lib.WordArray.create([0x00, 0x00, 0x00, 0x00]);  // Use zero vector as IV
+    var decrypted = CryptoAES.decrypt(ciphertextB64.toString(), key, { iv : iv }); // By default: CBC, PKCS7 
+    return decrypted.toString(CryptoHex);                       // Convert into string (using Utf8)
+}
 }

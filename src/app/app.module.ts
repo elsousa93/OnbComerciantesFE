@@ -79,6 +79,7 @@ import { AppConfigService } from './app-config.service';
 import { MbscModule } from '@mobiscroll/angular-lite';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { PreRegistrationComponent } from './pre-registration/pre-registration.component';
+import { ExpiredComponent } from './expired/expired.component';
 registerLocaleData(localePT);
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -137,7 +138,8 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     StakeholdersListComponent,
     SearchStakeholdersComponent,
     StoreTableComponent,
-    PreRegistrationComponent
+    PreRegistrationComponent,
+    ExpiredComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -210,7 +212,8 @@ const appInitializerFn = (appConfig: AppConfigService) => {
       { path: 'client-power-representation/:id', component: RepresentationPowerComponent },
       { path: 'client-power-representation/', component: RepresentationPowerComponent },
       { path: 'add-store-product', component: ProductSelectionComponent },
-      { path: 'pre-registration', component: PreRegistrationComponent }
+      { path: 'pre-registration', component: PreRegistrationComponent },
+      { path: 'expired', component: ExpiredComponent }
 
     ], { onSameUrlNavigation: 'reload' }),
     TranslateModule.forRoot({

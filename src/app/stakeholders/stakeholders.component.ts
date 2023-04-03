@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IStakeholders, OutboundDocument, StakeholdersCompleteInformation } from './IStakeholders.interface';
+import { IStakeholders, OutboundDocument, PostCorporateEntity, StakeholdersCompleteInformation } from './IStakeholders.interface';
 import { stakeTypeList } from './stakeholderType';
 import { docTypeListP } from './docType';
 import { docTypeListE } from './docType';
@@ -225,17 +225,17 @@ export class StakeholdersComponent implements OnInit {
       if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country == null || this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country == "")
         stakeForm.get("Country").setValue("PT");
       else
-        stakeForm.get("Country").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country);
+        stakeForm.get("Country").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country ?? this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["country"]);
 
       if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode?.includes(" ")) {
         var arr = this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode.split(" ");
         stakeForm.get("ZIPCode").setValue(arr[0]);
       } else {
-        stakeForm.get("ZIPCode").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode);
+        stakeForm.get("ZIPCode").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode ?? this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["postalCode"]);
       }
 
-      stakeForm.get("Locality").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalArea);
-      stakeForm.get("Address").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.address);
+      stakeForm.get("Locality").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalArea ?? this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["postalArea"]);
+      stakeForm.get("Address").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.address ?? this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["address"]);
     } else {
       stakeForm.get("flagRecolhaEletronica").setValue(true);
       stakeForm.get("documentType").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.type);
@@ -278,70 +278,106 @@ export class StakeholdersComponent implements OnInit {
     var stakeForm = this.editStakes.controls["stake"];
     if (this.returned != 'consult') {
       if (this.editStakes.controls["stake"].valid) {
+        if (this.currentStakeholder?.stakeholderAcquiring?.signType != null && this.currentStakeholder?.stakeholderAcquiring?.signType !== '') {
+          this.currentStakeholder.stakeholderAcquiring.isProxy = (stakeForm.get("proxy").value === 'true');
 
-        this.currentStakeholder.stakeholderAcquiring.isProxy = (stakeForm.get("proxy").value === 'true');
-
-        if (stakeForm.get("contractAssociation").value === 'true') {
-          if (this.currentStakeholder?.stakeholderAcquiring?.signType !== 'DigitalCitizenCard') {
-            this.currentStakeholder.stakeholderAcquiring.signType = 'CitizenCard';
-          }
-          this.contractAssociated = true;
-        } else {
-          this.currentStakeholder.stakeholderAcquiring.signType = 'NotSign';
-        }
-
-        if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress === null || this.currentStakeholder.stakeholderAcquiring.fiscalAddress === undefined)
-          this.currentStakeholder.stakeholderAcquiring.fiscalAddress = {};
-
-        if (stakeForm.get("documentType") == null) {
-          this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address = stakeForm.get("Address").value;
-          this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country = stakeForm.get("Country").value;
-          if (stakeForm.get("ZIPCode").value?.includes(" ")) {
-            var arr = stakeForm.get("ZIPCode").value.split(" ");
-            this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode = arr[0];
+          if (stakeForm.get("contractAssociation").value === 'true') {
+            if (this.currentStakeholder?.stakeholderAcquiring?.signType !== 'DigitalCitizenCard') {
+              this.currentStakeholder.stakeholderAcquiring.signType = 'CitizenCard';
+            }
+            this.contractAssociated = true;
           } else {
-            this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode = stakeForm.get("ZIPCode").value;
+            this.currentStakeholder.stakeholderAcquiring.signType = 'NotSign';
           }
-          this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea = stakeForm.get("Locality").value;
-          if (this.submissionClient.merchantType.toLocaleLowerCase() === 'entrepeneur' || this.submissionClient.merchantType === '02') {
-            this.submissionClient.headquartersAddress.address = stakeForm.get("Address").value;
-            this.submissionClient.headquartersAddress.country = stakeForm.get("Country").value;
-            if (stakeForm.get("ZIPCode").value.includes(" ")) {
+
+          if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress === null || this.currentStakeholder.stakeholderAcquiring.fiscalAddress === undefined)
+            this.currentStakeholder.stakeholderAcquiring.fiscalAddress = {};
+
+          if (stakeForm.get("documentType") == null) {
+            this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address = stakeForm.get("Address").value;
+            this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country = stakeForm.get("Country").value;
+            if (stakeForm.get("ZIPCode").value?.includes(" ")) {
               var arr = stakeForm.get("ZIPCode").value.split(" ");
-              this.submissionClient.headquartersAddress.postalCode = arr[0];
+              this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode = arr[0];
             } else {
-              this.submissionClient.headquartersAddress.postalCode = stakeForm.get("ZIPCode").value;
+              this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode = stakeForm.get("ZIPCode").value;
             }
-            this.submissionClient.headquartersAddress.postalArea = stakeForm.get("Locality").value;
-            this.clientService.EditClient(this.submissionId, this.submissionClient).subscribe(result => { });
+            this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea = stakeForm.get("Locality").value;
+            if (this.submissionClient.merchantType.toLocaleLowerCase() === 'entrepeneur' || this.submissionClient.merchantType === '02') {
+              this.submissionClient.headquartersAddress.address = stakeForm.get("Address").value;
+              this.submissionClient.headquartersAddress.country = stakeForm.get("Country").value;
+              if (stakeForm.get("ZIPCode").value.includes(" ")) {
+                var arr = stakeForm.get("ZIPCode").value.split(" ");
+                this.submissionClient.headquartersAddress.postalCode = arr[0];
+              } else {
+                this.submissionClient.headquartersAddress.postalCode = stakeForm.get("ZIPCode").value;
+              }
+              this.submissionClient.headquartersAddress.postalArea = stakeForm.get("Locality").value;
+              this.clientService.EditClient(this.submissionId, this.submissionClient).subscribe(result => { });
+            }
           }
-        }
 
-        if (stakeForm.get("Country") == null) {
-          if (this.currentStakeholder.stakeholderAcquiring.identificationDocument === null || this.currentStakeholder.stakeholderAcquiring.identificationDocument === undefined)
-            this.currentStakeholder.stakeholderAcquiring.identificationDocument = {};
-          this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = stakeForm.get("documentType").value;
-          this.currentStakeholder.stakeholderAcquiring.identificationDocument.number = stakeForm.get("identificationDocumentId").value;
-          this.currentStakeholder.stakeholderAcquiring.identificationDocument.country = stakeForm.get("identificationDocumentCountry").value;
-          this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate = stakeForm.get("documentCountry").value;
-        }
-        this.logger.info("Stakeholder data to update: " + JSON.stringify(this.currentStakeholder.stakeholderAcquiring));
-        this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
-          this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
-          this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
-          this.visitedStakes = Array.from(new Set(this.visitedStakes));
-          if (this.visitedStakes.length < (this.stakesLength)) {
-            this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
-          } else {
-            if (this.contractAssociated) {
-              this.data.updateData(true, 2);
-              this.logger.info("Redirecting to Store Comp page");
-              this.route.navigate(['store-comp']);
-            }
+          if (stakeForm.get("Country") == null) {
+            if (this.currentStakeholder.stakeholderAcquiring.identificationDocument === null || this.currentStakeholder.stakeholderAcquiring.identificationDocument === undefined)
+              this.currentStakeholder.stakeholderAcquiring.identificationDocument = {};
+            this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = stakeForm.get("documentType").value;
+            this.currentStakeholder.stakeholderAcquiring.identificationDocument.number = stakeForm.get("identificationDocumentId").value;
+            this.currentStakeholder.stakeholderAcquiring.identificationDocument.country = stakeForm.get("identificationDocumentCountry").value;
+            this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate = stakeForm.get("documentCountry").value;
           }
-        }, error => {
-          this.logger.error(error, "", "Error updating stakeholder");
-        });
+          this.logger.info("Stakeholder data to update: " + JSON.stringify(this.currentStakeholder.stakeholderAcquiring));
+          this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
+            this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
+            this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+            this.visitedStakes = Array.from(new Set(this.visitedStakes));
+            if (this.visitedStakes.length < (this.stakesLength)) {
+              this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+            } else {
+              if (this.contractAssociated) {
+                this.data.updateData(true, 2);
+                this.logger.info("Redirecting to Store Comp page");
+                this.route.navigate(['store-comp']);
+              }
+            }
+          }, error => {
+            this.logger.error(error, "", "Error updating stakeholder");
+          });
+        } else {
+          var corporateEntity: PostCorporateEntity = {};
+          if (this.currentStakeholder.stakeholderAcquiring["headquartersAddress"] === null || this.currentStakeholder.stakeholderAcquiring["headquartersAddress"] === undefined)
+            this.currentStakeholder.stakeholderAcquiring["headquartersAddress"] = {};
+          this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["address"] = stakeForm.get("Address").value;
+          this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["country"] = stakeForm.get("Country").value;
+          this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["postalArea"] = stakeForm.get("Locality").value;
+          this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["postalCode"] = stakeForm.get("ZIPCode").value;
+          corporateEntity.headquartersAddress = {};
+          corporateEntity.headquartersAddress.address = stakeForm.get("Address").value;
+          corporateEntity.headquartersAddress.country = stakeForm.get("Country").value;
+          corporateEntity.headquartersAddress.postalArea = stakeForm.get("Locality").value;
+          corporateEntity.headquartersAddress.postalCode = stakeForm.get("ZIPCode").value;
+          corporateEntity.clientId = this.currentStakeholder.stakeholderAcquiring.clientId;
+          corporateEntity.fiscalId = this.currentStakeholder.stakeholderAcquiring.fiscalId;
+          corporateEntity.legalName = this.currentStakeholder.stakeholderAcquiring.fullName;
+          corporateEntity.shortName = this.currentStakeholder.stakeholderAcquiring.shortName;
+          this.logger.info("Stakeholder data to update: " + JSON.stringify(this.currentStakeholder.stakeholderAcquiring));
+          this.stakeholderService.UpdateCorporateEntity(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, corporateEntity).then(result => {
+            this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
+            this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+            this.visitedStakes = Array.from(new Set(this.visitedStakes));
+            if (this.visitedStakes.length < (this.stakesLength)) {
+              this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+            } else {
+              if (this.contractAssociated) {
+                this.data.updateData(true, 2);
+                this.logger.info("Redirecting to Store Comp page");
+                this.route.navigate(['store-comp']);
+              }
+            }
+          }, error => {
+            this.logger.error(error, "", "Error updating stakeholder");
+          });
+        }
+       
       }
     } else {
       this.data.updateData(true, 2);

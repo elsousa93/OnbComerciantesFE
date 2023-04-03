@@ -1,4 +1,4 @@
-import { EventEmitter, Output } from '@angular/core';
+import { EventEmitter, Output, ViewChild } from '@angular/core';
 import { ViewChildren } from '@angular/core';
 import { Component, Input, OnInit } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
@@ -7,6 +7,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { AutoHideSidenavAdjustBarraTopo } from '../animation';
 import { LoggerService } from 'src/app/logger.service';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-nav-menu-interna',
@@ -42,8 +43,10 @@ export class NavMenuInternaComponent implements OnInit {
   wnd: any = window;
   resizeObservable$;
   isMinWidth: boolean;
+  @ViewChild('returnModal') returnModal;
+  returnModalRef: BsModalRef | undefined;
 
-  constructor(private logger: LoggerService, private data: DataService, private route: Router, private processNrService: ProcessNumberService) {
+  constructor(private logger: LoggerService, private data: DataService, private route: Router, private processNrService: ProcessNumberService, private modalService: BsModalService) {
   }
 
   ngOnInit(): void {
@@ -255,8 +258,17 @@ export class NavMenuInternaComponent implements OnInit {
     }
   }
 
+  openReturnPopup() {
+    this.returnModalRef = this.modalService.show(this.returnModal);
+  }
+
+  closeReturnPopup() {
+    this.returnModalRef?.hide();
+  }
+
   goToCliente() {
     if (this.currentPage > 1 || this.map.get(1) != undefined) {
+      this.returnModalRef?.hide();
       this.logger.info("Redirecting to Client page");
       this.route.navigate(['client']);
     }

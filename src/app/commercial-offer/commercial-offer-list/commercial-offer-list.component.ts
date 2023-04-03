@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, of, Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { Istore, ShopDetailsAcquiring, ShopEquipment, ShopProductPack } from '../../store/IStore.interface';
+import { EquipmentSettings, Istore, ShopDetailsAcquiring, ShopEquipment, ShopProductPack } from '../../store/IStore.interface';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -10,7 +10,7 @@ import { MatSort } from '@angular/material/sort';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
 import { UserPermissions } from '../../userPermissions/user-permissions';
-import { MerchantCatalog, Product, ProductPackAttributeProductPackKind, ProductPackCommissionAttribute, ProductPackCommissionFilter, ProductPackEntry, ProductPackFilter, ProductPackPricingEntry, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
+import { MerchantCatalog, Product, ProductPackAttribute, ProductPackAttributeProductPackKind, ProductPackCommissionAttribute, ProductPackCommissionFilter, ProductPackEntry, ProductPackFilter, ProductPackKindEnum, ProductPackPricingEntry, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
 import { StoreService } from '../../store/store.service';
 import { CommercialOfferService } from '../commercial-offer.service';
 import { ClientService } from '../../client/client.service';
@@ -115,6 +115,7 @@ export class CommercialOfferListComponent implements OnInit {
   list: ProductPackRootAttributeProductPackKind[] = [];
   changedPackValue: boolean = true;
   paymentList: ProductPackAttributeProductPackKind;
+  equipmentSettings: ProductPackAttributeProductPackKind[];
 
   emitPreviousStore(idx) {
     this.previousStoreEvent = idx;
@@ -126,7 +127,7 @@ export class CommercialOfferListComponent implements OnInit {
 
   constructor(private translate: TranslateService, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private clientService: ClientService, private tableInfo: TableInfoService, private logger: LoggerService, private snackBar: MatSnackBar) {
     this.ngOnInit();
-    this.loadReferenceData();
+    //this.loadReferenceData();
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.initializeForm();
 
@@ -274,7 +275,7 @@ export class CommercialOfferListComponent implements OnInit {
           group.addControl("formControl" + value.id, new FormControl(value.isSelected));
         }
 
-        if (value.bundles != undefined || value.bundles != null || value.bundles.length > 0) {
+        if (value.bundles != undefined || value.bundles != null || value.bundles?.length > 0) {
           var attributeGroup = new FormGroup({});
           var bundle = value.bundles;
 
@@ -369,6 +370,7 @@ export class CommercialOfferListComponent implements OnInit {
         res.result.otherGroups.forEach(group => {
           context.groupsList.push(group);
         });
+        context.equipmentSettings = res.result.equipmentSettings;
         context.joinSameIdGroups();
         context.addFormGroups();
         context.changedValue();
@@ -390,7 +392,7 @@ export class CommercialOfferListComponent implements OnInit {
                   if (curr.isSelected) {
                     if (curr.id === value.id) {
                       value.isSelected = curr.isSelected;
-                      if (curr.bundles != undefined || curr.bundles != null || curr.bundles.length > 0) {
+                      if (curr.bundles != undefined || curr.bundles != null || curr.bundles?.length > 0) {
                         curr.bundles.forEach((curr, index) => {
                           value.bundles.forEach((value, index) => {
                             if (curr.id === value.id) {
@@ -461,20 +463,20 @@ export class CommercialOfferListComponent implements OnInit {
         } else {
           attr.isSelected = this.form.get("formGroup" + group.id)?.get("formControl" + attr.id)?.value;
         }
-        if (attr.isSelected && (attr.bundles != null || attr.bundles.length > 0)) { // se tiver sido selecionado
-          attr.bundles.forEach((bundle) => {
-            bundle.attributes.forEach((bundleAttr) => {
-              bundleAttr.isSelected = this.form.get("formGroup" + group.id)?.get("formGroupBundle" + bundle.id)?.get("formControlBundle" + bundleAttr.id)?.value;
-            });
-          });
-        }
+        //if (attr.isSelected && (attr.bundles != null || attr.bundles?.length > 0)) { // se tiver sido selecionado
+        //  attr.bundles.forEach((bundle) => {
+        //    bundle.attributes.forEach((bundleAttr) => {
+        //      bundleAttr.isSelected = this.form.get("formGroup" + group.id)?.get("formGroupBundle" + bundle.id)?.get("formControlBundle" + bundleAttr.id)?.value;
+        //    });
+        //  });
+        //}
       });
     });
 
     var finalGroupsList = this.list.filter(group => group.attributes.filter(attr => {
       if (attr.isSelected) {
-        if (attr.bundles != null || attr.bundles.length > 0) {
-          attr.bundles.filter(bundle => bundle.attributes.filter(bundleAttr => bundleAttr.isSelected));
+        if (attr.bundles != null || attr.bundles?.length > 0) {
+          attr.bundles?.filter(bundle => bundle.attributes.filter(bundleAttr => bundleAttr.isSelected));
         }
         return true;
       } else {
@@ -486,12 +488,12 @@ export class CommercialOfferListComponent implements OnInit {
       var groupList = group.attributes.filter(attr => attr.isSelected == true || (attr["aggregatorId"] != null && attr["aggregatorId"] != undefined && attr["aggregatorId"] != "" && attr.description == context.form.get("formGroup" + group.id)?.get("formControl" + attr["aggregatorId"])?.value));
       context.finalList.push(group);
       context.finalList.find(l => l.id == group.id).attributes = groupList;
-      group.attributes.forEach(attr => {
-        attr.bundles.forEach(bundle => {
-          var bundleList = bundle.attributes.filter(bundleAttr => bundleAttr.isSelected == true);
-          context.finalList.find(l => l.id == group.id).attributes.find(a => a.id == attr.id).bundles.find(b => b.id == bundle.id).attributes = bundleList;
-        });
-      });
+      //group.attributes.forEach(attr => {
+      //  attr.bundles?.forEach(bundle => {
+      //    var bundleList = bundle.attributes.filter(bundleAttr => bundleAttr.isSelected == true);
+      //    context.finalList.find(l => l.id == group.id).attributes.find(a => a.id == attr.id).bundles.find(b => b.id == bundle.id).attributes = bundleList;
+      //  });
+      //});
     });
 
     this.list = this.finalList.filter(group => group.attributes.length > 0);
@@ -509,8 +511,8 @@ export class CommercialOfferListComponent implements OnInit {
             var removedGroup = group.attributes.splice(ind, 1);
             return;
           } else {
-            if (attr.bundles != null || attr.bundles != undefined || attr.bundles.length > 0) {
-              attr.bundles.forEach((bundle, index) => {
+            if (attr.bundles != null || attr.bundles != undefined || attr.bundles?.length > 0) {
+              attr.bundles?.forEach((bundle, index) => {
                 bundle.attributes.forEach((bundleAttr, i) => {
                   if (bundleAttr.isSelected === false) {
                     var removedBundle = bundle.attributes.splice(i, 1);
@@ -550,6 +552,13 @@ export class CommercialOfferListComponent implements OnInit {
         }
       });
     });
+    this.groupsList.forEach((group, index) => {
+      if (group.id == context.paymentSchemes.id) {
+        context.paymentSchemes.attributes.push(...group.attributes);
+        context.groupsList.splice(index, 1);
+      }
+    });
+
   }
 
   //Utilizado para mostrar os valores na tabela do PREÇARIO LOJA
@@ -828,11 +837,13 @@ export class CommercialOfferListComponent implements OnInit {
     }));
   }
 
-  getTerminalDesc(code: number) {
-    return this.allTerminals.find(term => term.code == code).description;
+  getTerminalDesc(equipSettings: EquipmentSettings[]) {
+    var found = equipSettings?.find(equip => equip.id == "AK_00017");
+    return found?.attributes[0]?.description;
   }
 
-  getCommunicationDesc(code: number) {
-    return this.allCommunications.find(comm => comm.code == code).description;
+  getCommunicationDesc(equipSettings: EquipmentSettings[]) {
+    var found = equipSettings?.find(equip => equip.id == "AK_00011");
+    return found?.attributes[0]?.description;
   }
 }

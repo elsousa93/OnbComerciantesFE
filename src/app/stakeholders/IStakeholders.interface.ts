@@ -94,3 +94,30 @@ export interface Email {
   value: string
 }
 
+interface DocumentStake {
+  id?: string
+  documentType?: string
+  validUntil?: string
+  data?: string
+  purposes?: string[]
+}
+
+export interface CorporateEntity {
+  clientId?: string
+  potentialClientIds?: string[]
+  fiscalId?: string
+  shortName?: string
+  legalName?: string
+  headquartersAddress?: FiscalAddress
+  id?: string
+  documents?: DocumentStake
+}
+
+export interface PostCorporateEntity {
+  clientId?: string
+  potentialClientIds?: string[]
+  fiscalId?: string
+  shortName?: string
+  legalName?: string
+  headquartersAddress?: FiscalAddress
+}

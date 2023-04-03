@@ -123,7 +123,7 @@
                 <div class="col mt-4" *ngIf="finalList?.length > 0">
                   <ng-multiselect-dropdown formControlName="countries" name="countries" style="font-size: 20px;" placeholder="Selecione" [settings]="dropDownSettings"
                                            [data]="lst"
-                                           
+                                           (onDeSelectAll)="removeAllCountries($event)" 
                                            (onSelect)="addCountry($event)"
                                            (onDeSelect)="removeCountry($event)">
                   </ng-multiselect-dropdown>

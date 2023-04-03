@@ -103,97 +103,113 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   }
 
   setFormData() {
-    this.pepComponent.resetForm();
-    this.infoStakeComponent.resetForm();
+    if (this.currentStakeholder?.stakeholderAcquiring?.signType === '' || this.currentStakeholder?.stakeholderAcquiring?.signType == null) { // se for Empresa, deixar o botão disponível
+      this.infoStakeholders.setErrors(null);
+    } else {
+      this.pepComponent.resetForm();
+      this.infoStakeComponent.resetForm();
 
-    var contacts = this.infoStakeholders.controls["contacts"];
-    var stake = this.currentStakeholder.stakeholderAcquiring;
+      var contacts = this.infoStakeholders.controls["contacts"];
+      var stake = this.currentStakeholder.stakeholderAcquiring;
 
-    if (stake.phone1 != undefined || stake.phone1 != null) {
-      contacts.get("phone").get("countryCode").setValue(stake.phone1?.countryCode);
-      contacts.get("phone").get("phoneNumber").setValue(stake.phone1?.phoneNumber);
-    }
+      if (stake.phone1 != undefined || stake.phone1 != null) {
+        contacts.get("phone").get("countryCode").setValue(stake.phone1?.countryCode);
+        contacts.get("phone").get("phoneNumber").setValue(stake.phone1?.phoneNumber);
+      }
 
-    if (stake.email != '' && stake.email != null) {
-      contacts.get("email").setValue(stake.email);
-    }
+      if (stake.email != '' && stake.email != null) {
+        contacts.get("email").setValue(stake.email);
+      }
 
-    var pep = this.infoStakeholders.controls["pep"];
-    if (stake.pep != undefined || stake.pep != null) {
-      if (stake.pep.kind.toLowerCase() === KindPep.PEP && stake.pep.pepSince != '0001-01-01') {
-        this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pep12months' } });
-        pep.get("pepType").setValue(stake.pep?.pepType);
-        pep.get("pepCountry").setValue(stake.pep?.pepCountry);
-        pep.get("pepSinceWhen").setValue(stake.pep?.pepSince);
-      } else if (stake.pep.kind.toLowerCase() === KindPep.FAMILY && stake.pep.degreeOfRelatedness != null && stake.pep.degreeOfRelatedness != '') {
-        this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
-        this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepFamiliarOf' } });
-        pep.get("pepFamilyRelation").setValue(stake.pep?.degreeOfRelatedness);
-      } else if (stake.pep.kind.toLowerCase() === KindPep.BUSINESS) {
-        this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
-        this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
-        this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepRelations' } });
-        pep.get("pepTypeOfRelation").setValue(stake.pep?.businessPartnership);
-      } else if (stake.pep.kind.toLowerCase() === KindPep.PEP && stake.pep.pepSince == '0001-01-01') {
+      var pep = this.infoStakeholders.controls["pep"];
+      if (stake.pep != undefined || stake.pep != null) {
+        if (stake.pep.kind.toLowerCase() === KindPep.PEP && stake.pep.pepSince != '0001-01-01') {
+          this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pep12months' } });
+          pep.get("pepType").setValue(stake.pep?.pepType);
+          pep.get("pepCountry").setValue(stake.pep?.pepCountry);
+          pep.get("pepSinceWhen").setValue(stake.pep?.pepSince);
+        } else if (stake.pep.kind.toLowerCase() === KindPep.FAMILY && stake.pep.degreeOfRelatedness != null && stake.pep.degreeOfRelatedness != '') {
+          this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
+          this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepFamiliarOf' } });
+          pep.get("pepFamilyRelation").setValue(stake.pep?.degreeOfRelatedness);
+        } else if (stake.pep.kind.toLowerCase() === KindPep.BUSINESS) {
+          this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
+          this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
+          this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepRelations' } });
+          pep.get("pepTypeOfRelation").setValue(stake.pep?.businessPartnership);
+        } else if (stake.pep.kind.toLowerCase() === KindPep.PEP && stake.pep.pepSince == '0001-01-01') {
+          this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
+          this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
+          this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepRelations' } });
+          this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepPoliticalPublicJobs' } });
+          pep.get("pepType").setValue(stake.pep?.pepType);
+        }
+      } else {
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepRelations' } });
-        this.pepComponent.onChangeValues({ target: { value: 'true', name: 'pepPoliticalPublicJobs' } });
-        pep.get("pepType").setValue(stake.pep?.pepType);
+        this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepPoliticalPublicJobs' } });
       }
-    } else {
-      this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pep12months' } });
-      this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepFamiliarOf' } });
-      this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepRelations' } });
-      this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepPoliticalPublicJobs' } });
-    }
+    }    
   }
 
   submit() {
     if (this.returned != 'consult') {
       if (this.infoStakeholders.valid) {
-        var contacts = this.infoStakeholders.get("contacts");
+        if (this.currentStakeholder.stakeholderAcquiring?.signType != null) {
+          var contacts = this.infoStakeholders.get("contacts");
 
-        if (contacts.get("phone").value) {
-          if (this.currentStakeholder.stakeholderAcquiring.phone1 === null) {
-            this.currentStakeholder.stakeholderAcquiring.phone1 = {};
+          if (contacts.get("phone").value) {
+            if (this.currentStakeholder.stakeholderAcquiring.phone1 === null) {
+              this.currentStakeholder.stakeholderAcquiring.phone1 = {};
+            }
+            this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = contacts.get("phone").get("countryCode").value;
+            this.currentStakeholder.stakeholderAcquiring.phone1.phoneNumber = contacts.get("phone").get("phoneNumber").value;
           }
-          this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = contacts.get("phone").get("countryCode").value;
-          this.currentStakeholder.stakeholderAcquiring.phone1.phoneNumber = contacts.get("phone").get("phoneNumber").value;
-        }
 
-        if (contacts.get("email").value) {
-          this.currentStakeholder.stakeholderAcquiring.email = contacts.get("email").value;
-        }
+          if (contacts.get("email").value) {
+            this.currentStakeholder.stakeholderAcquiring.email = contacts.get("email").value;
+          }
 
-        var pep = this.infoStakeholders.get("pep");
+          var pep = this.infoStakeholders.get("pep");
 
-        if (pep.get("pep12months").value == "true") {
-          this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
-          this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;
-          this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
-          this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = pep.get("pepCountry").value;
-          this.currentStakeholder.stakeholderAcquiring.pep.pepSince = pep.get("pepSinceWhen").value;
-        } else if (pep.get("pepFamiliarOf").value == "true") {
-          this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
-          this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.FAMILY;
-          this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RFAM";
-          this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = pep.get("pepFamilyRelation").value;
-        } else if (pep.get("pepRelations").value == "true") {
-          this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
-          this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.BUSINESS;
-          this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RSOC";
-          this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = pep.get("pepTypeOfRelation").value;
-        } else if (pep.get("pepPoliticalPublicJobs").value == "true") {
-          this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
-          this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;
-          this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
-        } else if (pep.get("pepPoliticalPublicJobs").value == 'false') {
-          this.currentStakeholder.stakeholderAcquiring.pep = null;
-        }
-        this.logger.info("Stakeholder to update: " + JSON.stringify(this.currentStakeholder.stakeholderAcquiring));
-        this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
-          this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
+          if (pep.get("pep12months").value == "true") {
+            this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
+            this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;
+            this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
+            this.currentStakeholder.stakeholderAcquiring.pep.pepCountry = pep.get("pepCountry").value;
+            this.currentStakeholder.stakeholderAcquiring.pep.pepSince = pep.get("pepSinceWhen").value;
+          } else if (pep.get("pepFamiliarOf").value == "true") {
+            this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
+            this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.FAMILY;
+            this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RFAM";
+            this.currentStakeholder.stakeholderAcquiring.pep.degreeOfRelatedness = pep.get("pepFamilyRelation").value;
+          } else if (pep.get("pepRelations").value == "true") {
+            this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
+            this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.BUSINESS;
+            this.currentStakeholder.stakeholderAcquiring.pep.pepType = "RSOC";
+            this.currentStakeholder.stakeholderAcquiring.pep.businessPartnership = pep.get("pepTypeOfRelation").value;
+          } else if (pep.get("pepPoliticalPublicJobs").value == "true") {
+            this.currentStakeholder.stakeholderAcquiring.pep = new IPep();
+            this.currentStakeholder.stakeholderAcquiring.pep.kind = KindPep.PEP;
+            this.currentStakeholder.stakeholderAcquiring.pep.pepType = pep.get("pepType").value;
+          } else if (pep.get("pepPoliticalPublicJobs").value == 'false') {
+            this.currentStakeholder.stakeholderAcquiring.pep = null;
+          }
+          this.logger.info("Stakeholder to update: " + JSON.stringify(this.currentStakeholder.stakeholderAcquiring));
+          this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
+            this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
+            this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+            this.visitedStakes = Array.from(new Set(this.visitedStakes));
+            if (this.visitedStakes.length < (this.stakesLength)) {
+              this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+            } else {
+              this.data.updateData(false, 6, 3);
+              this.logger.info("Redirecting to Info Declarativa Lojas page");
+              this.route.navigate(['info-declarativa-lojas']);
+            }
+          });
+        } else {
           this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
           this.visitedStakes = Array.from(new Set(this.visitedStakes));
           if (this.visitedStakes.length < (this.stakesLength)) {
@@ -203,8 +219,8 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
             this.logger.info("Redirecting to Info Declarativa Lojas page");
             this.route.navigate(['info-declarativa-lojas']);
           }
-        });
-      }
+        }
+      } 
     } else {
       this.data.updateData(false, 6, 3);
       this.logger.info("Redirecting to Info Declarativa Lojas page");

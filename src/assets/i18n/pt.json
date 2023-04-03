@@ -25,6 +25,9 @@
     "compliance": "Dúvidas Compliance",
     "DOValidation": "Valida DO",
     "MCCTreatment": "Tratamento MCC",
+    "assignUserNotExists": "Deseja atribuir o processo ao utilizador",
+    "assignUserExists": "O processo já se encontra atribuído ao utilizador",
+    "assignUserExistsMore": "Ao continuar irá retirar esta atribuição e atribuí-la ao utilizador",
     "queues": {
       "title": "Filas de trabalho",
       "eligibility": "Fila de Pareceres de Elegibilidade",
@@ -128,7 +131,8 @@
     "incorrectNIPC": "O NIPC inserido está incorreto",
     "incorrectNIPCSize": "O NIPC tem de ser constituído por 9 dígitos",
     "sameNIPC": "O NIPC não pode coincidir com o da empresa",
-    "sameNIFMatch":  "O NIF não pode coincidir com o do particular"
+    "sameNIFMatch": "O NIF não pode coincidir com o do particular",
+    "returnSearchMsg": "Tem a certeza que pretende alterar os dados do cliente empresa?"
   },
   "citizenCard": {
     "collectData": "Recolha eletrónica dos dados do Cartão de Cidadão?",
@@ -180,7 +184,8 @@
     "emptyList": "Não existem intervenientes",
     "addSuccess": "Interveniente adicionado com sucesso",
     "sameNIF": "Não é possivel adicionar um interveniente já existente",
-    "particular": "Particular"
+    "particular": "Particular",
+    "corporate":  "Empresa"
   },
   "stores": {
     "title": "Lojas",
@@ -525,7 +530,9 @@
     "restrictions": "Restrições",
     "itemsPerPage": "Itens por Página: ",
     "performSearch": "Efetuar pesquisa",
-    "final": "Processo submetido com sucesso"
+    "final": "Processo submetido com sucesso",
+    "assignProcess": "Atribuir Processo",
+    "assign": "Atribuir"
   },
   "generalButtons": {
     "continue": "Continuar",

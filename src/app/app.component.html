@@ -1,4 +1,5 @@
-<app-auth *ngIf="!hasAuthenticated"></app-auth>
+<app-auth *ngIf="!hasAuthenticated && !expired"></app-auth>
+<app-expired *ngIf="expired"></app-expired>
 <app-nav-menu-presencial *ngIf="hasAuthenticated" (toggleNavEvent)="toggleSideNav($event)"
   (autoHide)="toggleAutoHide($event)"></app-nav-menu-presencial>
 <main class="mt-xxl-n5" *ngIf="hasAuthenticated">

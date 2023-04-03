@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IStakeholders } from './IStakeholders.interface';
+import { IStakeholders, PostCorporateEntity } from './IStakeholders.interface';
 import { LoggerService } from 'src/app/logger.service';
 import { HttpMethod } from '../enums/enum-data';
 import { RequestResponse, TreatedResponse } from '../table-info/ITable-info.interface';
@@ -105,6 +105,30 @@ export class StakeholderService {
     return this.http.post(this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId + '/document', document);
   }
 
+  GetCorporateEntityList(submissionId: string) {
+    var URL = this.baseUrl + "submission/" + submissionId + "/corporate-entity";
+    return this.callAPIAcquiring(HttpMethod.GET, URL);
+  }
+
+  GetCorporateEntityById(submissionId: string, corporateId: string) {
+    var URL = this.baseUrl + "submission/" + submissionId + "/corporate-entity/" + corporateId;
+    return this.callAPIAcquiring(HttpMethod.GET, URL);
+  }
+
+  AddNewCorporateEntity(submissionId: string, corporateEntity: PostCorporateEntity) {
+    var URL = this.baseUrl + "submission/" + submissionId + "/corporate-entity";
+    return this.callAPIAcquiring(HttpMethod.POST, URL, corporateEntity);
+  }
+
+  UpdateCorporateEntity(submissionId: string, corporateId: string, corporateEntity: PostCorporateEntity) {
+    var URL = this.baseUrl + "submission/" + submissionId + "/corporate-entity/" + corporateId;
+    return this.callAPIAcquiring(HttpMethod.PUT, URL, corporateEntity);
+  }
+
+  DeleteCorporateEntity(submissionId: string, corporateId: string) {
+    var URL = this.baseUrl + "submission/" + submissionId + "/corporate-entity/" + corporateId;
+    return this.callAPIAcquiring(HttpMethod.DELETE, URL);
+  }
 
   ///////////////////
   //Stakeholder OUTBOUND//

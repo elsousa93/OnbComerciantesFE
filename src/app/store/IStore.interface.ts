@@ -68,7 +68,9 @@ export class ShopDetailsAcquiring {
   bank?: ShopBank
   website?: string
   productCode?: string
+  productCodeDescription?: string
   subProductCode?: string
+  subProductCodeDescription?: string
   equipments: ShopEquipment[]
   pack?: ShopProductPackViewModel
   product?: Product
@@ -86,9 +88,10 @@ export class ShopDetailsAcquiring {
 
 export interface ShopProductPackViewModel {
   packId?: string
-  //packDetails?: ProductPackRootAttributeProductPackKind[]
-  paymentSchemes?: ProductPackAttributeProductPackKind //antes estava como array
+  packDescription?: string
+  paymentSchemes?: ProductPackAttributeProductPackKind
   otherPackDetails?: ProductPackRootAttributeProductPackKind[]
+  equipmentSettings?: ProductPackAttributeProductPackKind[]
   commission?: ShopProductPackCommission
   processorId?: string
 }
@@ -158,14 +161,35 @@ interface ShopDocuments {
 }
 
 export class ShopEquipment {
+  //estes campos vão ter removidos
   id?: string
-  shopEquipmentId?: string
   communicationOwnership?: string //CommunicationOwnershipTypeEnum
   equipmentOwnership?: string //EquipmentOwnershipTypeEnum
   communicationType?: string
   equipmentType?: string
+  //
+
+  shopEquipmentId?: string
   quantity?: number
   pricing?: ShopProductPackPricingViewModel
+  equipmentSettings?: EquipmentSettings[]
+}
+
+export interface EquipmentSettings {
+  id?: string
+  description?: string
+  attributes?: EquipmentSettingsAttributes[]
+}
+
+interface EquipmentSettingsAttributes {
+  id?: string
+  description?: string
+  value?: string
+  isReadOnly?: boolean
+  isVisible?: boolean
+  isSelected?: boolean
+  aggregatorId?: string
+  order?: number
 }
 
 interface ShopProductPackPricingViewModel {
@@ -175,6 +199,9 @@ interface ShopProductPackPricingViewModel {
 
 export interface IndustryClassifications {
   paymentSchemesAttributeId?: string,
+  paymentSchemeAttributeDescription?: string,
+  subPaymentSchemeAttributeId?: string,
+  subPaymentSchemeAttributeDescription?: string,
   industryClassificationCode: string,
   industryClassificationPotentialCodes?: string[]
 }

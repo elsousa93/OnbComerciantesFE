@@ -1,47 +1,11 @@
 <form [formGroup]="formConfig" name="formConfig" id="formConfig">
   <div class="row">
     <div class="mt-1 mb-0 pt-0 pb-0 ps-0 pe-0 text-start col-5">
-      <p class="titulo-form-simples ps-4">
-        {{'commercialOffer.terminalIdentification'|translate|uppercase}}
-      </p>
-      <input id="text1" name="name" formControlName="name" type="text" class="form-control campo_form ms-4"
-             #focusContent>
-      <p class="titulo-form-simples ps-4">{{'commercialOffer.property'|translate|uppercase}}:</p>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light ms-4">
-        <span class="navbar-text">
-          <div class="form-check">
-            <input class="form-check-input" type="radio" value="client" id="terminalProperty"
-                   formControlName="terminalProperty" name="terminalProperty">
-            <label class="form-check-label radio pe-5"
-                   for="terminalProperty">{{'commercialOffer.client'|translate|uppercase}}</label>
-          </div>
-        </span>
-        <span class="navbar-text">
-          <div class="form-check">
-            <input class="form-check-input" type="radio" value="self" id="terminalProperty"
-                   formControlName="terminalProperty" name="terminalProperty">
-            <label class="form-check-label radio" for="terminalProperty">REDUNIQ</label>
-          </div>
-        </span>
-      </nav>
-      <div class="alert alert-danger"
-           *ngIf="this.formConfig.get('terminalProperty').touched && !this.formConfig.get('terminalProperty').valid">
-        <div *ngIf="this.formConfig.get('terminalProperty').errors && this.formConfig.get('terminalProperty').errors?.['required']">
-          {{'generalKeywords.mandatoryParameter'|translate}}
-        </div>
-      </div>
-      <p class="titulo-form-simples ps-4">{{'commercialOffer.terminalType'|translate|uppercase}}*</p>
-      <select name="terminalType" formControlName="terminalType" id="select1" class="form-select campo_form ms-4">
-        <option *ngFor="let terminal of allTerminals" value={{terminal.code}}>
-          {{terminal.description}}
-        </option>
-      </select>
-      <div class="alert alert-danger ms-4"
-           *ngIf="this.formConfig.get('terminalType').touched && !this.formConfig.get('terminalType').valid">
-        <div *ngIf="this.formConfig.get('terminalType').errors && this.formConfig.get('terminalType').errors?.['required']">
-          {{'generalKeywords.mandatoryParameter'|translate}}
-        </div>
-      </div>
+      <!--<p class="titulo-form-simples ps-4">
+    {{'commercialOffer.terminalIdentification'|translate|uppercase}}
+  </p>
+  <input id="text1" name="name" formControlName="name" type="text" class="form-control campo_form ms-4"
+         #focusContent>-->
       <p class="titulo-form-simples ps-4">{{'commercialOffer.totalTerminal'|translate|uppercase}}</p>
       <input id="text3" formControlName="terminalAmount" name="terminalAmount" type="text"
              (keypress)="numericOnly($event)" class="form-control campo_form ms-4">
@@ -51,44 +15,128 @@
           {{'generalKeywords.mandatoryParameter'|translate}}
         </div>
       </div>
+      <ng-container *ngFor="let equipment of equipmentSettings; let idx = index">
+        <ng-container *ngIf="idx < 3">
+          <ng-container formGroupName="{{'formGroup' + equipment.id}}" *ngIf="!existsNotVisibleAttr(equipment)">
+            <p class="titulo-form-simples ps-4">{{equipment.description}}:</p>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light ms-4">
+              <span class="navbar-text" *ngFor="let attribute of equipment.attributes">
+                <div class="form-check" *ngIf="attribute.isVisible && attribute.aggregatorId != null && attribute.aggregatorId != ''">
+                  <input class="form-check-input" type="radio" value="{{attribute.value}}" id="{{'formControl' + attribute.aggregatorId}}"
+                         formControlName="{{'formControl' + attribute.aggregatorId}}" name="{{'formControl' + attribute.aggregatorId}}" [attr.disabled]="(attribute.isReadOnly == true || attribute['condition'] == true) ? true : null" (change)="changedValue(equipment.id, attribute.id)">
+                  <label class="form-check-label radio pe-5"
+                         for="terminalProperty">{{attribute.description}}</label>
+                </div>
+                <div class="form-check" *ngIf="attribute.isVisible && attribute.aggregatorId == null || attribute.aggregatorId == ''">
+                  <input class="form-check-input" type="checkbox" id="{{'formControl' + attribute.id}}"
+                         formControlName="{{'formControl' + attribute.id}}" name="{{'formControl' + attribute.id}}" [attr.disabled]="(attribute.isReadOnly == true || attribute['condition'] == true)  ? true : null" (change)="changedValue(equipment.id, attribute.id)">
+                  <label class="form-check-label radio pe-5"
+                         for="terminalProperty">{{attribute.description}}</label>
+                </div>
+              </span>
+            </nav>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+      <!--<p class="titulo-form-simples ps-4">{{'commercialOffer.property'|translate|uppercase}}:</p>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light ms-4">
+    <span class="navbar-text">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" value="client" id="terminalProperty"
+               formControlName="terminalProperty" name="terminalProperty">
+        <label class="form-check-label radio pe-5"
+               for="terminalProperty">{{'commercialOffer.client'|translate|uppercase}}</label>
+      </div>
+    </span>
+    <span class="navbar-text">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" value="self" id="terminalProperty"
+               formControlName="terminalProperty" name="terminalProperty">
+        <label class="form-check-label radio" for="terminalProperty">REDUNIQ</label>
+      </div>
+    </span>
+  </nav>
+  <div class="alert alert-danger"
+       *ngIf="this.formConfig.get('terminalProperty').touched && !this.formConfig.get('terminalProperty').valid">
+    <div *ngIf="this.formConfig.get('terminalProperty').errors && this.formConfig.get('terminalProperty').errors?.['required']">
+      {{'generalKeywords.mandatoryParameter'|translate}}
     </div>
+  </div>
+  <p class="titulo-form-simples ps-4">{{'commercialOffer.terminalType'|translate|uppercase}}*</p>
+  <select name="terminalType" formControlName="terminalType" id="select1" class="form-select campo_form ms-4">
+    <option *ngFor="let terminal of allTerminals" value={{terminal.code}}>
+      {{terminal.description}}
+    </option>
+  </select>
+  <div class="alert alert-danger ms-4"
+       *ngIf="this.formConfig.get('terminalType').touched && !this.formConfig.get('terminalType').valid">
+    <div *ngIf="this.formConfig.get('terminalType').errors && this.formConfig.get('terminalType').errors?.['required']">
+      {{'generalKeywords.mandatoryParameter'|translate}}
+    </div>
+  </div>
+  <p class="titulo-form-simples">{{'commercialOffer.communications'|translate|uppercase}}:</p>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light ms-0">
+    <span class="navbar-text">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" value="client" id="communicationOwnership"
+               name="communicationOwnership" formControlName="communicationOwnership">
+        <label class="form-check-label radio pe-5"
+               for="communicationOwnership">{{'commercialOffer.client'|translate|uppercase}}</label>
+      </div>
+    </span>
+    <span class="navbar-text">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" value="self" id="communicationOwnership"
+               name="communicationOwnership" formControlName="communicationOwnership">
+        <label class="form-check-label radio" for="communicationOwnership">REDUNIQ</label>
+      </div>
+    </span>
+  </nav>
+  <div class="alert alert-danger"
+       *ngIf="this.formConfig.get('communicationOwnership').touched && !this.formConfig.get('communicationOwnership').valid">
+    <div *ngIf="this.formConfig.get('communicationOwnership').errors && this.formConfig.get('communicationOwnership').errors?.['required']">
+      {{'generalKeywords.mandatoryParameter'|translate}}
+    </div>
+  </div>-->
+    </div>
+
     <div class="mt-1 mb-0 pt-0 pb-0 ps-0 pe-0 text-start col-5 offset-1">
-      <p class="titulo-form-simples">{{'commercialOffer.communications'|translate|uppercase}}:</p>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light ms-0">
-        <span class="navbar-text">
-          <div class="form-check">
-            <input class="form-check-input" type="radio" value="client" id="communicationOwnership"
-                   name="communicationOwnership" formControlName="communicationOwnership">
-            <label class="form-check-label radio pe-5"
-                   for="communicationOwnership">{{'commercialOffer.client'|translate|uppercase}}</label>
-          </div>
-        </span>
-        <span class="navbar-text">
-          <div class="form-check">
-            <input class="form-check-input" type="radio" value="self" id="communicationOwnership"
-                   name="communicationOwnership" formControlName="communicationOwnership">
-            <label class="form-check-label radio" for="communicationOwnership">REDUNIQ</label>
-          </div>
-        </span>
-      </nav>
-      <div class="alert alert-danger"
-           *ngIf="this.formConfig.get('communicationOwnership').touched && !this.formConfig.get('communicationOwnership').valid">
-        <div *ngIf="this.formConfig.get('communicationOwnership').errors && this.formConfig.get('communicationOwnership').errors?.['required']">
-          {{'generalKeywords.mandatoryParameter'|translate}}
-        </div>
-      </div>
-      <p class="titulo-form-simples">TIPO&nbsp; {{'commercialOffer.communication'|translate|uppercase}}*</p>
-      <select formControlName="communicationType" name="communicationType" id="select2" class="form-select campo_form">
-        <option *ngFor="let communication of allCommunications" value={{communication.code}}>
-          {{communication.description}}
-        </option>
-      </select>
-      <div class="alert alert-danger"
-           *ngIf="this.formConfig.get('communicationType').touched && !this.formConfig.get('communicationType').valid">
-        <div *ngIf="this.formConfig.get('communicationType').errors && this.formConfig.get('communicationType').errors?.['required']">
-          {{'generalKeywords.mandatoryParameter'|translate}}
-        </div>
-      </div>
+
+      <ng-container *ngFor="let equipment of equipmentSettings; let idx = index">
+        <ng-container *ngIf="idx >= 3">
+          <ng-container formGroupName="{{'formGroup' + equipment.id}}" *ngIf="!existsNotVisibleAttr(equipment)">
+            <p class="titulo-form-simples ps-4">{{equipment.description}}:</p>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light ms-4">
+              <span class="navbar-text" *ngFor="let attribute of equipment.attributes">
+                <div class="form-check" *ngIf="attribute.isVisible && attribute.aggregatorId != null && attribute.aggregatorId != ''">
+                  <input class="form-check-input" type="radio" value="{{attribute.value}}" id="{{'formControl' + attribute.aggregatorId}}"
+                         formControlName="{{'formControl' + attribute.aggregatorId}}" name="{{'formControl' + attribute.aggregatorId}}" [attr.disabled]="(attribute.isReadOnly == true || attribute['condition'] == true)  ? true : null" (change)="changedValue(equipment.id, attribute.id)">
+                  <label class="form-check-label radio pe-5"
+                         for="terminalProperty">{{attribute.description}}</label>
+                </div>
+                <div class="form-check" *ngIf="attribute.isVisible && attribute.aggregatorId == null || attribute.aggregatorId == ''">
+                  <input class="form-check-input" type="checkbox" id="{{'formControl' + attribute.id}}"
+                         formControlName="{{'formControl' + attribute.id}}" name="{{'formControl' + attribute.id}}" [attr.disabled]="(attribute.isReadOnly == true || attribute['condition'] == true) ? true : null" (change)="changedValue(equipment.id, attribute.id)">
+                  <label class="form-check-label radio pe-5"
+                         for="terminalProperty">{{attribute.description}}</label>
+                </div>
+              </span>
+            </nav>
+          </ng-container>
+        </ng-container>
+      </ng-container>
+      <!--<p class="titulo-form-simples">TIPO&nbsp; {{'commercialOffer.communication'|translate|uppercase}}*</p>
+  <select formControlName="communicationType" name="communicationType" id="select2" class="form-select campo_form">
+    <option *ngFor="let communication of allCommunications" value={{communication.code}}>
+      {{communication.description}}
+    </option>
+  </select>
+  <div class="alert alert-danger"
+       *ngIf="this.formConfig.get('communicationType').touched && !this.formConfig.get('communicationType').valid">
+    <div *ngIf="this.formConfig.get('communicationType').errors && this.formConfig.get('communicationType').errors?.['required']">
+      {{'generalKeywords.mandatoryParameter'|translate}}
+    </div>
+  </div>-->
     </div>
   </div>
 </form>
@@ -181,6 +229,10 @@
     </table>
   </div>
   <div *ngIf="pricingAttributeList.length > 0" class="col mt-0 mb-0 pt-0 pb-4 ps-1">
+    <button id="btn5a1" (click)="resetValues()" [disabled]="!pricingForm.valid"
+      class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-2 ms-1 me-1 ps-4 pe-4"
+      wappler-command="editContent">{{'commercialOffer.reset'|translate|uppercase}}&nbsp;
+    </button>
     <button id="btn5a3" (click)="cancelConfig()" class="btn botao_azul btn-lg mt-2 ms-1 me-1 ps-4 pe-4"
       wappler-command="editContent">
       {{'commercialOffer.cancelConfiguration'|translate|uppercase}}&nbsp;<img src="assets/images/close.svg"

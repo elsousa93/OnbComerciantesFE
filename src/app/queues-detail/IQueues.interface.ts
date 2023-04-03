@@ -50,7 +50,7 @@ export interface ShopClassifications {
 
 export interface PaymentSchemaClassification {
   paymentSchemaId?: string
-  //subPaymentSchemaId?: string
+  subPaymentSchemaId?: string
   classification?: string
 }
 
@@ -132,6 +132,24 @@ export interface ReassingWorkQueue {
   jobId?: number,
   forceReassign?: boolean,
   username?: string
+}
+
+export interface WorkQueue {
+  id?: number
+  workQueue?: WorkQueueView
+  processId?: number
+  objectId?: number
+  lockedBy?: string
+  status?: string
+  parameters?: string
+}
+
+interface WorkQueueView {
+  code?: string
+  description?: string
+  type?: string
+  workQueueMode?: string
+  isExternal?: boolean
 }
 
 export interface ProcessStateNotification {

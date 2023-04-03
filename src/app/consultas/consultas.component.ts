@@ -158,6 +158,7 @@ export class ConsultasComponent implements OnInit {
         duration: 4000,
         panelClass: ['snack-bar']
       });
+      return;
     }
     this.processService.advancedSearch(this.url, 0, 1).subscribe(r => {
       this.logger.info("Search one process result: " + JSON.stringify(r));

@@ -27,6 +27,7 @@ import { AuthService } from '../../services/auth.service';
 import { ISubmissionDocument } from '../../submission/document/ISubmission-document';
 import { SubmissionPostDocumentTemplate } from '../../submission/ISubmission.interface';
 import { TranslateService } from '@ngx-translate/core';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 @Component({
   selector: 'app-client',
   templateUrl: './clientbyid.component.html',
@@ -42,7 +43,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   @ViewChild(ClientCharacterizationComponent) clientCharacterizationComponent: ClientCharacterizationComponent;
   @ViewChild(CountrysComponent) countriesComponent: CountrysComponent;
   @ViewChild(RepresentationPowerComponent) representationPowerComponent: RepresentationPowerComponent;
-
+  @ViewChild('returnModal') returnModal;
+  returnModalRef: BsModalRef | undefined;
   /*Variable declaration*/
   form: FormGroup;
   myControl = new FormControl('');
@@ -140,7 +142,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   constructor(private logger: LoggerService, private datepipe: DatePipe, private formBuilder: FormBuilder,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService,
     private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
-    private stakeholderService: StakeholderService, private storeService: StoreService, private authService: AuthService, private translate: TranslateService) {
+    private stakeholderService: StakeholderService, private storeService: StoreService, private authService: AuthService, private translate: TranslateService, private modalService: BsModalService) {
     //Gets Tipologia from the Client component 
     if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
@@ -632,7 +634,16 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     }
   }
 
+  openReturnPopup() {
+    this.returnModalRef = this.modalService.show(this.returnModal);
+  }
+
+  closeReturnPopup() {
+    this.returnModalRef?.hide();
+  }
+
   redirectBeginningClient() {
+    this.returnModalRef?.hide();
     if (!this.historyStream) {
       let navigationExtras: NavigationExtras = {
         state: {
@@ -816,6 +827,12 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                   context.logger.info("Created stakeholder result: " + JSON.stringify(result));
                 });
               } else {
+                if (localStorage.getItem("documentType") == "0501") {
+                  value.signType = "CitizenCard";
+                }
+                if (localStorage.getItem("documentType") == "1001") {
+                  value.signType = "DigitalCitizenCard";
+                }
                 context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
                   context.logger.info("Created stakeholder result: " + JSON.stringify(result));
                   value.id = result.id;

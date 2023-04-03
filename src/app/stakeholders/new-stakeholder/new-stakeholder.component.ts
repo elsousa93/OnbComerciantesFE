@@ -245,36 +245,59 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   submit() {
     if (this.returned !== 'consult') {
       if (this.formNewStakeholder.valid) {
-        if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress === null || this.currentStakeholder.stakeholderAcquiring.fiscalAddress === undefined)
-          this.currentStakeholder.stakeholderAcquiring.fiscalAddress = {};
-        this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address = this.formNewStakeholder.get("Address").value;
-        this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country = this.formNewStakeholder.get("Country").value;
-        this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality = this.formNewStakeholder.get("Locality").value;
-        this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode = this.formNewStakeholder.get("ZIPCode").value;
-        this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea = this.formNewStakeholder.get("Locality").value;
-        this.currentStakeholder.stakeholderAcquiring.isProxy = (this.formNewStakeholder.get("proxy").value === 'true');
+        if (this.currentStakeholder?.stakeholderAcquiring?.signType != null && this.currentStakeholder?.stakeholderAcquiring?.signType !== '') {
+          if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress === null || this.currentStakeholder.stakeholderAcquiring.fiscalAddress === undefined)
+            this.currentStakeholder.stakeholderAcquiring.fiscalAddress = {};
+          this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address = this.formNewStakeholder.get("Address").value;
+          this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country = this.formNewStakeholder.get("Country").value;
+          this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality = this.formNewStakeholder.get("Locality").value;
+          this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode = this.formNewStakeholder.get("ZIPCode").value;
+          this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea = this.formNewStakeholder.get("Locality").value;
+          this.currentStakeholder.stakeholderAcquiring.isProxy = (this.formNewStakeholder.get("proxy").value === 'true');
 
-        if (this.showYesCC && !this.showNoCC) {
-          if (this.currentStakeholder.stakeholderAcquiring.identificationDocument === null || this.currentStakeholder.stakeholderAcquiring.identificationDocument === undefined)
-            this.currentStakeholder.stakeholderAcquiring.identificationDocument = {};
-          this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = this.formNewStakeholder.get("documentType").value;
-          this.currentStakeholder.stakeholderAcquiring.identificationDocument.number = this.formNewStakeholder.get("identificationDocumentId").value;
-          this.currentStakeholder.stakeholderAcquiring.identificationDocument.country = this.formNewStakeholder.get("identificationDocumentCountry").value;
-          this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate = this.formNewStakeholder.get("documentCountry").value;
-        }
-        this.logger.info("Stakeholder to update: " + JSON.stringify(this.currentStakeholder.stakeholderAcquiring));
-        this.stakeService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
-          this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
-          if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
-            this.currentIdx = this.currentIdx + 1;
-            this.currentStakeholder.stakeholderAcquiring = this.submissionStakeholders[this.currentIdx];
-          } else {
-            this.data.updateData(true, 2);
-            this.logger.info("Redirecting to Store Comp page");
-            this.route.navigate(['/store-comp']);
+          if (this.showYesCC && !this.showNoCC) {
+            if (this.currentStakeholder.stakeholderAcquiring.identificationDocument === null || this.currentStakeholder.stakeholderAcquiring.identificationDocument === undefined)
+              this.currentStakeholder.stakeholderAcquiring.identificationDocument = {};
+            this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = this.formNewStakeholder.get("documentType").value;
+            this.currentStakeholder.stakeholderAcquiring.identificationDocument.number = this.formNewStakeholder.get("identificationDocumentId").value;
+            this.currentStakeholder.stakeholderAcquiring.identificationDocument.country = this.formNewStakeholder.get("identificationDocumentCountry").value;
+            this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate = this.formNewStakeholder.get("documentCountry").value;
           }
-        }, error => {
-        });
+          this.logger.info("Stakeholder to update: " + JSON.stringify(this.currentStakeholder.stakeholderAcquiring));
+          this.stakeService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
+            this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
+            if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
+              this.currentIdx = this.currentIdx + 1;
+              this.currentStakeholder.stakeholderAcquiring = this.submissionStakeholders[this.currentIdx];
+            } else {
+              this.data.updateData(true, 2);
+              this.logger.info("Redirecting to Store Comp page");
+              this.route.navigate(['/store-comp']);
+            }
+          }, error => {
+          });
+        } else {
+          if (this.currentStakeholder.stakeholderAcquiring["headquartersAddress"] === null || this.currentStakeholder.stakeholderAcquiring["headquartersAddress"] === undefined)
+            this.currentStakeholder.stakeholderAcquiring["headquartersAddress"] = {};
+          this.currentStakeholder.stakeholderAcquiring["headquartersAddress"].address = this.formNewStakeholder.get("Address").value;
+          this.currentStakeholder.stakeholderAcquiring["headquartersAddress"].country = this.formNewStakeholder.get("Country").value;
+          this.currentStakeholder.stakeholderAcquiring["headquartersAddress"].postalCode = this.formNewStakeholder.get("ZIPCode").value;
+          this.currentStakeholder.stakeholderAcquiring["headquartersAddress"].postalArea = this.formNewStakeholder.get("Locality").value;
+
+          this.logger.info("Stakeholder to update: " + JSON.stringify(this.currentStakeholder.stakeholderAcquiring));
+          this.stakeService.UpdateCorporateEntity(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).then(result => {
+            this.logger.info("Updated stakeholder result: " + JSON.stringify(result.result));
+            if (this.currentIdx < (this.submissionStakeholders.length - 1)) {
+              this.currentIdx = this.currentIdx + 1;
+              this.currentStakeholder.stakeholderAcquiring = this.submissionStakeholders[this.currentIdx];
+            } else {
+              this.data.updateData(true, 2);
+              this.logger.info("Redirecting to Store Comp page");
+              this.route.navigate(['/store-comp']);
+            }
+          }, error => {
+          });
+        }
       }
     }
   }

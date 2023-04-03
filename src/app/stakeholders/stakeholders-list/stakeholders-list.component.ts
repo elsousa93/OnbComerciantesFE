@@ -154,6 +154,39 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   getSubmissionStakeholders() {
     var context = this;
     this.getSubmissionStakeholdersPromise();
+    this.getSubmissionCorporatePromise();
+  }
+
+  async getSubmissionCorporatePromise() {
+    var context = this;
+    context.submissionStakeholders = [];
+    const promises = [
+      this.stakeholderService.GetCorporateEntityList(this.submissionId)
+    ]
+
+    var subpromises = [];
+
+    Promise.all(promises).then(res => {
+      var corporate = res[0].result;
+
+      corporate.forEach(function (value, index) {
+        subpromises.push(context.getAllCorporateInfo(context.submissionId, value.id));
+      });
+
+      const allPromisesWithErrorHandler = subpromises.map(promise =>
+        promise.catch(error => error),
+      );
+
+      Promise.all(allPromisesWithErrorHandler).then(resolve => {
+        context.logger.info("Success fetching stakeholders");
+      }, error => {
+        context.logger.error(error, "", "Error when fetching stakeholders");
+      }).then(stakeholderInfo => {
+        this.loadStakeholders(context.submissionStakeholders);
+        this.listLengthEmitter.emit(context.submissionStakeholders.length);
+        this.emitSelectedStakeholder(context.submissionStakeholders[0], 0);
+      });
+    })
   }
 
   async getSubmissionStakeholdersAux() {
@@ -197,6 +230,24 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         context.logger.error(error, "", "Error");
       });
     }
+  }
+
+  getAllCorporateInfo(submissionID, corporateID) {
+    var context = this;
+    return new Promise((resolve, reject) => {
+      context.stakeholderService.GetCorporateEntityById(submissionID, corporateID).then(res => {
+        context.logger.info("Get stakeholder from submission result: " + JSON.stringify(res.result));
+        var AcquiringStakeholder = res.result;
+        var stakeholderToInsert = {
+          displayName: AcquiringStakeholder.shortName,
+          eligibility: false,
+          stakeholderAcquiring: AcquiringStakeholder,
+          stakeholderOutbound: undefined
+        } as StakeholdersCompleteInformation
+          context.submissionStakeholders.push(stakeholderToInsert);
+          resolve(null);
+      });
+    });
   }
 
   getAllStakeholderInfo(submissionID, stakeholderID) {
@@ -361,14 +412,27 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
   removeStakeholder(stakeholder) {
     this.logger.info("Stakeholder to remove: " + JSON.stringify(stakeholder));
-    this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.stakeholderAcquiring.id).subscribe(result => {
-      this.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
-      const index = this.submissionStakeholders.findIndex(stake => stake.stakeholderAcquiring.id === stakeholder.stakeholderAcquiring.id);
-      this.submissionStakeholders.splice(index, 1);
-      this.loadStakeholders(this.submissionStakeholders);
-      this.listLengthEmitter.emit(this.submissionStakeholders.length);
-    }, error => {
-      this.logger.error(error, "", "Error when deleting stakeholder");
-    });
+
+    if (stakeholder?.stakeholderAcquiring?.signType != null && stakeholder?.stakeholderAcquiring?.signType !== '') {
+      this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.stakeholderAcquiring.id).subscribe(result => {
+        this.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
+        const index = this.submissionStakeholders.findIndex(stake => stake.stakeholderAcquiring.id === stakeholder.stakeholderAcquiring.id);
+        this.submissionStakeholders.splice(index, 1);
+        this.loadStakeholders(this.submissionStakeholders);
+        this.listLengthEmitter.emit(this.submissionStakeholders.length);
+      }, error => {
+        this.logger.error(error, "", "Error when deleting stakeholder");
+      });
+    } else {
+      this.stakeholderService.DeleteCorporateEntity(this.submissionId, stakeholder.stakeholderAcquiring.id).then(result => {
+        this.logger.info("Deleted stakeholder result: " + JSON.stringify(result.result));
+        const index = this.submissionStakeholders.findIndex(stake => stake.stakeholderAcquiring["id"] === stakeholder.stakeholderAcquiring["id"]);
+        this.submissionStakeholders.splice(index, 1);
+        this.loadStakeholders(this.submissionStakeholders);
+        this.listLengthEmitter.emit(this.submissionStakeholders.length);
+      }, error => {
+        this.logger.error(error, "", "Error when deleting stakeholder");
+      });
+    }
   }
 }

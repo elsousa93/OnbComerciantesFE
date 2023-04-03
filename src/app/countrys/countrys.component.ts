@@ -236,7 +236,7 @@ export class CountrysComponent implements OnInit {
       this.logger.info("Get all countries result: " + JSON.stringify(result));
       this.countryList = result;
       this.countryList = this.countryList.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
-      this.countrys({ target: { value: "EUROPA" } });
+      //this.countrys({ target: { value: "EUROPA" } });
     }, error => this.logger.error(error, "", "Error fetching countries")));
 
     this.dropDownSettings = {
@@ -245,7 +245,9 @@ export class CountrysComponent implements OnInit {
       textField: 'item_text',
       allowSearchFilter: true,
       searchPlaceholderText: 'Pesquisar',
-      itemsShowLimit: 20
+      selectAllText: 'Selecionar todos',
+      unSelectAllText: 'Remover todos',
+      maxHeight: 220
     } as IDropdownSettings
   }
 
@@ -808,5 +810,9 @@ export class CountrysComponent implements OnInit {
     if (index != -1)
       this.lstPreenchido.splice(index, 1);
     this.emitteCountrySize();
+  }
+
+  removeAllCountries(items: any) {
+    console.log(items);
   }
 }

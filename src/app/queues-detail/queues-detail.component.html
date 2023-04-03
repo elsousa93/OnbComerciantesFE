@@ -78,11 +78,11 @@
                       </div>
                     </div>
                   </div>
-                  <h3 class="text-primary mt-5 mb-0 ps-0" *ngIf="queueName !== 'negotiationAproval' && queueName !== 'multipleClients' && queueName !== 'MCCTreatment' && queueName !== 'validationSIBS'">
+                  <h3 class="text-primary mt-5 mb-0 ps-0" *ngIf="queueName === 'compliance' || queueName === 'DOValidation'">
                     <span class="assignment_returned icon-assignment-returned"></span>
                     &nbsp;{{'acceptance.returnReasons'|translate|uppercase}}
                   </h3>
-                  <div class="row mt-0 ms-0 me-0 pt-0" *ngIf="queueName !== 'negotiationAproval' && queueName !== 'multipleClients' && queueName !== 'MCCTreatment' && queueName !== 'validationSIBS'">
+                  <div class="row mt-0 ms-0 me-0 pt-0" *ngIf="queueName === 'compliance' || queueName === 'DOValidation'">
                     <div class="col-12 mt-4 pt-0 ps-0 pe-0">
                       <div class="table-responsive mb-5 pb-4">
                         <table class="table">
@@ -99,29 +99,39 @@
                           </thead>
                           <tbody>
                             <tr *ngFor="let issue of issues?.process">
-                              <td class="text-primary text-center">Processo</td>
-                              <td class="text-primary text-center">-</td>
-                              <td class="text-primary text-start">{{issue?.issueDescription}}</td>
+                              <ng-container *ngIf="issue?.issueDescription != null && issue?.issueDescription != ''">
+                                <td class="text-primary text-center">Processo</td>
+                                <td class="text-primary text-center">-</td>
+                                <td class="text-primary text-start">{{issue?.issueDescription}}</td>
+                              </ng-container>
                             </tr>
                             <tr>
-                              <td class="text-primary text-center">{{issues?.merchant?.merchant?.name}}</td>
-                              <td class="text-primary text-center">-</td>
-                              <td class="text-primary text-start">{{issues?.merchant?.issues[0]?.issueDescription}}</td>
+                              <ng-container *ngIf="issues?.merchant?.issues[0]?.issueDescription != null && issues?.merchant?.issues[0]?.issueDescription != ''">
+                                <td class="text-primary text-center">{{issues?.merchant?.merchant?.name}}</td>
+                                <td class="text-primary text-center">-</td>
+                                <td class="text-primary text-start">{{issues?.merchant?.issues[0]?.issueDescription}}</td>
+                              </ng-container>
                             </tr>
                             <tr *ngFor="let issue of issues?.stakeholders">
-                              <td class="text-primary text-center">{{issue?.stakeholder?.name}}</td>
-                              <td class="text-primary text-center">-</td>
-                              <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
+                              <ng-container *ngIf="issue?.issues[0]?.issueDescription != null && issue?.issues[0]?.issueDescription != ''">
+                                <td class="text-primary text-center">{{issue?.stakeholder?.name}}</td>
+                                <td class="text-primary text-center">-</td>
+                                <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
+                              </ng-container>
                             </tr>
                             <tr *ngFor="let issue of issues?.shops">
-                              <td class="text-primary text-center">{{issue?.shop?.name}}</td>
-                              <td class="text-primary text-center">-</td>
-                              <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
+                              <ng-container *ngIf="issue?.issues[0]?.issueDescription != null && issue?.issues[0]?.issueDescription != ''">
+                                <td class="text-primary text-center">{{issue?.shop?.name}}</td>
+                                <td class="text-primary text-center">-</td>
+                                <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
+                              </ng-container>
                             </tr>
                             <tr *ngFor="let issue of issues?.documents">
-                              <td class="text-primary text-center">{{issue?.document?.name}}</td>
-                              <td class="text-primary text-center">{{issue?.document?.type}}</td>
-                              <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
+                              <ng-container *ngIf="issue?.issues[0]?.issueDescription != null && issue?.issues[0]?.issueDescription != ''">
+                                <td class="text-primary text-center">{{issue?.document?.name}}</td>
+                                <td class="text-primary text-center">{{issue?.document?.type}}</td>
+                                <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
+                              </ng-container>
                             </tr>
                           </tbody>
                         </table>
@@ -463,12 +473,14 @@
                           </thead>
                           <tbody>
                             <ng-container *ngFor="let equipment of equipmentList">
-                              <tr *ngFor="let pricingAttr of equipment?.pricing?.attribute">
-                                <td class="text-primary text-center">TPA</td>
-                                <td class="text-primary text-center">Mensalidade 1</td>
-                                <td class="text-primary text-center" [ngStyle]="{'color': pricingAttr?.originalValue != pricingAttr?.finalValue ? 'red !important' : ''}">{{pricingAttr?.originalValue}}</td>
-                                <td class="text-primary text-center" [ngStyle]="{'color': pricingAttr?.originalValue != pricingAttr?.finalValue ? 'red !important' : ''}">{{pricingAttr?.finalValue}}</td>
-                              </tr>
+                              <ng-container *ngIf="equipment['shopId'] == currentStore.id">
+                                <tr *ngFor="let pricingAttr of equipment?.pricing?.attribute">
+                                  <td class="text-primary text-center">TPA</td>
+                                  <td class="text-primary text-center">Mensalidade 1</td>
+                                  <td class="text-primary text-center" [style]="pricingAttr?.originalValue != pricingAttr?.finalValue ? 'color: red !important;' : ''">{{pricingAttr?.originalValue}}</td>
+                                  <td class="text-primary text-center" [style]="pricingAttr?.originalValue != pricingAttr?.finalValue ? 'color: red !important;' : ''">{{pricingAttr?.finalValue}}</td>
+                                </tr>
+                              </ng-container>
                             </ng-container>
                           </tbody>
                         </table>
@@ -593,8 +605,8 @@
                             <td class="text-primary text-center">{{attach.dataDocumento}}</td>
                             <td>
                               <span class="search-blue icon-search-blue" (click)="openFile(files[0])">
-                                <!--<img src="assets/images/search_blue.svg" (click)="openFile(files[0])"
-                style="height: 25px !important; vertical-align: sub; cursor: pointer;">-->
+                              </span>
+                              <span class="delete-blue-comp icon-delete-blue" (click)="deleteFile(files[0])">
                               </span>
                             </td>
                           </tr>
@@ -611,7 +623,7 @@
                           {{'generalKeywords.attach'|translate}}&nbsp;
                           <img src="assets/images/attach_file_white.svg"
                                style="height: 25px !important; vertical-align: sub;">
-                        </label><input type="file" name="arquivo" id="arquivo" (change)="selectFile($event)"
+                        </label><input type="file" #fileUpload name="arquivo" id="arquivo" (change)="selectFile($event); fileUpload.value='';"
                                        style="display: none" accept=".pdf" required>
                       </span>
                     </nav>

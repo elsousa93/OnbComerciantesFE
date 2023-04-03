@@ -275,7 +275,9 @@ export class PackContratualComponent implements OnInit {
     externalState.userObservations = this.form.get("observations").value;
 
     if (this.compsToShow.length > 0) {
+      let length = 0;
       this.compsToShow.forEach(function (value, idx) {
+        length++;
         context.documentService.readBase64(value.file).then(data => {
           var document: PostDocument = {
             documentType: null,
@@ -286,25 +288,30 @@ export class PackContratualComponent implements OnInit {
             validUntil: new Date().toISOString(),
             data: {}
           }
-          context.queuesInfo.postProcessDocuments(document, context.processId, stateType).then(res => { });
+          context.queuesInfo.postProcessDocuments(document, context.processId, stateType).then(res => {
+            if (context.compsToShow.length == length) {
+              context.queuesInfo.postExternalState(context.processId, stateType, externalState).then(res => {
+                context.route.navigate(['/']);
+              });
+            }
+          });
         });
       })
+    } else {
+      this.queuesInfo.postExternalState(this.processId, stateType, externalState).then(res => {
+        //if (state == 'Cancel') {
+        //  let navigationExtras = {
+        //    state: {
+        //      returnedFrontOffice: true
+        //    }
+        //  } as NavigationExtras;
+        //  this.queuesInfo.markToCancel(this.processId).then(res => {
+        //    this.route.navigate(['/info-declarativa'], navigationExtras);
+        //  });
+        //}
+        this.route.navigate(['/']);
+      });
     }
-
-    this.queuesInfo.postExternalState(this.processId, stateType, externalState).then(res => {
-      console.log("Resultado: ", res);
-      //if (state == 'Cancel') {
-      //  let navigationExtras = {
-      //    state: {
-      //      returnedFrontOffice: true
-      //    }
-      //  } as NavigationExtras;
-      //  this.queuesInfo.markToCancel(this.processId).then(res => {
-      //    this.route.navigate(['/info-declarativa'], navigationExtras);
-      //  });
-      //}
-      this.route.navigate(['/']);
-    });
   }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number, download: boolean = false) {

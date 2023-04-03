@@ -82,6 +82,7 @@ export interface ProductPackEntry {
 export interface ProductPack {
   paymentSchemes?: ProductPackAttributeProductPackKind
   otherGroups?: ProductPackRootAttributeProductPackKind[]
+  equipmentSettings?: ProductPackAttributeProductPackKind[]
 }
 export interface ProductPackRootAttributeProductPackKind {
   id?: string
@@ -111,13 +112,13 @@ export interface ProductPackAttribute {
   id?: string
   description?: string
   value?: string
-  //originalValue?: boolean
-  //finalValue?: boolean
   isReadOnly?: boolean
   isVisible?: boolean
   isSelected?: boolean
   aggregatorId?: string
   order?: number
+  secondaryId?: string
+  secondaryDescription?: string
 }
 export class ProductPackPricingFilter {
   productCode?: string

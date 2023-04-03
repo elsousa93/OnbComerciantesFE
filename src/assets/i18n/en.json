@@ -25,6 +25,9 @@
     "compliance": "Compliance Doubts",
     "DOValidation": "Valida DO",
     "MCCTreatment": "MCC Treatment",
+    "assignUserNotExists": "Do you wish to assign the process to",
+    "assignUserExists": "The process is already assigned to",
+    "assignUserExistsMore": "By continuing you will remove this assignment and assign it to",
     "queues": {
       "title": "Queues",
       "eligibility": "Queue of Eligibility Opinions",
@@ -128,7 +131,8 @@
     "incorrectNIPC": "The inserted NIPC is incorrect",
     "incorrectNIPCSize": "The NIPC must consist of 9 digits",
     "sameNIPC": "The NIPC cannot match the company's",
-    "sameNIFMatch": "The NIF can't match the private's"
+    "sameNIFMatch": "The NIF can't match the private's",
+    "returnSearchMsg": "Are you sure you want to change the company data?"
   },
   "citizenCard": {
     "collectData": "Electronic collection of Citizen Card data?",
@@ -180,7 +184,8 @@
     "emptyList": "There are no stakeholders",
     "addSuccess": "Stakeholder successfully added",
     "sameNIF": "It's not possible to add an already existing stakeholder",
-    "particular": "Private"
+    "particular": "Private",
+    "corporate": "Corporate"
   },
   "stores": {
     "title": "Stores",
@@ -523,7 +528,9 @@
     "restrictions": "Restrictions",
     "itemsPerPage": "Items Per Page: ",
     "performSearch": "Perform Search",
-    "final": "Process submitted successfully"
+    "final": "Process submitted successfully",
+    "assignProcess": "Assign Process",
+    "assign": "Assign"
   },
   "generalButtons": {
     "continue": "Continue",

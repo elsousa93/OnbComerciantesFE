@@ -25,7 +25,29 @@ export class AuthComponent implements OnInit {
   roles: role[] = roles; //roles é uma const
   banks: Bank[];
 
-  constructor(private token: TokenService, private authService: AuthService, private router: Router, private tableInfo: TableInfoService, private logger: LoggerService) { }
+  constructor(private token: TokenService, private authService: AuthService, private router: Router, private tableInfo: TableInfoService, private logger: LoggerService) {
+    //if (this.authService.GetToken() == "" || this.authService.GetToken() == null) {
+    //  var split = window.location.href.split("=");
+    //  if (split[1] != undefined) {
+    //    console.log("not undefined ", split[1]);
+    //    var user: User = {};
+    //    user.token = split[1];
+    //    //this.token.getLoginTokenInfo(user.token).then(res => {
+    //    //  user.userName = res.name;
+    //    //  user.bankName = res["ext-bank"];
+    //    //  user.bankLocation = res["ext-bankLocation"];
+    //    //  var newDate = new Date(res.exp * 1000);
+    //    //  this.timeout = newDate.getTime() - new Date().getTime();
+    //    //  this.expirationCounter(this.timeout);
+    //    this.authService.changeUser(user);
+    //    //window.location.replace("/");
+    //    //});
+    //    window.location.replace("/");
+    //  }
+    //} else {
+    //  console.log("TOKEN 1", this.authService.GetToken());
+    //}
+  }
 
   ngOnInit(): void {
     this.generateAuthForm();

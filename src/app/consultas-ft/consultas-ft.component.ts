@@ -15,6 +15,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppConfigService } from '../app-config.service';
 import { DatePipe } from '@angular/common';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
+import { ReassingWorkQueue, WorkQueue } from '../queues-detail/IQueues.interface';
+import { AuthService } from '../services/auth.service';
+import { QueuesService } from '../queues-detail/queues.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 interface ProcessFT {
   processId: string;
   processNumber: string;
@@ -62,9 +66,16 @@ export class ConsultasFTComponent implements OnInit {
   baseUrl = '';
 
   ListaDocType;
+  processToAssign: string = "";
+  workQueue: WorkQueue = {};
+  username: string = "";
+  jobId: number = 0;
+  userModalRef: BsModalRef | undefined;
+  @ViewChild('userModal') userModal;
+  existsUser: boolean;
 
   constructor(private logger: LoggerService, private datePipe: DatePipe,
-    private route: Router, private tableInfo: TableInfoService, private snackBar: MatSnackBar, private data: DataService, private processService: ProcessService, private translate: TranslateService, public appComponent: AppComponent, private configuration: AppConfigService, private processNrService: ProcessNumberService) {
+    private route: Router, private tableInfo: TableInfoService, private snackBar: MatSnackBar, private data: DataService, private processService: ProcessService, private translate: TranslateService, public appComponent: AppComponent, private configuration: AppConfigService, private processNrService: ProcessNumberService, private authService: AuthService, private queueService: QueuesService, private modalService: BsModalService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.appComponent.toggleSideNav(false);
     this.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
@@ -188,6 +199,7 @@ export class ConsultasFTComponent implements OnInit {
         duration: 4000,
         panelClass: ['snack-bar']
       });
+      return;
     }
 
     this.processService.advancedSearch(this.url, 0, this.processes.paginator.pageSize).subscribe(result => {
@@ -260,16 +272,41 @@ export class ConsultasFTComponent implements OnInit {
       localStorage.setItem('returned', 'edit');
     }
     localStorage.setItem("processNumber", process.processNumber);
+    this.processToAssign = process.processId;
+    this.username = this.authService.GetCurrentUser().userName;
+    this.queueService.getActiveWorkQueue(this.processToAssign).then(result => {
+      this.workQueue = result.result;
+      if (result.result.lockedBy == "" || result.result.lockedBy == null) {
+        this.existsUser = false;
+      } else {
+        this.existsUser = true;
+      }
+      this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
+    }, error => {
+      this.logger.error(error, "Error while searching for active work queue");
+    });
+  }
+
+  assign() {
     let navigationExtras: NavigationExtras = {
       state: {
         queueName: this.queueName,
-        processId: process.processId
+        processId: this.processToAssign
       }
     };
-    this.processNrService.changeProcessId(process.processId);
-    this.processNrService.changeQueueName(this.queueName);
-    this.logger.info("Redirecting to Queues Detail page");
-    this.route.navigate(['/queues-detail'], navigationExtras);
+    var reassignWorkQueue: ReassingWorkQueue = {};
+    reassignWorkQueue.forceReassign = true;
+    reassignWorkQueue.jobId = this.workQueue.id;
+    reassignWorkQueue.username = this.username;
+    this.queueService.postReassignWorkQueue(this.processToAssign, reassignWorkQueue).then(res => {
+      this.processNrService.changeProcessId(this.processToAssign);
+      this.processNrService.changeQueueName(this.queueName);
+      this.processToAssign = "";
+      this.jobId = 0;
+      this.userModalRef?.hide();
+      this.logger.info('Redirecting to Queues Detail page');
+      this.route.navigate(["/queues-detail"], navigationExtras);
+    });
   }
 
   ngOnInit(): void {
@@ -283,5 +320,9 @@ export class ConsultasFTComponent implements OnInit {
 
   loadProcesses(processValues: ProcessFT[]) {
     this.processes.data = processValues;
+  }
+
+  closeUserModal() {
+    this.userModalRef?.hide();
   }
 }

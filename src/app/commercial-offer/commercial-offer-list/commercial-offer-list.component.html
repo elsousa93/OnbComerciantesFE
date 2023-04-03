@@ -213,7 +213,7 @@
                               <label class="form-check-label texto_check_box"
                                      for="input1">{{attribute.description}}</label>
                               <div *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
-                                <ng-container *ngIf="attribute.bundles.length > 0 && !existsNotVisibleBundleAttr(attribute.bundles)">
+                                <ng-container *ngIf="attribute.bundles?.length > 0 && !existsNotVisibleBundleAttr(attribute.bundles)">
                                   <div *ngFor="let bundle of attribute.bundles"
                                        formGroupName="{{'formGroupBundle' + bundle.id}}">
                                     <div *ngIf="bundle.kind == 'simple'">
@@ -302,7 +302,7 @@
                                 <label class="form-check-label texto_check_box"
                                        for="input1">{{attribute.description}}</label>
                                 <div *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
-                                  <ng-container *ngIf="attribute.bundles.length > 0 && !existsNotVisibleBundleAttr(attribute.bundles)">
+                                  <ng-container *ngIf="attribute.bundles?.length > 0 && !existsNotVisibleBundleAttr(attribute.bundles)">
                                     <div *ngFor="let bundle of attribute.bundles"
                                          formGroupName="{{'formGroupBundle' + bundle.id}}">
                                       <div *ngIf="bundle.kind == 'advanced'">
@@ -361,14 +361,14 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'commercialOffer.terminalType'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let storeEquip"> {{getTerminalDesc(storeEquip.equipmentType)}} </mat-cell>
+                    <mat-cell *matCellDef="let storeEquip"> {{getTerminalDesc(storeEquip.equipmentSettings)}} </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="communicationType">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'commercialOffer.communicationType'|translate|uppercase}}
                     </mat-header-cell>
                     <mat-cell *matCellDef="let storeEquip">
-                      {{getCommunicationDesc(storeEquip.communicationType)}}
+                      {{getCommunicationDesc(storeEquip.equipmentSettings)}}
                     </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="quantity">
@@ -416,7 +416,7 @@
                 </div>
               </div>
               <ng-container *ngIf="isNewConfig != null && currentStore != null">
-                <app-commercial-offer-new-configuration [currentStore]="currentStore" [isNewConfig]="isNewConfig"
+                <app-commercial-offer-new-configuration [currentStore]="currentStore" [isNewConfig]="isNewConfig" [equipmentSettings]="equipmentSettings"
                   [storeEquip]="storeEquip" [packId]="packId" [packs]="packs" [merchantCatalog]="merchantCatalog"
                   [groupsList]="list" [changedPackValue]="changedPackValue" (changedStoreEvent)="changedStoreEvent($event)"
                   (storeEquipEvent)="storeEquipEvent($event)"></app-commercial-offer-new-configuration>

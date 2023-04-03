@@ -4,7 +4,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { of, Subject, Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
-import { IStakeholders } from '../IStakeholders.interface';
+import { CorporateEntity, IStakeholders, PostCorporateEntity } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
 import { stakeTypeList } from '../stakeholderType';
 import { TemplateRef, ViewChild } from '@angular/core';
@@ -24,6 +24,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Client } from '../../client/Client.interface';
 import { PostDocument } from '../../submission/document/ISubmission-document';
+import { ClientService } from '../../client/client.service';
 
 @Component({
   selector: 'app-create-stakeholder',
@@ -266,7 +267,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   constructor(private logger: LoggerService, private readCardService: ReadcardService, public modalService: BsModalService,
     private route: Router, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService,
     private stakeholderService: StakeholderService, private tableInfo: TableInfoService,
-    private submissionDocumentService: SubmissionDocumentService, private rootFormGroup: FormGroupDirective) {
+    private submissionDocumentService: SubmissionDocumentService, private rootFormGroup: FormGroupDirective, private clientService: ClientService) {
 
     this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
       this.ListDocTypeE = result;
@@ -555,97 +556,161 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.showSameNIFError = false;
     this.showSameNIFErrorForm = false;
     if (this.foundStakeholders && this.dataCCcontents.cardNumberCC == null) {
-      this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], this.docType, 'por mudar').then(stakeholder => {
-        this.logger.info("Get stakeholder outbound: " + JSON.stringify(stakeholder));
-        var stakeholderToInsert = stakeholder.result;
-        stakeholderToInsert["fiscalId"] = this.currentStakeholder["stakeholderNIF"];
-        stakeholderToInsert["stakeholderId"] = "";
-        stakeholderToInsert["clientId"] = this.currentStakeholder["stakeholderNumber"];
-        stakeholderToInsert["fiscalAddress"] = stakeholderToInsert["address"];
-        stakeholderToInsert["phone1"] = {
-          countryCode: stakeholderToInsert["contacts"]["phone1"]["country"],
-          phoneNumber: stakeholderToInsert["contacts"]["phone1"]["phoneNumber"]
-        }
-
-        if (stakeholderToInsert["phone2"] != null)
-        stakeholderToInsert["phone2"] = {
-          countryCode: stakeholderToInsert["contacts"]["phone2"]["country"],
-          phoneNumber: stakeholderToInsert["contacts"]["phone2"]["phoneNumber"]
-        }
-
-        stakeholderToInsert["email"] = stakeholderToInsert["contacts"]["email"];
-        stakeholderToInsert["contacts"] = null;
-        stakeholderToInsert["contactName"] = stakeholderToInsert["shortName"];
-
-        if (stakeholderToInsert["identificationDocument"] != null) {
-          stakeholderToInsert["identificationDocument"] = {
-            type: stakeholderToInsert["identificationDocument"]["documentType"],
-            number: stakeholderToInsert["identificationDocument"]["documentId"],
-            country: stakeholderToInsert["identificationDocument"]["documentIssuer"],
-            expirationDate: stakeholderToInsert["identificationDocument"]["validUntil"],
-            checkDigit: stakeholderToInsert["identificationDocument"]["checkDigit"],
+      if (this.stakeholderType === 'Particular') {
+        this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], this.docType, 'por mudar').then(stakeholder => {
+          this.logger.info("Get stakeholder outbound: " + JSON.stringify(stakeholder));
+          var stakeholderToInsert = stakeholder.result;
+          stakeholderToInsert["fiscalId"] = this.currentStakeholder["stakeholderNIF"];
+          stakeholderToInsert["stakeholderId"] = "";
+          stakeholderToInsert["clientId"] = this.currentStakeholder["stakeholderNumber"];
+          stakeholderToInsert["fiscalAddress"] = stakeholderToInsert["address"];
+          stakeholderToInsert["phone1"] = {
+            countryCode: stakeholderToInsert["contacts"]["phone1"]["country"],
+            phoneNumber: stakeholderToInsert["contacts"]["phone1"]["phoneNumber"]
           }
-        }
-        
-        stakeholderToInsert["potentialClientIds"] = this.potentialClientIds;
-        if (stakeholderToInsert["signType"] == null) {
-          stakeholderToInsert["signType"] = "CitizenCard";
-        } else {
-          stakeholderToInsert["signType"] = stakeholderToInsert["signType"];
-        }
-        this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
-        this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-          this.logger.info("Added stakeholder result: " + JSON.stringify(result));
-          stakeholderToInsert.id = result["id"];
-          this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
-            duration: 4000,
-            panelClass: ['snack-bar']
+
+          if (stakeholderToInsert["phone2"] != null)
+            stakeholderToInsert["phone2"] = {
+              countryCode: stakeholderToInsert["contacts"]["phone2"]["country"],
+              phoneNumber: stakeholderToInsert["contacts"]["phone2"]["phoneNumber"]
+            }
+
+          stakeholderToInsert["email"] = stakeholderToInsert["contacts"]["email"];
+          stakeholderToInsert["contacts"] = null;
+          stakeholderToInsert["contactName"] = stakeholderToInsert["shortName"];
+
+          if (stakeholderToInsert["identificationDocument"] != null) {
+            stakeholderToInsert["identificationDocument"] = {
+              type: stakeholderToInsert["identificationDocument"]["documentType"],
+              number: stakeholderToInsert["identificationDocument"]["documentId"],
+              country: stakeholderToInsert["identificationDocument"]["documentIssuer"],
+              expirationDate: stakeholderToInsert["identificationDocument"]["validUntil"],
+              checkDigit: stakeholderToInsert["identificationDocument"]["checkDigit"],
+            }
+          }
+
+          stakeholderToInsert["potentialClientIds"] = this.potentialClientIds;
+          if (stakeholderToInsert["signType"] == null) {
+            stakeholderToInsert["signType"] = "CitizenCard";
+          } else {
+            stakeholderToInsert["signType"] = stakeholderToInsert["signType"];
+          }
+          this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
+          this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+            this.logger.info("Added stakeholder result: " + JSON.stringify(result));
+            stakeholderToInsert.id = result["id"];
+            this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
+            this.emitInsertedStake(of(stakeholderToInsert));
+            this.clearForm();
+            this.route.navigate(['/stakeholders/']);
+          }, error => {
           });
-          this.emitInsertedStake(of(stakeholderToInsert));
-          this.clearForm();
-          this.route.navigate(['/stakeholders/']);
         }, error => {
+          this.logger.error(error, "", "Error fetching stakeholder");
         });
-      }, error => {
-        this.logger.error(error, "", "Error fetching stakeholder");
-      });
+      } else {
+        this.clientService.getClientByID(this.currentStakeholder["stakeholderNumber"], this.docType, 'por mudar').then(stakeholder => {
+          this.logger.info("Get stakeholder outbound: " + JSON.stringify(stakeholder));
+          var corporateToInsert = {} as PostCorporateEntity;
+          var stakeholderToInsert = stakeholder.result;
+          corporateToInsert.clientId = this.currentStakeholder["stakeholderNumber"];
+          corporateToInsert.fiscalId = this.currentStakeholder["stakeholderNIF"];
+          corporateToInsert.headquartersAddress = stakeholderToInsert["headquartersAddress"];
+          corporateToInsert.legalName = stakeholderToInsert["fullName"];
+          corporateToInsert.potentialClientIds = this.potentialClientIds;
+          corporateToInsert.shortName = stakeholderToInsert["shortName"];
+          this.logger.info("Corporate to add: " + JSON.stringify(corporateToInsert));
+          let o = Object.fromEntries(Object.entries(corporateToInsert).filter(([_, v]) => v != null));
+          this.stakeholderService.AddNewCorporateEntity(this.submissionId, o).then(result => {
+            this.logger.info("Added Corporate result: " + JSON.stringify(result.result));
+            corporateToInsert["id"] = result.result["id"];
+            this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
+            this.emitInsertedStake(of(corporateToInsert));
+            this.clearForm();
+          }, error => {
+          });
+        }, error => {
+          this.logger.error(error, "", "Error fetching stakeholder");
+        });
+      }
     } else if (this.dataCCcontents.cardNumberCC != null || this.docType === '1001') {
       this.addStakeholderWithCC();
     }
     else {
-      var fullName = (this.formNewStakeholder.get("name")?.value != '' && this.formNewStakeholder.get("name")?.value != null) ? this.formNewStakeholder.get("name")?.value : this.formNewStakeholder.get("socialDenomination")?.value
-      var nameArray = fullName.split(" ").filter(element => element);
-      var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
-      var stakeholderToInsert: IStakeholders = {
-        "fiscalId": (this.formNewStakeholder.get("nif")?.value != '' && this.formNewStakeholder.get("nif")?.value != null) ? this.formNewStakeholder.get("nif")?.value : this.formNewStakeholder.get("nipc")?.value,
-        "phone1": {},
-        "phone2": {},
-        "fiscalAddress": null,
-        "fullName": fullName,
-        "shortName": shortName,
-        "contactName": shortName,
-        "isProxy": false,
-        "signType": "CitizenCard"
-      }
-      if (this.submissionClient.fiscalId !== stakeholderToInsert.fiscalId) {
-        this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
-        this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-          this.logger.info("Added stakeholder result: " + JSON.stringify(result));
-          stakeholderToInsert.id = result["id"];
-          this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
-            duration: 4000,
-            panelClass: ['snack-bar']
-          });
-          this.emitInsertedStake(of(stakeholderToInsert));
-          this.clearForm();
-          this.route.navigate(['/stakeholders/']);
-        });
-      } else {
-        if (this.docType === '0501') {
-          this.sameNIFMatch = true;
+      if (this.stakeholderType === 'Particular') {
+        var fullName = (this.formNewStakeholder.get("name")?.value != '' && this.formNewStakeholder.get("name")?.value != null) ? this.formNewStakeholder.get("name")?.value : this.formNewStakeholder.get("socialDenomination")?.value
+        var nameArray = fullName.split(" ").filter(element => element);
+        var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
+        var stakeholderToInsert: IStakeholders = {
+          "fiscalId": (this.formNewStakeholder.get("nif")?.value != '' && this.formNewStakeholder.get("nif")?.value != null) ? this.formNewStakeholder.get("nif")?.value : this.formNewStakeholder.get("nipc")?.value,
+          "phone1": {},
+          "phone2": {},
+          "fiscalAddress": null,
+          "fullName": fullName,
+          "shortName": shortName,
+          "contactName": shortName,
+          "isProxy": false,
+          "signType": "CitizenCard"
         }
-        if (this.docType === '0502') {
-          this.sameNIPC = true;
+        if (this.submissionClient.fiscalId !== stakeholderToInsert.fiscalId) {
+          this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
+          this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+            this.logger.info("Added stakeholder result: " + JSON.stringify(result));
+            stakeholderToInsert.id = result["id"];
+            this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
+            this.emitInsertedStake(of(stakeholderToInsert));
+            this.clearForm();
+            this.route.navigate(['/stakeholders/']);
+          });
+        } else {
+          if (this.docType === '0501') {
+            this.sameNIFMatch = true;
+          }
+          if (this.docType === '0502') {
+            this.sameNIPC = true;
+          }
+        }
+      } else {
+        var fullName = (this.formNewStakeholder.get("name")?.value != '' && this.formNewStakeholder.get("name")?.value != null) ? this.formNewStakeholder.get("name")?.value : this.formNewStakeholder.get("socialDenomination")?.value
+        var nameArray = fullName.split(" ").filter(element => element);
+        var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
+        var corporateToInsert: PostCorporateEntity = {
+          fiscalId: (this.formNewStakeholder.get("nif")?.value != '' && this.formNewStakeholder.get("nif")?.value != null) ? this.formNewStakeholder.get("nif")?.value : this.formNewStakeholder.get("nipc")?.value,
+          legalName: fullName,
+          shortName: shortName,
+          clientId: null,
+          headquartersAddress: null,
+          potentialClientIds: null
+        };
+        if (this.submissionClient.fiscalId !== corporateToInsert.fiscalId) {
+          this.logger.info("Stakeholder to add: " + JSON.stringify(corporateToInsert));
+          let o = Object.fromEntries(Object.entries(corporateToInsert).filter(([_, v]) => v != null));
+          this.stakeholderService.AddNewCorporateEntity(this.submissionId, o).then(result => {
+            this.logger.info("Added stakeholder result: " + JSON.stringify(result.result));
+            corporateToInsert["id"] = result.result["id"];
+            this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
+            this.emitInsertedStake(of(corporateToInsert));
+            this.clearForm();
+          });
+        } else {
+          if (this.docType === '0501') {
+            this.sameNIFMatch = true;
+          }
+          if (this.docType === '0502') {
+            this.sameNIPC = true;
+          }
         }
       }
     }
