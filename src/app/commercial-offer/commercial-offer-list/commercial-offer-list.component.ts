@@ -10,7 +10,7 @@ import { MatSort } from '@angular/material/sort';
 import { AuthService } from '../../services/auth.service';
 import { User } from '../../userPermissions/user';
 import { UserPermissions } from '../../userPermissions/user-permissions';
-import { MerchantCatalog, Product, ProductPackAttribute, ProductPackAttributeProductPackKind, ProductPackCommissionAttribute, ProductPackCommissionFilter, ProductPackEntry, ProductPackFilter, ProductPackKindEnum, ProductPackPricingEntry, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
+import { MerchantCatalog, Product, ProductPack, ProductPackAttribute, ProductPackAttributeProductPackKind, ProductPackCommissionAttribute, ProductPackCommissionFilter, ProductPackEntry, ProductPackFilter, ProductPackKindEnum, ProductPackPricingEntry, ProductPackRootAttributeProductPackKind, TerminalSupportEntityEnum } from '../ICommercialOffer.interface';
 import { StoreService } from '../../store/store.service';
 import { CommercialOfferService } from '../commercial-offer.service';
 import { ClientService } from '../../client/client.service';
@@ -19,6 +19,9 @@ import { TenantCommunication, TenantTerminal } from '../../table-info/ITable-inf
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../logger.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
+import { ProcessService } from '../../process/process.service';
+import { QueuesService } from '../../queues-detail/queues.service';
 
 @Component({
   selector: 'app-commercial-offer-list',
@@ -116,6 +119,9 @@ export class CommercialOfferListComponent implements OnInit {
   changedPackValue: boolean = true;
   paymentList: ProductPackAttributeProductPackKind;
   equipmentSettings: ProductPackAttributeProductPackKind[];
+  processId: string;
+  firstTime: boolean = true;
+  equips: boolean;
 
   emitPreviousStore(idx) {
     this.previousStoreEvent = idx;
@@ -125,30 +131,51 @@ export class CommercialOfferListComponent implements OnInit {
     this.storeEquipMat.sort = this.storeEquipSort;
   }
 
-  constructor(private translate: TranslateService, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private clientService: ClientService, private tableInfo: TableInfoService, private logger: LoggerService, private snackBar: MatSnackBar) {
+  constructor(private translate: TranslateService, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private clientService: ClientService, private tableInfo: TableInfoService, private logger: LoggerService, private snackBar: MatSnackBar, private processNrService: ProcessNumberService, private processService: ProcessService, private queuesInfo: QueuesService) {
     this.ngOnInit();
     //this.loadReferenceData();
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.initializeForm();
 
-    this.clientService.GetClientByIdAcquiring(this.submissionId).then(result => {
-      this.logger.info("Get merchant from submission: " + JSON.stringify(result));
-      this.merchantCatalog = {
-        context: result.businessGroup.type.toLocaleLowerCase(),
-        contextId: result.businessGroup.branch,
-        fiscalIdentification: {
-          fiscalId: result.fiscalId,
-          issuerCountry: "PT"
+    if ((this.processId != '' && this.processId != null) && this.returned != null) {
+      this.processService.getMerchantFromProcess(this.processId).subscribe(res => {
+        this.logger.info("Get process client by id result: " + JSON.stringify(res));
+        this.merchantCatalog = {
+          context: res.businessGroup.type.toLocaleLowerCase() as any,
+          contextId: res.businessGroup.branch,
+          fiscalIdentification: {
+            fiscalId: res.fiscalId,
+            issuerCountry: "PT"
+          }
         }
-      }
-      this.logger.info("Merchant catalog info to get packs: " + JSON.stringify(this.merchantCatalog));
-    });
-    this.data.updateData(false, 5, 1);
+      });
+    } else {
+      this.clientService.GetClientByIdAcquiring(this.submissionId).then(result => {
+        this.logger.info("Get merchant from submission: " + JSON.stringify(result));
+        this.merchantCatalog = {
+          context: result.businessGroup.type.toLocaleLowerCase(),
+          contextId: result.businessGroup.branch,
+          fiscalIdentification: {
+            fiscalId: result.fiscalId,
+            issuerCountry: "PT"
+          }
+        }
+        this.logger.info("Merchant catalog info to get packs: " + JSON.stringify(this.merchantCatalog));
+      });
+    }
+    if (!this.equips) {
+      this.data.updateData(false, 5, 1);
+    } else {
+      this.data.updateData(true, 5, 1);
+    }
+
   }
 
   ngOnInit(): void {
+    this.subscription = this.data.currentEquips.subscribe(equips => this.equips = equips);
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
     this.subscription = this.data.currentQueueName.subscribe(queueName => {
       if (queueName != null) {
         this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
@@ -164,29 +191,38 @@ export class CommercialOfferListComponent implements OnInit {
 
   getStoreEquipsFromSubmission() {
     this.storeEquipList = [];
-    if (this.returned != null) {
-      this.storeService.getShopEquipmentConfigurationsFromProcess(this.processNumber, this.currentStore.id).subscribe(result => {
+    var context = this;
+    if ((this.processId != '' && this.processId != null) && this.returned != null) {
+      this.queuesInfo.getShopEquipmentConfigurationsFromProcess(this.processId, this.currentStore.id).then(result => {
         this.logger.info("Get equipments from shop result: " + JSON.stringify(result));
-        if (result != null) {
-          this.storeEquipList.push(result);
+        var list = result.result;
+        if (list.length > 0) {
+          list.forEach(res => {
+            this.queuesInfo.getProcessShopEquipmentDetails(context.processId, context.currentStore.id, res.id).then(r => {
+              context.storeEquipList.push(r.result);
+            }).then(res => {
+              context.loadStoreEquips(this.storeEquipList);
+            });
+          });
         }
+      }).then(res => {
+      });
+    } else {
+      this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.id).then(result => {
+        this.logger.info("Get equipments from shop result: " + JSON.stringify(result));
+        var list = result.result;
+        if (list.length > 0) {
+          list.forEach(res => {
+            this.storeService.getShopEquipmentFromSubmission(this.submissionId, this.currentStore.id, res.id).then(r => {
+              this.storeEquipList.push(r.result);
+            }).then(res => {
+              this.loadStoreEquips(this.storeEquipList);
+            });
+          });
+        }
+      }).then(res => {
       });
     }
-
-    this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.id).then(result => {
-      this.logger.info("Get equipments from shop result: " + JSON.stringify(result));
-      var list = result.result;
-      if (list.length > 0) {
-        list.forEach(res => {
-          this.storeService.getShopEquipmentFromSubmission(this.submissionId, this.currentStore.id, res.id).then(r => {
-            this.storeEquipList.push(r.result);
-          }).then(res => {
-            this.loadStoreEquips(this.storeEquipList);
-          });
-        });
-      }
-    }).then(res => {
-    });
   }
 
   loadStoreEquips(storeEquipValues: ShopEquipment[]) {
@@ -229,7 +265,7 @@ export class CommercialOfferListComponent implements OnInit {
       context.form.get("commission" + value.id).get("commissionMin" + value.id).setValue(value.minValue.value);
       context.form.get("commission" + value.id).get("commissionMax" + value.id).setValue(value.maxValue.value);
       context.form.get("commission" + value.id).get("commissionFixed" + value.id).setValue(value.fixedValue.value);
-      context.form.get("commission" + value.id).get("commissionPercentage" + value.id).setValue(value.percentageValue.value);
+      context.form.get("commission" + value.id).get("commissionPercentage" + value.id).setValue(Number((value.percentageValue.value * 100).toFixed(3)));
     });
     if (this.commissionId != "") {
       this.chooseCommission(this.commissionId);
@@ -318,111 +354,170 @@ export class CommercialOfferListComponent implements OnInit {
       context.form.removeControl('comission' + value.id);
     });
 
-    this.commissionAttributeList.forEach(function (value, idx) {
-      valueGroup.addControl("commissionMin" + value.id, new FormControl(value.minValue.value));
-      valueGroup.addControl("commissionMax" + value.id, new FormControl(value.maxValue.value));
-      valueGroup.addControl("commissionFixed" + value.id, new FormControl(value.fixedValue.value));
-      valueGroup.addControl("commissionPercentage" + value.id, new FormControl(value.percentageValue.value));
-      context.form.addControl("commission" + value.id, valueGroup);
-    });
+    if (this.currentStore.pack == null) {
+      this.commissionAttributeList.forEach(function (value, idx) {
+        valueGroup.addControl("commissionMin" + value.id, new FormControl(value.minValue.value));
+        valueGroup.addControl("commissionMax" + value.id, new FormControl(value.maxValue.value));
+        valueGroup.addControl("commissionFixed" + value.id, new FormControl(value.fixedValue.value));
+        valueGroup.addControl("commissionPercentage" + value.id, new FormControl(Number((value.percentageValue.value * 100).toFixed(3))));
+        context.form.addControl("commission" + value.id, valueGroup);
+      });
+    } else {
+      this.commissionAttributeList.forEach(function (value, idx) {
+        valueGroup.addControl("commissionMin" + value.id, new FormControl(value.minValue.finalValue));
+        valueGroup.addControl("commissionMax" + value.id, new FormControl(value.maxValue.finalValue));
+        valueGroup.addControl("commissionFixed" + value.id, new FormControl(value.fixedValue.finalValue));
+        valueGroup.addControl("commissionPercentage" + value.id, new FormControl(Number((value.percentageValue.finalValue * 100).toFixed(3))));
+        context.form.addControl("commission" + value.id, valueGroup);
+      });
+    }
+
   }
 
   //utilizado para mostrar os valores no PACOTE COMERCIAL
   getPackDetails() {
-    if (this.changedEAT) {
-      this.changedEAT = false;
-      this.paymentSchemes = null;
-      this.groupsList = [];
-      this.productPack.productCode = this.currentStore.productCode;
-      this.productPack.subproductCode = this.currentStore.subProductCode;
-      this.productPack.merchant = this.merchantCatalog;
-      this.productPack.store = {
-        activity: this.currentStore.activity,
-        subActivity: this.currentStore.subActivity,
-        supportEntity: this.form.get("isUnicre").value ? "acquirer" : "other",
-        referenceStore: this.currentStore.shopId,
-        supportBank: this.currentStore?.bank?.bank?.bank
-      }
-      this.logger.info("Data sent to outbound get packs: " + JSON.stringify(this.productPack));
-      this.COService.OutboundGetPacks(this.productPack).then(result => {
-        this.logger.info("Get packs: " + JSON.stringify(result));
-        this.packs = result.result;
-        if (this.packs.length === 1) {
-          this.selectCommercialPack(this.packs[0].id);
-        } else if (this.currentStore.pack != null) {
-          this.selectCommercialPack(this.currentStore.pack.packId);
+    if ((this.processId != '' && this.processId != null) && this.returned != null) {
+      this.packs = [];
+      this.packs.push({
+        id: this.currentStore.pack.packId,
+        description: this.currentStore.pack.packDescription 
+      })
+      this.selectCommercialPack(this.currentStore.pack.packId);
+    } else {
+      if (this.changedEAT) {
+        this.changedEAT = false;
+        this.paymentSchemes = null;
+        this.groupsList = [];
+        this.productPack.productCode = this.currentStore.productCode;
+        this.productPack.subproductCode = this.currentStore.subProductCode;
+        this.productPack.merchant = this.merchantCatalog;
+        this.productPack.store = {
+          activity: this.currentStore.activity,
+          subActivity: this.currentStore.subActivity,
+          supportEntity: this.form.get("isUnicre").value ? "acquirer" : "other",
+          referenceStore: this.currentStore.shopId,
+          supportBank: this.currentStore?.bank?.bank?.bank
         }
-      });
+
+        this.logger.info("Data sent to outbound get packs: " + JSON.stringify(this.productPack));
+        this.COService.OutboundGetPacks(this.productPack).then(result => {
+          this.logger.info("Get packs: " + JSON.stringify(result));
+          this.packs = result.result;
+          if (this.packs.length === 1) {
+            this.selectCommercialPack(this.packs[0].id);
+          } else if (this.currentStore.pack != null) {
+            this.selectCommercialPack(this.currentStore.pack.packId);
+          }
+        });
+      }
     }
   }
 
   selectCommercialPack(packId: string) {
+    if (this.returned == null && this.packId != "") {
+      if (this.storeEquipList.length > 0) {
+        this.storeEquipList.forEach(equip => {
+          this.deleteConfiguration(equip);
+        });
+      }
+    }
     var context = this;
     this.packId = packId;
     context.groupsList = [];
     context.paymentSchemes = null;
 
-    if (this.currentStore.pack == null) {
+    if (this.currentStore.pack == null || this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
       this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
         context.logger.info("Get pack details " + JSON.stringify(res));
-        context.paymentSchemes = res.result.paymentSchemes;
-        context.addPaymentFormGroups();
-        res.result.otherGroups.forEach(group => {
-          context.groupsList.push(group);
-        });
-        context.equipmentSettings = res.result.equipmentSettings;
-        context.joinSameIdGroups();
-        context.addFormGroups();
-        context.changedValue();
+        if (this.currentStore.pack == null) {
+          context.paymentSchemes = res.result.paymentSchemes;
+          context.addPaymentFormGroups();
+          res.result.otherGroups.forEach(group => {
+            context.groupsList.push(group);
+          });
+          context.equipmentSettings = res.result.equipmentSettings;
+          context.joinSameIdGroups();
+          context.addFormGroups();
+          context.changedValue();
+          if (this.returned == 'consult')
+            this.form.disable();
+        } else {
+          context.updateCommercialPackInfo(res.result);
+        }
       });
     } else {
       context.paymentSchemes = context.currentStore.pack.paymentSchemes;
       context.addPaymentFormGroups();
-      this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
-        context.logger.info("Get pack details " + JSON.stringify(res));
-        res.result.otherGroups.forEach(group => {
-          context.groupsList.push(group);
-        });
-
-        context.currentStore.pack.otherPackDetails.forEach((curr, index) => {
-          context.groupsList.forEach((value, index) => {
-            if (curr.id === value.id) {
-              curr.attributes.forEach((curr, index) => {
-                value.attributes.forEach((value, index) => {
-                  if (curr.isSelected) {
-                    if (curr.id === value.id) {
-                      value.isSelected = curr.isSelected;
-                      if (curr.bundles != undefined || curr.bundles != null || curr.bundles?.length > 0) {
-                        curr.bundles.forEach((curr, index) => {
-                          value.bundles.forEach((value, index) => {
-                            if (curr.id === value.id) {
-                              curr.attributes.forEach((curr, index) => {
-                                value.attributes.forEach((value, index) => {
-                                  if (curr.isSelected) {
-                                    if (curr.id === value.id) {
-                                      value.isSelected = curr.isSelected;
-                                    }
-                                  }
-                                });
-                              });
-                            }
-                          });
-                        });
-                      }
-                    }
-                  }
-                })
-              });
-            }
-          });
-        });
-        context.joinSameIdGroups();
-        context.addFormGroups();
-        context.changedValue();
-      });
+      context.groupsList = context.currentStore.pack.otherPackDetails;
+      context.equipmentSettings = context.currentStore.pack.equipmentSettings;
+      context.joinSameIdGroups();
+      context.addFormGroups();
+      context.changedValue();
+      if (this.returned == 'consult')
+        this.form.disable();
     }
     this.form.get("productPackKind").setValue(packId);
-    //this.getCommissionsList();
+  }
+
+  updateCommercialPackInfo(pack: ProductPack) {
+    var context = this;
+
+    pack.paymentSchemes.attributes.forEach(val => {
+      var attr = context.currentStore.pack.paymentSchemes.attributes.find(att => att.id == val.id);
+      if (attr != undefined) {
+        val.isSelected = attr.isSelected;
+      } else {
+        val.isSelected = false;
+      }
+    });
+    context.paymentSchemes = pack.paymentSchemes;
+    context.addPaymentFormGroups();
+
+    pack.otherGroups.forEach(value => {
+      var group = context.currentStore.pack.otherPackDetails.find(grp => grp.id == value.id);
+      if (group != undefined) {
+        value.attributes.forEach(val => {
+          var attr = group.attributes.find(att => att.id == val.id);
+          if (attr != undefined) {
+            val.isSelected = attr.isSelected;
+          } else {
+            val.isSelected = false;
+          }
+        });
+      } else {
+        //todos os atributos deste grupo vão ter o selected a false
+        value.attributes.forEach(v => {
+          v.isSelected = false;
+        });
+      }
+    });
+    context.groupsList = pack.otherGroups;
+
+    //this.storeEquipList.forEach(equip => {
+    //  pack.equipmentSettings.forEach(value => {
+    //    var group = equip.equipmentSettings.find(grp => grp.id == value.id);
+    //    if (group != undefined) {
+    //      value.attributes.forEach(val => {
+    //        var attr = group.attributes.find(att => att.id == val.id);
+    //        if (attr != undefined) {
+    //          val.isSelected = attr.isSelected;
+    //        } else {
+    //          val.isSelected = false;
+    //        }
+    //      });
+    //    } else {
+    //      //todos os atributos deste grupo vão ter o selected a false
+    //      value.attributes.forEach(v => {
+    //        v.isSelected = false;
+    //      });
+    //    }
+    //  });
+    //});
+
+    context.equipmentSettings = pack.equipmentSettings;
+    context.joinSameIdGroups();
+    context.addFormGroups();
+    context.changedValue();
   }
 
   //check if it exists at least one attribute with 'isVisible' == true
@@ -445,6 +540,16 @@ export class CommercialOfferListComponent implements OnInit {
   changedValue() {
     this.changedPackValue = true;
     var context = this;
+
+    if (this.returned == null && !this.firstTime) {
+      if (this.storeEquipList.length > 0) {
+        this.storeEquipList.forEach(equip => {
+          this.deleteConfiguration(equip);
+        });
+      }
+    }
+    this.firstTime = false;
+
     //atualizar a lista dos pacotes comerciais com os valores selecionados no front
     this.finalList = [];
     this.list = [];
@@ -563,52 +668,57 @@ export class CommercialOfferListComponent implements OnInit {
 
   //Utilizado para mostrar os valores na tabela do PREÇARIO LOJA
   getCommissionsList() {
-    if (this.packId != "") {
-      if (this.changedPackValue) {
-        this.changedPackValue = false;
-        this.commissionFilter = {
-          productCode: this.currentStore.productCode,
-          subproductCode: this.currentStore.subProductCode,
-          processorId: this.packs[0].processors[0],
-          merchant: this.merchantCatalog,
-          store: {
-            activity: this.currentStore.activity,
-            subActivity: this.currentStore.subActivity,
-            supportEntity: this.form.get("isUnicre").value ? "acquirer" : "other",
-            referenceStore: this.currentStore.shopId,
-            supportBank: this.currentStore.supportEntity
-          },
-          packAttributes: this.list //ter em atenção se os valores são alterados à medida que vamos interagindo com a interface
-        }
-        this.logger.info("Filter sent to get commercial pack commission list: " + JSON.stringify(this.commissionFilter));
-        this.COService.ListProductCommercialPackCommission(this.packId, this.commissionFilter).then(result => {
-          this.logger.info("Get commercial pack commission list result: " + JSON.stringify(result));
-          this.commissionOptions = [];
-          if (this.currentStore.pack == null) {
-            if (result.result.length == 1) {
-              this.commissionOptions.push(result.result[0]);
-              this.chooseCommission(result.result[0].id);
+    if ((this.processId != '' && this.processId != null) && this.returned != null) {
+      this.commissionOptions = [];
+      this.chooseCommission(this.currentStore.pack.commission.commissionId);
+    } else {
+      if (this.packId != "") {
+        if (this.changedPackValue) {
+          this.changedPackValue = false;
+          this.commissionFilter = {
+            productCode: this.currentStore.productCode,
+            subproductCode: this.currentStore.subProductCode,
+            processorId: this.packs[0].processors[0],
+            merchant: this.merchantCatalog,
+            store: {
+              activity: this.currentStore.activity,
+              subActivity: this.currentStore.subActivity,
+              supportEntity: this.form.get("isUnicre").value ? "acquirer" : "other",
+              referenceStore: this.currentStore.shopId,
+              supportBank: this.currentStore.supportEntity
+            },
+            packAttributes: this.list //ter em atenção se os valores são alterados à medida que vamos interagindo com a interface
+          }
+          this.logger.info("Filter sent to get commercial pack commission list: " + JSON.stringify(this.commissionFilter));
+          this.COService.ListProductCommercialPackCommission(this.packId, this.commissionFilter).then(result => {
+            this.logger.info("Get commercial pack commission list result: " + JSON.stringify(result));
+            this.commissionOptions = [];
+            if (this.currentStore.pack == null || this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+              if (result.result.length == 1) {
+                this.commissionOptions.push(result.result[0]);
+                this.chooseCommission(result.result[0].id);
+              } else {
+                result.result.forEach(options => {
+                  this.commissionOptions.push(options);
+                });
+              }
             } else {
               result.result.forEach(options => {
                 this.commissionOptions.push(options);
               });
+              this.chooseCommission(this.currentStore.pack.commission.commissionId);
             }
-          } else {
-            result.result.forEach(options => {
-              this.commissionOptions.push(options);
-            });
-            this.chooseCommission(this.currentStore.pack.commission.commissionId);
-          }
+          });
+        }
+      } else {
+        //mandar pop-up e fechar tabulador
+        document.getElementById("flush-collapseFour").className = "accordion-collapse collapse";
+        document.getElementById("accordionButton4").className = "accordion1-button collapsed";
+        this.snackBar.open(this.translate.instant('commercialOffer.openError'), '', {
+          duration: 4000,
+          panelClass: ['snack-bar']
         });
       }
-    } else {
-      //mandar pop-up e fechar tabulador
-      document.getElementById("flush-collapseFour").className = "accordion-collapse collapse";
-      document.getElementById("accordionButton4").className = "accordion1-button collapsed";
-      this.snackBar.open(this.translate.instant('commercialOffer.openError'), '', {
-        duration: 4000,
-        panelClass: ['snack-bar']
-      });
     }
   }
 
@@ -621,12 +731,16 @@ export class CommercialOfferListComponent implements OnInit {
         this.logger.info("Get commercial pack commission result: " + JSON.stringify(res));
         this.commissionAttributeList = res.result.attributes;
         this.addCommissionFormGroups();
+        if (this.returned == 'consult')
+          this.form.disable();
       });
     } else {
       this.currentStore.pack.commission.attributes.forEach(attr => {
         this.commissionAttributeList.push(attr);
       });
       this.addCommissionFormGroups();
+      if (this.returned == 'consult')
+        this.form.disable();
     }
   }
 
@@ -681,6 +795,9 @@ export class CommercialOfferListComponent implements OnInit {
       this.form.get("terminalRegistrationNumber").setValidators(null);
     }
     this.form.get("terminalRegistrationNumber").updateValueAndValidity();
+    if (this.disableNewConfiguration) {
+      this.data.changeEquips(true);
+    }
   }
 
   changeReplicateProducts(bool: boolean) {
@@ -702,7 +819,7 @@ export class CommercialOfferListComponent implements OnInit {
       commission.minValue.finalValue = currentValue.get("commissionMin" + commission.id).value;
       commission.maxValue.finalValue = currentValue.get("commissionMax" + commission.id).value;
       commission.fixedValue.finalValue = currentValue.get("commissionFixed" + commission.id).value;
-      commission.percentageValue.finalValue = currentValue.get("commissionPercentage" + commission.id).value;
+      commission.percentageValue.finalValue = Number((currentValue.get("commissionPercentage" + commission.id).value / 100).toFixed(4));
     });
 
     //estava aqui antes os valores do changedValue()
@@ -723,18 +840,35 @@ export class CommercialOfferListComponent implements OnInit {
       }
       this.currentStore.registrationId = this.form.get("terminalRegistrationNumber")?.value?.toString();
       this.logger.info("Store data update " + JSON.stringify(this.currentStore));
-      this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.id, this.currentStore).subscribe(result => {
-        this.logger.info("Updated shop result: " + JSON.stringify(result));
-        if (this.currentIdx < (this.storesLength - 1)) {
-          this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-          this.closeAccordion();
-        } else {
-          this.data.updateData(true, 5);
-          this.logger.info("Redirecting to Info Declarativa page");
-          this.route.navigate(['info-declarativa']);
-        }
-      });
+      if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+        this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.id, this.currentStore).subscribe(result => {
+          this.logger.info("Updated shop result: " + JSON.stringify(result));
+          if (this.currentIdx < (this.storesLength - 1)) {
+            this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+            this.closeAccordion();
+          } else {
+            this.data.changeEquips(true);
+            this.data.updateData(true, 5);
+            this.logger.info("Redirecting to Info Declarativa page");
+            this.route.navigate(['info-declarativa']);
+          }
+        });
+      } else {
+        this.processService.updateShopProcess(this.processId, this.currentStore.id, this.currentStore).then(result => {
+          this.logger.info("Updated shop result: " + JSON.stringify(result.result));
+          if (this.currentIdx < (this.storesLength - 1)) {
+            this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+            this.closeAccordion();
+          } else {
+            this.data.changeEquips(true);
+            this.data.updateData(true, 5);
+            this.logger.info("Redirecting to Info Declarativa page");
+            this.route.navigate(['info-declarativa']);
+          }
+        });
+      }
     } else {
+      this.data.changeEquips(true);
       this.data.updateData(true, 5);
       this.logger.info("Redirecting to Info Declarativa page");
       this.route.navigate(['info-declarativa']);
@@ -766,7 +900,39 @@ export class CommercialOfferListComponent implements OnInit {
 
   deleteConfiguration(shopEquipment: ShopEquipment) {
     if (this.returned != 'consult') {
-      this.storeService.deleteShopEquipmentConfigurationFromSubmission(this.submissionId, this.currentStore.id, shopEquipment.id).subscribe(result => this.logger.info("Deleted shop equipment with id " + shopEquipment.id));
+      if ((this.processId != '' && this.processId != null) && this.returned != null) {
+        this.processService.deleteShopEquipmentFromProcess(this.processId, this.currentStore.id, shopEquipment.id).then(result => {
+          this.logger.info("Deleted shop equipment with id " + shopEquipment.id);
+          var index = this.storeEquipList.findIndex(equip => equip.id == shopEquipment.id);
+          if (index != -1) {
+            this.storeEquipList.splice(index, 1);
+            this.loadStoreEquips(this.storeEquipList);
+            if (!this.disableNewConfiguration && this.storeEquipList.length == 0) {
+              this.data.updateData(false, 5, 1);
+              this.data.changeEquips(false);
+            }
+            if (this.storeEquipList.length > 0) {
+              this.data.changeEquips(true);
+            }
+          }
+        });
+      } else {
+        this.storeService.deleteShopEquipmentConfigurationFromSubmission(this.submissionId, this.currentStore.id, shopEquipment.id).subscribe(result => {
+          this.logger.info("Deleted shop equipment with id " + shopEquipment.id);
+          var index = this.storeEquipList.findIndex(equip => equip.id == shopEquipment.id);
+          if (index != -1) {
+            this.storeEquipList.splice(index, 1);
+            this.loadStoreEquips(this.storeEquipList);
+            if (!this.disableNewConfiguration && this.storeEquipList.length == 0) {
+              this.data.updateData(false, 5, 1);
+              this.data.changeEquips(false);
+            }
+            if (this.storeEquipList.length > 0) {
+              this.data.changeEquips(true);
+            }
+          }
+        });
+      }
     }
   }
 
@@ -838,12 +1004,21 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   getTerminalDesc(equipSettings: EquipmentSettings[]) {
-    var found = equipSettings?.find(equip => equip.id == "AK_00017");
-    return found?.attributes[0]?.description;
+    var found = equipSettings?.find(equip => equip.id == "AK_000017");
+    if (found != undefined) {
+      return found?.attributes[0]?.description;
+    } else {
+      return '';
+    }
+
   }
 
   getCommunicationDesc(equipSettings: EquipmentSettings[]) {
-    var found = equipSettings?.find(equip => equip.id == "AK_00011");
-    return found?.attributes[0]?.description;
+    var found = equipSettings?.find(equip => equip.id == "AK_000011");
+    if (found != undefined) {
+      return found?.attributes[0]?.description;
+    } else {
+      return '';
+    }
   }
 }

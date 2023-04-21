@@ -47,18 +47,27 @@
             <p class="titulo-form-simples"></p>
           </div>
           <div class="col-6 ms-0 me-0 ps-0 pe-5">
-            <p class="titulo-form-simples mt-0">{{'searches.documentType'|translate}}</p><select
-              class="form-select campo-form-select" id="documentType" value="" formControlName="documentType">
+            <p class="titulo-form-simples mt-0">{{'searches.documentType'|translate}}</p><select (change)="changeDocType()" class="form-select campo-form-select" id="documentType" value="" formControlName="documentType">
               <option value=""></option>
               <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
                 {{docType.description}}
               </option>
             </select>
-            <p class="titulo-form-simples">{{'searches.documentNumber'|translate}}</p><input id="text3" name="text3"
-              type="text" (keypress)="numericOnly($event)" class="form-control campo_form"
-              formControlName="documentNumber">
+            <p class="titulo-form-simples">{{'searches.documentNumber'|translate}}
+              <span class="titulo-form-error" *ngIf="incorrectCC" class="titulo-form-simples-erro">
+                {{'client.incorrectCC'|translate}}
+              </span>
+              <span class="titulo-form-error" *ngIf="incorrectCCSize" class="titulo-form-simples-erro">
+                {{'client.incorrectCCSize'|translate}}
+              </span>
+              <span class="titulo-form-error" *ngIf="incorrectCCFormat" class="titulo-form-simples-erro">
+                {{'client.incorrectCCFormat'|translate}}
+              </span>
+            </p>
+            <input id="text3" name="text3" type="text" #docNumber (keypress)="numericOnly($event)" class="form-control campo_form"
+                   (keyup)="checkValidationType(docNumber.value)" formControlName="documentNumber">
             <p class="titulo-form-simples mb-1">{{'searches.orderDateUntil'|translate|uppercase}}</p><input id="text2"
-              name="text2" type="date" [min]="endDate" class="form-control campo_form" formControlName="processDateEnd">
+                                                                                                            name="text2" type="date" [min]="endDate" class="form-control campo_form" formControlName="processDateEnd">
             <p class="titulo-form-simples"></p>
           </div>
           <div class="col-12 ms-0 me-0 pb-5 ps-0 pe-0"><button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1"

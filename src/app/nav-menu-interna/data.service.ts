@@ -18,6 +18,8 @@ export class DataService {
     .set(5, undefined)
     .set(6, undefined));
 
+  private dataStake = new BehaviorSubject(new Map());
+
   historyStream$ = new BehaviorSubject<boolean>(false);
 
   //número da página em que estamos atualmente
@@ -32,6 +34,15 @@ export class DataService {
   private updateClient = new BehaviorSubject(false);
   private firstTimeStake = new BehaviorSubject(true);
   private queueName = new BehaviorSubject(null);
+  private signType = new BehaviorSubject(true);
+
+  private merchant = new BehaviorSubject(false);
+  private stakeholders = new BehaviorSubject(false);
+  private shops = new BehaviorSubject(false);
+  //usar updateComprovativos
+  private equips = new BehaviorSubject(false);
+
+
 
   currentData = this.dataSource.asObservable();
   currentPage = this.dataPage.asObservable();
@@ -45,8 +56,16 @@ export class DataService {
   currentComprovativoCC = this.comprovativoCC.asObservable();
   currentFirstTimeStake = this.firstTimeStake.asObservable();
   currentQueueName = this.queueName.asObservable();
+  currentSignType = this.signType.asObservable();
 
   historyStream = this.historyStream$.asObservable();
+
+  currentStakes = this.dataStake.asObservable();
+
+  currentMerchant = this.merchant.asObservable();
+  currentStakeholders = this.stakeholders.asObservable();
+  currentShops = this.shops.asObservable();
+  currentEquips = this.equips.asObservable();
 
   constructor(private logger: LoggerService,) { }
 
@@ -62,6 +81,12 @@ export class DataService {
     this.changeData(map);
     this.changeCurrentPage(currentPage);
     this.changeCurrentSubPage(currentSubPage);
+  }
+
+  updateStakeSignature(id: string, signType: string) {
+    let map = this.dataStake.getValue();
+    map.set(id, signType);
+    this.dataStake.next(map);
   }
 
   //mudar o valor da página atual
@@ -107,6 +132,26 @@ export class DataService {
     this.queueName.next(value);
   }
 
+  changeSignType(value: boolean) {
+    this.signType.next(value);
+  }
+
+  changeMerchant(value: boolean) {
+    this.merchant.next(value);
+  }
+
+  changeStakeholders(value: boolean) {
+    this.stakeholders.next(value);
+  }
+
+  changeShops(value: boolean) {
+    this.shops.next(value);
+  }
+
+  changeEquips(value: boolean) {
+    this.equips.next(value);
+  }
+
   reset() {
     this.dataSource = new BehaviorSubject(new Map().set(0, undefined)
       .set(1, undefined)
@@ -127,6 +172,12 @@ export class DataService {
     this.currentFirstTimeStake = this.firstTimeStake.asObservable();
     this.historyStream$.next(false);
     this.currentQueueName = this.queueName.asObservable();
+    this.currentSignType = this.signType.asObservable();
+    this.currentStakes = this.dataStake.asObservable();
+    this.currentMerchant = this.merchant.asObservable();
+    this.currentStakeholders = this.stakeholders.asObservable();
+    this.currentShops = this.shops.asObservable();
+    this.currentEquips = this.equips.asObservable();
   }
 
   ngOnDestroy() {

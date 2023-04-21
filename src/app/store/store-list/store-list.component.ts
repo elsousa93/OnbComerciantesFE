@@ -24,6 +24,8 @@ import { ComprovativosService } from '../../comprovativos/services/comprovativos
 import { DatePipe } from '@angular/common';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../logger.service';
+import { ProcessService } from '../../process/process.service';
+import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 
 @Component({
   selector: 'app-store-list',
@@ -65,6 +67,7 @@ export class StoreComponent implements AfterViewInit {
 
   updatedStoreEvent: Observable<{ store: ShopDetailsAcquiring, idx: number }>;
   storesLength: number = 0;
+  shops: boolean;
 
   ngAfterViewInit() {
 
@@ -85,6 +88,7 @@ export class StoreComponent implements AfterViewInit {
   public ibansToShow: { tipo: string, dataDocumento: string, file: File, id: string };
   queueName: string = "";
   title: string;
+  processId: string;
 
   emitRemovedStore(store) {
     this.removedStoreSubject.next(store);
@@ -94,11 +98,16 @@ export class StoreComponent implements AfterViewInit {
     this.insertedStoreSubject.next(store);
   }
 
-  constructor(private translate: TranslateService, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private authService: AuthService, private comprovativoService: ComprovativosService, private documentService: SubmissionDocumentService, private datePipe: DatePipe, private logger: LoggerService) {
+  constructor(private translate: TranslateService, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private authService: AuthService, private comprovativoService: ComprovativosService, private documentService: SubmissionDocumentService, private datePipe: DatePipe, private logger: LoggerService, private processService: ProcessService, private processNrService: ProcessNumberService) {
+    this.data.currentShops.subscribe(shops => this.shops = shops);
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.initializeForm();
 
-    this.data.updateData(false, 3, 1);
+    if (!this.shops) {
+      this.data.updateData(false, 3, 1);
+    } else {
+      this.data.updateData(true, 3, 1);
+    }
   }
 
   initializeForm() {
@@ -131,6 +140,7 @@ export class StoreComponent implements AfterViewInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
     this.subscription = this.data.currentQueueName.subscribe(queueName => {
       if (queueName != null) {
         this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
@@ -229,39 +239,54 @@ export class StoreComponent implements AfterViewInit {
       var bankStores = this.editStores.controls["bankStores"];
       bankStores.get("supportBank").setValue(this.currentStore.bank.bank.bank);
       bankStores.get("bankInformation").setValue(this.currentStore.bank.useMerchantBank);
-
+      this.storeIbanComponent.isIBAN(this.currentStore.bank.useMerchantBank);
       if (!this.currentStore.bank.useMerchantBank) {
-        this.storeIbanComponent.isIBAN(this.currentStore.bank.useMerchantBank);
         bankStores.get("bankIban").setValue(this.currentStore.bank.bank.iban);
-        context.documentService.GetDocumentImage(context.submissionId, context.currentStore.documents[0].id).then(async res => {
-          context.logger.info("Get document image result: " + JSON.stringify(res));
-          res.blob().then(data => {
-            var blob = new Blob([data], { type: 'application/pdf' });
-            var file = new File([blob], context.translate.instant('supportingDocuments.checklistModal.IBAN'), { 'type': 'application/pdf' });
-            context.ibansToShow = {
-              dataDocumento: context.currentStore.documents[0].validUntil == null ? "desconhecido" : context.datePipe.transform(context.currentStore.documents[0].validUntil, 'dd-MM-yyyy'),
-              file: file,
-              id: context.currentStore.documents[0].id,
-              tipo: context.translate.instant('supportingDocuments.checklistModal.IBAN')
-            };
-          }); 
-        });
-
+        if (this.returned == null || this.returned == 'edit' && (this.processId == '' || this.processId == null)) {
+          context.documentService.GetDocumentImage(context.submissionId, context.currentStore?.documents[0]?.id).then(async res => {
+            context.logger.info("Get document image result: " + JSON.stringify(res));
+            res.blob().then(data => {
+              var blob = new Blob([data], { type: 'application/pdf' });
+              var file = new File([blob], context.translate.instant('supportingDocuments.checklistModal.IBAN'), { 'type': 'application/pdf' });
+              context.ibansToShow = {
+                dataDocumento: context.currentStore.documents[0].validUntil == null ? "desconhecido" : context.datePipe.transform(context.currentStore.documents[0].validUntil, 'dd-MM-yyyy'),
+                file: file,
+                id: context.currentStore.documents[0].id,
+                tipo: context.translate.instant('supportingDocuments.checklistModal.IBAN')
+              };
+            });
+          });
+        } else {
+          context.processService.getDocumentImageFromProcess(context.processId, context.currentStore?.documents[0]?.id).then(async res => {
+            context.logger.info("Get document image result: " + JSON.stringify(res));
+            res.blob().then(data => {
+              var blob = new Blob([data], { type: 'application/pdf' });
+              var file = new File([blob], context.translate.instant('supportingDocuments.checklistModal.IBAN'), { 'type': 'application/pdf' });
+              context.ibansToShow = {
+                dataDocumento: context.currentStore.documents[0].validUntil == null ? "desconhecido" : context.datePipe.transform(context.currentStore.documents[0].validUntil, 'dd-MM-yyyy'),
+                file: file,
+                id: context.currentStore.documents[0].id,
+                tipo: context.translate.instant('supportingDocuments.checklistModal.IBAN')
+              };
+            });
+          });
+        }
+      } else {
+        this.ibansToShow = null;
       }
       setTimeout(() => {
         var productStores = this.editStores.controls["productStores"];
-
         productStores.get("solutionType").setValue(this.currentStore.productCode);
         this.productSelectionComponent.chooseSolutionAPI(this.currentStore.productCode);
         productStores.get("subProduct").setValue(this.currentStore.subProductCode);
         this.productSelectionComponent.chooseSubSolutionAPI(this.currentStore.subProductCode);
         productStores.get("url")?.setValue(this.currentStore.website);
-      }, 1000);
+      }, 500);
     }
   }
 
   deleteStore() {
-    if (this.currentStore != null) {
+    if (this.currentStore != null && this.returned != 'consult') {
       this.storeService.deleteSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id).subscribe(result => {
         this.logger.info("Deleted shop result: " + JSON.stringify(result));
         this.resetForm();
@@ -333,44 +358,83 @@ export class StoreComponent implements AfterViewInit {
 
         if (addStore) {
           this.logger.info("Shop to add: " + JSON.stringify(this.currentStore));
-          this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
-            this.logger.info("Added shop result: " + JSON.stringify(result));
-            this.currentStore.id = result["id"];
-            this.addDocumentToShop(result["id"], this.currentStore);
-            this.emitInsertedStore(this.currentStore);
-            this.resetForm();
-            this.currentStore = null;
-            this.currentIdx = -2;
-          });
-        } else {
-
-          this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
-            this.logger.info("Updated shop result: " + JSON.stringify(result));
-            if (isEditButton) {
-              this.addDocumentToShop(this.currentStore.id, this.currentStore);
+          if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+            this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
+              this.logger.info("Added shop result: " + JSON.stringify(result));
+              this.currentStore.id = result["id"];
+              this.addDocumentToShop(result["id"], this.currentStore);
+              this.emitInsertedStore(this.currentStore);
               this.resetForm();
               this.currentStore = null;
               this.currentIdx = -2;
-            } else {
-              if (this.currentIdx < (this.storesLength - 1)) {
-                this.addDocumentToShop(this.currentStore.id, this.currentStore);
-                this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-                this.resetForm();
-              } else {
+            });
+          } else {
+            this.processService.addShopToProcess(this.processId, this.currentStore).then(result => {
+              this.logger.info("Added shop result: " + JSON.stringify(result.result));
+              this.currentStore.id = result.result["id"];
+              this.addDocumentToShop(result.result["id"], this.currentStore);
+              this.emitInsertedStore(this.currentStore);
+              this.resetForm();
+              this.currentStore = null;
+              this.currentIdx = -2;
+            });
+          }
+        } else {
+          if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+            this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
+              this.logger.info("Updated shop result: " + JSON.stringify(result));
+              if (isEditButton) {
                 this.addDocumentToShop(this.currentStore.id, this.currentStore);
                 this.resetForm();
                 this.currentStore = null;
                 this.currentIdx = -2;
-                this.logger.info("Redirecting to Comprovativos page");
-                this.data.updateData(true, 3);
-                this.route.navigate(['comprovativos']);
+              } else {
+                if (this.currentIdx < (this.storesLength - 1)) {
+                  this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                  this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                  this.resetForm();
+                } else {
+                  this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                  this.resetForm();
+                  this.currentStore = null;
+                  this.currentIdx = -2;
+                  this.data.changeShops(true);
+                  this.logger.info("Redirecting to Comprovativos page");
+                  this.data.updateData(true, 3);
+                  this.route.navigate(['comprovativos']);
+                }
               }
-            }
-          });
+            });
+          } else {
+            this.processService.updateShopProcess(this.processId, this.currentStore.id, this.currentStore).then(result => {
+              if (isEditButton) {
+                this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                this.resetForm();
+                this.currentStore = null;
+                this.currentIdx = -2;
+              } else {
+                if (this.currentIdx < (this.storesLength - 1)) {
+                  this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                  this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                  this.resetForm();
+                } else {
+                  this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                  this.resetForm();
+                  this.currentStore = null;
+                  this.currentIdx = -2;
+                  this.data.changeShops(true);
+                  this.logger.info("Redirecting to Comprovativos page");
+                  this.data.updateData(true, 3);
+                  this.route.navigate(['comprovativos']);
+                }
+              }
+            });
+          }
         }
 
       } else {
         if (this.currentStore == null) {
+          this.data.changeShops(true);
           this.logger.info("Redirecting to Comprovativos page");
           this.data.updateData(true, 3);
           this.route.navigate(['comprovativos']);
@@ -378,6 +442,7 @@ export class StoreComponent implements AfterViewInit {
       }
       this.onActivate();
     } else {
+      this.data.changeShops(true);
       this.logger.info("Redirecting to Comprovativos page");
       this.data.updateData(true, 3);
       this.route.navigate(['comprovativos']);
@@ -399,13 +464,26 @@ export class StoreComponent implements AfterViewInit {
 
   getStoresListLength(length) {
     this.storesLength = length;
+    if (this.storesLength == 0) {
+      this.data.updateData(false, 3, 1);
+      this.data.changeShops(false);
+    } else {
+      this.data.changeShops(true);
+    }
   }
 
   fetchStartingInfo() {
-    this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
-      this.logger.info("Get client by id result: " + JSON.stringify(client));
-      this.submissionClient = client;
-    });
+    if ((this.processId != '' && this.processId != null) && this.returned != null) {
+      this.processService.getMerchantFromProcess(this.processId).subscribe(res => {
+        this.logger.info("Get process client by id result: " + JSON.stringify(res));
+        this.submissionClient = res;
+      });
+    } else {
+      this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
+        this.logger.info("Get client by id result: " + JSON.stringify(client));
+        this.submissionClient = client;
+      });
+    }
   }
 
   onActivate() {
@@ -447,33 +525,41 @@ export class StoreComponent implements AfterViewInit {
   }
 
   addDocumentToShop(storeId: string, store: ShopDetailsAcquiring) {
-    if (this.ibansToShow != null || store.bank.useMerchantBank == false) {
+    if (this.ibansToShow != null && store.bank.useMerchantBank == false) {
       if (store?.documents?.length == 0 || store.documents == null) {
-        //if (store.documents[0].id != this.ibansToShow.id) { 
-          var context = this;
-          this.comprovativoService.readBase64(this.ibansToShow.file).then((data) => {
-            var docToSend: PostDocument = {
-              "documentType": "0071",
-              "documentPurpose": "BankAccount",
-              "file": {
-                "fileType": "PDF",
-                "binary": data.split(',')[1]
-              },
-              "validUntil": null,
-              "data": {}
-            }
-            //context.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(res => {
-            //  store.bank.bank.iban = res.id;
-              context.logger.info("Document to add to submission: " + JSON.stringify(docToSend));
-              this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), storeId, docToSend).subscribe(result => {
-                context.logger.info("Added document to shop result: " + JSON.stringify(result));
-                //context.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), storeId, store).subscribe(res => {
-                //  context.logger.info("Updated store result: " + JSON.stringify(res)); 
-                //});
-              });
-            //})
-          })
-        //}
+        var context = this;
+        this.comprovativoService.readBase64(this.ibansToShow.file).then((data) => {
+          var docToSend: PostDocument = {
+            "documentType": "0071",
+            "documentPurpose": "BankAccount",
+            "file": {
+              "fileType": "PDF",
+              "binary": data.split(',')[1]
+            },
+            "validUntil": null,
+            "data": {}
+          }
+          context.logger.info("Document to add to submission: " + JSON.stringify(docToSend));
+          if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+            this.documentService.SubmissionPostDocumentToShop(localStorage.getItem("submissionId"), storeId, docToSend).subscribe(result => {
+              context.logger.info("Added document to shop result: " + JSON.stringify(result));
+              if (store?.documents == null) {
+                store.documents = [];
+              }
+              store?.documents?.push({ id: result.id, documentType: result.type });
+              context.ibansToShow = null;
+            });
+          } else {
+            this.processService.addProcessShopDocument(context.processId, storeId, docToSend).then(result => {
+              context.logger.info("Added document to shop result: " + JSON.stringify(result.result));
+              if (store?.documents == null) {
+                store.documents = [];
+              }
+              store?.documents?.push({ id: result.result.id, documentType: result.result.type });
+              context.ibansToShow = null;
+            });
+          }
+        })
       }
     }
   }

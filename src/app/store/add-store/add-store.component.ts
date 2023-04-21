@@ -42,7 +42,7 @@ export class AddStoreComponent implements OnInit {
   public map: Map<number, boolean>;
   public currentPage: number;
   public subscription: Subscription;
-  public isComercialCentreStore: boolean = null;
+  public isComercialCentreStore: boolean = false;
   private baseUrl;
   public replicateAddress: boolean = true;
   formStores!: FormGroup;
@@ -214,7 +214,7 @@ export class AddStoreComponent implements OnInit {
   }
 
   resetIsInsideCommercialCenter() {
-    this.isComercialCentreStore = null;
+    this.isComercialCentreStore = false;
     this.foundComercialCentre = false;
     this.showError = false;
     this.noAddress = false;
@@ -262,7 +262,7 @@ export class AddStoreComponent implements OnInit {
     var currentCountry = this.formStores.get('countryStore').value;
     this.formStores.get('addressStore').setValue('');
     this.formStores.get('localeStore').setValue('');
-    this.isComercialCentreStore = null;
+    this.isComercialCentreStore = false;
     this.foundComercialCentre = false;
     this.showError = false;
     this.noAddress = false;
@@ -338,7 +338,7 @@ export class AddStoreComponent implements OnInit {
       localeStore: new FormControl(''),
       addressStore: new FormControl(''),
       replicate: new FormControl(true, Validators.required),
-      commercialCenter: new FormControl(this.isComercialCentreStore, Validators.required)
+      commercialCenter: new FormControl(this.isComercialCentreStore, Validators.required) 
     })
     this.formStores.get("activityStores").valueChanges.subscribe(v => {
       this.onActivitiesSelected();
@@ -389,13 +389,16 @@ export class AddStoreComponent implements OnInit {
   }
 
   onActivitiesSelected() {
+    this.formStores.get("subactivityStore").setValue('');
+    this.subActivities = [];
+    this.subActivity = [];
     if (!this.clientHasCAE) {
       var exists = false;
       this.activities.forEach(act => {
         var actToSearch = this.formStores.get('activityStores').value;
         if (actToSearch == act.activityCode) {
           exists = true;
-          this.subActivities = act.subActivities;
+          this.subActivities = act.subActivities.sort((a, b) => a.subActivityDescription > b.subActivityDescription ? 1 : -1);
         }
       })
       if (!exists) {
@@ -407,7 +410,7 @@ export class AddStoreComponent implements OnInit {
         var actToSearch = this.formStores.get('activityStores').value;
         if (actToSearch == act.activityCode) {
           exists = true;
-          this.subActivity = act.subActivities;
+          this.subActivity = act.subActivities.sort((a, b) => a.subActivityDescription > b.subActivityDescription ? 1 : -1);
         }
       })
       if (!exists) {

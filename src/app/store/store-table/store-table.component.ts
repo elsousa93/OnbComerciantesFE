@@ -10,6 +10,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { LoggerService } from '../../logger.service';
+import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
+import { ProcessService } from '../../process/process.service';
+import { QueuesService } from '../../queues-detail/queues.service';
 
 @Component({
   selector: 'app-store-table',
@@ -59,8 +62,9 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   subActivities: ShopSubActivities[];
 
   banks: Bank[];
+  processId: string;
 
-  constructor(private submissionService: SubmissionService, private storeService: StoreService, private translate: TranslateService, private tableInfo: TableInfoService, private logger: LoggerService) {
+  constructor(private submissionService: SubmissionService, private storeService: StoreService, private translate: TranslateService, private tableInfo: TableInfoService, private logger: LoggerService, private processNrService: ProcessNumberService, private queuesInfo: QueuesService) {
     this.fetchActivities();
   }
 
@@ -124,6 +128,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   ngOnInit(): void {
     this.returned = localStorage.getItem("returned");
+    this.processNrService.processId.subscribe(id => this.processId = id);
     this.getStoreList();
 
     if (this.deleteStoreEvent != null) {
@@ -174,45 +179,42 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   getStoreListFromProcess() {
     var length = 0;
-
+    var context = this;
     return new Promise((resolve, reject) => {
-      if (this.returned != null) {
-        this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
-          this.logger.info("Get submission by process number result: " + JSON.stringify(result));
-          this.storeService.getSubmissionShopsList(result.result[0].submissionId).then(resul => {
-            this.logger.info("Get all shops from submission result: " + JSON.stringify(result));
-            var shops = resul.result;
-            var totalLength = shops.length;
-            shops.forEach(val => {
-              this.storeService.getSubmissionShopDetails(result.result[0].submissionId, val.id).then(res => {
-                this.logger.info("Get shop from submission result: " + JSON.stringify(result));
-                var shop = res.result;
-                var index = this.storesList.findIndex(store => store.shopId == shop.shopId);
-                if (index == -1) // só adicionamos a Loja caso esta ainda n exista na lista
-                  this.storesList.push(shop);
-                length++;
-                if (length === totalLength)
-                  resolve(null);
-              });
-            });
-          })
+      this.queuesInfo.getProcessShopsList(context.processId).then(result => {
+        this.logger.info("Get all shops from process result: " + JSON.stringify(result));
+        var shops = result.result;
+        var totalLength = shops.length;
+        shops.forEach(value => {
+          this.queuesInfo.getProcessShopDetails(context.processId, value.id).then(res => {
+            this.logger.info("Get shop from process result: " + JSON.stringify(result));
+            var shop = res.result;
+            this.storesList.push(shop);
+            length++;
+            if (length === totalLength)
+              resolve(null);
+          });
         });
-      } else {
-        resolve(null);
-      }
+      })
     });
   }
 
   getStoreList() {
-    //Ir buscar as lojas que já se encontram associadas à submissão em que nos encontramos, ou seja, se adicionarmos uma submissão nova
-    this.getStoreListFromSubmission().then(result => {
+    if ((this.processId != '' && this.processId != null) && this.returned != null) {
       this.getStoreListFromProcess().then(result => {
         this.loadStores(this.storesList);
         this.listLengthEmitter.emit(this.storesList.length);
         if (this.storesList.length > 0)
           this.emitSelectedStore(this.storesList[0], 0);
-      })
-    });
+      });
+    } else {
+      this.getStoreListFromSubmission().then(result => {
+        this.loadStores(this.storesList);
+        this.listLengthEmitter.emit(this.storesList.length);
+        if (this.storesList.length > 0)
+          this.emitSelectedStore(this.storesList[0], 0);
+      });
+    }
   }
 
   emitSelectedStore(store, idx) {

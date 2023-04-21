@@ -33,7 +33,7 @@
             href="#" data-bs-target="#navTabs1_1" role="tab" aria-controls="navTabs1_1"
             aria-selected="true">{{'acceptance.detail'|translate}}</a></li>
         <li class="nav-item_x"><a class="nav-link" id="navTabs1_2_tab" data-bs-toggle="tab" href="#"
-            data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2"
+            data-bs-target="#navTabs1_2" role="tab" aria-controls="navTabs1_2" (click)="goToHistoryTab()"
             aria-selected="false">{{'acceptance.historic'|translate}}</a></li>
         <li class="nav-item_x"></li>
         <li class="nav-item_x"></li>
@@ -79,38 +79,31 @@
                 <div class="row mt-0 ms-0 me-0 pt-0">
                   <div class="col-12 mt-4 pt-0 ps-0 pe-0">
                     <div class="table-responsive mb-5 pb-4">
-                      <table class="table">
-                        <thead class="text-primary table-primary">
-                          <tr class="table-white text-primary">
-                            <th scope="col" class="text-center text-primary bg-light table-white">
-                              {{'acceptance.returnReason0'|translate}}
-                            </th>
-                            <th scope="col" class="text-center bg-white">{{'acceptance.returnReason2'|translate}}</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr *ngFor="let issue of issues?.process">
-                            <td class="text-primary text-center">Processo</td>
-                            <td class="text-primary text-start">{{issue?.issueDescription}}</td>
-                          </tr>
-                          <tr>
-                            <td class="text-primary text-center">{{issues?.merchant?.merchant?.name}}</td>
-                            <td class="text-primary text-start">{{issues?.merchant?.issues[0]?.issueDescription}}</td>
-                          </tr>
-                          <tr *ngFor="let issue of issues?.stakeholders">
-                            <td class="text-primary text-center">{{issue?.stakeholder?.name}}</td>
-                            <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
-                          </tr>
-                          <tr *ngFor="let issue of issues?.shops">
-                            <td class="text-primary text-center">{{issue?.shop?.name}}</td>
-                            <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
-                          </tr>
-                          <tr *ngFor="let issue of issues?.documents">
-                            <td class="text-primary text-center">{{issue?.document?.name}}</td>
-                            <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
-                          </tr>
-                        </tbody>
-                      </table>
+                      <mat-table [dataSource]="returnMat" class="table-responsive" matSort #returnSort="matSort" style="margin-left: auto; margin-right: auto; width: 95%;">
+                        <ng-container matColumnDef="name">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                            {{'acceptance.returnReasons'|translate|uppercase}}
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row"> {{row["name"]}} </mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="type">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                            {{'acceptance.returnReason1'|translate|uppercase}}
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row">{{(row.type == null || row.type == '') ? '-' : row.type}}</mat-cell>
+                        </ng-container>
+                        <ng-container matColumnDef="issueDescription">
+                          <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                            {{'acceptance.returnReason2'|translate|uppercase}}
+                          </mat-header-cell>
+                          <mat-cell *matCellDef="let row"> {{row.issueDescription}} </mat-cell>
+                        </ng-container>
+                        <mat-header-row *matHeaderRowDef="returnColumns"></mat-header-row>
+                        <mat-row *matRowDef="let row; let idx = index; columns: returnColumns;">
+                        </mat-row>
+                      </mat-table>
+                      <mat-paginator #paginatorReturn [pageSizeOptions]="[3, 10, 20]" showFirstLastButtons>
+                      </mat-paginator>
                     </div>
                   </div>
                 </div>
@@ -212,28 +205,44 @@
           <div class="container-fluid mt-0 ps-3 pe-3">
             <div class="row">
               <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
-                <div class="table-responsive mb-5">
-                  <table class="table">
-                    <thead class="text-primary table-primary">
-                      <tr class="table-white text-primary">
-                        <th scope="col" class="text-center text-primary bg-light table-white">
-                          {{'acceptance.requestNumber'|translate}}</th>
-                        <th scope="col" class="text-center bg-light">{{'acceptance.state'|translate}}</th>
-                        <th scope="col" class="text-center bg-white">{{'acceptance.stateDate'|translate}}</th>
-                        <th scope="col" class="text-center bg-white">{{'acceptance.user'|translate}}</th>
-                        <th scope="col" class="text-center bg-white">{{'acceptance.comments'|translate}}</th>
-                      </tr>
-                    </thead>
-                    <tbody *ngIf="ready">
-                      <tr *ngFor="let history of processHistoryItems?.items" (click)="getHistoryIssueDetails(history.historyGuid)" [ngClass]="{'row-selected': history.historyGuid == selectedHistoryGuid}">
-                        <td class="text-primary text-center">{{(processNumber == null) ? '-' : process.processNumber}}</td>
-                        <td class="text-primary text-center">{{history.processState}}</td>
-                        <td class="text-primary text-center">{{history.whenStarted | date: 'yyyy-MM-dd HH:mm'}}</td>
-                        <td class="text-primary text-center">{{history.whoStarted}}</td>
-                        <td class="text-primary text-center">{{(history.observations == null || history.observations == "") ? "-" : history.observations}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="table-responsive mb-5 pb-4">
+                  <mat-table [dataSource]="historyMat" class="table-responsive" matSort #historySort="matSort" style="margin-left: auto; margin-right: auto; width: 95%;">
+                    <ng-container matColumnDef="processNumber">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                        {{'acceptance.requestNumber'|translate}}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row"> {{(processNumber == null) ? '-' : process.processNumber}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="processState">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                        {{'acceptance.state'|translate}}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row">{{row.processState}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="whenStarted">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                        {{'acceptance.stateDate'|translate}}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row"> {{row.whenStarted | date: 'yyyy-MM-dd HH:mm'}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="whoStarted">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                        {{'acceptance.user'|translate}}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row"> {{row.whoStarted}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="observations">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                        {{'acceptance.comments'|translate}}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row"> {{(row.observations == null || row.observations == "") ? "-" : row.observations}} </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="historyColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; let idx = index; columns: historyColumns;" (click)="getHistoryIssueDetails(row.historyGuid)" [ngClass]="{'row-selected': row.historyGuid == selectedHistoryGuid}">
+                    </mat-row>
+                  </mat-table>
+                  <mat-paginator #paginatorHistory [pageSizeOptions]="[3, 10, 20]" showFirstLastButtons>
+                  </mat-paginator>
                 </div>
               </div>
               <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
@@ -242,40 +251,32 @@
                     style="height: 30px; vertical-align: bottom;">-->
                   &nbsp;{{'acceptance.returnReasons'|translate|uppercase}}
                 </h3>
-                <div class="table-responsive mb-5">
-                  <table class="table">
-                    <thead class="text-primary table-primary">
-                      <tr class="table-white text-primary">
-                        <th scope="col" class="text-center text-primary bg-light table-white">
-                          {{'acceptance.returnReason0'|translate}}</th>
-                        <th scope="col" class="text-center bg-light">{{'acceptance.returnReason1'|translate}}</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr *ngFor="let issue of selectedIssue?.process">
-                        <td class="text-primary text-center">Processo</td>
-                        <td class="text-primary text-start">{{issue?.issueDescription}}</td>
-                      </tr>
-                      <tr>
-                        <td class="text-primary text-center">
-                          {{ selectedIssue?.merchant?.merchant?.name }}
-                        </td>
-                        <td class="text-primary text-start">{{selectedIssue?.merchant?.issues[0]?.issueDescription}}</td>
-                      </tr>
-                      <tr *ngFor="let issue of selectedIssue?.stakeholders">
-                        <td class="text-primary text-center">{{issue?.stakeholder?.name}}</td>
-                        <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
-                      </tr>
-                      <tr *ngFor="let issue of selectedIssue?.shops">
-                        <td class="text-primary text-center">{{issue?.shop?.name}}</td>
-                        <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
-                      </tr>
-                      <tr *ngFor="let issue of selectedIssue?.documents">
-                        <td class="text-primary text-center">{{issue?.document?.name}}</td>
-                        <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
-                      </tr>
-                    </tbody>
-                  </table>
+                <div class="table-responsive mb-5 pb-4">
+                  <mat-table [dataSource]="returnSelectedMat" class="table-responsive" matSort #returnSelectedSort="matSort" style="margin-left: auto; margin-right: auto; width: 95%;">
+                    <ng-container matColumnDef="name">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                        {{'acceptance.returnReasons'|translate|uppercase}}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row"> {{row["name"]}} </mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="type">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                        {{'acceptance.returnReason1'|translate|uppercase}}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row">{{(row.type == null || row.type == '') ? '-' : row.type}}</mat-cell>
+                    </ng-container>
+                    <ng-container matColumnDef="issueDescription">
+                      <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                        {{'acceptance.returnReason2'|translate|uppercase}}
+                      </mat-header-cell>
+                      <mat-cell *matCellDef="let row"> {{row.issueDescription}} </mat-cell>
+                    </ng-container>
+                    <mat-header-row *matHeaderRowDef="returnSelectedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; let idx = index; columns: returnSelectedColumns;">
+                    </mat-row>
+                  </mat-table>
+                  <mat-paginator #paginatorSelectedReturn [pageSizeOptions]="[3, 10, 20]" showFirstLastButtons>
+                  </mat-paginator>
                 </div>
               </div>
               <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-4 ps-5 pe-5">

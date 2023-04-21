@@ -50,7 +50,7 @@
             <div class="row" *ngIf="!clientHasCAE">
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">{{'stores.activity'|translate}}*</p>
-                <select class="form-select campo-form-select" id="activityStores" formControlName="activityStores">
+                <select class="form-select campo-form-select" id="activityStores" name="activityStores" formControlName="activityStores">
                   <option *ngFor="let activity of activities" value={{activity.activityCode}}>
                     {{activity.activityDescription}}
                   </option>
@@ -64,7 +64,8 @@
               </div>
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">{{'stores.subActivity'|translate}}*</p>
-                <select class="form-select campo-form-select" id="subactivityStore" formControlName="subactivityStore">
+                <select class="form-select campo-form-select" id="subactivityStore" name="subactivityStore" formControlName="subactivityStore">
+                  <option value="" hidden></option>
                   <option *ngFor="let subActivity of subActivities" value={{subActivity.subActivityCode}}>
                     {{subActivity.subActivityDescription}}
                   </option>
@@ -80,7 +81,7 @@
             <div class="row" *ngIf="clientHasCAE">
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">{{'stores.activity'|translate}}*</p>
-                <select class="form-select campo-form-select" id="activityStores" formControlName="activityStores">
+                <select class="form-select campo-form-select" id="activityStores" name="activityStores" formControlName="activityStores">
                   <option *ngFor="let activity of activity" value={{activity.activityCode}}>
                     {{activity.activityDescription}}
                   </option>
@@ -94,7 +95,8 @@
               </div>
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">{{'stores.subActivity'|translate}}*</p>
-                <select class="form-select campo-form-select" id="subactivityStore" formControlName="subactivityStore">
+                <select class="form-select campo-form-select" id="subactivityStore" name="subactivityStore" formControlName="subactivityStore">
+                  <option value="" hidden></option>
                   <option *ngFor="let subActivity of subActivity" value={{subActivity.subActivityCode}}>
                     {{subActivity.subActivityDescription}}
                   </option>
@@ -118,14 +120,14 @@
                       <input class="form-check-input" type="radio" formControlName="replicate" [value]=true
                         id="replicate" name="replicate" (click)="chooseAddress(true)"><label
                         class="form-check-label radio pe-5"
-                        for="replicateAddress">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                        >{{'generalKeywords.yes'|translate|uppercase}}</label>
                     </div>
                   </span><span class="navbar-text">
                     <div class="form-check">
                       <input class="form-check-input" type="radio" formControlName="replicate" [value]=false
                         id="replicate" name="replicate" (click)="chooseAddress(false)"><label
                         class="form-check-label radio"
-                        for="replicateAddress">{{'generalKeywords.no'|translate|uppercase}}</label>
+                        >{{'generalKeywords.no'|translate|uppercase}}</label>
                     </div>
                   </span>
                 </nav>
@@ -208,14 +210,14 @@
                     <div class="form-check">
                       <input formControlName="commercialCenter" (click)="comercialCentre(true)" class="form-check-input"
                              type="radio" [value]=true id="radio2" name="commercialCenter">
-                      <label class="form-check-label radio pe-5" for="radio2"
+                      <label class="form-check-label radio pe-5" 
                              wappler-command="editContent">{{'generalKeywords.yes'|translate|uppercase}}</label>
                     </div>
                   </span><span class="navbar-text">
                     <div class="form-check">
                       <input formControlName="commercialCenter" (click)="comercialCentre(false)"
                              class="form-check-input" type="radio" [value]=false id="radio2" name="commercialCenter">
-                      <label class="form-check-label radio" for="radio2"
+                      <label class="form-check-label radio" 
                              wappler-command="editContent">{{'generalKeywords.no'|translate|uppercase}}</label>
                     </div>
                   </span>

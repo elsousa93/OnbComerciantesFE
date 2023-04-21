@@ -24,6 +24,9 @@ import { DocumentSearchType, LegalNature } from '../table-info/ITable-info.inter
 import { StoreService } from '../store/store.service';
 import { ShopDetailsAcquiring } from '../store/IStore.interface';
 import { IStakeholders } from '../stakeholders/IStakeholders.interface';
+import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
+import { ProcessService } from '../process/process.service';
+import { QueuesService } from '../queues-detail/queues.service';
 @Component({
   selector: 'app-comprovativos',
   templateUrl: './comprovativos.component.html',
@@ -91,6 +94,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   merchantOutbound: any = null;
   stakeOutbound: any = null;
   shopOutbound: any = null;
+  processId: string;
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number, download: boolean = false) {
     const byteCharacters = atob(b64Data);
@@ -126,7 +130,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, public http: HttpClient, private route: Router, private router: ActivatedRoute,
-    private modalService: BsModalService, private datepipe: DatePipe, private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService, private authService: AuthService, private shopService: StoreService) {
+    private modalService: BsModalService, private datepipe: DatePipe, private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService, private authService: AuthService, private shopService: StoreService, private processNrService: ProcessNumberService, private processService: ProcessService, private queuesInfo: QueuesService) {
     var context = this;
     this.ngOnInit();
     const now = new Date();
@@ -146,16 +150,14 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       context.documentPurposes = result;
     });
 
-    let promise = new Promise((resolve, reject) => {
-      var storeLength = 0;
-      var stakeLength = 0;
-      var length = 0;
+    if (this.processId != '' && this.processId != null && this.returned != null) {
+      let promise = new Promise((resolve, reject) => {
+        var storeLength = 0;
+        var stakeLength = 0;
+        var submissionDocLength = 0;
+        var length = 0;
 
-      this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
-        this.submission = result.result;
-        this.logger.info('Get current submission: ' + JSON.stringify(result));
-
-        this.clientService.GetClientByIdAcquiring(this.submissionId).then(c => {
+        this.processService.getMerchantFromProcess(this.processId).subscribe(c => {
           this.submissionClient = c;
           this.getLegalNatureDescription();
           this.logger.info('Get client: ' + JSON.stringify(c));
@@ -173,119 +175,253 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
             });
           });
 
-          stakeLength = context.submission.stakeholders.length;
-          context.submission.stakeholders.forEach(stake => {
-            context.stakeholderService.GetStakeholderFromSubmission(context.submission.id, stake.id, /*"8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag=="*/).then(result => {
-              context.logger.info("Get stakeholder outbound: " + JSON.stringify(result));
-              var stake = result.result;
-              context.stakeholdersList.push(stake);
-              length++;
-              stake.documents.forEach(val => {
-                context.compsToShow.push({
-                  id: val.id,
-                  type: "pdf",
-                  expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
-                  stakeholder: stake.fullName,
-                  status: "não definido",
-                  uploadDate: latest_date,
-                  file: val?.id,
-                  documentPurpose: val.purposes[0],
-                  documentType: val.documentType
+          context.processService.getStakeholdersFromProcess(context.processId).then(result => {
+            var stakes = result.result;
+            stakeLength = stakes.length;
+            stakes.forEach(stake => {
+              context.processService.getStakeholderByIdFromProcess(context.processId, stake.id).subscribe(result => {
+                context.logger.info("Get stakeholder outbound: " + JSON.stringify(result));
+                var stake = result;
+                context.stakeholdersList.push(stake);
+                length++;
+                stake.documents.forEach(val => {
+                  context.compsToShow.push({
+                    id: val.id,
+                    type: "pdf",
+                    expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                    stakeholder: stake.fullName,
+                    status: "não definido",
+                    uploadDate: latest_date,
+                    file: val?.id as any,
+                    documentPurpose: val.purposes[0],
+                    documentType: val.documentType
+                  });
                 });
+                if (length === storeLength + stakeLength + submissionDocLength) {
+                  resolve(null);
+                }
+              }, error => {
+                this.logger.error(error, "", "Erro getting stakeholder");
               });
-              if (length === storeLength + stakeLength) {
-                resolve(null);
-              }
-            }, error => {
-              this.logger.error(error, "", "Erro getting stakeholder");
             });
           });
 
-          storeLength = context.submission.shops.length;
-          context.submission.shops.forEach(function (value, index) {
-            context.shopService.getSubmissionShopDetails(context.submissionId, value.id).then(shop => {
-              context.logger.info("Get shop from submission: " + JSON.stringify(shop));
-              context.shopList.push(shop.result);
-              length++;
-              if (shop.result.documents.length > 0) {
-                context.compsToShow.push({
-                  id: shop.result.documents[0].id,
-                  type: "pdf",
-                  expirationDate: context.datepipe.transform(shop.result.documents[0].validUntil, 'dd-MM-yyyy'),
-                  stakeholder: shop.result.name,
-                  status: "não definido",
-                  uploadDate: latest_date,
-                  file: shop.result.documents[0]?.id,
-                  documentPurpose: shop.result.documents[0].purposes[0],
-                  documentType: shop.result.documents[0].documentType
-                });
-              }
-              if (length === storeLength + stakeLength) {
-                resolve(null);
-              }
+          context.queuesInfo.getProcessShopsList(context.processId).then(res => {
+            var shops = res.result;
+            storeLength = shops.length;
+            shops.forEach(function (value, index) {
+              context.queuesInfo.getProcessShopDetails(context.processId, value.id).then(shop => {
+                context.logger.info("Get shop from submission: " + JSON.stringify(shop));
+                context.shopList.push(shop.result);
+                length++;
+                if (shop.result.documents.length > 0) {
+                  context.compsToShow.push({
+                    id: shop.result.documents[0].id,
+                    type: "pdf",
+                    expirationDate: context.datepipe.transform(shop.result.documents[0].validUntil, 'dd-MM-yyyy'),
+                    stakeholder: shop.result.name,
+                    status: "não definido",
+                    uploadDate: latest_date,
+                    file: shop.result.documents[0]?.id,
+                    documentPurpose: shop.result.documents[0].purposes[0],
+                    documentType: shop.result.documents[0].documentType
+                  });
+                }
+                if (length === storeLength + stakeLength + submissionDocLength) {
+                  resolve(null);
+                }
+              });
             });
           });
+
+          context.processService.getDocumentFromProcess(context.processId).subscribe(document => {
+            document.forEach(function (value, index) {
+              context.processService.getDocumentDetailsFromProcess(context.submissionId, value.id).subscribe(doc => {
+                length++;
+                context.compsToShow.push({
+                  id: doc.id,
+                  type: "pdf",
+                  expirationDate: context.datepipe.transform(doc.validUntil, 'dd-MM-yyyy'),
+                  stakeholder: "desconhecido",
+                  status: "não definido",
+                  uploadDate: latest_date,
+                  file: doc.id,
+                  documentPurpose: null,
+                  documentType: doc.documentType
+                });
+                if (length === storeLength + stakeLength + submissionDocLength) {
+                  resolve(null);
+                }
+              });
+            });
+          });
+        });
+      }).finally(() => {
+        context.comprovativoService.getProcessRequiredDocuments(context.processId).then(result => {
+          context.logger.info("Get the submission's required documents: " + JSON.stringify(result));
+          context.requiredDocuments = result.result;
         });
       });
-    }).finally(() => {
-      context.comprovativoService.getRequiredDocuments(context.submissionId).then(result => {
-        context.logger.info("Get the submission's required documents: " + JSON.stringify(result));
-        context.requiredDocuments = result.result;
-        context.requiredDocuments.requiredDocumentPurposesMerchants.forEach(merchant => {
-          context.merchantOutbound = null;
-          merchant.documentPurposes.forEach(merchantDocPurposes => {
-            if (merchantDocPurposes.documentState === 'NotExists') {
-              if (context.submissionClient.clientId != null && context.submissionClient.clientId != "") {
-                var exists = context.checkDocumentExists(context.submissionClient.clientId, merchantDocPurposes, 'merchant');
-                merchantDocPurposes["existsOutbound"] = exists;
-              } else {
-                var exists = context.checkDocumentExists(null, merchantDocPurposes, 'merchant');
-                merchantDocPurposes["existsOutbound"] = exists;
-              }
-            }
+    } else {
+      let promise = new Promise((resolve, reject) => {
+        this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
+          this.submission = result.result;
+          var storeLength = context.submission.shops.length;
+          var stakeLength = context.submission.stakeholders.length;
+          var submissionDocLength = context.submission.documents.length;
+          var length = 0;
+          this.logger.info('Get current submission: ' + JSON.stringify(result));
+
+          this.clientService.GetClientByIdAcquiring(this.submissionId).then(c => {
+            this.submissionClient = c;
+            this.getLegalNatureDescription();
+            this.logger.info('Get client: ' + JSON.stringify(c));
+            this.submissionClient.documents.forEach(val => {
+              context.compsToShow.push({
+                id: val.id,
+                type: "pdf",
+                expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                stakeholder: context.submissionClient.commercialName,
+                status: "não definido",
+                uploadDate: latest_date,
+                file: val?.id,
+                documentPurpose: val.purposes[0],
+                documentType: val.documentType
+              });
+            });
+
+            context.submission.stakeholders.forEach(stake => {
+              context.stakeholderService.GetStakeholderFromSubmission(context.submission.id, stake.id, /*"8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag=="*/).then(result => {
+                context.logger.info("Get stakeholder outbound: " + JSON.stringify(result));
+                var stake = result.result;
+                context.stakeholdersList.push(stake);
+                length++;
+                stake.documents.forEach(val => {
+                  context.compsToShow.push({
+                    id: val.id,
+                    type: "pdf",
+                    expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                    stakeholder: stake.fullName,
+                    status: "não definido",
+                    uploadDate: latest_date,
+                    file: val?.id,
+                    documentPurpose: val.purposes[0],
+                    documentType: val.documentType
+                  });
+                });
+                if (length === storeLength + stakeLength + submissionDocLength) {
+                  resolve(null);
+                }
+              }, error => {
+                this.logger.error(error, "", "Erro getting stakeholder");
+              });
+            });
+
+            context.submission.shops.forEach(function (value, index) {
+              context.shopService.getSubmissionShopDetails(context.submissionId, value.id).then(shop => {
+                context.logger.info("Get shop from submission: " + JSON.stringify(shop));
+                context.shopList.push(shop.result);
+                length++;
+                if (shop.result.documents.length > 0) {
+                  context.compsToShow.push({
+                    id: shop.result.documents[0].id,
+                    type: "pdf",
+                    expirationDate: context.datepipe.transform(shop.result.documents[0].validUntil, 'dd-MM-yyyy'),
+                    stakeholder: shop.result.name,
+                    status: "não definido",
+                    uploadDate: latest_date,
+                    file: shop.result.documents[0]?.id,
+                    documentPurpose: shop.result.documents[0].purposes[0],
+                    documentType: shop.result.documents[0].documentType
+                  });
+                }
+                if (length === storeLength + stakeLength + submissionDocLength) {
+                  resolve(null);
+                }
+              });
+            });
+
+            context.submission.documents.forEach(function (value, index) {
+              context.documentService.GetSubmissionDocumentById(context.submissionId, value.id).subscribe(doc => {
+                length++;
+                context.compsToShow.push({
+                  id: doc.id,
+                  type: "pdf",
+                  expirationDate: context.datepipe.transform(doc.validUntil, 'dd-MM-yyyy'),
+                  stakeholder: "desconhecido",
+                  status: "não definido",
+                  uploadDate: latest_date,
+                  file: doc.id,
+                  documentPurpose: null,
+                  documentType: doc.documentType
+                });
+                if (length === storeLength + stakeLength + submissionDocLength) {
+                  resolve(null);
+                }
+              });
+            });
+
           });
         });
+      }).finally(() => {
+        context.comprovativoService.getRequiredDocuments(context.submissionId).then(result => {
+          context.logger.info("Get the submission's required documents: " + JSON.stringify(result));
+          context.requiredDocuments = result.result;
+          context.requiredDocuments.requiredDocumentPurposesMerchants.forEach(merchant => {
+            context.merchantOutbound = null;
+            merchant.documentPurposes.forEach(merchantDocPurposes => {
+              if (merchantDocPurposes.documentState === 'NotExists') {
+                if (context.submissionClient.clientId != null && context.submissionClient.clientId != "") {
+                  var exists = context.checkDocumentExists(context.submissionClient.clientId, merchantDocPurposes, 'merchant');
+                  merchantDocPurposes["existsOutbound"] = exists;
+                } else {
+                  var exists = context.checkDocumentExists(null, merchantDocPurposes, 'merchant');
+                  merchantDocPurposes["existsOutbound"] = exists;
+                }
+              }
+            });
+          });
 
-        context.requiredDocuments.requiredDocumentPurposesStakeholders.forEach(stakeholder => {
-          context.stakeOutbound = null;
-          stakeholder.documentPurposes.forEach(stakeholderDocPurposes => {
-            if (stakeholderDocPurposes.documentState === 'NotExists') {
-              var foundStake = context.stakeholdersList.find(s => s.id == stakeholder.entityId);
-              if (foundStake.clientId != "" && foundStake.clientId != null) {
-                context.stakeholderService.SearchStakeholderByQuery(foundStake.clientId, "0501", "por mudar", "por mudar").then(stake => {
-                  context.logger.info("Search stakeholder: " + JSON.stringify(stake));
-                  var exists = context.checkDocumentExists(stake.result[0].stakeholderId, stakeholderDocPurposes, 'stakeholder');
-                  stakeholderDocPurposes["existsOutbound"] = exists;
-                }, error => {
+          context.requiredDocuments.requiredDocumentPurposesStakeholders.forEach(stakeholder => {
+            context.stakeOutbound = null;
+            stakeholder.documentPurposes.forEach(stakeholderDocPurposes => {
+              if (stakeholderDocPurposes.documentState === 'NotExists') {
+                var foundStake = context.stakeholdersList.find(s => s.id == stakeholder.entityId);
+                if (foundStake.clientId != "" && foundStake.clientId != null) {
+                  context.stakeholderService.SearchStakeholderByQuery(foundStake.clientId, "0501", "por mudar", "por mudar").then(stake => {
+                    context.logger.info("Search stakeholder: " + JSON.stringify(stake));
+                    var exists = context.checkDocumentExists(stake.result[0].stakeholderId, stakeholderDocPurposes, 'stakeholder');
+                    stakeholderDocPurposes["existsOutbound"] = exists;
+                  }, error => {
+                    var exists = context.checkDocumentExists(null, stakeholderDocPurposes, 'stakeholder');
+                    stakeholderDocPurposes["existsOutbound"] = exists;
+                  });
+                } else {
                   var exists = context.checkDocumentExists(null, stakeholderDocPurposes, 'stakeholder');
                   stakeholderDocPurposes["existsOutbound"] = exists;
-                });
-              } else {
-                var exists = context.checkDocumentExists(null, stakeholderDocPurposes, 'stakeholder');
-                stakeholderDocPurposes["existsOutbound"] = exists;
+                }
               }
-            }
+            });
           });
-        });
 
-        context.requiredDocuments.requiredDocumentPurposesShops.forEach(shop => {
-          context.shopOutbound = null;
-          shop.documentPurposes.forEach(shopDocPurposes => {
-            if (shopDocPurposes.documentState === 'NotExists') {
-              var foundShop = context.shopList.find(s => s.id == shop.entityId);
-              if (foundShop?.shopId != null && foundShop?.shopId != "") {
-                var exists = context.checkDocumentExists(foundShop.shopId, shopDocPurposes, 'shop');
-                shopDocPurposes["existsOutbound"] = exists;
-              } else {
-                var exists = context.checkDocumentExists(null, shopDocPurposes, 'shop');
-                shopDocPurposes["existsOutbound"] = exists;
+          context.requiredDocuments.requiredDocumentPurposesShops.forEach(shop => {
+            context.shopOutbound = null;
+            shop.documentPurposes.forEach(shopDocPurposes => {
+              if (shopDocPurposes.documentState === 'NotExists') {
+                var foundShop = context.shopList.find(s => s.id == shop.entityId);
+                if (foundShop?.shopId != null && foundShop?.shopId != "") {
+                  var exists = context.checkDocumentExists(foundShop.shopId, shopDocPurposes, 'shop');
+                  shopDocPurposes["existsOutbound"] = exists;
+                } else {
+                  var exists = context.checkDocumentExists(null, shopDocPurposes, 'shop');
+                  shopDocPurposes["existsOutbound"] = exists;
+                }
               }
-            }
+            });
           });
         });
       });
-    });
-    
+    }
   }
 
   getDocumentPurposeDescription(purpose: string) {
@@ -409,6 +545,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.pageName = String(this.router.snapshot.params['pageName']);
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
     this.subscription = this.data.currentQueueName.subscribe(queueName => {
       if (queueName != null) {
         this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
@@ -484,9 +621,18 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         border: 3px solid green;
         `);
     } else {
-      this.documentService.GetDocumentImageOutbound(file, "por mudar", "por mudar", format).subscribe(result => {
+      this.documentService.GetDocumentImage(this.submissionId, file).then(async result => {
         this.logger.info("Get document image outbound: " + JSON.stringify(result));
-        this.b64toBlob(result.binary, 'application/pdf', 512);
+        result.blob().then(data => {
+          var blob = new Blob([data], { type: 'application/pdf' });
+          let url = window.URL.createObjectURL(blob);
+          window.open(url, '_blank',
+            `margin: auto;
+            width: 50%;
+            padding: 10px;
+            text-align: center;
+            border: 3px solid green;`);
+        }); 
       });
     }
   }
@@ -501,9 +647,16 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       link.download = file.name;
       link.click();
     } else {
-      this.documentService.GetDocumentImageOutbound(file, "por mudar", "por mudar", format).subscribe(result => {
+      this.documentService.GetDocumentImage(this.submissionId, file).then(async result => {
         this.logger.info("Get document image outbound: " + JSON.stringify(result));
-        this.b64toBlob(result.binary, 'application/pdf', 512, true);
+        result.blob().then(data => {
+          var blob = new Blob([data], { type: 'application/pdf' });
+          let url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = file.name;
+          link.click();
+        });
       });
     }
   }
@@ -540,6 +693,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       this.documentID = "";
 
     } else {
+
       this.documentService.DeleteDocumentFromSubmission(this.submissionId, this.documentID).subscribe(sucess => {
         this.logger.info("Deleted document: " + JSON.stringify(sucess));
         let existsIndex = this.compsToShow.findIndex(f => f.id === this.documentID);
@@ -550,6 +704,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       }, error => {
         this.logger.error(error, "", error.msg);
       });
+
     }
 
 
@@ -573,6 +728,14 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     "bank": "0800",
     "state": "Incomplete"
   }
+
+  processPut = {
+    submissionUser: "",
+    observation: "",
+    contractPackLanguage: "",
+    signType: "Manual",
+    isClientAwaiting: true
+  };
 
   continue() {
     if (this.returned != 'consult') {
@@ -602,16 +765,26 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         branch: loginUser.bankLocation,
         partner: loginUser.bankName
       }
-
       this.submissionPut.processNumber = localStorage.getItem("processNumber");
+      this.processPut.submissionUser = loginUser.userName;
       this.logger.info('Submission data:  ' + JSON.stringify(this.submissionPut));
-      this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPut).subscribe(result => {
-        this.logger.info('Updated submission ' + JSON.stringify(result));
-        this.data.updateData(true, 4);
-        this.data.changeUpdatedComprovativos(true);
-        this.logger.info("Redirecting to Commercial Offer List page");
-        this.route.navigate(['/commercial-offert-list']);
-      });
+      if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+        this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPut).subscribe(result => {
+          this.logger.info('Updated submission ' + JSON.stringify(result));
+          this.data.updateData(true, 4);
+          this.data.changeUpdatedComprovativos(true);
+          this.logger.info("Redirecting to Commercial Offer List page");
+          this.route.navigate(['/commercial-offert-list']);
+        });
+      } else {
+        this.processService.updateProcess(this.processId, this.processPut).then(result => {
+          this.logger.info('Updated submission ' + JSON.stringify(result.result));
+          this.data.updateData(true, 4);
+          this.data.changeUpdatedComprovativos(true);
+          this.logger.info("Redirecting to Commercial Offer List page");
+          this.route.navigate(['/commercial-offert-list']);
+        });
+      }
     } else {
       this.data.updateData(true, 4);
       this.logger.info("Redirecting to Commercial Offer List page");
@@ -644,7 +817,9 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.onCheckList();
+    if (this.returned != 'consult') {
+      this.onCheckList();
+    }
   }
 
   validatedDocumentsChange(value: boolean) {

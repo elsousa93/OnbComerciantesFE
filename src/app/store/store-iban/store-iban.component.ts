@@ -86,7 +86,7 @@ export class StoreIbanComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes["IBANToShow"] && changes["IBANToShow"].currentValue != null) {
+    if (changes["IBANToShow"]) {
       this.IBANToShow = changes["IBANToShow"].currentValue;
     }
   }
@@ -133,53 +133,57 @@ export class StoreIbanComponent implements OnInit, OnChanges {
   }
 
   onDelete(id: string) {
-    if (id != "0") {
-      this.docService.DeleteDocumentFromSubmission(this.submissionId, id).subscribe(result => {
-        this.logger.info("Deleted document result: " + JSON.stringify(result));
-      });
+    if (this.returned != 'consult') { 
+      if (id != "0") {
+        this.docService.DeleteDocumentFromSubmission(this.submissionId, id).subscribe(result => {
+          this.logger.info("Deleted document result: " + JSON.stringify(result));
+        });
+      }
+      this.IBANToShow = null;
+      this.fileToDelete = null;
+      this.formStores.get('bankIban').setValue('');
+      this.fileEmitter.emit(null);
     }
-    this.IBANToShow = null;
-    this.fileToDelete = null;
-    this.formStores.get('bankIban').setValue('');
-    this.fileEmitter.emit(null);
   }
 
   selectFile(event: any) {
-    if (this.IBANToShow != null) {
-      this.onDelete(this.IBANToShow.id);
-    }
-    this.files = [];
-    const files = <File[]>event.target.files;
-    this.IBANToShow = { tipo: this.translate.instant('supportingDocuments.checklistModal.IBAN'), dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy'), file: files[0], id: "0" }
-    for (var i = 0; i < files.length; i++) {
-      var file = files[i];
-      const sizeFile = file.size / (1024 * 1024);
-      var extensoesPermitidas = /(.pdf)$/i;
-      const limSize = 10;
-      if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
-        if (event.target.files && files[i]) {
-          var reader = new FileReader();
-          reader.onload = (event: any) => {
-            this.localUrl = event.target.result;
+    if (this.returned != 'consult') {
+      if (this.IBANToShow != null) {
+        this.onDelete(this.IBANToShow.id);
+      }
+      this.files = [];
+      const files = <File[]>event.target.files;
+      this.IBANToShow = { tipo: this.translate.instant('supportingDocuments.checklistModal.IBAN'), dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy'), file: files[0], id: "0" }
+      for (var i = 0; i < files.length; i++) {
+        var file = files[i];
+        const sizeFile = file.size / (1024 * 1024);
+        var extensoesPermitidas = /(.pdf)$/i;
+        const limSize = 10;
+        if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
+          if (event.target.files && files[i]) {
+            var reader = new FileReader();
+            reader.onload = (event: any) => {
+              this.localUrl = event.target.result;
+            }
+            reader.readAsDataURL(files[i]);
+            this.files.push(file);
+            this.formStores.get('bankIban').setValue(file);
+            this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
+          } else {
+            alert("Verifique o tipo / tamanho do ficheiro");
           }
-          reader.readAsDataURL(files[i]);
-          this.files.push(file);
-          this.formStores.get('bankIban').setValue(file);
-          this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
-            duration: 4000,
-            panelClass: ['snack-bar']
-          });
-        } else {
-          alert("Verifique o tipo / tamanho do ficheiro");
         }
       }
+      this.fileEmitter.emit({ tipo: this.IBANToShow.tipo, dataDocumento: this.IBANToShow.dataDocumento, file: this.IBANToShow.file, id: this.IBANToShow.id });
     }
-    this.fileEmitter.emit({ tipo: this.IBANToShow.tipo, dataDocumento: this.IBANToShow.dataDocumento, file: this.IBANToShow.file, id: this.IBANToShow.id });
   }
 
   isIBAN(isIBANConsidered: boolean) {
     this.isIBANConsidered = isIBANConsidered;
-
+    this.formStores.get("bankInformation").setValue(this.isIBANConsidered);
     if (!isIBANConsidered) {
       this.formStores.get("bankIban").addValidators(Validators.required);
       this.formStores.get("bankIban").updateValueAndValidity();
@@ -193,7 +197,7 @@ export class StoreIbanComponent implements OnInit, OnChanges {
     this.store.bank = new ShopBank();
     this.formStores = new FormGroup({
       supportBank: new FormControl((this.bank != null) ? this.bank : '', Validators.required),
-      bankInformation: new FormControl((this.store.bank.useMerchantBank != null) ? this.store.bank.useMerchantBank : '', Validators.required),
+      bankInformation: new FormControl((this.store.bank.useMerchantBank != null) ? this.store.bank.useMerchantBank : true, Validators.required),
       bankIban: new FormControl((this.store.bank?.bank?.iban != null) ? this.store.bank.bank.iban : '')
     });
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ElementRef, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, OnChanges, SimpleChanges, TemplateRef } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl, FormGroupDirective } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { IStakeholders, StakeholdersCompleteInformation } from '../IStakeholders.interface';
@@ -13,6 +13,15 @@ import { DatePipe } from '@angular/common';
 import { docTypeENI } from '../../client/docType';
 import { LoggerService } from 'src/app/logger.service';
 import { Subscription } from 'rxjs';
+import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { dataCC } from '../../citizencard/dataCC.interface';
+import { FileAndDetailsCC } from '../../readcard/fileAndDetailsCC.interface';
+import { readCC } from '../../citizencard/CitizenCardController.js';
+import { readCCAddress } from '../../citizencard/CitizenCardController.js';
+import { ClearCCFields } from '../../citizencard/CitizenCardController.js';
+import { ReadcardService } from '../../readcard/readcard.service';
+import { PostDocument } from '../../submission/document/ISubmission-document';
 
 @Component({
   selector: 'app-new-stakeholder',
@@ -27,6 +36,152 @@ import { Subscription } from 'rxjs';
 
 export class NewStakeholderComponent implements OnInit, OnChanges {
 
+  modalRef: BsModalRef;
+  showSameNIFError: boolean = false;
+
+  openModal(template: TemplateRef<any>) {
+    this.modalRef = this.modalService.show(template);
+  }
+
+  //---- Cartão de Cidadao - vars ------
+  public dataCCcontents: dataCC = {
+    cardNumberCC: null,
+    nameCC: null,
+    sexCC: null,
+    heightCC: null,
+    nationalityCC: null,
+    birthdateCC: null,
+    expiricyDateCC: null,
+    localOfEmissionCC: null,
+    fathersNameCC: null,
+    mothersNameCC: null,
+    nifCC: null,
+    socialSecurityCC: null,
+    healthNumberCC: null,
+    signatureCC: null,
+    addressCC: null,
+    postalCodeCC: null,
+    localityCC: null,
+    countryCC: null,
+    documentType: null
+  };
+  public prettyPDF: FileAndDetailsCC = null;
+
+  //Variaveis para imprimir no html
+  public nameCC = null;
+  public nationalityCC = null;
+  public birthDateCC = null;
+  public cardNumberCC = null;
+  public nifCC = null;
+  public addressCC = null;
+  public postalCodeCC = null;
+  public countryCC = null;
+  public localityCC = null;
+
+  public okCC = false;
+  public dadosCC: Array<string> = []; //apagar
+  public addressReading = null;
+  //---- Cartão de Cidadao - funcoes -----
+  callreadCC() {
+    ClearCCFields();
+    readCC(this.SetNewCCData.bind(this));
+    this.setOkCC();
+  }
+  callreadCCAddress() {
+    ClearCCFields();
+    readCCAddress(this.SetNewCCData.bind(this));
+    this.setOkCC();
+  }
+  closeModal() {
+    this.newModal.hide();
+  }
+  setOkCC() {
+    this.okCC = true;
+    //this.foundStakeholders = true;
+    //this.selected = true;
+  }
+  setAddressFalse() {
+    this.addressReading = false;
+  }
+
+  /**
+   * Information from the Citizen Card will be associated to the client structure
+   * em "create-stakeholder"
+   * 
+   * */
+  SetNewCCData(name, cardNumber, nif, birthDate, imgSrc, cardIsExpired,
+    gender, height, nationality, expiryDate, nameFather, nameMother,
+    nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer, documentType) {
+
+    this.dataCCcontents.nameCC = name;
+    this.dataCCcontents.nationalityCC = nationality;
+    this.dataCCcontents.birthdateCC = birthDate;
+    this.dataCCcontents.cardNumberCC = cardNumber; // Nº do CC
+    this.dataCCcontents.expiricyDateCC = expiryDate;
+    this.dataCCcontents.documentType = documentType;
+    this.dataCCcontents.nifCC = nif;
+    this.dataCCcontents.localityCC = postalCode.split(" ").pop();
+    //this.emitSameNIF(of(this.dataCCcontents.nifCC));
+    this.dataCCcontents.countryCC = countryIssuer;
+    this.countryCC = countryIssuer; //HTML
+
+    if (notes != null || notes != "") {
+      var assinatura = "Sabe assinar";
+      if (notes.toLowerCase().includes("não sabe assinar") || notes.toLowerCase().includes("não pode assinar")) {
+        assinatura = "Não sabe assinar";
+      }
+    }
+
+    if (this.addressReading == false) {
+
+      //Without address
+      this.dataCCcontents.addressCC = " ";
+      this.dataCCcontents.postalCodeCC = " ";
+      this.dataCCcontents.countryCC = "PT";
+
+      var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
+        emissonLocal, nameFather, nameMother, nif, nss, sns, assinatura, this.dataCCcontents.addressCC, this.dataCCcontents.postalCodeCC, this.dataCCcontents.countryCC];
+
+      //Send to PDF without address -- type base64
+      this.readCardService.formatPDF(ccArrayData).then(resolve => {
+        this.prettyPDF = resolve;
+      });
+
+    } else {
+
+      //WITH ADDRESS
+      this.dataCCcontents.addressCC = address;
+      this.dataCCcontents.postalCodeCC = postalCode;
+
+      var ccArrayData: Array<string> = [name, gender, height, nationality, birthDate, cardNumber, expiryDate,
+        emissonLocal, nameFather, nameMother, nif, nss, sns, assinatura, address, postalCode, country];
+
+      //Send to PDF
+      this.readCardService.formatPDF(ccArrayData).then(resolve => {
+        this.prettyPDF = resolve;
+      });
+    }
+
+    this.updateForm();
+  }
+
+  /**
+  * Recolha Automatica dos Dados do Cartão de Cidadão?
+  * @param readable
+  */
+  changeDataReadable(readable: boolean) {
+    if (readable) {
+      this.stakeholderNumber = '';
+      //this.clearNewForm();
+    }
+    //this.isNoDataReadable = readable;
+    if (readable === false) {
+      this.okCC = readable; //W
+    }
+
+  }
+
+  @ViewChild('newModal') newModal;
   @ViewChild('selectedBlueDiv') selectedBlueDiv: ElementRef<HTMLElement>;
 
   private baseUrl: string;
@@ -68,6 +223,8 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   returned: string;
   ListaDocTypeENI = docTypeENI;
   documents: DocumentSearchType[];
+  processId: string;
+  sameZIPCode: boolean = false;
 
   loadCountries() {
     this.subs.push(this.tableData.GetAllCountries().subscribe(result => {
@@ -83,6 +240,8 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     this.subs.push(this.tableData.GetDocumentsDescription().subscribe(result => {
       this.logger.info("Get documents description result: " + JSON.stringify(result));
       this.documents = result;
+      var desc = this.documents?.find(document => document.code == this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type)?.description;
+      this.formNewStakeholder?.get("documentType")?.setValue(desc);
     }));
   }
 
@@ -103,15 +262,14 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   constructor(private logger: LoggerService, private router: ActivatedRoute, private http: HttpClient, private route: Router, private fb: FormBuilder,
     private data: DataService, private tableData: TableInfoService, private stakeService: StakeholderService,
-    private submissionService: SubmissionService, private datePipe: DatePipe, private rootFormGroup: FormGroupDirective) {
+    private submissionService: SubmissionService, private datePipe: DatePipe, private rootFormGroup: FormGroupDirective, private processNrService: ProcessNumberService, public modalService: BsModalService, private readCardService: ReadcardService) {
 
     this.loadTableInfoData();
     this.submissionId = localStorage.getItem('submissionId');
     this.processNumber = localStorage.getItem("processNumber");
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
-    var context = this;
+    this.processNrService.processId.subscribe(id => this.processId = id);
 
-    this.getProcessStakeholders();
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -138,29 +296,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     });
   }
 
-  getProcessStakeholders() {
-    var context = this;
-    if (this.returned != null) {
-      this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).subscribe(result => {
-        context.logger.info("Get submission by process number result: " + JSON.stringify(result));
-        this.submissionService.GetSubmissionByID(result[0].submissionId).subscribe(resul => {
-          context.logger.info("Get submission by id result: " + JSON.stringify(resul));
-          this.stakeService.GetAllStakeholdersFromSubmission(result[0].submissionId).subscribe(res => {
-            context.logger.info("Get all stakeholders from submission result: " + JSON.stringify(result));
-            res.forEach(function (value, index) {
-              context.stakeService.GetStakeholderFromSubmission(result[0].submissionId, value.id).subscribe(r => {
-                context.logger.info("Get stakeholder from submission result: " + JSON.stringify(result));
-                context.submissionStakeholders.push(r);
-              }, error => {
-              });
-            }, error => {
-            });
-          });
-        });
-      });
-    }
-  }
-
   isStakeholderFromCC(stakeholder) {
     this.selectedStakeholderIsFromCC = false;
     var context = this;
@@ -175,24 +310,25 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   initializeFormWithoutCC() {
     this.formNewStakeholder = new FormGroup({
       contractAssociation: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.signType === 'CitizenCard' || this.currentStakeholder?.stakeholderAcquiring?.signType === 'DigitalCitizenCard' ? 'true' : 'false', Validators.required),
-      flagRecolhaEletronica: new FormControl(false), //v
+      flagRecolhaEletronica: new FormControl(false), //tava a false
       proxy: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.isProxy != null) ? this.currentStakeholder?.stakeholderAcquiring?.isProxy+'' : 'false', Validators.required),
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalId : '', Validators.required),
       //Role: new FormControl(''),
       Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.country : 'PT', Validators.required), // tirei do if (this.returned != null)
       ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.postalCode : '', Validators.required), //
-      Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.locality : '', Validators.required), //
+      Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.postalArea : '', Validators.required), //
       Address: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.address : '', Validators.required) //
     });
     this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
-    this.GetCountryByZipCode();
+    //this.GetCountryByZipCode();
     this.flagRecolhaEletronica = false;
     this.showNoCC = true;
     this.showYesCC = false;
   }
 
   ngOnInit(): void {
-    this.data.updateData(false, 2, 2);
+    //this.data.updateData(false, 2, 2);
+    this.data.changeCurrentSubPage(2);
     //this.initializeFormWithoutCC();
     this.returned = localStorage.getItem("returned");
     if (this.rootFormGroup.form != null) {
@@ -214,7 +350,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     var zipcode = this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode?.split(" - ")[0];
 
     this.formNewStakeholder = this.fb.group({
-      flagRecolhaEletronica: new FormControl(true), //v
+      flagRecolhaEletronica: new FormControl(false), //estava a true
       documentType: new FormControl(''),
       identificationDocumentCountry: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.country : ''), //
       identificationDocumentValidUntil: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.datePipe.transform(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate, 'dd-MM-yyyy') : ''), //
@@ -224,21 +360,22 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined) ? this.currentStakeholder?.stakeholderAcquiring.fiscalId : '', Validators.required),
       Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country : 'PT', Validators.required), // tirei do if (this.returned != null)
       ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? zipcode : '', Validators.required), //
-      Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.locality : '', Validators.required), //
+      Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea : '', Validators.required), //
       Address: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address : '', Validators.required) //
     });
     this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
     this.showYesCC = true;
     this.showNoCC = false;
-    this.formNewStakeholder.get('flagRecolhaEletronica').setValue(true);
+    this.formNewStakeholder.get('flagRecolhaEletronica').setValue(false);
     this.changeValueCC();
-    this.GetCountryByZipCode();
+    //this.GetCountryByZipCode();
   }
 
   changeValueCC(){
     if (this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type === '0018') {
       this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = '0018';
-      this.formNewStakeholder.get('documentType').setValue(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type);
+      var desc = this.documents?.find(document => document.code == this.currentStakeholder.stakeholderAcquiring.identificationDocument.type)?.description;
+      this.formNewStakeholder.get("documentType").setValue(desc);
     }
   }
 
@@ -303,17 +440,83 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   }
 
   validateCC(validate: boolean) {
-    if (validate == true) {
-      this.showBtnCC = true;
-      this.showYesCC = true;
-      this.showNoCC = false;
-      this.createFormCC();
+    //if (validate == true) {
+    //  this.showBtnCC = true;
+    //  this.showYesCC = true;
+    //  this.showNoCC = false;
+    //  this.createFormCC();
+    //}
+    //else {
+    //  this.showBtnCC = false;
+    //  this.showYesCC = false;
+    //  this.showNoCC = true;
+    //}
+    //troquei a ordem
+    if (validate == true) { //sim
+      if (this.currentStakeholder.stakeholderAcquiring.identificationDocument.type == '0018') {
+        this.showBtnCC = true; // false
+        this.showYesCC = true; // false
+        this.showNoCC = false; // true
+        this.isCC = true; //mostrar o módulo CC
+      }
     }
-    else {
-      this.showBtnCC = false;
-      this.showYesCC = false;
-      this.showNoCC = true;
+    else { // não
+      if (this.currentStakeholder.stakeholderAcquiring.identificationDocument.type == '0018') {
+        this.showBtnCC = true;
+        this.showYesCC = true;
+        this.showNoCC = false;
+        this.isCC = false; //retirar o módulo CC
+        this.okCC = false;
+        this.createFormCC();
+      }
     }
+  }
+
+  updateForm() {
+    var dateCC = this.dataCCcontents.expiricyDateCC;
+    var separated = dateCC?.split(' ');
+    if (separated) {
+      var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0];
+    } else {
+      var formatedDate = '2023-10-10';
+    }
+
+    var fullName = this.dataCCcontents.nameCC ?? this.formNewStakeholder.get("name")?.value;
+    var nameArray = fullName.split(" ").filter(element => element);
+    var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
+
+    this.currentStakeholder.stakeholderAcquiring.fiscalId = this.dataCCcontents.nifCC;
+    this.currentStakeholder.stakeholderAcquiring.fullName = fullName;
+    this.currentStakeholder.stakeholderAcquiring.shortName = shortName;
+    this.currentStakeholder.stakeholderAcquiring.contactName = shortName;
+    this.currentStakeholder.stakeholderAcquiring.identificationDocument = {
+      type: '0018',
+      number: this.dataCCcontents.cardNumberCC,
+      country: this.dataCCcontents.countryCC ?? 'PT',
+      expirationDate: new Date(formatedDate).toISOString(),
+      checkDigit: null
+    };
+    this.currentStakeholder.stakeholderAcquiring.fiscalAddress = {
+      address: this.dataCCcontents.addressCC,
+      postalCode: this.dataCCcontents.postalCodeCC.split(" ")[0],
+      postalArea: this.dataCCcontents.localityCC,
+      locality: this.dataCCcontents.localityCC,
+      country: this.dataCCcontents.countryCC ?? "PT"
+    };
+    this.currentStakeholder.stakeholderAcquiring.signType = "DigitalCitizenCard";
+
+    this.formNewStakeholder.get("identificationDocumentCountry").setValue(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.country);
+    this.formNewStakeholder.get("identificationDocumentValidUntil").setValue(this.datePipe.transform(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate, 'dd-MM-yyyy'));
+    this.formNewStakeholder.get("identificationDocumentId").setValue(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.number);
+    this.formNewStakeholder.get("contractAssociation").setValue(true);
+    this.formNewStakeholder.get("NIF").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalId);
+    this.formNewStakeholder.get("Country").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country);
+    this.formNewStakeholder.get("ZIPCode").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode);
+    this.formNewStakeholder.get("Locality").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea);
+    this.formNewStakeholder.get("Address").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address);
+    var desc = this.documents?.find(document => document.code == this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type)?.description;
+    this.formNewStakeholder?.get("documentType")?.setValue(desc);
+    this.formNewStakeholder.updateValueAndValidity();
   }
 
   selectCC() {
@@ -330,6 +533,11 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   numericOnly(event): boolean {
     var ASCIICode = (event.which) ? event.which : event.keyCode;
+
+    if (this.formNewStakeholder?.value['ZIPCode']?.length == 8)
+      this.sameZIPCode = true;
+    else
+      this.sameZIPCode = false;
 
     if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && ASCIICode!=45)
       return false;
@@ -349,7 +557,15 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     }
   }
 
-  GetCountryByZipCode() {
+  GetCountryByZipCode(event?: any) {
+    if (event != undefined) {
+      var ASCIICode = (event.which) ? event.which : event.keyCode;
+      if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && ASCIICode != 45)
+        return false;
+    }
+    if (this.sameZIPCode)
+      return false;
+
     var currentCountry = this.formNewStakeholder.get('Country').value;
     var zipcode = this.formNewStakeholder.value['ZIPCode'];
     this.formNewStakeholder.get('Address').setValue('');

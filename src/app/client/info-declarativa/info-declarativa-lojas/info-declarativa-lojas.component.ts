@@ -15,6 +15,8 @@ import { LoggerService } from 'src/app/logger.service';
 import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPackKindEnum } from '../../../commercial-offer/ICommercialOffer.interface';
 import { distinctUntilChanged, Observable, of, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
+import { ProcessService } from '../../../process/process.service';
+import { ProcessNumberService } from '../../../nav-menu-presencial/process-number.service';
 
 @Component({
   selector: 'app-info-declarativa-lojas',
@@ -61,12 +63,14 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
 
   public subs: Subscription[] = [];
   returnedFrontOffice: boolean = false;
+  processId: string;
 
-  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService, private translate: TranslateService) {
+  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService, private translate: TranslateService, private processService: ProcessService, private processNrService: ProcessNumberService) {
     if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.returnedFrontOffice = this.route.getCurrentNavigation().extras.state["returnedFrontOffice"];
     }
-
+    this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
+    this.returned = localStorage.getItem("returned");
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.logger.info("Fetch all countries " + JSON.stringify(result));
       this.internationalCallingCodes = result;
@@ -75,10 +79,18 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
       }); //ordenar resposta
     }, error => this.logger.error(error)));
 
-    this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(result => {
-      this.logger.info("Get client by id result: " + result);
-      this.client = result;
-    });
+    if (this.returned == null || this.returned == 'edit' && (this.processId == null || this.processId == '')) {
+      this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(result => {
+        this.logger.info("Get client by id result: " + result);
+        this.client = result;
+      });
+    } else {
+      this.processService.getMerchantFromProcess(this.processId).subscribe(result => {
+        this.client = result;
+      });
+
+    }
+
   }
 
   ngOnInit(): void {
@@ -91,7 +103,6 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
         });
       }
     });
-    this.returned = localStorage.getItem("returned");
     this.submissionId = localStorage.getItem("submissionId");
     this.processNumber = localStorage.getItem("processNumber");
 
@@ -163,16 +174,29 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
         this.selectedStore.phone2.countryCode = this.listValue.get("telephone").get("countryCode").value;
         this.selectedStore.phone2.phoneNumber = this.listValue.get("telephone").get("phoneNumber").value;
         this.logger.info("Shop data to send " + JSON.stringify(this.selectedStore));
-        this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.selectedStore.id, this.selectedStore).subscribe(result => {
-          if (this.currentIdx < (this.storesLength - 1)) {
-            this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
-            this.onActivate();
-            this.logger.info("Updated shop: " + JSON.stringify(result));
-          } else {
-            this.logger.info("Redirecting to Info Declarativa Assinatura page");
-            this.route.navigate(['/info-declarativa-assinatura']);
-          }
-        });
+        if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+          this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.selectedStore.id, this.selectedStore).subscribe(result => {
+            if (this.currentIdx < (this.storesLength - 1)) {
+              this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
+              this.onActivate();
+              this.logger.info("Updated shop: " + JSON.stringify(result));
+            } else {
+              this.logger.info("Redirecting to Info Declarativa Assinatura page");
+              this.route.navigate(['/info-declarativa-assinatura']);
+            }
+          });
+        } else {
+          this.processService.updateShopProcess(this.processId, this.selectedStore.id, this.selectedStore).then(result => {
+            if (this.currentIdx < (this.storesLength - 1)) {
+              this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
+              this.onActivate();
+              this.logger.info("Updated shop: " + JSON.stringify(result));
+            } else {
+              this.logger.info("Redirecting to Info Declarativa Assinatura page");
+              this.route.navigate(['/info-declarativa-assinatura']);
+            }
+          });
+        }
       }
     } else {
       this.logger.info("Redirecting to Info Declarativa Assinatura page");

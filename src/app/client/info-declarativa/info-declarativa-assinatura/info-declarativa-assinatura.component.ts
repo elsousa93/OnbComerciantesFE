@@ -14,6 +14,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StakeholderService } from 'src/app/stakeholders/stakeholder.service';
 import { TableInfoService } from '../../../table-info/table-info.service';
 import { ContractPackLanguage } from '../../../table-info/ITable-info.interface';
+import { ProcessService } from '../../../process/process.service';
 
 @Component({
   selector: 'app-info-declarativa-assinatura',
@@ -42,16 +43,17 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   returnedFrontOffice: boolean = false;
   queueName: string = "";
   title: string;
+  processId: string;
+  currentStakes: Map<string,string> = new Map<string,string>();
 
-
-  constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService, private tableInfoService: TableInfoService) {
+  constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService, private tableInfoService: TableInfoService, private processService: ProcessService) {
     if (this.router?.getCurrentNavigation()?.extras?.state) {
       this.returnedFrontOffice = this.router.getCurrentNavigation().extras.state["returnedFrontOffice"];
     }
 
     this.submissionId = localStorage.getItem("submissionId");
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
-
+    this.subscription = this.processNrService.processId.subscribe(processId => this.processId = processId);
     this.initializeForm();
 
     this.returned = localStorage.getItem("returned");
@@ -68,6 +70,11 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.subscription = this.data.currentStakes.subscribe(currentStakes => this.currentStakes = currentStakes);
+    this.subscription = this.data.currentSignType.subscribe(currentSignType => {
+      this.isVisible = currentSignType;
+      this.form.get("signature").setValue(currentSignType);
+    });
     this.subscription = this.data.currentQueueName.subscribe(queueName => {
       if (queueName != null) {
         this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
@@ -77,17 +84,28 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
       }
     });
     this.data.updateData(false, 6, 3);
+    this.choosePaper(this.isVisible);
   }
 
   initializeForm() {
+    var context = this;
+
     this.form = new FormGroup({
-      language: new FormControl('', Validators.required),
+      language: new FormControl('PT', Validators.required),
       signature: new FormControl(true, Validators.required)
     });
 
     this.form.statusChanges.pipe(distinctUntilChanged()).subscribe(val => {
       if (val === 'VALID') {
         this.data.updateData(false, 6, 4);
+      }
+    });
+
+    this.form.valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
+      if (this.submissionStakeholders.length > 0) {
+        this.submissionStakeholders.forEach(stake => {
+          this.data.updateStakeSignature(stake.id, context.form.get(stake.id).value);
+        });
       }
     });
   }
@@ -115,23 +133,50 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   choosePaper(paper: boolean) {
     this.isVisible = paper;
     var context = this;
+    this.data.changeSignType(paper);
     if (!paper) {
-      if (this.submissionStakeholders.length == 0) { 
-        this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
-          var stakeholders = result.result;
-          stakeholders.forEach(function (value, index) {
-            context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).then(res => {
-              var stake = res.result;
-              if (stake.signType == 'CitizenCard') {
-                context.form.addControl(stake.id, new FormControl(stake.signType, Validators.required));
-                context.submissionStakeholders.push(stake);
-              }
-            }, error => {
-              context.logger.error(error);
+      if (this.submissionStakeholders.length == 0) {
+        if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+          this.stakeholderService.GetAllStakeholdersFromSubmission(this.submissionId).then(result => {
+            var stakeholders = result.result;
+            stakeholders.forEach(function (value, index) {
+              context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).then(res => {
+                var stake = res.result;
+                if (stake.signType == 'CitizenCard') {
+                  if (context.currentStakes.has(stake.id)) {
+                    context.form.addControl(stake.id, new FormControl(context.currentStakes.get(stake.id), Validators.required));
+                  } else {
+                    context.form.addControl(stake.id, new FormControl(stake.signType, Validators.required));
+                  }
+                  context.submissionStakeholders.push(stake);
+                }
+              }, error => {
+                context.logger.error(error);
+              });
             });
+          }, error => {
           });
-        }, error => {
-        });
+        } else {
+          this.processService.getStakeholdersFromProcess(this.processId).then(result => {
+            var stakeholders = result.result;
+            stakeholders.forEach(function (value, index) {
+              context.processService.getStakeholderByIdFromProcess(context.processId, value.id).subscribe(res => {
+                var stake = res;
+                if (stake.signType == 'CitizenCard') {
+                  if (context.currentStakes.has(stake.id)) {
+                    context.form.addControl(stake.id, new FormControl(context.currentStakes.get(stake.id), Validators.required));
+                  } else {
+                    context.form.addControl(stake.id, new FormControl(stake.signType, Validators.required));
+                  }
+                  context.submissionStakeholders.push(stake);
+                }
+              }, error => {
+                context.logger.error(error);
+              });
+            });
+          }, error => {
+          });
+        }
       }
     }
   }
@@ -148,32 +193,48 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
             signType = context.form.get(stake.id).value;
           }
           stake["signType"] = signType;
-          this.stakeholderService.UpdateStakeholder(this.submissionId, stake.id, stake).subscribe(res => {
-          });
-        });
-
-        this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
-          this.submissionAnswer = result.result;
-
-          var submissionToSend = {
-            submissionType: "DigitalComplete",
-            processNumber: this.submissionAnswer.processNumber,
-            processKind: this.submissionAnswer.processKind,
-            processType: this.submissionAnswer.processType,
-            signType: this.isVisible ? "Manual" : "Digital",
-            isClientAwaiting: this.submissionAnswer.isClientAwaiting,
-            submissionUser: this.submissionAnswer.submissionUser,
-            id: this.submissionAnswer.id,
-            bank: this.submissionAnswer.bank,
-            state: "Ready",
-            startedAt: new Date().toISOString(),
-            contractPackLanguage: this.form.get("language").value
+          if (context.returned == null) {
+            context.stakeholderService.UpdateStakeholder(context.submissionId, stake.id, stake).subscribe(res => { });
+          } else {
+            context.processService.updateStakeholderProcess(context.processId, stake.id, stake).then(res => { });
           }
-          this.logger.info("Updated submission data: " + JSON.stringify(submissionToSend));
-          this.submissionService.EditSubmission(this.submissionId, submissionToSend).subscribe(result => {
-            this.logger.info("Submission updated: " + JSON.stringify(result));
-          });
         });
+
+        if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+          this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
+            this.submissionAnswer = result.result;
+            var submissionToSend = {
+              submissionType: "DigitalComplete",
+              processNumber: this.submissionAnswer.processNumber,
+              processKind: this.submissionAnswer.processKind,
+              processType: this.submissionAnswer.processType,
+              signType: this.isVisible ? "Manual" : "Digital",
+              isClientAwaiting: this.submissionAnswer.isClientAwaiting,
+              submissionUser: this.submissionAnswer.submissionUser,
+              id: this.submissionAnswer.id,
+              bank: this.submissionAnswer.bank,
+              state: "Ready",
+              startedAt: new Date().toISOString(),
+              contractPackLanguage: this.form.get("language").value
+            }
+            this.logger.info("Updated submission data: " + JSON.stringify(submissionToSend));
+            this.submissionService.EditSubmission(this.submissionId, submissionToSend).subscribe(result => {
+              this.logger.info("Submission updated: " + JSON.stringify(result));
+            });
+          });
+        } else {
+          this.processService.getProcessById(this.processId).subscribe(result => {
+            result.state = "Completed";
+            result.startedAt = new Date().toISOString(),
+            result.contractSignature = {
+              signType: this.isVisible ? "Manual" : "Digital",
+              state: 'Pending'
+            };
+            context.processService.updateProcess(context.processId, result).then(result => {
+              this.logger.info("Process updated: " + JSON.stringify(result));
+            });
+          });
+        }
       }
     } else {
       this.router.navigate(["/"]);
@@ -183,6 +244,8 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   }
 
   goBack() {
+
+
     let navigationExtras = {
       state: {
         returnedFrontOffice: this.returnedFrontOffice

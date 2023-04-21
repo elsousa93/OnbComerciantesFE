@@ -170,6 +170,20 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   riskOpinionCount: number;
   complianceDoubtsCount: number;
 
+  incompleteOpened: boolean = false;
+  ongoingOpened: boolean = false;
+  returnedOpened: boolean = false;
+  contractAcceptanceOpened: boolean = false;
+  pendingSentOpened: boolean = false;
+  pendingEligibilityOpened: boolean = false;
+  multipleClientesOpened: boolean = false;
+  DOValidationOpened: boolean = false;
+  negotiationAprovalOpened: boolean = false;
+  MCCTreatmentOpened: boolean = false;
+  validationSIBSOpened: boolean = false;
+  riskOpinionOpened: boolean = false;
+  complianceDoubtsOpened: boolean = false;
+
   date: string;
   nipc: string;
   name: string;
@@ -202,6 +216,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             user.userName = res.name;
             user.bankName = res["ext-bank"];
             user.bankLocation = res["ext-bankLocation"];
+            user.authTime = (new Date()).toLocaleString('pt-PT');
             user.permissions = UserPermissions.UNICRE;
             var newDate = new Date(res.exp * 1000);
             this.timeout = newDate.getTime() - new Date().getTime();
@@ -211,6 +226,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           }
         });
       }
+    } else {
+      this.router.navigate(['/']);
     }
 
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
@@ -336,7 +353,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   callIncompleteCount() {
-    if (this.incompleteCount > 0) {
+    if (this.incompleteCount > 0 && !this.incompleteOpened) {
+      this.resetOpened();
+      this.incompleteOpened = true;
       this.processService.searchProcessByState('Incomplete', 0, this.incompleteCount).subscribe(resul => {
         this.logger.info('Search incomplete processes ' + JSON.stringify(resul));
         this.incompleteProcessess = resul;
@@ -353,7 +372,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   callBackOfficeCount() {
-    if (this.ongoingCount > 0) {
+    if (this.ongoingCount > 0 && !this.ongoingOpened) {
+      this.resetOpened();
+      this.ongoingOpened = true;
       this.processService.searchProcessByState('Ongoing', 0, this.ongoingCount).subscribe(resul => {
         this.logger.info('Search ongoing processes ' + JSON.stringify(resul));
         this.ongoingProcessess = resul;
@@ -371,7 +392,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   callReturnedCount() {
-    if (this.returnedCount > 0) {
+    if (this.returnedCount > 0 && !this.returnedOpened) {
+      this.resetOpened();
+      this.returnedOpened = true;
       this.processService.searchProcessByState('Returned', 0, this.returnedCount).subscribe(resul => {
         this.logger.info('Search returned processes ' + JSON.stringify(resul));
         this.returnedProcessess = resul;
@@ -389,7 +412,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   callAcceptanceCount() {
-    if (this.contractAcceptanceCount > 0) {
+    if (this.contractAcceptanceCount > 0 && !this.contractAcceptanceOpened) {
+      this.resetOpened();
+      this.contractAcceptanceOpened = true;
       this.processService.searchProcessByState('ContractAcceptance', 0, this.contractAcceptanceCount).subscribe(resul => {
         this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
         this.contractAcceptanceProcessess = resul;
@@ -432,7 +457,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   callPendingSentCount() {
-    if (this.pendingSentCount > 0) {
+    if (this.pendingSentCount > 0 && !this.pendingSentOpened) {
+      this.resetOpened();
+      this.pendingSentOpened = true;
       this.processService.searchProcessByState('Completed', 0, this.pendingSentCount).subscribe(resul => {
         this.logger.info('Search completed processes ' + JSON.stringify(resul));
         this.pendingSentProcessess = resul;
@@ -450,7 +477,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   callPendingEligibilityCount() {
-    if (this.pendingEligibilityCount > 0) {
+    if (this.pendingEligibilityCount > 0 && !this.pendingEligibilityOpened) {
+      this.resetOpened();
+      this.pendingEligibilityOpened = true;
       this.processService.searchProcessByState('EligibilityAssessment', 0, this.pendingEligibilityCount).subscribe(resul => {
         this.logger.info('Search eligibility assessment processes ' + JSON.stringify(resul));
         this.pendingEligibilityProcessess = resul;
@@ -468,7 +497,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   callMultipleClientsCount() {
-    if (this.multipleClientesCount > 0) {
+    if (this.multipleClientesCount > 0 && !this.multipleClientesOpened) {
+      this.resetOpened();
+      this.multipleClientesOpened = true;
       this.processService.searchProcessByState('ClientChoice', 0, this.multipleClientesCount).subscribe(resul => {
         this.logger.info('Search client choice processes ' + JSON.stringify(resul));
         this.multipleClientesProcessess = resul;
@@ -486,7 +517,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   callDOValidationCount() {
-    if (this.DOValidationCount > 0) {
+    if (this.DOValidationCount > 0 && !this.DOValidationOpened) {
+      this.resetOpened();
+      this.DOValidationOpened = true;
       this.processService.searchProcessByState('OperationsEvaluation', 0, this.DOValidationCount).subscribe(resul => {
         this.logger.info('Search operations evaluation processes ' + JSON.stringify(resul));
         this.DOValidationProcessess = resul;
@@ -504,7 +537,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   callNegotiationApprovalCount() {
-    if (this.negotiationAprovalCount > 0) {
+    if (this.negotiationAprovalCount > 0 && !this.negotiationAprovalOpened) {
+      this.resetOpened();
+      this.negotiationAprovalOpened = true;
       this.processService.searchProcessByState('NegotiationApproval', 0, this.negotiationAprovalCount).subscribe(resul => {
         this.logger.info('Search negotiation approval processes ' + JSON.stringify(resul));
         this.negotiationAprovalProcessess = resul;
@@ -522,7 +557,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   callMCCTreatmentCount() {
-    if (this.MCCTreatmentCount > 0) {
+    if (this.MCCTreatmentCount > 0 && !this.MCCTreatmentOpened) {
+      this.resetOpened();
+      this.MCCTreatmentOpened = true;
       this.processService.searchProcessByState('StandardIndustryClassificationChoice', 0, this.MCCTreatmentCount).subscribe(resul => {
         this.logger.info('Search standard industry classification choice processes ' + JSON.stringify(resul));
         this.MCCTreatmentProcessess = resul;
@@ -540,7 +577,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   callValidationSIBSCount() {
-    if (this.validationSIBSCount > 0) {
+    if (this.validationSIBSCount > 0 && !this.validationSIBSOpened) {
+      this.resetOpened();
+      this.validationSIBSOpened = true;
       this.processService.searchProcessByState('MerchantRegistration', 0, this.validationSIBSCount).subscribe(resul => {
         this.logger.info('Search merchant registration processes ' + JSON.stringify(resul));
         this.validationSIBSProcessess = resul;
@@ -558,7 +597,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   callRiskOpinionCount() {
-    if (this.riskOpinionCount > 0) {
+    if (this.riskOpinionCount > 0 && !this.riskOpinionOpened) {
+      this.resetOpened();
+      this.riskOpinionOpened = true;
       this.processService.searchProcessByState('RiskAssessment', 0, this.riskOpinionCount).subscribe(resul => {
         this.logger.info('Search risk assessment processes ' + JSON.stringify(resul));
         this.riskOpinionProcessess = resul;
@@ -576,7 +617,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   callComplianceDoubtsCount() {
-    if (this.complianceDoubtsCount > 0) {
+    if (this.complianceDoubtsCount > 0 && !this.complianceDoubtsOpened) {
+      this.resetOpened();
+      this.complianceDoubtsOpened = true;
       this.processService.searchProcessByState('ComplianceEvaluation', 0, this.complianceDoubtsCount).subscribe(resul => {
         this.logger.info('Search compliance evaluation processes ' + JSON.stringify(resul));
         this.complianceDoubtsProcessess = resul;
@@ -622,12 +665,23 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.username = this.authService.GetCurrentUser().userName;
     this.queueService.getActiveWorkQueue(processId).then(result => {
       this.workQueue = result.result;
-      if (result.result.lockedBy == "" || result.result.lockedBy == null) {
-        this.existsUser = false;
+      if (result.result.lockedBy != this.authService.GetCurrentUser().userName) {
+        if (result.result.lockedBy == "" || result.result.lockedBy == null) {
+          this.existsUser = false;
+        } else {
+          this.existsUser = true;
+        }
+        this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
       } else {
-        this.existsUser = true;
+        let navigationExtras: NavigationExtras = {
+          state: {
+            queueName: this.queue,
+            processId: this.processToAssign
+          }
+        };
+        this.logger.info('Redirecting to Queues Detail page');
+        this.router.navigate(["/queues-detail"], navigationExtras);
       }
-      this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
     }, error => {
       this.logger.error(error, "Error while searching for active work queue");
     });
@@ -648,6 +702,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   openProcess(process) {
     localStorage.setItem("processNumber", process.processNumber);
     localStorage.setItem("returned", 'consult');
+    this.processNrService.changeProcessId(process.processId);
     this.logger.info("Redirecting to Client by id page");
     this.router.navigate(['/clientbyid']);
   }
@@ -706,7 +761,16 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     if (this.processToDelete != "") {
       this.deleteModalRef?.hide();
       this.queueService.markToCancel(this.processToDelete).then(res => {
-        
+        if (this.pendingEligibilityProcessess != null) {
+          var index = this.pendingEligibilityProcessess.items.findIndex(process => process.processId == this.processToDelete);
+          this.pendingEligibilityProcessess.items.splice(index, 1);
+          this.orderProcesses(this.dataSourcePendingEligibility, this.empTbSortPendingEligibility, this.pendingEligibilityProcessess);
+        }
+        if (this.returnedProcessess != null) {
+          var index = this.returnedProcessess.items.findIndex(process => process.processId == this.processToDelete);
+          this.returnedProcessess.items.splice(index, 1);
+          this.orderProcesses(this.dataSourceDevolvidos, this.empTbSortDevolvidos, this.returnedProcessess);
+        }
       });
     }
     if (this.processQueueToDelete != null) {
@@ -717,25 +781,30 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         state = State.CONTRACT_DIGITAL_ACCEPTANCE;
         queueModel = {
           $type: "ContractDigitalAcceptance",
-          contractDigitalAcceptanceResult: 'Cancel'
+          contractDigitalAcceptanceResult: 'Cancel',
+          submissionUser: this.authService.GetCurrentUser().userName
         };
       }
       if (this.processQueueToDelete["tenantState"] == "ContractAcceptance") {
         state = State.CONTRACT_ACCEPTANCE;
         queueModel = {
           $type: "ContractAcceptanceModel",
-          contractAcceptanceResult: 'Cancel'
+          contractAcceptanceResult: 'Cancel',
+          submissionUser: this.authService.GetCurrentUser().userName
         };
       }
       if (this.processQueueToDelete["tenantState"] == "DigitalIdentification") {
         state = State.DIGITAL_IDENTIFICATION;
         queueModel = {
           $type: "DigitalIdentification",
-          digitalIdentificationResult: 'Cancel'
+          digitalIdentificationResult: 'Cancel',
+          submissionUser: this.authService.GetCurrentUser().userName
         };
       }
       this.queueService.postExternalState(this.processQueueToDelete.processId, state, queueModel).then(result => {
-        
+        var index = this.contractAcceptanceProcessess.items.findIndex(value => value.processId == this.processQueueToDelete.processId);
+        this.contractAcceptanceProcessess.items.splice(index, 1);
+        this.orderProcesses(this.dataSourceAceitacao, this.empTbSortAceitacao, this.contractAcceptanceProcessess);
       });
     }
   }
@@ -758,6 +827,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.processNrService.changeProcessNumber(null);
     this.processNrService.changeProcessId(null);
     this.processNrService.changeQueueName(null);
+    localStorage.removeItem("documents");
 
     this.dataSourcePendentes.filterPredicate = function (record, filterValue) {
       return record.processNumber.trim().toLowerCase().includes(filterValue.trim().toLowerCase());
@@ -928,6 +998,22 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   closeUserModal() {
     this.userModalRef?.hide();
+  }
+
+  resetOpened() {
+    this.incompleteOpened = false;
+    this.ongoingOpened = false;
+    this.returnedOpened = false;
+    this.contractAcceptanceOpened = false;
+    this.pendingSentOpened = false;
+    this.pendingEligibilityOpened = false;
+    this.multipleClientesOpened = false;
+    this.DOValidationOpened = false;
+    this.negotiationAprovalOpened = false;
+    this.MCCTreatmentOpened = false;
+    this.validationSIBSOpened = false;
+    this.riskOpinionOpened = false ;
+    this.complianceDoubtsOpened = false;
   }
 
   expirationCounter(timeout) {

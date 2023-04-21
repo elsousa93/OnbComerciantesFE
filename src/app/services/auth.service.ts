@@ -19,7 +19,7 @@ export class AuthService implements OnDestroy {
 
   private dataSource = new BehaviorSubject(this.user);
   private bankLocation = new BehaviorSubject(this.user.bankLocation);
-  private authenticated = new BehaviorSubject(false);
+  private authenticated = new BehaviorSubject(true); //antes estava a false
   private wantsLogin = new BehaviorSubject(false);
   private expired = new BehaviorSubject(false);
 
@@ -27,6 +27,10 @@ export class AuthService implements OnDestroy {
   hasAuthenticated = this.authenticated.asObservable();
   doLogin = this.wantsLogin.asObservable();
   hasExpired = this.expired.asObservable();
+
+  changeAuthenticated(bool: boolean) {
+    this.authenticated.next(bool);
+  }
 
   changeExpired(bool: boolean) {
     this.expired.next(bool);

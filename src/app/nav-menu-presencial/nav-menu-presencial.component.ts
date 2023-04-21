@@ -87,17 +87,19 @@ export class NavMenuPresencialComponent implements OnInit {
       var a = UserPermissions[this.currentUser.permissions];
       this.logger.info("User permissions: " + this.currentUser.permissions);
       this.userPermissions = getMenuPermissions(a);
+
+      this.tableInfo.GetBanks().subscribe(result => {
+        this.banks = result;
+        if (this.banks !== undefined) {
+          var index = this.banks.findIndex(b => b.code == this.currentUser.bankName);
+          if (index >= 0) {
+            this.bank = this.banks[index].description;
+          }
+        }
+      });
     });
 
-    this.tableInfo.GetBanks().subscribe(result => {
-      this.banks = result;
-      if (this.banks !== undefined) {
-        var index = this.banks.findIndex(b => b.code == this.currentUser.bankName);
-        if (index >= 0) {
-          this.bank = this.banks[index].description;
-        }
-      }
-    });
+
 
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
 

@@ -10,6 +10,8 @@ import { Client } from '../../client/Client.interface';
 import { ClientService } from '../../client/client.service';
 import { LoggerService } from '../../logger.service';
 import { DataService } from '../../nav-menu-interna/data.service';
+import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
+import { ProcessService } from '../../process/process.service';
 import { IStakeholders, StakeholdersCompleteInformation } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
 
@@ -23,8 +25,18 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
   public submissionClient: Client;
 
-  constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private clientService: ClientService, private dataService: DataService, private logger: LoggerService) {
+  constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private clientService: ClientService, private dataService: DataService, private logger: LoggerService, private processNrService: ProcessNumberService, private processService: ProcessService) {
+    this.processNrService.processId.subscribe(id => this.processId = id);
+    this.returned = localStorage.getItem("returned");
+  }
 
+  stakeholderExists() {
+    var found = this.submissionStakeholders.find(value => value?.stakeholderAcquiring?.signType != null && value?.stakeholderAcquiring?.signType !== '');
+    if (found != undefined) {
+      this.stakeExistsEmitter.emit(true);
+    } else {
+      this.stakeExistsEmitter.emit(false);
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -42,6 +54,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
         this.submissionStakeholders.push(stakeToInsert);
         this.listLengthEmitter.emit(this.submissionStakeholders.length);
+        this.stakeholderExists();
         this.loadStakeholders(this.submissionStakeholders);
       });
     }
@@ -93,9 +106,16 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       });
     }
     if (!changes["isInfoDeclarativa"]?.currentValue) {
-      this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
-        this.submissionClient = client;
-      });
+      if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+        this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
+          this.submissionClient = client;
+        });
+      } else {
+        this.processService.getMerchantFromProcess(this.processId).subscribe(client => {
+          this.submissionClient = client;
+        });
+      }
+      
     }
     if (changes["canSelect"]?.currentValue == true) {
       if (this.submissionStakeholders.length > 0) {
@@ -134,15 +154,21 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
 
   @Output() listLengthEmitter = new EventEmitter<number>();
   @Output() sameNIFEmitter = new EventEmitter<boolean>();
+  @Output() stakeExistsEmitter? = new EventEmitter<boolean>();
 
   submissionStakeholders: StakeholdersCompleteInformation[] = [];
   selectedStakeholder: StakeholdersCompleteInformation = {};
   returned: string;
   displayedColumns: string[] = ['stakeholderAcquiring.shortName', 'stakeholderAcquiring.fiscalId', 'entityType', 'relationType', 'elegible', 'stakeholderAcquiring.stakeholderId', 'stakeholderAcquiring.isProxy', 'delete'];
   firstTimeStake: boolean;
+  processId: string;
 
   ngOnInit(): void {
-    this.returned = localStorage.getItem("returned");
+    this.dataService.currentQueueName.subscribe(queueName => {
+      if (queueName != null) {
+        this.canDelete = false;
+      }
+    });
     this.dataService.currentFirstTimeStake.subscribe(firstTime => this.firstTimeStake = firstTime);
     this.getSubmissionStakeholders();
   }
@@ -152,9 +178,13 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   }
 
   getSubmissionStakeholders() {
-    var context = this;
-    this.getSubmissionStakeholdersPromise();
-    this.getSubmissionCorporatePromise();
+    if ((this.processId != '' && this.processId != null) && this.returned != null) {
+      this.getProcessStakeholdersPromise();
+      this.getProcessCorporatePromise();
+    } else {
+      this.getSubmissionStakeholdersPromise();
+      this.getSubmissionCorporatePromise();
+    }
   }
 
   async getSubmissionCorporatePromise() {
@@ -183,6 +213,42 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         context.logger.error(error, "", "Error when fetching stakeholders");
       }).then(stakeholderInfo => {
         this.loadStakeholders(context.submissionStakeholders);
+        this.stakeholderExists();
+        this.listLengthEmitter.emit(context.submissionStakeholders.length);
+        this.emitSelectedStakeholder(context.submissionStakeholders[0], 0);
+      });
+    })
+  }
+
+  async getProcessCorporatePromise() {
+    var context = this;
+    context.submissionStakeholders = [];
+    const promises = [
+      this.processService.getProcessEntities(this.processId)
+    ]
+
+    var subpromises = [];
+
+    Promise.all(promises).then(res => {
+      var corporate = res[0].result;
+
+      corporate.forEach(function (value, index) {
+        if (value.entityType == 'CorporateEntity') {
+          subpromises.push(context.getAllCorporateProcessInfo(context.processId, value.id));
+        }
+      });
+
+      const allPromisesWithErrorHandler = subpromises.map(promise =>
+        promise.catch(error => error),
+      );
+
+      Promise.all(allPromisesWithErrorHandler).then(resolve => {
+        context.logger.info("Success fetching stakeholders");
+      }, error => {
+        context.logger.error(error, "", "Error when fetching stakeholders");
+      }).then(stakeholderInfo => {
+        this.loadStakeholders(context.submissionStakeholders);
+        this.stakeholderExists();
         this.listLengthEmitter.emit(context.submissionStakeholders.length);
         this.emitSelectedStakeholder(context.submissionStakeholders[0], 0);
       });
@@ -222,6 +288,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       }, error => {
         context.logger.error(error, "", "Error fetching all stakeholders from submission");
       }).then(success => {
+        context.stakeholderExists();
         context.listLengthEmitter.emit(context.submissionStakeholders.length);
         context.loadStakeholders(context.submissionStakeholders);
         context.selectedStakeholder = context.submissionStakeholders[0];
@@ -246,6 +313,24 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         } as StakeholdersCompleteInformation
           context.submissionStakeholders.push(stakeholderToInsert);
           resolve(null);
+      });
+    });
+  }
+
+  getAllCorporateProcessInfo(processID, corporateID) {
+    var context = this;
+    return new Promise((resolve, reject) => {
+      context.processService.getProcessCorporateEntity(processID, corporateID).then(res => {
+        context.logger.info("Get stakeholder from submission result: " + JSON.stringify(res.result));
+        var AcquiringStakeholder = res.result;
+        var stakeholderToInsert = {
+          displayName: AcquiringStakeholder.shortName,
+          eligibility: false,
+          stakeholderAcquiring: AcquiringStakeholder,
+          stakeholderOutbound: undefined
+        } as StakeholdersCompleteInformation
+        context.submissionStakeholders.push(stakeholderToInsert);
+        resolve(null);
       });
     });
   }
@@ -349,6 +434,24 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     });
   }
 
+  getAllStakeholderProcessInfo(processID, stakeholderID) {
+    var context = this;
+    return new Promise((resolve, reject) => {
+      context.processService.getStakeholderByIdFromProcess(processID, stakeholderID).subscribe(res => {
+        context.logger.info("Get stakeholder from submission result: " + JSON.stringify(res));
+        var AcquiringStakeholder = res;
+        var stakeholderToInsert = {
+          displayName: AcquiringStakeholder.shortName,
+          eligibility: false,
+          stakeholderAcquiring: AcquiringStakeholder,
+          stakeholderOutbound: undefined
+        } as StakeholdersCompleteInformation
+          context.submissionStakeholders.push(stakeholderToInsert);
+          resolve(null);
+      });
+    });
+  }
+
   getSubmissionStakeholdersPromise() {
     var context = this;
     context.submissionStakeholders = [];
@@ -376,6 +479,41 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       }).then(stakeholderInfo => {
         this.dataService.changeCurrentFirstTimeStake(false);
         this.loadStakeholders(context.submissionStakeholders);
+        this.stakeholderExists();
+        this.listLengthEmitter.emit(context.submissionStakeholders.length);
+        this.emitSelectedStakeholder(context.submissionStakeholders[0], 0);
+      });
+    })
+  }
+
+  getProcessStakeholdersPromise() {
+    var context = this;
+    context.submissionStakeholders = [];
+    const promises = [
+      this.processService.getStakeholdersFromProcess(this.processId)
+    ]
+
+    var subpromises = [];
+
+    Promise.all(promises).then(res => {
+      var stakeholders = res[0].result;
+
+      stakeholders.forEach(function (value, index) {
+        subpromises.push(context.getAllStakeholderProcessInfo(context.processId, value.id));
+      });
+
+      const allPromisesWithErrorHandler = subpromises.map(promise =>
+        promise.catch(error => error),
+      );
+
+      Promise.all(allPromisesWithErrorHandler).then(resolve => {
+        context.logger.info("Success fetching stakeholders");
+      }, error => {
+        context.logger.error(error, "", "Error when fetching stakeholders");
+      }).then(stakeholderInfo => {
+        this.dataService.changeCurrentFirstTimeStake(false);
+        this.loadStakeholders(context.submissionStakeholders);
+        this.stakeholderExists();
         this.listLengthEmitter.emit(context.submissionStakeholders.length);
         this.emitSelectedStakeholder(context.submissionStakeholders[0], 0);
       });
@@ -411,28 +549,31 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   }
 
   removeStakeholder(stakeholder) {
-    this.logger.info("Stakeholder to remove: " + JSON.stringify(stakeholder));
-
-    if (stakeholder?.stakeholderAcquiring?.signType != null && stakeholder?.stakeholderAcquiring?.signType !== '') {
-      this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.stakeholderAcquiring.id).subscribe(result => {
-        this.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
-        const index = this.submissionStakeholders.findIndex(stake => stake.stakeholderAcquiring.id === stakeholder.stakeholderAcquiring.id);
-        this.submissionStakeholders.splice(index, 1);
-        this.loadStakeholders(this.submissionStakeholders);
-        this.listLengthEmitter.emit(this.submissionStakeholders.length);
-      }, error => {
-        this.logger.error(error, "", "Error when deleting stakeholder");
-      });
-    } else {
-      this.stakeholderService.DeleteCorporateEntity(this.submissionId, stakeholder.stakeholderAcquiring.id).then(result => {
-        this.logger.info("Deleted stakeholder result: " + JSON.stringify(result.result));
-        const index = this.submissionStakeholders.findIndex(stake => stake.stakeholderAcquiring["id"] === stakeholder.stakeholderAcquiring["id"]);
-        this.submissionStakeholders.splice(index, 1);
-        this.loadStakeholders(this.submissionStakeholders);
-        this.listLengthEmitter.emit(this.submissionStakeholders.length);
-      }, error => {
-        this.logger.error(error, "", "Error when deleting stakeholder");
-      });
+    if (this.returned != 'consult') {
+      this.logger.info("Stakeholder to remove: " + JSON.stringify(stakeholder));
+      if (stakeholder?.stakeholderAcquiring?.signType != null && stakeholder?.stakeholderAcquiring?.signType !== '') {
+        this.stakeholderService.DeleteStakeholder(this.submissionId, stakeholder.stakeholderAcquiring.id).subscribe(result => {
+          this.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
+          const index = this.submissionStakeholders.findIndex(stake => stake.stakeholderAcquiring.id === stakeholder.stakeholderAcquiring.id);
+          this.submissionStakeholders.splice(index, 1);
+          this.loadStakeholders(this.submissionStakeholders);
+          this.stakeholderExists();
+          this.listLengthEmitter.emit(this.submissionStakeholders.length);
+        }, error => {
+          this.logger.error(error, "", "Error when deleting stakeholder");
+        });
+      } else {
+        this.stakeholderService.DeleteCorporateEntity(this.submissionId, stakeholder.stakeholderAcquiring.id).then(result => {
+          this.logger.info("Deleted stakeholder result: " + JSON.stringify(result.result));
+          const index = this.submissionStakeholders.findIndex(stake => stake.stakeholderAcquiring["id"] === stakeholder.stakeholderAcquiring["id"]);
+          this.submissionStakeholders.splice(index, 1);
+          this.loadStakeholders(this.submissionStakeholders);
+          this.stakeholderExists();
+          this.listLengthEmitter.emit(this.submissionStakeholders.length);
+        }, error => {
+          this.logger.error(error, "", "Error when deleting stakeholder");
+        });
+      }
     }
   }
 }

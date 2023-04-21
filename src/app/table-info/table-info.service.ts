@@ -267,4 +267,14 @@ export class TableInfoService {
     }
     return this.http.get<ShopActivities[]>(this.acquiringUrl + 'shop/activity', HTTP_OPTIONS);
   }
+
+  GetMerchantTypes() {
+    var url = this.acquiringUrl + 'merchant/merchantype';
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+      }),
+    }
+    return this.API.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS);
+  }
 }

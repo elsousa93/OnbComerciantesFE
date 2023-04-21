@@ -45,6 +45,7 @@ export class NavMenuInternaComponent implements OnInit {
   isMinWidth: boolean;
   @ViewChild('returnModal') returnModal;
   returnModalRef: BsModalRef | undefined;
+  returned: string;
 
   constructor(private logger: LoggerService, private data: DataService, private route: Router, private processNrService: ProcessNumberService, private modalService: BsModalService) {
   }
@@ -52,7 +53,7 @@ export class NavMenuInternaComponent implements OnInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
-
+    this.returned = localStorage.getItem("returned");
     var prevScrollpos = window.pageYOffset;
 
     window.addEventListener("scroll", this.autohide.bind(this), false);
@@ -259,7 +260,23 @@ export class NavMenuInternaComponent implements OnInit {
   }
 
   openReturnPopup() {
-    this.returnModalRef = this.modalService.show(this.returnModal);
+    if (!this.isHistory) {
+      if (this.returned == null) {
+        var subPage = 0;
+        this.data.currentSubPage.subscribe(page => subPage = page);
+        if (subPage == 1 && this.currentPage == 1) {
+
+        } else {
+          this.returnModalRef = this.modalService.show(this.returnModal);
+        }
+      }
+      if (this.returned == 'consult') {
+        this.route.navigate(['app-consultas']);
+      }
+    } else {
+      this.logger.info("Redirecting to Client page");
+      this.route.navigate(['clientbyid']);
+    }
   }
 
   closeReturnPopup() {
@@ -269,6 +286,13 @@ export class NavMenuInternaComponent implements OnInit {
   goToCliente() {
     if (this.currentPage > 1 || this.map.get(1) != undefined) {
       this.returnModalRef?.hide();
+      this.data.changeData(new Map().set(0, undefined)
+        .set(1, undefined)
+        .set(2, undefined)
+        .set(3, undefined)
+        .set(4, undefined)
+        .set(5, undefined)
+        .set(6, undefined));
       this.logger.info("Redirecting to Client page");
       this.route.navigate(['client']);
     }

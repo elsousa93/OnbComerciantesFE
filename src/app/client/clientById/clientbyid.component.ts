@@ -28,6 +28,8 @@ import { ISubmissionDocument } from '../../submission/document/ISubmission-docum
 import { SubmissionPostDocumentTemplate } from '../../submission/ISubmission.interface';
 import { TranslateService } from '@ngx-translate/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { ProcessService } from '../../process/process.service';
+import { QueuesService } from '../../queues-detail/queues.service';
 @Component({
   selector: 'app-client',
   templateUrl: './clientbyid.component.html',
@@ -133,7 +135,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   submissionDocs: ISubmissionDocument[] = [];
   error: boolean = false;
   queueName: string = "";
-  title: string; 
+  title: string;
+  merchant: boolean;
 
   updateBasicForm() {
     this.form.get("clientCharacterizationForm").get("natJuridicaNIFNIPC").setValue(this.NIFNIPC);
@@ -142,7 +145,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   constructor(private logger: LoggerService, private datepipe: DatePipe, private formBuilder: FormBuilder,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService,
     private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
-    private stakeholderService: StakeholderService, private storeService: StoreService, private authService: AuthService, private translate: TranslateService, private modalService: BsModalService) {
+    private stakeholderService: StakeholderService, private storeService: StoreService, private authService: AuthService, private translate: TranslateService, private modalService: BsModalService, private processService: ProcessService, private queueService: QueuesService) {
     //Gets Tipologia from the Client component 
     if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
@@ -209,21 +212,30 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     try {
       var context = this;
       return new Promise((resolve, reject) => {
-        context.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(function (result) {
-          context.logger.info("Get submission by process number result: " + JSON.stringify(result));
-          context.submissionType = result?.result[0]?.submissionType;
-          localStorage.setItem("submissionId", result?.result[0]?.submissionId);
-          return result;
-        }).then(function (resul) {
-          context.clientService.GetClientByIdAcquiring(resul?.result[0]?.submissionId).then(function (res) {
-            context.logger.info("Get client by id result: " + JSON.stringify(res));
+        if (this.returned == 'consult' || (this.returned == 'edit' && this.processId != null && this.processId != '')) {
+          context.processService.getMerchantFromProcess(context.processId).subscribe(res => {
+            context.logger.info("Get process client by id result: " + JSON.stringify(res));
             context.merchantInfo = res;
-            return context.merchantInfo;
-          }).then(function (r) {
-            resolve(r);
-            return r;
+            resolve(res);
+            return res;
           });
-        });
+        } else {
+          context.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(function (result) {
+            context.logger.info("Get submission by process number result: " + JSON.stringify(result));
+            context.submissionType = result?.result[0]?.submissionType;
+            localStorage.setItem("submissionId", result?.result[0]?.submissionId);
+            return result;
+          }).then(function (resul) {
+            context.clientService.GetClientByIdAcquiring(resul?.result[0]?.submissionId).then(function (res) {
+              context.logger.info("Get client by id result: " + JSON.stringify(res));
+              context.merchantInfo = res;
+              return context.merchantInfo;
+            }).then(function (r) {
+              resolve(r);
+              return r;
+            });
+          });
+        }
       });
     } catch (err) {
       this.logger.error(err);
@@ -232,6 +244,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
   async ngOnInit() {
     var context = this;
+    this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
     if (this.returned != null) {
       let promise = await context.getMerchantInfo();
       if (context.merchantInfo.clientId != null) {
@@ -240,12 +253,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         context.isClient = false;
       }
     }
-
+    this.subscription = this.data.currentMerchant.subscribe(merchant => this.merchant = merchant);
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.subscription = this.data.historyStream.subscribe(historyStream => this.historyStream = historyStream);
     this.subscription = this.data.updatedClient.subscribe(updateClient => this.updateClient = updateClient);
-    this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
     this.subscription = this.data.currentQueueName.subscribe(queueName => {
       if (queueName != null) { 
         this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
@@ -263,7 +275,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.subscription = this.data.currentDataCC.subscribe(dataCC => this.dataCC = dataCC);
     }
 
-    this.data.updateData(false, 1, 2);
+    if (!this.merchant) {
+      this.data.updateData(false, 1, 2);
+    } else {
+      this.data.updateData(true, 1, 2);
+    }
 
     this.clientContext = new ClientContext(
       this.tipologia,
@@ -275,7 +291,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.isClient
     );
 
-    if (this.submissionExists || this.returned != null) {
+    if (this.submissionExists || this.returned == 'edit' && (this.processId == '' || this.processId == null) ) {
       this.stakeholderService.GetAllStakeholdersFromSubmission(localStorage.getItem("submissionId")).then(result => {
         context.logger.info("Get all stakeholders from submission result: " + JSON.stringify(result));
         var stakeholders = result.result;
@@ -306,12 +322,53 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           });
         }
       });
+    }
+
+    if ((this.processId != '' && this.processId != null) && this.returned != null) {
+      var queueName = "";
+      this.processNrService.queueName.subscribe(name => queueName = name);
+      if (queueName == "devolucao") {
+        this.submissionType = 'DigitalComplete';
+      }
+      this.queueService.GetProcessStakeholders(this.processId).then(result => {
+        context.logger.info("Get all stakeholders from submission result: " + JSON.stringify(result));
+        var stakeholders = result;
+        let length = 0;
+        stakeholders.forEach(function (value, index) {
+          length++;
+          context.processService.getStakeholderByIdFromProcess(context.processId, value.id).subscribe(res => {
+            context.logger.info("Get stakeholder from submission result: " + JSON.stringify(res));
+            context.submissionStakeholders.push(res);
+            if (length == stakeholders.length) {
+              context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
+            }
+          }, error => {
+            context.logger.error(error);
+          })
+        });
+      }, error => {
+        context.logger.error(error);
+      }).then(res => {
+        context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
+      });
+
+      this.processService.getDocumentFromProcess(this.processId).subscribe(result => {
+        context.logger.info("Get submission documents result: " + JSON.stringify(result));
+        if (result.length > 0) {
+          result.forEach(doc => {
+            this.processService.getDocumentDetailsFromProcess(this.processId, doc.id).subscribe(res => {
+              context.logger.info("Get submission document result: " + JSON.stringify(res));
+              this.submissionDocs.push(res);
+            });
+          });
+        }
+      })
 
     }
 
     if (this.returned == null) {
       if (!this.submissionExists || this.isFromSearch) {
-        if (this.dataCC !== undefined && this.dataCC !== null) {
+        if (this.dataCC != null) {
           this.data.changeCurrentDataCC(this.dataCC);
           var client: AcquiringClientPost = {} as AcquiringClientPost;
 
@@ -629,13 +686,22 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.updateSubmission();
     } else {
       this.logger.info("Redirecting to Stakeholders page");
+      this.data.changeMerchant(true);
       this.data.updateData(true, 1);
       this.route.navigateByUrl('/stakeholders');
     }
   }
 
   openReturnPopup() {
-    this.returnModalRef = this.modalService.show(this.returnModal);
+    if (!this.historyStream) {
+      if (this.returned == null) {
+        this.returnModalRef = this.modalService.show(this.returnModal);
+      } else {
+        this.redirectBeginningClient();
+      }
+    } else {
+      this.redirectBeginningClient();
+    }
   }
 
   closeReturnPopup() {
@@ -654,16 +720,27 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           comprovativoCC: this.comprovativoCC,
         }
       };
-      if (this.returned == null) { 
+      if (this.returned == null) {
+        this.data.changeData(new Map().set(0, undefined)
+          .set(1, undefined)
+          .set(2, undefined)
+          .set(3, undefined)
+          .set(4, undefined)
+          .set(5, undefined)
+          .set(6, undefined));
         this.logger.info("Redirecting to Client page");
         this.route.navigate(["/client"], navigationExtras);
+      }
+      if (this.returned == 'consult') {
+        this.logger.info("Redirecting to Consultas page");
+        this.route.navigate(["/app-consultas"]);
       }
     } else {
       var queueName = "";
       this.subscription = this.processNrService.queueName.subscribe(name => queueName = name);
       if (queueName == "devolucao") {
         this.logger.info("Redirecting to Devolucao page");
-        this.route.navigate(["/app-devolucao/"]);
+        this.route.navigate(["/app-devolucao/", this.processId]);
       } else if (queueName == 'aceitacao') {
         this.logger.info("Redirecting to Aceitacao page");
         this.route.navigate(['/app-aceitacao/', this.processId]);
@@ -772,33 +849,58 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       var submissionID = this.clientContext.submissionID ?? localStorage.getItem("submissionId");
       var newSubmission = this.clientContext.newSubmission;
 
-      if (this.returned == 'edit')
-        newSubmission.processNumber = localStorage.getItem("processNumber");
-      context.logger.info("Submission to create: " + JSON.stringify(newSubmission));
-      this.submissionService.EditSubmission(submissionID, newSubmission).subscribe(result => {
-        context.logger.info("Updated submission result: " + JSON.stringify(result));
-        this.data.changeUpdatedClient(true);
-      }, error => {
-        this.error = true;
-      });
+      if (this.returned == 'edit' && this.processId != null && this.processId != '') {
+        //newSubmission.processNumber = localStorage.getItem("processNumber");
+        //this.processService.updateProcess(this.processId, newSubmission).then(result => {
+        //  context.logger.info("Updated submission result: " + JSON.stringify(result.result));
+        //  this.data.changeUpdatedClient(true);
+        //}, error => {
+        //  this.error = true;
+        //});
+      } else {
+        context.logger.info("Submission to create: " + JSON.stringify(newSubmission));
+        this.submissionService.EditSubmission(submissionID, newSubmission).subscribe(result => {
+          context.logger.info("Updated submission result: " + JSON.stringify(result));
+          this.data.changeUpdatedClient(true);
+        }, error => {
+          this.error = true;
+        });
+      }
+        
+
       var client = this.clientContext.getClient();
       var merchant = this.clientContext.newSubmission.merchant;
       var clientToSubmit: OutboundClient
 
-      //antes estava merchant 
-      await this.clientService.EditClient(submissionID, client).toPromise().then(res => {
-        this.logger.info("Update client: " + JSON.stringify(res));
-      }, error => {
-        this.error = true;
-      });
+      //antes estava merchant
+      if (this.returned == 'edit' && this.processId != null && this.processId != '') {
+        await this.processService.updateMerchantProcess(this.processId, client).then(res => {
+          this.logger.info("Update client: " + JSON.stringify(res));
+        }, error => {
+          this.error = true;
+        });
+      } else {
+        await this.clientService.EditClient(submissionID, client).toPromise().then(res => {
+          this.logger.info("Update client: " + JSON.stringify(res));
+        }, error => {
+          this.error = true;
+        });
+      }
+
 
       if (!this.compareArraysStakes(this.submissionStakeholders, this.clientContext.newSubmission.stakeholders)) {
         var stakeholders = this.clientContext.newSubmission.stakeholders;
         if (stakeholders.length == 0) {
           this.submissionStakeholders.forEach((val, index) => {
-            context.stakeholderService.DeleteStakeholder(submissionID, val.id).subscribe(result => {
-              context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
-            });
+            if (context.returned == null) {
+              context.stakeholderService.DeleteStakeholder(submissionID, val.id).subscribe(result => {
+                context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
+              });
+            } else {
+              context.processService.deleteStakeholderProcess(context.processId, val.id).then(result => {
+                context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
+              });
+            }
           });
           this.submissionStakeholders = [];
           this.clientContext.setStakeholdersToInsert([]);
@@ -807,14 +909,27 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           this.submissionStakeholders.forEach(stake => {
             var found = stakeholders.find(val => val.fiscalId === stake.fiscalId);
             if (found == undefined) {
-              context.stakeholderService.DeleteStakeholder(submissionID, stake.id).subscribe(result => {
-                context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
-              });
-            } else {
-              if (found.clientId != null && found.clientId != "" && stake.clientId != null && stake.clientId != "" && found.clientId != stake.clientId) {
+              if (context.returned == null) {
                 context.stakeholderService.DeleteStakeholder(submissionID, stake.id).subscribe(result => {
                   context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
                 });
+              } else {
+                context.processService.deleteStakeholderProcess(context.processId, stake.id).then(result => {
+                  context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
+                });
+              }
+            } else {
+              if (found.clientId != null && found.clientId != "" && stake.clientId != null && stake.clientId != "" && found.clientId != stake.clientId) {
+                if (context.returned == null) {
+                  context.stakeholderService.DeleteStakeholder(submissionID, stake.id).subscribe(result => {
+                    context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
+                  });
+                } else {
+                  context.processService.deleteStakeholderProcess(context.processId, stake.id).then(result => {
+                    context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
+                  });
+                }
+
               } else {
                 stakeholders = stakeholders.filter(item => item.fiscalId !== found.fiscalId);
               }
@@ -823,9 +938,15 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           stakeholders.forEach(function (value, idx) {
             if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
               if (value.fiscalId !== client.fiscalId) {
-                context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
-                  context.logger.info("Created stakeholder result: " + JSON.stringify(result));
-                });
+                if (context.returned == null) {
+                  context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+                    context.logger.info("Created stakeholder result: " + JSON.stringify(result));
+                  });
+                } else {
+                  context.processService.addStakeholderToProcess(context.processId, value).then(result => {
+                    context.logger.info("Created stakeholder result: " + JSON.stringify(result));
+                  });
+                }
               } else {
                 if (localStorage.getItem("documentType") == "0501") {
                   value.signType = "CitizenCard";
@@ -833,60 +954,82 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 if (localStorage.getItem("documentType") == "1001") {
                   value.signType = "DigitalCitizenCard";
                 }
-                context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
-                  context.logger.info("Created stakeholder result: " + JSON.stringify(result));
-                  value.id = result.id;
-                });
+                if (localStorage.getItem("documentType") == "0101") {
+                  value.signType = "CitizenCard";
+                }
+                if (localStorage.getItem("documentType") == "0302") {
+                  value.signType = "CitizenCard";
+                }
+
+                if (context.returned == null) {
+                  context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+                    context.logger.info("Created stakeholder result: " + JSON.stringify(result));
+                    value.id = result.id;
+                  });
+                } else {
+                  context.processService.addStakeholderToProcess(context.processId, value).then(result => {
+                    context.logger.info("Created stakeholder result: " + JSON.stringify(result));
+                    value.id = result.result.id;
+                  });
+                }
               }
             } else {
-              context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
-                context.logger.info("Created stakeholder result: " + JSON.stringify(result));
-              });
+              if (context.returned == null) {
+                context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+                  context.logger.info("Created stakeholder result: " + JSON.stringify(result));
+                });
+              } else {
+                context.processService.addStakeholderToProcess(context.processId, value).then(result => {
+                  context.logger.info("Created stakeholder result: " + JSON.stringify(result));
+                });
+              }
             }
           });
         }
       }
 
-      if (!this.compareArraysDocs(this.submissionDocs, this.clientContext.newSubmission.documents)) {
-        var documents = this.clientContext.newSubmission.documents;
-        if (documents.length == 0) {
-          this.submissionDocs.forEach((val, index) => {
-            context.documentService.DeleteDocumentFromSubmission(submissionID, val.id).subscribe(result => {
-              context.logger.info("Deleted document result: " + JSON.stringify(result));
-            });
-          });
-          this.submissionDocs = [];
-        } else {
-          this.submissionDocs.forEach(val => {
-            var found = documents.find(doc => doc.documentType === val.documentType);
-            if (found == undefined) {
+      if (this.returned == null) {
+        if (!this.compareArraysDocs(this.submissionDocs, this.clientContext.newSubmission.documents)) {
+          var documents = this.clientContext.newSubmission.documents;
+          if (documents.length == 0) {
+            this.submissionDocs.forEach((val, index) => {
+
               context.documentService.DeleteDocumentFromSubmission(submissionID, val.id).subscribe(result => {
                 context.logger.info("Deleted document result: " + JSON.stringify(result));
               });
-            } else {
-              documents = documents.filter(item => item.documentType !== found.documentType);
-            }
-          });
 
-          if (documents.length > 0) {
-            documents.forEach(doc => {
-              if (doc.documentType !== '0001') {
-                context.clientService.merchantPostDocument(submissionID, doc).subscribe(result => {
-                  context.logger.info('Added document to submission: ' + JSON.stringify(result));
+            });
+            this.submissionDocs = [];
+          } else {
+            this.submissionDocs.forEach(val => {
+              var found = documents.find(doc => doc.documentType === val.documentType);
+              if (found == undefined) {
+
+                context.documentService.DeleteDocumentFromSubmission(submissionID, val.id).subscribe(result => {
+                  context.logger.info("Deleted document result: " + JSON.stringify(result));
                 });
+
+              } else {
+                documents = documents.filter(item => item.documentType !== found.documentType);
               }
             });
-          }
 
-          //if (context.clientDocs != null) {
-          //  context.clientDocs.forEach(function (value, idx) {
-          //    context.clientService.merchantPostDocument(submissionID, value).subscribe(result => {
-          //      context.logger.info("Added documents to submission from outbound client: " + JSON.stringify(result));
-          //    });
-          //  });
-          //}
+            if (documents.length > 0) {
+              documents.forEach(doc => {
+                if (doc.documentType !== '0001') {
+
+                  context.clientService.merchantPostDocument(submissionID, doc).subscribe(result => {
+                    context.logger.info('Added document to submission: ' + JSON.stringify(result));
+                  });
+
+                }
+              });
+            }
+
+          }
         }
       }
+
       if (!this.updateClient) {
         if (this.clientContext.isClient) {
           if (newSubmission?.merchant?.merchantRegistrationId != null && newSubmission?.merchant?.merchantRegistrationId != "") {
@@ -922,11 +1065,13 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         }
       }
       if (!this.error) {
+        this.data.changeMerchant(true);
         this.data.updateData(true, 1);
         this.logger.info("Redirecting to Stakeholders page");
         setTimeout(() => this.route.navigateByUrl('/stakeholders', navigationExtras), 500);
       }
     } else {
+      this.data.changeMerchant(true);
       this.data.updateData(true, 1);
       this.logger.info("Redirecting to Stakeholders page");
       this.route.navigate(['/stakeholders']);

@@ -39,7 +39,7 @@
           </li>
           <li class="nav-item_x">
             <a class="nav-link" id="navTabs1_2_tab" data-bs-toggle="tab" href="#" data-bs-target="#navTabs1_2"
-              role="tab" aria-controls="navTabs1_2" aria-selected="false">{{'acceptance.historic'|translate}}</a>
+              role="tab" aria-controls="navTabs1_2" aria-selected="false" (click)="goToHistoryTab()">{{'acceptance.historic'|translate}}</a>
           </li>
           <li class="nav-item_x"></li>
           <li class="nav-item_x"></li>
@@ -84,58 +84,93 @@
                   </h3>
                   <div class="row mt-0 ms-0 me-0 pt-0" *ngIf="queueName === 'compliance' || queueName === 'DOValidation'">
                     <div class="col-12 mt-4 pt-0 ps-0 pe-0">
+                      <!--<div class="table-responsive mb-5 pb-4">
+    <table class="table">
+      <thead class="text-primary table-primary">
+        <tr class="table-white text-primary">
+          <th scope="col" class="text-center text-primary bg-light table-white">
+            {{'acceptance.returnReason0'|translate}}
+          </th>
+          <th scope="col" class="text-center text-primary bg-light table-white">
+            {{'acceptance.returnReason1'|translate}}
+          </th>
+          <th scope="col" class="text-center bg-white">{{'acceptance.returnReason2'|translate}}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let issue of issues?.process">
+          <ng-container *ngIf="issue?.issueDescription != null && issue?.issueDescription != ''">
+            <td class="text-primary text-center">Processo</td>
+            <td class="text-primary text-center">-</td>
+            <td class="text-primary text-start">{{issue?.issueDescription}}</td>
+          </ng-container>
+        </tr>
+        <tr *ngFor="let issue of issues?.merchant?.issues">
+          <ng-container *ngIf="issue?.issueDescription != null && issue?.issueDescription != ''">
+            <td class="text-primary text-center">{{issues?.merchant?.merchant?.name}}</td>
+            <td class="text-primary text-center">-</td>
+            <td class="text-primary text-start">{{issue?.issueDescription}}</td>
+          </ng-container>
+        </tr>
+        <ng-container *ngFor="let issue of issues?.stakeholders">
+          <ng-container *ngFor="let iss of issue?.issues">
+            <tr *ngIf="iss?.issueDescription != null && iss?.issueDescription != ''">
+              <td class="text-primary text-center">{{issue?.stakeholder?.name}}</td>
+              <td class="text-primary text-center">-</td>
+              <td class="text-primary text-start">{{iss?.issueDescription}}</td>
+            </tr>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngFor="let issue of issues?.shops">
+          <ng-container *ngFor="let iss of issue?.issues">
+            <tr *ngIf="iss?.issueDescription != null && iss?.issueDescription != ''">
+              <td class="text-primary text-center">{{issue?.shop?.name}}</td>
+              <td class="text-primary text-center">-</td>
+              <td class="text-primary text-start">{{iss?.issueDescription}}</td>
+            </tr>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngFor="let issue of issues?.documents">
+          <ng-container *ngFor="let iss of issue?.issues">
+            <tr *ngIf="iss?.issueDescription != null && iss?.issueDescription != ''">
+              <td class="text-primary text-center">{{issue?.document?.name}}</td>
+              <td class="text-primary text-center">{{issue?.document?.type}}</td>
+              <td class="text-primary text-start">{{iss?.issueDescription}}</td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>-->
                       <div class="table-responsive mb-5 pb-4">
-                        <table class="table">
-                          <thead class="text-primary table-primary">
-                            <tr class="table-white text-primary">
-                              <th scope="col" class="text-center text-primary bg-light table-white">
-                                {{'acceptance.returnReason0'|translate}}
-                              </th>
-                              <th scope="col" class="text-center text-primary bg-light table-white">
-                                {{'acceptance.returnReason1'|translate}}
-                              </th>
-                              <th scope="col" class="text-center bg-white">{{'acceptance.returnReason2'|translate}}</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngFor="let issue of issues?.process">
-                              <ng-container *ngIf="issue?.issueDescription != null && issue?.issueDescription != ''">
-                                <td class="text-primary text-center">Processo</td>
-                                <td class="text-primary text-center">-</td>
-                                <td class="text-primary text-start">{{issue?.issueDescription}}</td>
-                              </ng-container>
-                            </tr>
-                            <tr>
-                              <ng-container *ngIf="issues?.merchant?.issues[0]?.issueDescription != null && issues?.merchant?.issues[0]?.issueDescription != ''">
-                                <td class="text-primary text-center">{{issues?.merchant?.merchant?.name}}</td>
-                                <td class="text-primary text-center">-</td>
-                                <td class="text-primary text-start">{{issues?.merchant?.issues[0]?.issueDescription}}</td>
-                              </ng-container>
-                            </tr>
-                            <tr *ngFor="let issue of issues?.stakeholders">
-                              <ng-container *ngIf="issue?.issues[0]?.issueDescription != null && issue?.issues[0]?.issueDescription != ''">
-                                <td class="text-primary text-center">{{issue?.stakeholder?.name}}</td>
-                                <td class="text-primary text-center">-</td>
-                                <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
-                              </ng-container>
-                            </tr>
-                            <tr *ngFor="let issue of issues?.shops">
-                              <ng-container *ngIf="issue?.issues[0]?.issueDescription != null && issue?.issues[0]?.issueDescription != ''">
-                                <td class="text-primary text-center">{{issue?.shop?.name}}</td>
-                                <td class="text-primary text-center">-</td>
-                                <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
-                              </ng-container>
-                            </tr>
-                            <tr *ngFor="let issue of issues?.documents">
-                              <ng-container *ngIf="issue?.issues[0]?.issueDescription != null && issue?.issues[0]?.issueDescription != ''">
-                                <td class="text-primary text-center">{{issue?.document?.name}}</td>
-                                <td class="text-primary text-center">{{issue?.document?.type}}</td>
-                                <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
-                              </ng-container>
-                            </tr>
-                          </tbody>
-                        </table>
+                        <mat-table [dataSource]="returnMat" class="table-responsive" matSort #returnSort="matSort" style="margin-left: auto; margin-right: auto; width: 95%;">
+                          <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                              {{'acceptance.returnReasons'|translate|uppercase}}
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row["name"]}} </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="type">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                              {{'acceptance.returnReason1'|translate|uppercase}}
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{(row.type == null || row.type == '') ? '-' : row.type}}</mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="issueDescription">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                              {{'acceptance.returnReason2'|translate|uppercase}}
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.issueDescription}} </mat-cell>
+                          </ng-container>
+                          <mat-header-row *matHeaderRowDef="returnColumns"></mat-header-row>
+                          <mat-row *matRowDef="let row; let idx = index; columns: returnColumns;">
+                          </mat-row>
+                        </mat-table>
+                        <mat-paginator #paginatorReturn [pageSizeOptions]="[3, 10, 20]" showFirstLastButtons>
+                        </mat-paginator>
                       </div>
+
+
                     </div>
                   </div>
                   <!-- Títulos - consoante a fila de trabalho -->
@@ -163,33 +198,33 @@
                   <!-- Tabela de Intervenientes/Merchant que tenham mais do que um valor -->
                   <div *ngIf="queueName==='multipleClients'" class="row mt-0 ms-0 me-0 pt-0">
                     <div class="col-12 mt-4 pt-0 ps-0 pe-0">
+
                       <div class="table-responsive mb-5 pb-4">
-                        <table class="table">
-                          <thead class="text-primary table-primary">
-                            <tr class="table-white text-primary">
-                              <th scope="col" class="text-center text-primary bg-light table-white">
-                                {{'stakeholder.name'|translate}}
-                              </th>
-                              <th scope="col" class="text-center bg-light">NIF</th>
-                              <th scope="col" class="text-center bg-white">{{'stakeholder.clientNumber'|translate}}</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <tr *ngIf="merchant?.potentialClientIds != null && merchant?.potentialClientIds?.length > 0">
-                              <td class="text-primary text-center">{{merchant?.legalName}}</td>
-                              <td class="text-primary text-center">{{merchant?.fiscalId}}</td>
-                              <td class="text-primary text-center">{{(merchant?.clientId == null || merchant?.clientId == "") ? "-" : merchant?.clientId}}</td>
-                            </tr>
-                            <tr *ngFor="let stake of stakesList">
-                              <ng-container *ngIf="stake?.potentialClientIds != null && stake?.potentialClientIds?.length > 0">
-                                <td class="text-primary text-center">{{stake.shortName}}</td>
-                                <td class="text-primary text-center">{{stake.fiscalId}}</td>
-                                <td class="text-primary text-center">{{stake.clientId}}</td>
-                              </ng-container>
-                            </tr>
-                            <tr></tr>
-                          </tbody>
-                        </table>
+                        <mat-table [dataSource]="multipleStakeMat" class="table-responsive" matSort #multipleStakeSort="matSort" style="margin-left: auto; margin-right: auto; width: 95%;">
+                          <ng-container matColumnDef="shortName">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                              {{'stakeholder.name'|translate}}
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{row.shortName}} </mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="fiscalId">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                              NIF/NIPC
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row">{{row.fiscalId}}</mat-cell>
+                          </ng-container>
+                          <ng-container matColumnDef="clientId">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                              {{'stakeholder.clientNumber'|translate}}
+                            </mat-header-cell>
+                            <mat-cell *matCellDef="let row"> {{(row["clientNumber"] == null || row["clientNumber"] == '') ? '-' : row["clientNumber"]}} </mat-cell>
+                          </ng-container>
+                          <mat-header-row *matHeaderRowDef="multipleStakeColumns"></mat-header-row>
+                          <mat-row *matRowDef="let row; let idx = index; columns: multipleStakeColumns;" (click)="selectStake(row, idx)" [ngClass]="{'row-selected': idx === multipleStakeCurrentIdx}">
+                          </mat-row>
+                        </mat-table>
+                        <mat-paginator #paginatorMultipleStake [pageSizeOptions]="[3, 10, 20]" showFirstLastButtons>
+                        </mat-paginator>
                       </div>
                     </div>
                   </div>
@@ -197,11 +232,16 @@
                   <!-- Pesquisa da Fila Múltiplos Clientes -->
                   <div *ngIf="queueName === 'multipleClients'" class="offset-1 bg-white align-self-center col-10 ps-3"
                        style="margin-top: 15px; margin-left: 0px;">
-                    <div class="row ms-0 me-0">
+                    <div class="row ms-0 me-0" *ngIf="selectedStake != null">
                       <div class="col-6 ms-0 me-0 ps-0 pe-5">
                         <p class="titulo-form-simples mt-0">{{'searches.documentType'|translate}}</p>
-                        <select id="select3" name="documentType" formControlName="documentType" class="form-select campo_form">
+                        <select *ngIf="isCompany" id="select3" (change)="changeDocType()" name="documentType" formControlName="documentType" class="form-select campo_form" disabled>
                           <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
+                            {{docType.description}}
+                          </option>
+                        </select>
+                        <select *ngIf="!isCompany" id="select3" (change)="changeDocType()" name="documentType" formControlName="documentType" class="form-select campo_form" disabled>
+                          <option *ngFor="let docType of ListaDocTypeENI" value={{docType.code}}>
                             {{docType.description}}
                           </option>
                         </select>
@@ -209,11 +249,37 @@
                       <div class="col-6 ms-0 me-0 ps-0 pe-5">
                         <p class="titulo-form-simples" style="margin-top: 0px;">
                           {{'searches.documentNumber'|translate}}
+                          <span class="titulo-form-error" *ngIf="incorrectCC" class="titulo-form-simples-erro">
+                            {{'client.incorrectCC'|translate}}
+                          </span>
+                          <span class="titulo-form-error" *ngIf="incorrectCCSize"
+                                class="titulo-form-simples-erro">
+                            {{'client.incorrectCCSize'|translate}}
+                          </span>
+                          <span class="titulo-form-error" *ngIf="incorrectCCFormat"
+                                class="titulo-form-simples-erro">
+                            {{'client.incorrectCCFormat'|translate}}
+                          </span>
+                          <span class="titulo-form-error" *ngIf="incorrectNIF" class="titulo-form-simples-erro">
+                            {{'client.incorrectNIF'|translate}}
+                          </span>
+                          <span class="titulo-form-error" *ngIf="incorrectNIFSize"
+                                class="titulo-form-simples-erro">
+                            {{'client.incorrectNIFSize'|translate}}
+                          </span>
+                          <span class="titulo-form-error" *ngIf="incorrectNIPCSize"
+                                class="titulo-form-simples-erro">
+                            {{'client.incorrectNIPCSize'|translate}}
+                          </span>
+                          <span class="titulo-form-error" *ngIf="incorrectNIPC" class="titulo-form-simples-erro">
+                            {{'client.incorrectNIPC'|translate}}
+                          </span>
                         </p>
-                        <input id="text3" name="documentNumber" formControlName="documentNumber" type="text" class="form-control campo_form"><!--formControlName=-->
+                        <input id="text3" (keyup)="checkValidationType()" disabled
+                        (keypress)="numericOnly($event)" name="documentNumber" formControlName="documentNumber" type="text" class="form-control campo_form"><!--formControlName=-->
                       </div>
                     </div>
-                    <button id="btn5a6" class="btn botao_azul btn-lg ms-0 me-1" wappler-command="editContent" (click)="searchClient()" [disabled]="canSearch == false || form.get('documentType').value.length == 0 || form.get('documentNumber').value.length == 0">
+                    <button *ngIf="selectedStake != null" id="btn5a6" class="btn botao_azul btn-lg ms-0 me-1" wappler-command="editContent" (click)="searchClient()" [disabled]="showFoundClient || canSearch == false || form.get('documentType').value.length == 0 || form.get('documentNumber').value.length == 0 || (selectedStake['clientNumber'] != null && selectedStake['clientNumber'] != '')">
                       {{'searches.search'|translate|uppercase}}
                       &nbsp;<img src="assets/images/search_white.svg" style="height: 30px; vertical-align: bottom;">
                     </button>
@@ -225,7 +291,7 @@
                   <!-- Tabela semelhante nas filas Elegibilidade e Risco -->
                   <div *ngIf="queueName!=='compliance' && queueName !== 'multipleClients' && queueName !== 'negotiationAproval' && queueName !== 'MCCTreatment' && queueName !== 'DOValidation' && queueName!=='validationSIBS'"
                        class="row mt-0 ms-0 me-0 pt-0">
-                    <div class="col-12 mt-4 pt-0 ps-0 pe-0">
+                    <div class="col-12 mt-4 pt-0 ps-0 pe-0" *ngIf="riskFinished">
                       <div class="table-responsive mb-5 pb-4">
                         <table class="table">
                           <thead class="text-primary table-primary">
@@ -233,7 +299,7 @@
                               <th scope="col" class="text-center text-primary bg-light table-white">
                                 {{'stakeholder.name'|translate}}
                               </th>
-                              <th scope="col" class="text-center bg-light">NIF</th>
+                              <th scope="col" class="text-center bg-light">NIF/NIPC</th>
                               <th scope="col" class="text-center bg-white">{{'stakeholder.clientNumber'|translate}}</th>
                               <th scope="col" *ngIf="queueName === 'eligibility'" class="text-center bg-white">
                                 {{'acceptance.eligibility'|translate}}
@@ -242,16 +308,20 @@
                                 {{'queues.amlLevel'|translate}}
                               </th>
                               <th scope="col" *ngIf="queueName === 'risk'" class="text-center bg-white">
+                                {{'queues.hits'|translate}}
+                              </th>
+                              <th scope="col" *ngIf="queueName === 'risk'" class="text-center bg-white">
                                 {{'queues.risk'|translate}}
                               </th>
                             </tr>
                           </thead>
-                          <tbody>
-                            <tr>
+                          <tbody *ngIf="queueName === 'risk'">
+                            <tr *ngIf="merchant?.riskAssessmentTenant?.hasRisk == 'RequireComplianceEvaluation'">
                               <td class="text-primary text-center">{{merchant?.legalName}}</td>
                               <td class="text-primary text-center">{{merchant?.fiscalId}}</td>
                               <td class="text-primary text-center">{{(merchant?.clientId == null || merchant?.clientId == "") ? "-" : merchant?.clientId}}</td>
-                              <td *ngIf="queueName === 'risk'" class="text-primary text-center">7</td>
+                              <td *ngIf="queueName === 'risk'" class="text-primary text-center">{{merchant?.riskAssessmentTenant?.riskLevel}}</td>
+                              <td *ngIf="queueName === 'risk'" class="text-primary text-center">{{getHits(merchant?.riskAssessmentTenant)}}</td>
                               <td class="text-primary text-center">
                                 <input class="form-check-input" type="radio" [value]=true id="radio8" name="merchantEligibility"
                                        style="margin-left: 5px; margin-right: 5px;" formControlName="merchantEligibility"
@@ -264,24 +334,63 @@
                                                                                              for="merchantEligibility">{{'queues.unfavorable'|translate}}&nbsp;</label>
                               </td>
                             </tr>
-                            <tr *ngFor="let stake of stakesList" formGroupName="stakeholdersEligibility">
-                              <td class="text-primary text-center">{{stake.shortName}}</td>
-                              <td class="text-primary text-center">{{stake.fiscalId}}</td>
-                              <td class="text-primary text-center">{{stake.clientId}}</td>
-                              <td *ngIf="queueName === 'risk'" class="text-primary text-center">7</td>
+                            <tr *ngFor="let stake of stakesList">
+                              <ng-container *ngIf="stake?.riskAssessmentTenant?.hasRisk == 'RequireComplianceEvaluation'" formGroupName="stakeholdersEligibility">
+                                <td class="text-primary text-center">{{stake.shortName}}</td>
+                                <td class="text-primary text-center">{{stake.fiscalId}}</td>
+                                <td class="text-primary text-center">{{stake.clientId}}</td>
+                                <td *ngIf="queueName === 'risk'" class="text-primary text-center">{{stake?.riskAssessmentTenant?.riskLevel}}</td>
+                                <td *ngIf="queueName === 'risk'" class="text-primary text-center">{{getHits(stake?.riskAssessmentTenant)}}</td>
+                                <td class="text-primary text-center">
+                                  <input class="form-check-input" type="radio" [value]=true id="radio8" name="{{stake.id}}"
+                                         style="margin-left: 5px; margin-right: 5px;" formControlName="{{stake.id}}"
+                                         (click)="check()"><label class="form-check-label radio"
+                                                                  for="{{stake.id}}">{{'queues.favorable'|translate}}&nbsp;</label>
+
+                                  <input class="form-check-input" style="margin-left: 15px; margin-right: 5px;"
+                                         formControlName="{{stake.id}}" type="radio" [value]=false id="radio8"
+                                         name="{{stake.id}}" (click)="uncheck()"><label class="form-check-label radio pe-5"
+                                                                                        for="{{stake.id}}">{{'queues.unfavorable'|translate}}&nbsp;</label>
+                                </td>
+                              </ng-container>
+                            </tr>
+                          </tbody>
+
+                          <tbody *ngIf="queueName === 'eligibility'">
+                            <tr *ngIf="merchant?.eligibilityAssessmentTenant == 'RequiresManualAssessment'">
+                              <td class="text-primary text-center">{{merchant?.legalName}}</td>
+                              <td class="text-primary text-center">{{merchant?.fiscalId}}</td>
+                              <td class="text-primary text-center">{{(merchant?.clientId == null || merchant?.clientId == "") ? "-" : merchant?.clientId}}</td>
                               <td class="text-primary text-center">
-                                <input class="form-check-input" type="radio" [value]=true id="radio8" name="{{stake.id}}"
-                                       style="margin-left: 5px; margin-right: 5px;" formControlName="{{stake.id}}"
+                                <input class="form-check-input" type="radio" [value]=true id="radio8" name="merchantEligibility"
+                                       style="margin-left: 5px; margin-right: 5px;" formControlName="merchantEligibility"
                                        (click)="check()"><label class="form-check-label radio"
-                                                                for="{{stake.id}}">{{'queues.favorable'|translate}}&nbsp;</label>
+                                                                for="merchantEligibility">{{'queues.favorable'|translate}}&nbsp;</label>
 
                                 <input class="form-check-input" style="margin-left: 15px; margin-right: 5px;"
-                                       formControlName="{{stake.id}}" type="radio" [value]=false id="radio8"
-                                       name="{{stake.id}}" (click)="uncheck()"><label class="form-check-label radio pe-5"
-                                                                                      for="{{stake.id}}">{{'queues.unfavorable'|translate}}&nbsp;</label>
+                                       formControlName="merchantEligibility" type="radio" [value]=false id="radio8"
+                                       name="merchantEligibility" (click)="uncheck()"><label class="form-check-label radio pe-5"
+                                                                                             for="merchantEligibility">{{'queues.unfavorable'|translate}}&nbsp;</label>
                               </td>
                             </tr>
-                            <tr></tr>
+                            <tr *ngFor="let stake of stakesList">
+                              <ng-container *ngIf="stake?.eligibilityAssessmentTenant == 'RequiresManualAssessment'" formGroupName="stakeholdersEligibility">
+                                <td class="text-primary text-center">{{stake.shortName}}</td>
+                                <td class="text-primary text-center">{{stake.fiscalId}}</td>
+                                <td class="text-primary text-center">{{stake.clientId}}</td>
+                                <td class="text-primary text-center">
+                                  <input class="form-check-input" type="radio" [value]=true id="radio8" name="{{stake.id}}"
+                                         style="margin-left: 5px; margin-right: 5px;" formControlName="{{stake.id}}"
+                                         (click)="check()"><label class="form-check-label radio"
+                                                                  for="{{stake.id}}">{{'queues.favorable'|translate}}&nbsp;</label>
+
+                                  <input class="form-check-input" style="margin-left: 15px; margin-right: 5px;"
+                                         formControlName="{{stake.id}}" type="radio" [value]=false id="radio8"
+                                         name="{{stake.id}}" (click)="uncheck()"><label class="form-check-label radio pe-5"
+                                                                                        for="{{stake.id}}">{{'queues.unfavorable'|translate}}&nbsp;</label>
+                                </td>
+                              </ng-container>
+                            </tr>
                           </tbody>
                         </table>
                       </div>
@@ -392,26 +501,33 @@
                     </div>
                   </div>
 
-                  <div *ngIf="queueName === 'MCCTreatment' && currentStore != null" class="row mt-0 ms-0 me-0 pt-0">
+                  <div *ngIf="queueName === 'MCCTreatment' && currentStore != null && MCCFinished" class="row mt-0 ms-0 me-0 pt-0">
                     <div class="col-12 mt-4 pt-0 ps-0 pe-0">
                       <div class="table-responsive mb-5 pb-4">
                         <table class="table">
                           <thead class="text-primary table-primary">
                             <tr class="table-white text-primary">
                               <th scope="col" class="text-center bg-white">{{'queues.functionalityType'|translate}}</th>
+                              <th scope="col" class="text-center bg-white">{{'queues.subFunctionality'|translate}}</th>
                               <th scope="col" class="text-center bg-white">MCC</th>
                             </tr>
                           </thead>
                           <tbody>
                             <tr *ngFor="let industry of currentStore?.industryClassifications">
-                              <ng-container *ngFor="let attr of currentStore?.pack?.paymentSchemes?.attributes">
-                                <td class="text-primary text-center" *ngIf="industry.paymentSchemesAttributeId == attr.id">{{attr.description}}</td>
+                              <ng-container formGroupName="shopsMCC">
+                                <td class="text-primary text-center">{{industry?.paymentSchemeAttributeDescription}}</td>
+                                <td class="text-primary text-center">{{industry?.subPaymentSchemeAttributeDescription == null ? '-' : industry?.subPaymentSchemeAttributeDescription}}</td>
+                                <td class="text-primary text-center" *ngIf="industry.industryClassificationCode != null && industry.industryClassificationCode != ''">
+                                  <select [attr.disabled]="true" class="form-select campo-form-select" name="{{currentStore.id + industry.industryClassificationCode}}" formControlName="{{currentStore.id + industry.industryClassificationCode}}">
+                                    <option value="{{industry.industryClassificationCode}}">{{industry.industryClassificationDescription}}</option>
+                                  </select>
+                                </td>
+                                <td class="text-primary text-center" *ngIf="industry.industryClassificationCode == null || industry.industryClassificationCode == ''">
+                                  <select class="form-select campo-form-select" name="{{currentStore.id + industry.paymentSchemeAttributeId}}" formControlName="{{currentStore.id + industry.paymentSchemeAttributeId}}">
+                                    <option *ngFor="let value of industry.industryClassificationPotentialCodes" value="{{value.code}}">{{value.description}}</option>
+                                  </select>
+                                </td>
                               </ng-container>
-                              <td class="text-primary text-center">
-                                <select class="form-select campo-form-select" name="{{currentStore.id + industry.industryClassificationCode}}" formControlName="{{currentStore.id + industry.industryClassificationCode}}" [disabled]="industry.industryClassificationPotentialCodes.length == 1">
-                                  <option *ngFor="let code of industry.industryClassificationPotentialCodes" value="{{industry.industryClassificationCode}}">{{industry.industryClassificationCode}}</option>
-                                </select>
-                              </td>
                             </tr>
                           </tbody>
                         </table>
@@ -474,11 +590,11 @@
                           <tbody>
                             <ng-container *ngFor="let equipment of equipmentList">
                               <ng-container *ngIf="equipment['shopId'] == currentStore.id">
-                                <tr *ngFor="let pricingAttr of equipment?.pricing?.attribute">
+                                <tr>
                                   <td class="text-primary text-center">TPA</td>
                                   <td class="text-primary text-center">Mensalidade 1</td>
-                                  <td class="text-primary text-center" [style]="pricingAttr?.originalValue != pricingAttr?.finalValue ? 'color: red !important;' : ''">{{pricingAttr?.originalValue}}</td>
-                                  <td class="text-primary text-center" [style]="pricingAttr?.originalValue != pricingAttr?.finalValue ? 'color: red !important;' : ''">{{pricingAttr?.finalValue}}</td>
+                                  <td class="text-primary text-center" [style]="equipment?.pricing?.attribute?.originalValue != equipment?.pricing?.attribute?.finalValue ? 'color: red !important;' : ''">{{equipment?.pricing?.attribute?.originalValue}}</td>
+                                  <td class="text-primary text-center" [style]="equipment?.pricing?.attribute?.originalValue != equipment?.pricing?.attribute?.finalValue ? 'color: red !important;' : ''">{{equipment?.pricing?.attribute?.finalValue}}</td>
                                 </tr>
                               </ng-container>
                             </ng-container>
@@ -490,7 +606,7 @@
 
                   <!-- Tabela de Fila Validação Matrícula SIBS -->
                   <div *ngIf="queueName === 'validationSIBS'" class="row ms-0 me-0">
-                    <div class="mt-4 pt-0 ps-0 pe-4 col-6">
+                    <div class="mt-4 pt-0 ps-0 pe-4 col-6" *ngIf="finished">
                       <div class="table-responsive mb-5">
                         <table class="table">
                           <thead class="text-primary table-primary">
@@ -509,7 +625,7 @@
                                 {{merchant?.legalName}}
                               </td>
                               <td class="text-primary text-center">
-                                <input type="text" name="enrollmentMerchantNumber" formControlName="enrollmentMerchantNumber"
+                                <input type="text" name="enrollmentMerchantNumber" formControlName="enrollmentMerchantNumber" value="{{merchant?.merchantRegistrationId}}" 
                                        class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
                               </td>
                             </tr>
@@ -519,7 +635,7 @@
                         </table>
                       </div>
                     </div>
-                    <div class="col mt-4 ps-4 pe-0">
+                    <div class="col mt-4 ps-4 pe-0" *ngIf="finished">
                       <div class="table-responsive mb-5">
                         <table class="table">
                           <thead class="text-primary table-primary">
@@ -533,12 +649,14 @@
                             </tr>
                           </thead>
                           <tbody>
-                            <tr *ngFor="let shop of shopsList" formGroupName="shops">
+                            <tr *ngFor="let shop of shopsList">
+                              <ng-container formGroupName="shops">
                                 <td class="text-primary text-center">{{shop.name}}</td>
                                 <td class="text-primary text-center">
-                                  <input type="text" name="{{shop.id}}" formControlName="{{shop.id}}"
+                                  <input type="text" name="{{shop.id}}" formControlName="{{shop.id}}" value="{{shop.registrationId}}"
                                          class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
                                 </td>
+                              </ng-container>
                             </tr>
                           </tbody>
                         </table>
@@ -569,7 +687,7 @@
                                     <td class="text-primary text-center">{{equip.shopEquipmentId}}</td>
                                     <td class="text-center text-primary">
                                       <input type="text" name="{{equip.shopEquipmentId}}" formControlName="{{equip.shopEquipmentId}}"
-                                             class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
+                                             value="{{equip.registrationId}}" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" />
                                     </td>
                                   </ng-container>
                                 </tr>
@@ -689,15 +807,15 @@
                                  style="height: 25px !important; vertical-align: sub;">
                           </button>
 
-                          <button id="btn5a2" *ngIf="queueName === 'multipleClients'" (click)="concludeOpinion('ReturnToFrontOffice')"
+                          <button id="btn5a2" *ngIf="queueName === 'multipleClients'" [disabled]="form.get('observation').value.length == 0" (click)="concludeOpinion('ReturnToFrontOffice')"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                   wappler-command="editContent">
                             {{'queues.returnComercial'|translate|uppercase}}&nbsp;
-                            <img src="assets/images/queues/return_comercial.svg.svg"
+                            <img src="assets/images/queues/return_comercial.svg"
                                  style="height: 25px !important; vertical-align: sub;">
                           </button>
 
-                          <button id="btn5a2" *ngIf="queueName === 'multipleClients'" (click)="concludeOpinion('Continue')"
+                          <button id="btn5a2" *ngIf="queueName === 'multipleClients'" [disabled]="!allStakesSearched" (click)="concludeOpinion('Continue')"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                   wappler-command="editContent">
                             {{'queues.treated'|translate|uppercase}}&nbsp;
@@ -734,7 +852,7 @@
 
                           <button id="btn5a2" *ngIf="queueName === 'MCCTreatment'"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                                  wappler-command="editContent">
+                                  wappler-command="editContent" [disabled]="!form.valid">
                             {{'queues.concludeMCC'|translate|uppercase}}&nbsp;
                             <img src="assets/images/queues/concluir-mcc.svg"
                                  style="height: 25px !important; vertical-align: sub;">
@@ -760,7 +878,7 @@
             <div class="container-fluid mt-0 ps-3 pe-3">
               <div class="row">
                 <div class="bg-white align-self-center col-12 laterais_tabs2 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
-                  <div class="table-responsive mb-5">
+                  <!--<div class="table-responsive mb-5">
                     <table class="table">
                       <thead class="text-primary table-primary">
                         <tr class="table-white text-primary">
@@ -783,59 +901,138 @@
                         </tr>
                       </tbody>
                     </table>
+                  </div>-->
+                  <div class="table-responsive mb-5 pb-4">
+                    <mat-table [dataSource]="historyMat" class="table-responsive" matSort #historySort="matSort" style="margin-left: auto; margin-right: auto; width: 95%;">
+                      <ng-container matColumnDef="processNumber">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                          {{'acceptance.requestNumber'|translate}}
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{(processNumber == null) ? '-' : process.processNumber}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="processState">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                          {{'acceptance.state'|translate}}
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.processState}}</mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="whenStarted">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                          {{'acceptance.stateDate'|translate}}
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.whenStarted | date: 'yyyy-MM-dd HH:mm'}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="whoStarted">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                          {{'acceptance.user'|translate}}
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.whoStarted}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="observations">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                          {{'acceptance.comments'|translate}}
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{(row.observations == null || row.observations == "") ? "-" : row.observations}} </mat-cell>
+                      </ng-container>
+                      <mat-header-row *matHeaderRowDef="historyColumns"></mat-header-row>
+                      <mat-row *matRowDef="let row; let idx = index; columns: historyColumns;" (click)="getHistoryIssueDetails(row.historyGuid)" [ngClass]="{'row-selected': row.historyGuid == selectedHistoryGuid}">
+                      </mat-row>
+                    </mat-table>
+                    <mat-paginator #paginatorHistory [pageSizeOptions]="[3, 10, 20]" showFirstLastButtons>
+                    </mat-paginator>
                   </div>
+                  
                 </div>
                 <div class="bg-white align-self-center col-12 laterais_tabs4 mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
                   <h3 class="text-primary mt-5 mb-0 ps-0">
                     <span class="assignment_returned icon-assignment-returned"></span>
                     <!--<img src="assets/images/assignment_returned.svg"
-      style="height: 30px; vertical-align: bottom;">-->
+    style="height: 30px; vertical-align: bottom;">-->
                     &nbsp;{{'acceptance.returnReasons'|translate|uppercase}}
                   </h3>
-                  <div class="table-responsive mb-5">
-                    <table class="table">
-                      <thead class="text-primary table-primary">
-                        <tr class="table-white text-primary">
-                          <th scope="col" class="text-center text-primary bg-light table-white">
-                            {{'acceptance.returnReason0'|translate}}
-                          </th>
-                          <th scope="col" class="text-center bg-light">{{'acceptance.returnReason1'|translate}}</th>
-                          <th scope="col" class="text-center text-primary bg-light table-white">
-                            {{'acceptance.returnReason2'|translate}}
-                          </th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr *ngFor="let issue of selectedIssue?.process">
-                          <td class="text-primary text-center">Processo</td>
-                          <td class="text-primary text-center">-</td>
-                          <td class="text-primary text-start">{{issue?.issueDescription}}</td>
-                        </tr>
-                        <tr>
-                          <td class="text-primary text-center">
-                            {{ selectedIssue?.merchant?.merchant?.name }}
-                          </td>
-                          <td class="text-primary text-center">-</td>
-                          <td class="text-primary text-start">{{selectedIssue?.merchant?.issues[0]?.issueDescription}}</td>
-                        </tr>
-                        <tr *ngFor="let issue of selectedIssue?.stakeholders">
-                          <td class="text-primary text-center">{{issue?.stakeholder?.name}}</td>
-                          <td class="text-primary text-center">-</td>
-                          <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
-                        </tr>
-                        <tr *ngFor="let issue of selectedIssue?.shops">
-                          <td class="text-primary text-center">{{issue?.shop?.name}}</td>
-                          <td class="text-primary text-center">-</td>
-                          <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
-                        </tr>
-                        <tr *ngFor="let issue of selectedIssue?.documents">
-                          <td class="text-primary text-center">{{issue?.document?.name}}</td>
-                          <td class="text-primary text-center">{{issue?.document?.type}}</td>
-                          <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
-                        </tr>
-                      </tbody>
-                    </table>
+                  <!--<div class="table-responsive mb-5">
+    <table class="table">
+      <thead class="text-primary table-primary">
+        <tr class="table-white text-primary">
+          <th scope="col" class="text-center text-primary bg-light table-white">
+            {{'acceptance.returnReason0'|translate}}
+          </th>
+          <th scope="col" class="text-center bg-light">{{'acceptance.returnReason1'|translate}}</th>
+          <th scope="col" class="text-center text-primary bg-light table-white">
+            {{'acceptance.returnReason2'|translate}}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let issue of selectedIssue?.process">
+          <ng-container *ngIf="issue?.issueDescription != '' && issue?.issueDescription != null">
+            <td class="text-primary text-center">Processo</td>
+            <td class="text-primary text-center">-</td>
+            <td class="text-primary text-start">{{issue?.issueDescription}}</td>
+          </ng-container>
+        </tr>
+        <tr>
+          <ng-container *ngIf="selectedIssue?.merchant?.issues[0]?.issueDescription != null && selectedIssue?.merchant?.issues[0]?.issueDescription != ''">
+            <td class="text-primary text-center">
+              {{ selectedIssue?.merchant?.merchant?.name }}
+            </td>
+            <td class="text-primary text-center">-</td>
+            <td class="text-primary text-start">{{selectedIssue?.merchant?.issues[0]?.issueDescription}}</td>
+          </ng-container>
+        </tr>
+        <tr *ngFor="let issue of selectedIssue?.stakeholders">
+          <ng-container *ngIf="issue?.issues[0]?.issueDescription != null && issue?.issues[0]?.issueDescription != ''">
+            <td class="text-primary text-center">{{issue?.stakeholder?.name}}</td>
+            <td class="text-primary text-center">-</td>
+            <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
+          </ng-container>
+        </tr>
+        <tr *ngFor="let issue of selectedIssue?.shops">
+          <ng-container *ngIf="issue?.issues[0]?.issueDescription != null && issue?.issues[0]?.issueDescription != ''">
+            <td class="text-primary text-center">{{issue?.shop?.name}}</td>
+            <td class="text-primary text-center">-</td>
+            <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
+          </ng-container>
+        </tr>
+        <tr *ngFor="let issue of selectedIssue?.documents">
+          <ng-container *ngIf="issue?.issues[0]?.issueDescription != null && issue?.issues[0]?.issueDescription != ''">
+            <td class="text-primary text-center">{{issue?.document?.name}}</td>
+            <td class="text-primary text-center">{{issue?.document?.type}}</td>
+            <td class="text-primary text-start">{{issue?.issues[0]?.issueDescription}}</td>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
+  </div>-->
+                  <div class="table-responsive mb-5 pb-4">
+                    <mat-table [dataSource]="returnSelectedMat" class="table-responsive" matSort #returnSelectedSort="matSort" style="margin-left: auto; margin-right: auto; width: 95%;">
+                      <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                          {{'acceptance.returnReasons'|translate|uppercase}}
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row["name"]}} </mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="type">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                          {{'acceptance.returnReason1'|translate|uppercase}}
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{(row.type == null || row.type == '') ? '-' : row.type}}</mat-cell>
+                      </ng-container>
+                      <ng-container matColumnDef="issueDescription">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
+                          {{'acceptance.returnReason2'|translate|uppercase}}
+                        </mat-header-cell>
+                        <mat-cell *matCellDef="let row"> {{row.issueDescription}} </mat-cell>
+                      </ng-container>
+                      <mat-header-row *matHeaderRowDef="returnSelectedColumns"></mat-header-row>
+                      <mat-row *matRowDef="let row; let idx = index; columns: returnSelectedColumns;">
+                      </mat-row>
+                    </mat-table>
+                    <mat-paginator #paginatorSelectedReturn [pageSizeOptions]="[3, 10, 20]" showFirstLastButtons>
+                    </mat-paginator>
                   </div>
+
+
                   <div class="col mt-4 ms-0 ps-0">
                     <hr>
                     <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mt-2 mb-4 pt-0">
@@ -845,8 +1042,6 @@
                                 wappler-command="editContent">
                           {{'generalKeywords.exit'|translate|uppercase}}&nbsp;
                           <span class="exit-to-app icon-exit-to-app"></span>
-                          <!--<img src="assets/images/exit_to_app.svg"
-            style="height: 25px !important; vertical-align: sub;">-->
                         </button>
                         <button id="btn5a2" [routerLink]="['/app-pack-contratual']"
                                 class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"

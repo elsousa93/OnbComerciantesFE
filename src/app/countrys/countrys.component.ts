@@ -16,6 +16,7 @@ import { ClientContext } from '../client/clientById/clientById.model';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 import { AcquiringClientPost } from '../client/Client.interface';
 import { IDropdownSettings } from 'ng-multiselect-dropdown';
+import { noWhiteSpaceValidator } from '../client/info-declarativa/info-declarativa.model';
 
 @Component({
   selector: 'app-countrys',
@@ -260,7 +261,7 @@ export class CountrysComponent implements OnInit {
     if (this.clientExists) {
       this.changeFormStructure(new FormGroup({
         expectableAnualInvoicing: new FormControl(this.client.knowYourSales?.estimatedAnualRevenue/*, disabled: true*/, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
-        services: new FormControl(this.client?.knowYourSales?.servicesOrProductsSold[0]/*, disabled: true */, Validators.required),
+        services: new FormControl(this.client?.knowYourSales?.servicesOrProductsSold[0]/*, disabled: true */, [Validators.required, noWhiteSpaceValidator]),
         transactionsAverage: new FormControl(this.client.knowYourSales.transactionsAverage/*, disabled: true */, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
         preferenceDocuments: new FormControl((this.client?.documentationDeliveryMethod === "Portal") ? 'Portal' : 'Mail'),
@@ -269,15 +270,15 @@ export class CountrysComponent implements OnInit {
         inputAmerica: new FormControl(this.inputAmericas),
         inputOceania: new FormControl(this.inputOceania),
         inputAsia: new FormControl(this.inputTypeAsia),
-        franchiseName: new FormControl(this.client?.businessGroup?.type == 'Franchise' ? this.client?.businessGroup?.branch : null),
-        NIPCGroup: new FormControl(this.client?.businessGroup?.type == 'Group' ? this.client?.businessGroup?.branch : ''),
+        franchiseName: new FormControl(this.client?.businessGroup?.type == 'Franchise' || this.client?.businessGroup?.type == 'Franchising' ? this.client?.businessGroup?.branch : null),
+        NIPCGroup: new FormControl(this.client?.businessGroup?.type == 'Group' || this.client?.businessGroup?.type == 'Holding' ? this.client?.businessGroup?.branch : ''),
         countries: new FormControl([])
       }));
       this.editCountries(true);
     } else {
       this.changeFormStructure(new FormGroup({
         expectableAnualInvoicing: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales?.estimatedAnualRevenue : this.client?.knowYourSales?.estimatedAnualRevenue/*, disabled: true*/, Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
-        services: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.knowYourSales?.servicesOrProductsSold[0]/*, disabled: true */, Validators.required),
+        services: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.servicesOrProductsSold[0] : this.client?.knowYourSales?.servicesOrProductsSold[0]/*, disabled: true */, [Validators.required, noWhiteSpaceValidator]),
         transactionsAverage: new FormControl((this.returned != null && this.merchantInfo.knowYourSales != undefined) ? this.merchantInfo.knowYourSales.transactionsAverage : this.client?.knowYourSales?.transactionsAverage/*, disabled: true */, Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
         associatedWithGroupOrFranchise: new FormControl(this.associatedWithGroupOrFranchise, Validators.required),
         preferenceDocuments: new FormControl((this.returned != null) ? this.merchantInfo.documentationDeliveryMethod : (this.client?.documentationDeliveryMethod != "viaDigital" && this.client?.documentationDeliveryMethod != 'Portal') ? 'Mail' : 'Portal'),
@@ -286,8 +287,8 @@ export class CountrysComponent implements OnInit {
         inputAmerica: new FormControl(this.inputAmericas),
         inputOceania: new FormControl(this.inputOceania),
         inputAsia: new FormControl(this.inputTypeAsia),
-        franchiseName: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo?.businessGroup != null && this.merchantInfo?.businessGroup?.type == 'Franchise') ? this.merchantInfo?.businessGroup?.branch : null),
-        NIPCGroup: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo?.businessGroup != null && this.merchantInfo?.businessGroup?.type == 'Group') ? this.merchantInfo?.businessGroup?.branch : ''),
+        franchiseName: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo?.businessGroup != null && (this.merchantInfo?.businessGroup?.type == 'Franchise' || this.merchantInfo?.businessGroup?.type == 'Franchising')) ? this.merchantInfo?.businessGroup?.branch : null),
+        NIPCGroup: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo?.businessGroup != null && (this.merchantInfo?.businessGroup?.type == 'Group' || this.merchantInfo?.businessGroup?.type == 'Holding')) ? this.merchantInfo?.businessGroup?.branch : ''),
         countries: new FormControl([])
       }));
       if (this.returned != null) {
@@ -296,6 +297,9 @@ export class CountrysComponent implements OnInit {
         this.editCountries(true);
       }
     }
+
+    this.numberWithCommasAnual();
+    this.numberWithCommas();
 
     this.form.get("franchiseName").valueChanges.pipe(distinctUntilChanged()).subscribe(v => {
       if (v != "" && v != null) {
@@ -333,7 +337,7 @@ export class CountrysComponent implements OnInit {
   initializeForm() {
     this.changeFormStructure(new FormGroup({
       expectableAnualInvoicing: new FormControl('', Validators.required),/*this.client.sales.annualEstimatedRevenue, Validators.required),*/
-      services: new FormControl('', Validators.required),
+      services: new FormControl('', [Validators.required, noWhiteSpaceValidator]),
       transactionsAverage: new FormControl('', Validators.required/*this.client.sales.averageTransactions, Validators.required*/),
       associatedWithGroupOrFranchise: new FormControl(false, Validators.required),
       preferenceDocuments: new FormControl('Portal', Validators.required),
@@ -402,8 +406,10 @@ export class CountrysComponent implements OnInit {
   submit() {
     var client: AcquiringClientPost = this.clientContext.getClient() as AcquiringClientPost;
     client.businessGroup = {};
-    client["knowYourSales"]["estimatedAnualRevenue"] = this.form.get("expectableAnualInvoicing").value;
-    client["knowYourSales"]["transactionsAverage"] = this.form.get("transactionsAverage").value;
+    var parts = this.form.get("expectableAnualInvoicing").value.toString().split('.').join("");
+    var parts1 = this.form.get("transactionsAverage").value.toString().split('.').join("");
+    client["knowYourSales"]["estimatedAnualRevenue"] = Number(parts);
+    client["knowYourSales"]["transactionsAverage"] = Number(parts1);
     client["knowYourSales"]["servicesOrProductsSold"] = [this.form.get("services").value]; //
     client["knowYourSales"]["servicesOrProductsDestinations"] = this.lstPreenchido.map(country => country.item_id); // antes estava lstPaisPreenchido
     client["documentationDeliveryMethod"] = this.form.get("preferenceDocuments").value;
@@ -507,109 +513,77 @@ export class CountrysComponent implements OnInit {
   }
 
   countrys(item) {
+    this.inputAfrica = false;
+    this.inputAmericas = false;
+    this.inputAsia = false;
+    this.inputEuropa = false;
+    this.inputOceania = false;
     this.lst.splice(0, this.lst.length);
-
-    this.valueInput();
     var count = 0;
+    setTimeout(() => {
+      const item = document?.getElementsByClassName('dropdown-list') as any;
+      item[0].hidden = false;
+      const scrollContainer = document?.getElementsByClassName('item2');
+      if (scrollContainer[0]) {
+        scrollContainer[0].scrollTop = 0;
+      }
+      item[0].hidden = true;
+    }, 0);
     switch (item.target.value) {
       case 'EUROPA':
-        if (this.inputEuropa == false) {
-          this.inputEuropa = true;
-          this.inputAfrica = false;
-          this.inputAmericas = false;
-          this.inputAsia = false;
-          this.inputOceania = false;
-          this.countryList.forEach(country => {
-            if (country.continent == "Europa") {
-              this.lst = this.lst.concat({
-                item_id: country.code,
-                item_text: country.description
-              });
-            }
-          });
-
-        } else {
-          this.inputEuropa = false;
-        }
+        this.inputEuropa = true;
+        this.countryList.forEach(country => {
+          if (country.continent == "Europa") {
+            this.lst = this.lst.concat({
+              item_id: country.code,
+              item_text: country.description
+            });
+          }
+        });
         break;
       case 'AFRICA':
-        if (this.inputAfrica == false) {
-          this.inputAfrica = true;
-          this.inputEuropa = false;
-          this.inputAmericas = false;
-          this.inputAsia = false;
-          this.inputOceania = false;
-          this.countryList.forEach(country => {
-            if (country.continent == "Africa") {
-              this.lst = this.lst.concat({
-                item_id: country.code,
-                item_text: country.description
-              });;
-            }
-          });
-
-        } else {
-          this.inputAfrica = false;
-        }
+        this.inputAfrica = true;
+        this.countryList.forEach(country => {
+          if (country.continent == "África") {
+            this.lst = this.lst.concat({
+              item_id: country.code,
+              item_text: country.description
+            });;
+          }
+        });
         break;
       case 'OCEANIA':
-        if (this.inputOceania == false) {
-          this.inputOceania = true;
-          this.inputAfrica = false;
-          this.inputAmericas = false;
-          this.inputAsia = false;
-          this.inputEuropa = false;
-          this.countryList.forEach(country => {
-            if (country.continent == "Oceania") {
-              this.lst = this.lst.concat({
-                item_id: country.code,
-                item_text: country.description
-              });
-            }
-          });
-
-        } else {
-          this.inputOceania = false;
-        }
+        this.inputOceania = true;
+        this.countryList.forEach(country => {
+          if (country.continent == "Oceania") {
+            this.lst = this.lst.concat({
+              item_id: country.code,
+              item_text: country.description
+            });
+          }
+        });
         break;
       case 'ASIA':
-        if (this.inputAsia == false) {
-          this.inputAsia = true;
-          this.inputAfrica = false;
-          this.inputAmericas = false;
-          this.inputEuropa = false;
-          this.inputOceania = false;
-          this.countryList.forEach(country => {
-            if (country.continent == "Ásia") {
-              this.lst = this.lst.concat({
-                item_id: country.code,
-                item_text: country.description
-              });
-            }
-          });
-        } else {
-          this.inputAsia = false;
-        }
+        this.inputAsia = true;
+        this.countryList.forEach(country => {
+          if (country.continent == "Ásia") {
+            this.lst = this.lst.concat({
+              item_id: country.code,
+              item_text: country.description
+            });
+          }
+        });
         break;
       case 'AMERICA DO NORTE / SUL':
-        if (this.inputAmericas == false) {
-          this.inputAmericas = true;
-          this.inputAfrica = false;
-          this.inputEuropa = false;
-          this.inputAsia = false;
-          this.inputOceania = false;
-          this.countryList.forEach(country => {
-            if (country.continent == "América Norte" || country.continent == "América Central" || country.continent == "América Sul") {
-              this.lst = this.lst.concat({
-                item_id: country.code,
-                item_text: country.description
-              });
-            }
-          });
-
-        } else {
-          this.inputAmericas = false;
-        }
+        this.inputAmericas = true;
+        this.countryList.forEach(country => {
+          if (country.continent == "América Norte" || country.continent == "América Central" || country.continent == "América Sul") {
+            this.lst = this.lst.concat({
+              item_id: country.code,
+              item_text: country.description
+            });
+          }
+        });
         break;
     }
   }
@@ -735,6 +709,9 @@ export class CountrysComponent implements OnInit {
   numericOnly(event): boolean { // restrict e,+,-,E characters in  input type number
     var ASCIICode = (event.which) ? event.which : event.keyCode;
 
+    if (ASCIICode == 46)
+      return true;
+
     if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
       return false;
     return true;
@@ -805,6 +782,18 @@ export class CountrysComponent implements OnInit {
     this.emitteCountrySize();
   }
 
+  addAllCountries(item: any) {
+    var context = this;
+    item.forEach(value => {
+      var country = context.countryList.find(country => country.code == value.item_id);
+      if (country != undefined)
+        context.addCountry({
+          item_id: country.code,
+          item_text: country.description
+        });
+    });
+  }
+
   removeCountry(item: any) {
     var index = this.lstPreenchido.findIndex(country => country.item_id == item.item_id);
     if (index != -1)
@@ -813,6 +802,71 @@ export class CountrysComponent implements OnInit {
   }
 
   removeAllCountries(items: any) {
-    console.log(items);
+    var context = this;
+    if (this.inputAfrica) {
+      this.countryList.forEach(value => {
+        if (value.continent == "África") {
+          context.removeCountry({
+            item_id: value.code,
+            item_text: value.description
+          });
+        }
+      });
+    }
+    if (this.inputAmericas) {
+      this.countryList.forEach(value => {
+        if (value.continent == "América Norte" || value.continent == "América Central" || value.continent == "América Sul") {
+          context.removeCountry({
+            item_id: value.code,
+            item_text: value.description
+          });
+        }
+      });
+    }
+    if (this.inputAsia) {
+      this.countryList.forEach(value => {
+        if (value.continent == "Ásia") {
+          context.removeCountry({
+            item_id: value.code,
+            item_text: value.description
+          });
+        }
+      });
+    }
+    if (this.inputEuropa) {
+      this.countryList.forEach(value => {
+        if (value.continent == "Europa") {
+          context.removeCountry({
+            item_id: value.code,
+            item_text: value.description
+          });
+        }
+      });
+    }
+    if (this.inputOceania) {
+      this.countryList.forEach(value => {
+        if (value.continent == "Oceania") {
+          context.removeCountry({
+            item_id: value.code,
+            item_text: value.description
+          });
+        }
+      });
+    }
+    this.form.get("countries").patchValue(this.lstPreenchido);
+  }
+
+  numberWithCommas() {
+    var parts = this.form.get("transactionsAverage").value.toString().split('.').join("");
+    parts = parts.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    this.form.get("transactionsAverage").setValue(parts);
+    this.form.get("transactionsAverage").updateValueAndValidity();
+  }
+
+  numberWithCommasAnual() {
+    var parts = this.form.get("expectableAnualInvoicing").value.toString().split('.').join("");
+    parts = parts.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    this.form.get("expectableAnualInvoicing").setValue(parts);
+    this.form.get("expectableAnualInvoicing").updateValueAndValidity();
   }
 }

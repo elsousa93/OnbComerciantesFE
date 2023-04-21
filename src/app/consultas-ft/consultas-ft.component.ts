@@ -73,6 +73,9 @@ export class ConsultasFTComponent implements OnInit {
   userModalRef: BsModalRef | undefined;
   @ViewChild('userModal') userModal;
   existsUser: boolean;
+  incorrectCC: boolean = false;
+  incorrectCCSize: boolean = false;
+  incorrectCCFormat: boolean = false;
 
   constructor(private logger: LoggerService, private datePipe: DatePipe,
     private route: Router, private tableInfo: TableInfoService, private snackBar: MatSnackBar, private data: DataService, private processService: ProcessService, private translate: TranslateService, public appComponent: AppComponent, private configuration: AppConfigService, private processNrService: ProcessNumberService, private authService: AuthService, private queueService: QueuesService, private modalService: BsModalService) {
@@ -124,11 +127,13 @@ export class ConsultasFTComponent implements OnInit {
   }
 
   numericOnly(event): boolean {
-    var ASCIICode = (event.which) ? event.which : event.keyCode;
+    if (this.form.get("documentType").value !== '1001') {
+      var ASCIICode = (event.which) ? event.which : event.keyCode;
 
-    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
-      return false;
-    return true;
+      if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+        return false;
+      return true;
+    }
   }
 
   initializeForm() {
@@ -324,5 +329,97 @@ export class ConsultasFTComponent implements OnInit {
 
   closeUserModal() {
     this.userModalRef?.hide();
+  }
+
+  checkValidationType(str: string) {
+    if (this.form.get("documentType").value === '1001')
+      this.ValidateNumeroDocumentoCC(str);
+  }
+
+  ValidateNumeroDocumentoCC(numeroDocumento: string) {
+    this.incorrectCC = false;
+    this.incorrectCCSize = false;
+    this.incorrectCCFormat = false;
+    var sum = 0;
+    var secondDigit = false;
+
+    if (numeroDocumento.length != 12) {
+      this.incorrectCCSize = true;
+      return false;
+    }
+
+    var ccFormat = /^[\d]{8}?\d([A-Z]{2}\d)?$/g;
+    if (!ccFormat.test(numeroDocumento)) {
+      this.incorrectCCFormat = true;
+      return false;
+    }
+
+    for (var i = numeroDocumento.length - 1; i >= 0; --i) {
+      var valor = this.GetNumberFromChar(numeroDocumento[i]);
+      if (secondDigit) {
+        valor *= 2;
+        if (valor > 9)
+          valor -= 9;
+      }
+      sum += valor;
+      secondDigit = !secondDigit;
+    }
+
+    if (sum % 10 != 0) {
+      this.incorrectCC = true;
+      return false;
+    }
+
+    return (sum % 10) == 0;
+  }
+
+  GetNumberFromChar(letter: string) {
+    switch (letter) {
+      case '0': return 0;
+      case '1': return 1;
+      case '2': return 2;
+      case '3': return 3;
+      case '4': return 4;
+      case '5': return 5;
+      case '6': return 6;
+      case '7': return 7;
+      case '8': return 8;
+      case '9': return 9;
+      case 'A': return 10;
+      case 'B': return 11;
+      case 'C': return 12;
+      case 'D': return 13;
+      case 'E': return 14;
+      case 'F': return 15;
+      case 'G': return 16;
+      case 'H': return 17;
+      case 'I': return 18;
+      case 'J': return 19;
+      case 'K': return 20;
+      case 'L': return 21;
+      case 'M': return 22;
+      case 'N': return 23;
+      case 'O': return 24;
+      case 'P': return 25;
+      case 'Q': return 26;
+      case 'R': return 27;
+      case 'S': return 28;
+      case 'T': return 29;
+      case 'U': return 30;
+      case 'V': return 31;
+      case 'W': return 32;
+      case 'X': return 33;
+      case 'Y': return 34;
+      case 'Z': return 35;
+    }
+  }
+
+  changeDocType() {
+    this.form.get("documentNumber").setValue("");
+    if (this.form.get("documentType").value != "1001") {
+      this.incorrectCC = false;
+      this.incorrectCCSize = false;
+      this.incorrectCCFormat = false;
+    }
   }
 }

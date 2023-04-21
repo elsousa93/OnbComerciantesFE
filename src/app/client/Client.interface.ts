@@ -1,3 +1,4 @@
+import { Hits } from "../queues-detail/IQueues.interface"
 import { OutboundDocument } from "../stakeholders/IStakeholders.interface"
 import { PostDocument } from "../submission/document/ISubmission-document"
 
@@ -88,8 +89,32 @@ export interface Client {
   clientId?: string,
   merchantRegistrationId?: string,
   documents?: PostDocument[],
-  potentialClientIds?: string[]
+  potentialClientIds?: string[],
+  riskAssessmentTenant?: RiskAssessmentTenantViewModel
+  riskAssessment?: RiskAssessmentViewModel
+  eligibilityAssessmentTenant?: string
+  eligibilityAssessment?: EligibilityAssessmentViewModel
 }
+
+export interface RiskAssessmentTenantViewModel {
+  hasRisk?: string
+  riskLevel?: number
+  hits?: Hits[]
+}
+
+export interface RiskAssessmentViewModel {
+  accepted?: boolean
+  hasRisk?: string
+  operator?: string
+  date?: string
+  observations?: string
+}
+
+export interface EligibilityAssessmentViewModel {
+  accepted?: boolean
+  eligibilityStatus?: string
+}
+
 export interface HeadquartersAddress {
   address?: string,
   postalCode?: string,

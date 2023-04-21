@@ -14,10 +14,10 @@
             </thead>
             <tbody>
               <tr *ngFor="let stakeholder of stakeholdersToInsert">
-                <td class="text-primary text-center">{{stakeholder.name}}</td>
+                <td class="text-primary text-center">{{(stakeholder.name != null && stakeholder.name != '') ? stakeholder.name : stakeholder.shortName}}</td>
                 <td class="text-primary text-center">{{stakeholder.fiscalId}}</td>
-                <td class="text-primary text-center"> - </td>
-                <td class="text-primary text-center"> - </td>
+                <td class="text-primary text-center"> {{(stakeholder.representationPower?.representationPowers == null || stakeholder.representationPower?.representationPowers == '') ? '-' : stakeholder.representationPower?.representationPowers}} </td>
+                <td class="text-primary text-center"> {{(stakeholder.representationPower?.restrictions == null || stakeholder.representationPower?.restrictions == '') ? '-' : stakeholder.representationPower?.restrictions}} </td>
               </tr>
             </tbody>
           </table>

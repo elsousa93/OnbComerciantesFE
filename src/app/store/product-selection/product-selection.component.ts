@@ -17,6 +17,7 @@ import { CommercialOfferService } from '../../commercial-offer/commercial-offer.
 })
 export class ProductSelectionComponent implements OnInit {
   @Input() parentFormGroup: FormGroup;
+  @Input() currentStore: ShopDetailsAcquiring;
 
   public EquipmentOwnershipTypeEnum = EquipmentOwnershipTypeEnum;
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
@@ -25,6 +26,7 @@ export class ProductSelectionComponent implements OnInit {
   public map: Map<number, boolean>;
   public currentPage: number;
   public subscription: Subscription;
+  
 
   formStores!: FormGroup;
   returned: string
@@ -35,7 +37,7 @@ export class ProductSelectionComponent implements OnInit {
   public isCardNotPresent: boolean = false;
   public isCombinedOffer: boolean = false;
   public isURLFilled: boolean = false;
-  public products: ProductOutbound[];
+  public products: ProductOutbound[] = [];
   public subProducts;
   public exists = false;
   public urlRegex;
@@ -46,12 +48,26 @@ export class ProductSelectionComponent implements OnInit {
 
   constructor(private logger: LoggerService, private router: ActivatedRoute, private route: Router, private data: DataService,
     private storeService: StoreService, private rootFormGroup: FormGroupDirective, private COService: CommercialOfferService) {
-    this.COService.OutboundGetProductsAvailable().then(result => {
-      this.logger.info("Get store products result: " + JSON.stringify(result));
-      this.products = result.result;
-    }, error => {
-      this.logger.error(error, "", "Error fetching store products");
-    });
+    this.returned = localStorage.getItem("returned");
+    if (this.returned != 'consult') {
+      this.COService.OutboundGetProductsAvailable().then(result => {
+        this.logger.info("Get store products result: " + JSON.stringify(result));
+        this.products = result.result;
+        if (this.formStores.get("solutionType").value != "" && this.formStores.get("solutionType").value != null) {
+          var subProduct = this.formStores.get("subProduct").value;
+          this.chooseSolutionAPI(this.formStores.get("solutionType").value);
+          this.chooseSubSolutionAPI(subProduct);
+        } else {
+          if (this.products.length == 1) {
+            this.formStores.get("solutionType").setValue(this.products[0].code);
+            this.chooseSolutionAPI(this.products[0].code);
+          }
+        }
+      }, error => {
+        this.logger.error(error, "", "Error fetching store products");
+      });
+    }
+    
     setTimeout(() => this.data.updateData(true, 3, 3), 0);
     if (this.route.getCurrentNavigation()?.extras?.state) {
       this.store = this.route.getCurrentNavigation().extras.state["store"];
@@ -60,8 +76,6 @@ export class ProductSelectionComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
-    this.returned = localStorage.getItem("returned");
-
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.setControl('productStores', this.formStores);
       this.edit = true;
@@ -75,6 +89,17 @@ export class ProductSelectionComponent implements OnInit {
   }
 
   chooseSolutionAPI(productCode: any) {
+    if (this.returned == 'consult') {
+      this.products = [];
+      this.products.push({
+        code: this.currentStore.productCode,
+        name: this.currentStore.productCodeDescription,
+        subProducts: [{
+          code: this.currentStore.subProductCode,
+          name: this.currentStore.subProductCodeDescription
+        }]
+      });
+    }
     this.formStores.get('subProduct').setValue('');
     this.products?.forEach(Prod => {
       if (productCode == Prod.code) {

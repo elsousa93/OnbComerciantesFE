@@ -1,4 +1,4 @@
-import { Contacts } from "../client/Client.interface"
+import { Contacts, EligibilityAssessmentViewModel, RiskAssessmentTenantViewModel, RiskAssessmentViewModel } from "../client/Client.interface"
 import { Address, IPep } from "../pep/IPep.interface"
 
 export interface StakeholdersProcess {
@@ -36,6 +36,19 @@ export interface IStakeholders {
   signType?: string
   identificationState?: string
   signatureState?: string
+  riskAssessmentTenant?: RiskAssessmentTenantViewModel
+  riskAssessment?: RiskAssessmentViewModel
+  eligibilityAssessmentTenant?: string
+  eligibilityAssessment?: EligibilityAssessmentViewModel
+  representationPower?: RepresentationPower
+  potentialClientIds?: string[]
+  documents?: DocumentStake[]
+}
+
+interface RepresentationPower {
+  expirationDate?: string
+  representationPowers?: string
+  restrictions?: string
 }
 
 interface FiscalIdentification {

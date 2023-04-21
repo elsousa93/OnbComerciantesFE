@@ -716,4 +716,12 @@ input[type=number] {
 
 .multiselect-dropdown .dropdown-btn .dropdown-multiselect__caret {
   line-height: 30px !important;
+  width: 50px !important;
+  height: 38px !important;
+}
+
+.uploadInput:disabled + .uploadLabel {
+  pointer-events: none;
+  opacity: .65;
+  box-shadow: none;
 }

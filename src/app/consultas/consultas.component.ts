@@ -15,6 +15,7 @@ import { AppComponent } from '../app.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppConfigService } from '../app-config.service';
 import { DatePipe } from '@angular/common';
+import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 
 interface Process {
   processNumber: string;
@@ -48,8 +49,12 @@ export class ConsultasComponent implements OnInit {
 
   ListaDocType;
   isLengthOne: boolean = false;
+  incorrectNIPC: boolean = false;
+  incorrectNIPCSize: boolean = false;
+  incorrectNIF: boolean = false;
+  incorrectNIFSize: boolean = false;
 
-  constructor(private logger: LoggerService, private datePipe: DatePipe, private snackBar: MatSnackBar, private route: Router, public modalService: BsModalService, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService, private translate: TranslateService, public appComponent: AppComponent, private configuration: AppConfigService) {
+  constructor(private logger: LoggerService, private datePipe: DatePipe, private snackBar: MatSnackBar, private route: Router, public modalService: BsModalService, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService, private translate: TranslateService, public appComponent: AppComponent, private configuration: AppConfigService, private processNrService: ProcessNumberService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.appComponent.toggleSideNav(false);
     this.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
@@ -64,10 +69,13 @@ export class ConsultasComponent implements OnInit {
       });
     }
 
-    this.subs.push(this.tableInfo.GetAllDocumentTypes().subscribe(result => {
-      this.ListaDocType = result;
-      this.ListaDocType = this.ListaDocType.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
-    }));
+    //this.subs.push(this.tableInfo.GetAllDocumentTypes().subscribe(result => {
+    //  this.ListaDocType = result;
+    //  this.ListaDocType = this.ListaDocType.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+    //}));
+    this.tableInfo.GetMerchantTypes().then(result => {
+      this.ListaDocType = result.result;
+    });
     this.initializeForm();
   }
 
@@ -182,7 +190,8 @@ export class ConsultasComponent implements OnInit {
               processNumber: process?.processNumber,
               nipc: process?.merchant?.fiscalId,
               nome: process?.merchant?.name,
-              estado: process?.state
+              estado: process?.state,
+              processId: process?.processId
             };
           });
           processes.push(...processesArray);
@@ -201,7 +210,8 @@ export class ConsultasComponent implements OnInit {
                 processNumber: process?.processNumber,
                 nipc: process?.merchant?.fiscalId,
                 nome: process?.merchant?.name,
-                estado: process?.state
+                estado: process?.state,
+                processId: process?.processId
               };
             });
             processes.push(...processesArray);
@@ -244,7 +254,8 @@ export class ConsultasComponent implements OnInit {
                 processNumber: process?.processNumber,
                 nipc: process?.merchant?.fiscalId,
                 nome: process?.merchant?.name,
-                estado: process?.state
+                estado: process?.state,
+                processId: process?.processId
               };
             });
             processes.push(...processesArray);
@@ -263,7 +274,8 @@ export class ConsultasComponent implements OnInit {
                   processNumber: process?.processNumber,
                   nipc: process?.merchant?.fiscalId,
                   nome: process?.merchant?.name,
-                  estado: process?.state
+                  estado: process?.state,
+                  processId: process?.processId
                 };
               });
               processes.push(...processesArray);
@@ -308,7 +320,8 @@ export class ConsultasComponent implements OnInit {
                 processNumber: process?.processNumber,
                 nipc: process?.merchant?.fiscalId,
                 nome: process?.merchant?.name,
-                estado: process?.state
+                estado: process?.state,
+                processId: process?.processId
               };
             })
             processes.push(...processesArray);
@@ -326,7 +339,8 @@ export class ConsultasComponent implements OnInit {
                   processNumber: process?.processNumber,
                   nipc: process?.merchant?.fiscalId,
                   nome: process?.merchant?.name,
-                  estado: process?.state
+                  estado: process?.state,
+                  processId: process?.processId
                 };
               })
               processes.push(...processesArray);
@@ -388,7 +402,8 @@ export class ConsultasComponent implements OnInit {
               processNumber: process?.processNumber,
               nipc: process?.merchant?.fiscalId,
               nome: process?.merchant?.name,
-              estado: process?.state
+              estado: process?.state,
+              processId: process?.processId
             };
           })
           if (processesArray.length == 0) {
@@ -445,7 +460,8 @@ export class ConsultasComponent implements OnInit {
                 processNumber: process?.processNumber,
                 nipc: process?.merchant?.fiscalId,
                 nome: process?.merchant?.name,
-                estado: process?.state
+                estado: process?.state,
+                processId: process?.processId
               };
             })
             if (processesArray.length == 0) {
@@ -470,15 +486,18 @@ export class ConsultasComponent implements OnInit {
   }
 
   numericOnly(event): boolean {
-    var ASCIICode = (event.which) ? event.which : event.keyCode;
+    if (this.form.get("documentType").value !== '1001') {
+      var ASCIICode = (event.which) ? event.which : event.keyCode;
 
-    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
-      return false;
-    return true;
+      if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+        return false;
+      return true;
+    }
   }
 
   openProcess(process) {
     localStorage.setItem("processNumber", process.processNumber);
+    this.processNrService.changeProcessId(process.processId);
     localStorage.setItem("returned", 'consult');
     this.logger.info("Redirecting to Client By Id page");
     this.route.navigate(['/clientbyid']);
@@ -496,5 +515,71 @@ export class ConsultasComponent implements OnInit {
   loadProcesses(processValues: Process[]) {
     this.processes.data = processValues;
     this.processes.sort = this.sort;
+  }
+
+  checkValidationType(str: string) {
+    if (this.form.get("documentType").value === '01')
+      this.validateNIPC(str);
+    if (this.form.get("documentType").value === '02')
+      this.validateNIF(str)
+  }
+
+  validateNIF(nif: string): boolean {
+    this.incorrectNIFSize = false;
+    this.incorrectNIF = false;
+    if (nif != '') {
+      if (nif.length != 9) {
+        this.incorrectNIFSize = true;
+        return false;
+      }
+      if (!['1', '2', '3'].includes(nif.substr(0, 1))) {
+        this.incorrectNIF = true;
+        return false;
+      }
+
+      const total = Number(nif[0]) * 9 + Number(nif[1]) * 8 + Number(nif[2]) * 7 + Number(nif[3]) * 6 + Number(nif[4]) * 5 + Number(nif[5]) * 4 + Number(nif[6]) * 3 + Number(nif[7]) * 2;
+      const modulo11 = total - Math.trunc(total / 11) * 11;
+      const comparador = modulo11 === 1 || modulo11 === 0 ? 0 : 11 - modulo11;
+
+      if (Number(nif[8]) !== comparador) {
+        this.incorrectNIF = true;
+        return false;
+      }
+      return Number(nif[8]) === comparador;
+    }
+  }
+
+  validateNIPC(nipc: string): boolean {
+    this.incorrectNIPCSize = false;
+    this.incorrectNIPC = false;
+    if (nipc != '') {
+      if (nipc.length != 9) {
+        this.incorrectNIPCSize = true;
+        return false;
+      }
+      if (!['5', '6', '8', '9'].includes(nipc.substr(0, 1))) {
+        this.incorrectNIPC = true;
+        return false;
+      }
+
+      const total = Number(nipc[0]) * 9 + Number(nipc[1]) * 8 + Number(nipc[2]) * 7 + Number(nipc[3]) * 6 + Number(nipc[4]) * 5 + Number(nipc[5]) * 4 + Number(nipc[6]) * 3 + Number(nipc[7]) * 2;
+      const modulo11 = total - Math.trunc(total / 11) * 11;
+      const comparador = modulo11 === 1 || modulo11 === 0 ? 0 : 11 - modulo11;
+
+      if (Number(nipc[8]) !== comparador) {
+        this.incorrectNIPC = true;
+        return false;
+      }
+
+      return Number(nipc[8]) === comparador;
+    }
+  }
+
+  changeDocType() {
+    this.form.get("documentNumber").setValue("");
+    this.incorrectNIF = false;
+    this.incorrectNIFSize = false;
+    this.incorrectNIPC = false;
+    this.incorrectNIPCSize = false;
   }
 }

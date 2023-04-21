@@ -85,22 +85,25 @@
             <div class="col ms-2 ps-3">
                <nav
                   class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4 pt-5">
-                  <span class="navbar-text me-2 align-self-center ms-0 me-0">
-                     <button id="btn5a5" (click)="onCheckList()"
-                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
-                        wappler-command="editContent">{{'supportingDocuments.consultChecklist'|translate|uppercase}}&nbsp;<img
-                           src="assets/images/checklist.svg"
-                           style="height: 25px !important; vertical-align: sub;"></button>
+                 <span class="navbar-text me-2 align-self-center ms-0 me-0">
+                   <button id="btn5a5" (click)="onCheckList()"
+                           class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
+                           wappler-command="editContent">
+                     {{'supportingDocuments.consultChecklist'|translate|uppercase}}&nbsp;<img src="assets/images/checklist.svg"
+                                                                                              style="height: 25px !important; vertical-align: sub;">
+                   </button>
+                   <ng-container>
+                     <input type="file" #fileUpload name="arquivo" id="arquivo" class="uploadInput"
+                            (change)="selectFile($event,client); fileUpload.value='';" style="display: none" accept=".pdf"
+                            multiple [disabled]="returned === 'consult'">
                      <label for="arquivo"
-                        class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3">
-                        {{'supportingDocuments.attachDocuments'|translate|uppercase}}&nbsp;
-                        <img src="assets/images/file_upload.svg"
-                           style="height: 25px !important; vertical-align: sub;" />
+                            class="uploadLabel btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3">
+                       {{'supportingDocuments.attachDocuments'|translate|uppercase}}&nbsp;
+                       <img src="assets/images/file_upload.svg"
+                            style="height: 25px !important; vertical-align: sub;" />
                      </label>
-                     <input type="file" #fileUpload name="arquivo" id="arquivo"
-                        (change)="selectFile($event,client); fileUpload.value='';" style="display: none" accept=".pdf"
-                        multiple [disabled]="returned === 'consult'">
-                  </span>
+                   </ng-container>
+                 </span>
                </nav>
                <p class="titulo-form-simples ms-2" for="observacoes">
                   {{'supportingDocuments.observations'|translate|uppercase}}:</p>

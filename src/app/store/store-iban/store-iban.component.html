@@ -37,14 +37,14 @@
                 <div class="form-check">
                   <input class="form-check-input" formControlName="bankInformation" (click)="isIBAN(true)" type="radio"
                          [value]=true id="bankInformation1" name="bankInformation">
-                  <label class="form-check-label radio pe-5" for="bankInformation"
+                  <label class="form-check-label radio pe-5" 
                          wappler-command="editContent">{{'generalKeywords.yes'|translate|uppercase}}</label>
                 </div>
               </span><span class="navbar-text">
                 <div class="form-check">
                   <input class="form-check-input" formControlName="bankInformation" (click)="isIBAN(false)" type="radio"
                          [value]=false id="bankInformation2" name="bankInformation">
-                  <label class="form-check-label radio" for="bankInformation"
+                  <label class="form-check-label radio"
                          wappler-command="editContent">{{'generalKeywords.no'|translate|uppercase}}</label>
                 </div>
               </span>
@@ -75,7 +75,7 @@
                 <td class="text-primary text-center">{{IBANToShow.tipo}}</td>
                 <td class="text-primary text-center">{{IBANToShow.dataDocumento}}</td>
                 <td style="white-space: nowrap;">
-                  <span class="search-blue-iban icon-search-blue" (click)="openFile(files[0])">
+                  <span class="search-blue-iban icon-search-blue" (click)="openFile(IBANToShow.file)">
                     <!--<img src="assets/images/search_blue.svg" (click)="openFile(files[0])"
                       style="height: 25px !important; vertical-align: sub; cursor: pointer;">
                     <img src="assets/images/delete_blue.svg" (click)="onDelete(IBANToShow.id)"
@@ -91,13 +91,18 @@
         </div>
         <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
           <span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
-            <label for="arquivo" id="btn5a5"
-              class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3"
-              wappler-command="editContent">
-              {{'generalKeywords.attach'|translate}}&nbsp;
-              <img src="assets/images/attach_file_white.svg" style="height: 25px !important; vertical-align: sub;">
-            </label><input type="file" name="arquivo" id="arquivo" (change)="selectFile($event)"
-              (click)="$event.target.value=null" style="display: none" accept=".pdf" required></span>
+            <ng-container>
+              <input type="file" name="arquivo" id="arquivo" (change)="selectFile($event)" [disabled]="returned === 'consult'" class="uploadInput"
+                     (click)="$event.target.value=null" style="display: none" accept=".pdf" required>
+
+              <label for="arquivo" id="btn5a5"
+                     class="uploadLabel btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3"
+                     wappler-command="editContent">
+                {{'generalKeywords.attach'|translate}}&nbsp;
+                <img src="assets/images/attach_file_white.svg" style="height: 25px !important; vertical-align: sub;">
+              </label>
+            </ng-container>
+          </span>
         </nav>
       </div>
       <div class="offset-1 bg-white align-self-center col-10 mt-4 ps-0" *ngIf="!edit">

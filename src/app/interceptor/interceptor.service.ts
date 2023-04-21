@@ -1,18 +1,21 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpErrorResponse, HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators'
+import { catchError, finalize } from 'rxjs/operators'
 import { AuthService } from '../services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TranslateService } from '@ngx-translate/core';
 import * as jsonData from '../../assets/errorMapping.json';
+import { LoadingService } from '../loading.service';
 
 @Injectable()
 export class Interceptor implements HttpInterceptor {
   isRefreshing: boolean = false;
   private url: string = 'assets/errorMapping.json';
   private data: any = jsonData;
-  constructor(private authService: AuthService, private snackBar: MatSnackBar, private translate: TranslateService, private http: HttpClient) {
+  totalRequests = 0;
+  completedRequests = 0;
+  constructor(private authService: AuthService, private snackBar: MatSnackBar, private translate: TranslateService, private http: HttpClient, private loader: LoadingService) {
 
   }
 
@@ -26,6 +29,8 @@ export class Interceptor implements HttpInterceptor {
     }
 
     if (request.url !== this.url) {
+      this.loader.show();
+      this.totalRequests++;
       return next.handle(request).pipe(
         catchError((error) => {
           let errorMsg = '';
@@ -41,7 +46,16 @@ export class Interceptor implements HttpInterceptor {
             }
             this.getErrorMsg(error.status, error?.error?.errors, request.url);
           }
+
           return throwError(() => error);
+        }),
+        finalize(() => {
+          this.completedRequests++;
+          if (this.completedRequests === this.totalRequests) {
+            this.loader.hide();
+            this.completedRequests = 0;
+            this.totalRequests = 0;
+          }
         })
       );
     }

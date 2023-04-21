@@ -72,7 +72,7 @@
                         <input class="form-check-input" type="radio" [value]=true id="radio1"
                                formControlName="replicateProducts" name="replicateProducts"
                                (click)="changeReplicateProducts(true)">
-                        <label class="form-check-label radio pe-5" for="radio1"
+                        <label class="form-check-label radio pe-5" 
                                wappler-command="editContent">{{'generalKeywords.yes'|translate|uppercase}}</label>
                       </div>
                     </span>
@@ -81,7 +81,7 @@
                         <input class="form-check-input" type="radio" [value]=false id="radio1"
                                formControlName="replicateProducts" name="replicateProducts"
                                (click)="changeReplicateProducts(false)">
-                        <label class="form-check-label radio" for="radio1"
+                        <label class="form-check-label radio"
                                wappler-command="editContent">{{'generalKeywords.no'|translate|uppercase}}</label>
                       </div>
                     </span>
@@ -111,7 +111,7 @@
                       <div class="form-check">
                         <input (click)="changeUnicre(true)" class="form-check-input" type="radio" [value]=true
                                id="radio2" formControlName="isUnicre" name="isUnicre">
-                        <label class="form-check-label radio pe-5" for="radio2"
+                        <label class="form-check-label radio pe-5" 
                                wappler-command="editContent">{{'generalKeywords.yes'|translate|uppercase}}</label>
                       </div>
                     </span>
@@ -119,7 +119,7 @@
                       <div class="form-check">
                         <input (click)="changeUnicre(false)" class="form-check-input" type="radio" [value]=false
                                id="radio2" formControlName="isUnicre" name="isUnicre">
-                        <label class="form-check-label radio" for="radio2"
+                        <label class="form-check-label radio"
                                wappler-command="editContent">{{'generalKeywords.no'|translate|uppercase}}</label>
                       </div>
                     </span>
@@ -183,7 +183,7 @@
                             name="{{'formControlPayment' + attribute.id}}"
                             formControlName="{{'formControlPayment' + attribute.id}}"
                             [attr.disabled]="attribute.isReadOnly ? true : null" (change)="changedValue()">
-                          <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
+                          <label class="form-check-label texto_check_box" >{{attribute.description}}</label>
                         </div>
                       </span>
                     </nav>
@@ -211,7 +211,7 @@
                                      name="{{'formControl' + attribute.id}}" formControlName="{{'formControl' + attribute.id}}"
                                      [attr.disabled]="attribute.isReadOnly ? true : null" (change)="changedValue()">
                               <label class="form-check-label texto_check_box"
-                                     for="input1">{{attribute.description}}</label>
+                                     >{{attribute.description}}</label>
                               <div *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
                                 <ng-container *ngIf="attribute.bundles?.length > 0 && !existsNotVisibleBundleAttr(attribute.bundles)">
                                   <div *ngFor="let bundle of attribute.bundles"
@@ -230,7 +230,7 @@
                                                    name="{{'formControl' + bundleAttr.id}}"
                                                    [attr.disabled]="bundleAttr.isReadOnly ? true : null" (change)="changedValue()">
                                             <label class="form-check-label texto_check_box"
-                                                   for="input1">{{bundleAttr.description}}</label>
+                                                   >{{bundleAttr.description}}</label>
                                           </div>
                                         </span>
                                       </nav>
@@ -274,7 +274,7 @@
                             name="{{'formControlPayment' + attribute.id}}"
                             formControlName="{{'formControlPayment' + attribute.id}}"
                             [attr.disabled]="attribute.isReadOnly ? true : null" (change)="changedValue()">
-                          <label class="form-check-label texto_check_box" for="input1">{{attribute.description}}</label>
+                          <label class="form-check-label texto_check_box" >{{attribute.description}}</label>
                         </div>
                       </span>
                     </nav>
@@ -300,7 +300,7 @@
                                        formControlName="{{'formControl' + attribute.id}}"
                                        [attr.disabled]="attribute.isReadOnly ? true : null" (change)="changedValue()">
                                 <label class="form-check-label texto_check_box"
-                                       for="input1">{{attribute.description}}</label>
+                                       >{{attribute.description}}</label>
                                 <div *ngIf="getAttributeValue('formGroup' + group.id, 'formControl' + attribute.id) === true">
                                   <ng-container *ngIf="attribute.bundles?.length > 0 && !existsNotVisibleBundleAttr(attribute.bundles)">
                                     <div *ngFor="let bundle of attribute.bundles"
@@ -318,7 +318,7 @@
                                                      name="{{'formControl' + bundleAttr.id}}"
                                                      [attr.disabled]="bundleAttr.isReadOnly ? true : null" (change)="changedValue()">
                                               <label class="form-check-label texto_check_box"
-                                                     for="input1">{{bundleAttr.description}}</label>
+                                                     >{{bundleAttr.description}}</label>
                                             </div>
                                           </span>
                                         </nav>
@@ -355,7 +355,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'commercialOffer.terminalIdentification'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let storeEquip"> {{storeEquip.shopEquipmentId}} </mat-cell>
+                    <mat-cell *matCellDef="let storeEquip"> {{storeEquip.id}} </mat-cell>
                   </ng-container>
                   <ng-container matColumnDef="equipmentType">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -409,7 +409,7 @@
                 </mat-paginator>
                 <div class="col mt-0 mb-0 pt-2 pb-4 ps-2">
                   <button id="btn5a2" class="btn botao_azul btn-lg mt-2 ms-1 me-1" (click)="createNewConfiguration()"
-                    [disabled]="disableNewConfiguration" wappler-command="editContent">
+                    [disabled]="disableNewConfiguration || returned == 'consult'" wappler-command="editContent">
                     {{'commercialOffer.newConfiguration'|translate|uppercase}}&nbsp;&nbsp;<img
                       src="assets/images/dashboard_customize.svg" style="height: 25px !important; vertical-align: sub;">
                   </button>
@@ -483,25 +483,25 @@
                       <td class="text-primary text-center">Tarifa</td>
                       <td class="text-primary text-center">{{commission.description}}</td>
                       <td class="text-primary text-center">
-                        <input type="number" [attr.disabled]="commission.minValue.isReadOnly ? true : null"
+                        <input type="number" *ngIf="commission.minValue.isVisible" [attr.disabled]="commission.minValue.isReadOnly ? true : null"
                           (keypress)="decimalOnly($event)"
                           class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0"
                           formControlName="{{'commissionMin' + commission.id}}" />
                       </td>
                       <td class="text-primary text-center">
-                        <input type="number" [attr.disabled]="commission.maxValue.isReadOnly ? true : null"
+                        <input type="number" *ngIf="commission.maxValue.isVisible" [attr.disabled]="commission.maxValue.isReadOnly ? true : null"
                           (keypress)="decimalOnly($event)"
                           class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0"
                           formControlName="{{'commissionMax' + commission.id}}" />
                       </td>
                       <td class="text-primary text-center">
-                        <input type="number" [attr.disabled]="commission.fixedValue.isReadOnly ? true : null"
+                        <input type="number" *ngIf="commission.fixedValue.isVisible" [attr.disabled]="commission.fixedValue.isReadOnly ? true : null"
                           (keypress)="decimalOnly($event)"
                           class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0"
                           formControlName="{{'commissionFixed' + commission.id}}" />
                       </td>
                       <td class="text-primary text-center">
-                        <input type="number" [attr.disabled]="commission.percentageValue.isReadOnly ? true : null"
+                        <input type="number" *ngIf="commission.percentageValue.isVisible" [attr.disabled]="commission.percentageValue.isReadOnly ? true : null"
                           (keypress)="decimalOnly($event)"
                           class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm" placeholder="0.0"
                           formControlName="{{'commissionPercentage' + commission.id}}" />

@@ -9,6 +9,7 @@ import { translationLanguages } from './translationLanguages';
 import { LoggerService } from 'src/app/logger.service';
 import { TableInfoService } from './table-info/table-info.service';
 import { environment } from '../environments/environment';
+import { LoadingService } from './loading.service';
 
 @Component({
   selector: 'app-root',
@@ -28,6 +29,7 @@ export class AppComponent {
   wantsLogin: boolean = false;
   translationLanguages = translationLanguages;
   expired: boolean = false;
+
 
   constructor(private logger: LoggerService, public translate: TranslateService, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService, private tableInfo: TableInfoService) {

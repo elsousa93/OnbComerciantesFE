@@ -94,4 +94,26 @@ export class ComprovativosService {
       })
     });
   }
+
+  getProcessRequiredDocuments(processID: string) {
+    var url = this.baseUrl + 'process/' + processID + '/required-documents';
+    var response: TreatedResponse<RequiredDocuments> = {};
+
+    return new Promise<TreatedResponse<RequiredDocuments>>((resolve, reject) => {
+      var HTTP_OPTIONS = {
+        headers: new HttpHeaders({
+          'Accept-Language': this.currentLanguage,
+        }),
+      }
+      this.APIRequest.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS).then(success => {
+        response.result = success.result;
+        response.msg = "Sucesso";
+        resolve(response);
+      }, error => {
+        response.result = null;
+        response.msg = "Erro";
+        reject(response);
+      })
+    });
+  }
 }

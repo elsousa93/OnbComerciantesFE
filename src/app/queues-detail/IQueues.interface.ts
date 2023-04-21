@@ -1,5 +1,6 @@
 export interface EligibilityAssessment {
   $type: StateResultDiscriminatorEnum,
+  submissionUser?: string,
   userObservations?: string,
   merchantAssessment: MerchantEligibilityAssessment,
   stakeholderAssessment?: StakeholderEligibilityAssessment[]
@@ -17,6 +18,7 @@ export interface StakeholderEligibilityAssessment {
 
 export interface RiskAssessment {
   $type: StateResultDiscriminatorEnum,
+  submissionUser?: string,
   userObservations?: string,
   merchantAssessment: MerchantRiskAssessment,
   stakeholderAssessment?: StakeholderRiskAssessment[]
@@ -33,12 +35,14 @@ export interface StakeholderRiskAssessment {
 
 export interface ContractAcceptance {
   $type: StateResultDiscriminatorEnum,
+  submissionUser?: string,
   userObservations?: string,
   contractAcceptanceResult: ContractAcceptanceEnum
 }
 
 export interface StandardIndustryClassificationChoice {
   $type: StateResultDiscriminatorEnum,
+  submissionUser?: string,
   userObservations?: string,
   shopsClassification?: ShopClassifications[]
 }
@@ -56,6 +60,7 @@ export interface PaymentSchemaClassification {
 
 export interface ClientChoice {
   $type?: StateResultDiscriminatorEnum,
+  submissionUser?: string,
   userObservations?: string,
   merchantChoice?: ClientNumberDecision,
   stakeholdersChoice?: ClientNumberDecision[]
@@ -70,24 +75,28 @@ export interface ClientNumberDecision {
 
 export interface NegotiationApproval {
   $type?: StateResultDiscriminatorEnum,
+  submissionUser?: string,
   userObservations?: string,
   decision?: NegotiationApprovalEnum
 }
 
 export interface OperationsEvaluation {
   $type?: StateResultDiscriminatorEnum,
+  submissionUser?: string,
   userObservations?: string,
   decision?: OperationsEvaluationEnum
 }
 
 export interface ContractDigitalAcceptance {
   $type: StateResultDiscriminatorEnum,
+  submissionUser?: string,
   userObservations?: string,
   contractDigitalAcceptanceResult?: ContractDigitalAcceptanceEnum
 }
 
 export interface DigitalIdentification {
   $type: StateResultDiscriminatorEnum,
+  submissionUser?: string,
   userObservations?: string,
   digitalIdentificationResult?: DigitalIdentificationEnum
 }
@@ -106,6 +115,7 @@ export interface ExternalState {
 
 export interface MerchantRegistration {
   $type?: StateResultDiscriminatorEnum,
+  submissionUser?: string,
   userObservations?: string,
   merchantRegistrationId?: string,
   shops?: ShopRegistration[],
@@ -125,6 +135,7 @@ export interface ShopEquipmentRegistration{
 
 export interface ComplianceEvaluation {
   $type?: StateResultDiscriminatorEnum,
+  submissionUser?: string,
   userObservations?: string
 }
 

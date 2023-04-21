@@ -1,13 +1,18 @@
+<ng-container *ngIf="loading$ | async">
+  <div class="overlayLoad">
+    <mat-progress-spinner [mode]="'indeterminate'"></mat-progress-spinner>
+  </div>
+</ng-container>
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav [opened]="isToggle" [mode]="mobileQuery.matches ? 'over' : 'side'"
-    [@onSideNavChange]="isToggle ? 'open' : 'close'" class="shadow sidenav temp">
+               [@onSideNavChange]="isToggle ? 'open' : 'close'" class="shadow sidenav temp">
     <mat-nav-list class="sidenav-list" [@AutoHideSidenavAdjust]="isAutoHide ? 'up':'down'">
       <div class="accordion fixed-accordion" id="accordion">
         <div class="nav-item" *ngIf="userPermissions.HomePage">
           <a role="button" [routerLink]="['/']" id="anchor">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/home.svg"
-                class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.home'|translate}} &nbsp;
+                   class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.home'|translate}} &nbsp;
             </p>
           </a>
         </div>
@@ -15,29 +20,29 @@
           <a role="button" (click)="hideHistoryTab()" id="anchor">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/folder_open.svg"
-                class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.openProcess'|translate}}
+                   class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.openProcess'|translate}}
               &nbsp;
             </p>
           </a>
         </div>
         <div *ngIf="userPermissions.ProcessHandling">
           <a id="headingOne3" role="button" data-bs-toggle="collapse" data-bs-target="#collapseOne3"
-            aria-expanded="true" aria-controls="collapseOne3">
+             aria-expanded="true" aria-controls="collapseOne3">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item dropdown-toggle">
               <img src="assets/images/edit_note.svg"
-                class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.processTreatment'|translate}}
+                   class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.processTreatment'|translate}}
               &nbsp;
             </p>
           </a>
           <div id="collapseOne3" class="submenu accordion-collapse collapse" aria-labelledby="headingOne3"
-            data-bs-parent="#accordion">
+               data-bs-parent="#accordion">
             <div class="ps-3 ms-3 col-10 ps-0 pe-0" *ngIf="userPermissions.ProcessHandling.EligibilityOpinions">
               <nav class="sidenav-item navbar navbar-expand-lg navbar-light mt-0 pt-0 pb-0">
                 <span (click)="FTSearch('eligibility')" class="sub-icon sidenav-item navbar-text text-light">
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                        class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.eligibility'|translate}}
+                           class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.eligibility'|translate}}
                       &nbsp;
                     </p>
                   </a>
@@ -50,7 +55,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                        class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.multipleClients'|translate}}
+                           class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.multipleClients'|translate}}
                       &nbsp;
                     </p>
                   </a>
@@ -63,7 +68,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                        class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.validation'|translate}}
+                           class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.validation'|translate}}
                       DO &nbsp;
                     </p>
                   </a>
@@ -77,7 +82,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                        class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.negotiationAproval'|translate}}
+                           class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.negotiationAproval'|translate}}
                       &nbsp;
                     </p>
                   </a>
@@ -90,7 +95,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                        class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.MCCTreatment'|translate}}
+                           class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.MCCTreatment'|translate}}
                       &nbsp;
                     </p>
                   </a>
@@ -103,7 +108,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                        class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.validationSIBS'|translate}}
+                           class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.validationSIBS'|translate}}
                       &nbsp;
                     </p>
                   </a>
@@ -116,7 +121,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                        class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.risk'|translate}}
+                           class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.risk'|translate}}
                       &nbsp;
                     </p>
                   </a>
@@ -129,7 +134,7 @@
                   <a role="button">
                     <p class="side_menu_texto mb-0 sidenav-item">
                       <img src="assets/images/subdirectory_arrow_right.svg"
-                        class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.compliance'|translate}}
+                           class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'homepage.compliance'|translate}}
                       &nbsp;
                     </p>
                   </a>
@@ -142,7 +147,7 @@
           <a [routerLink]="['/app-consultas']" role="button">
             <p class="sidenav-button-accordion side_menu_texto mb-0 sidenav-item">
               <img src="assets/images/search.svg"
-                class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'searches.title'|translate}}&nbsp;
+                   class="material-symbols-rounded fa-lg icons-sidenav m-align">&nbsp;{{'searches.title'|translate}}&nbsp;
             </p>
           </a>
         </div>

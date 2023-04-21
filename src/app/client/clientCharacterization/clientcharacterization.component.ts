@@ -13,6 +13,7 @@ import { DatePipe, formatDate } from '@angular/common';
 import { LoggerService } from 'src/app/logger.service';
 import { FileAndDetailsCC } from '../../readcard/fileAndDetailsCC.interface';
 import { ClientContext } from '../clientById/clientById.model';
+import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 
 
 @Component({
@@ -291,7 +292,7 @@ export class ClientCharacterizationComponent implements OnInit {
   }
 
   constructor(private logger: LoggerService, private datepipe: DatePipe, private rootFormDirective: FormGroupDirective,
-    private route: Router, private tableInfo: TableInfoService, private data: DataService, private crcService: CRCService) {
+    private route: Router, private tableInfo: TableInfoService, private data: DataService, private crcService: CRCService, private processNrService: ProcessNumberService) {
     this.rootForm = this.rootFormDirective.form;
     this.form = this.rootForm.get("clientCharacterizationForm");
     this.initializeTableInfo();
@@ -304,7 +305,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.tipologia = this.clientContext.tipologia;
     this.clientExists = this.clientContext.clientExists;
     this.comprovativoCC = this.clientContext.comprovativoCC;
-
+    this.processNrService.processId.subscribe(id => this.processId = id);;
     this.clientContext.currentNIFNIPC.subscribe(result => {
       this.NIFNIPC = result;
       this.form.get("natJuridicaNIFNIPC").setValue(this.NIFNIPC + '');
@@ -320,6 +321,10 @@ export class ClientCharacterizationComponent implements OnInit {
         this.isCommercialSociety = false;
         this.collectCRC = false;
         this.initializeENI();
+      } else {
+        this.isCommercialSociety = true;
+        this.collectCRC = false;
+        this.initializeFormControlOther();
       }
     });
 
@@ -369,11 +374,12 @@ export class ClientCharacterizationComponent implements OnInit {
           this.isCommercialSociety = true;
           this.collectCRC = true;
           this.initializeBasicCRCFormControl();
-          this.searchByCRC();
+          if (this.processId == '' || this.processId == null)
+            this.searchByCRC();
         } else {
           if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01' || this.tipologia === 'corporation') {
             setTimeout(() => {
-              this.isCommercialSociety = this.getIsCommercialSocietyFromLegalNature(this.client.legalNature)
+              this.isCommercialSociety = this.getIsCommercialSocietyFromLegalNature(this.client.legalNature);
               this.collectCRC = false;
               this.initializeFormControlOther();
             }, 100);

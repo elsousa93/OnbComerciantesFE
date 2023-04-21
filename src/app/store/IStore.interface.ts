@@ -173,6 +173,7 @@ export class ShopEquipment {
   quantity?: number
   pricing?: ShopProductPackPricingViewModel
   equipmentSettings?: EquipmentSettings[]
+  registrationId?: string
 }
 
 export interface EquipmentSettings {
@@ -198,12 +199,18 @@ interface ShopProductPackPricingViewModel {
 }
 
 export interface IndustryClassifications {
-  paymentSchemesAttributeId?: string,
+  paymentSchemeAttributeId?: string,
   paymentSchemeAttributeDescription?: string,
   subPaymentSchemeAttributeId?: string,
   subPaymentSchemeAttributeDescription?: string,
   industryClassificationCode: string,
-  industryClassificationPotentialCodes?: string[]
+  industryClassificationDescription?: string,
+  industryClassificationPotentialCodes?: PotentialCodes[]
+}
+
+interface PotentialCodes {
+  code?: string
+  description?: string
 }
 
 export enum CommunicationOwnershipTypeEnum {

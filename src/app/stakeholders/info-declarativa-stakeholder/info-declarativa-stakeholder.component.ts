@@ -13,6 +13,8 @@ import { Observable, of, Subscription } from 'rxjs';
 import { InfoStakeholderComponent } from '../info-stakeholder/info-stakeholder.component';
 import { LoggerService } from '../../logger.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ProcessService } from '../../process/process.service';
+import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -52,6 +54,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   queueName: string = "";
   title: string;
   public subscription: Subscription;
+  processId: string;
 
   emitPreviousStakeholder(idx) {
     this.previousStakeholderEvent = idx;
@@ -64,7 +67,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   ngAfterViewInit() {
   }
 
-  constructor(private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService, private logger: LoggerService, private translate: TranslateService) {
+  constructor(private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService, private logger: LoggerService, private translate: TranslateService, private processService: ProcessService, private processNrService: ProcessNumberService) {
     if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.returnedFrontOffice = this.route.getCurrentNavigation().extras.state["returnedFrontOffice"];
     }
@@ -79,6 +82,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
   ngOnInit(): void {
     this.data.updateData(false, 6, 2);
+    this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
     this.subscription = this.data.currentQueueName.subscribe(queueName => {
       if (queueName != null) {
         this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
@@ -150,6 +154,9 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepRelations' } });
         this.pepComponent.onChangeValues({ target: { value: 'false', name: 'pepPoliticalPublicJobs' } });
       }
+      if (this.returned == 'consult') {
+        this.infoStakeholders.disable();
+      }
     }    
   }
 
@@ -197,18 +204,33 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
             this.currentStakeholder.stakeholderAcquiring.pep = null;
           }
           this.logger.info("Stakeholder to update: " + JSON.stringify(this.currentStakeholder.stakeholderAcquiring));
-          this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
-            this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
-            this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
-            this.visitedStakes = Array.from(new Set(this.visitedStakes));
-            if (this.visitedStakes.length < (this.stakesLength)) {
-              this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
-            } else {
-              this.data.updateData(false, 6, 3);
-              this.logger.info("Redirecting to Info Declarativa Lojas page");
-              this.route.navigate(['info-declarativa-lojas']);
-            }
-          });
+          if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+            this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
+              this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
+              this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+              this.visitedStakes = Array.from(new Set(this.visitedStakes));
+              if (this.visitedStakes.length < (this.stakesLength)) {
+                this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+              } else {
+                this.data.updateData(false, 6, 3);
+                this.logger.info("Redirecting to Info Declarativa Lojas page");
+                this.route.navigate(['info-declarativa-lojas']);
+              }
+            });
+          } else {
+            this.processService.updateStakeholderProcess(this.processId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).then(result => {
+              this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
+              this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+              this.visitedStakes = Array.from(new Set(this.visitedStakes));
+              if (this.visitedStakes.length < (this.stakesLength)) {
+                this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+              } else {
+                this.data.updateData(false, 6, 3);
+                this.logger.info("Redirecting to Info Declarativa Lojas page");
+                this.route.navigate(['info-declarativa-lojas']);
+              }
+            });
+          }
         } else {
           this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
           this.visitedStakes = Array.from(new Set(this.visitedStakes));

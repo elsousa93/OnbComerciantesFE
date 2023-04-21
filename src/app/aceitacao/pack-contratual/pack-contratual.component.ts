@@ -16,6 +16,7 @@ import { ContractAcceptance, ContractAcceptanceEnum, ContractDigitalAcceptance, 
 import { ComprovativosService } from '../../comprovativos/services/comprovativos.services';
 import { PostDocument } from '../../submission/document/ISubmission-document';
 import { ProcessService } from '../../process/process.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-pack-contratual',
@@ -63,9 +64,17 @@ export class PackContratualComponent implements OnInit {
   constructor(private logger: LoggerService,
     private modalService: BsModalService, private translate: TranslateService, private snackBar: MatSnackBar,
     private tableInfoService: TableInfoService, private router: ActivatedRoute, private queuesInfo: QueuesService, private datepipe: DatePipe,
-    private route: Router, private documentService: ComprovativosService, private processService: ProcessService) {
+    private route: Router, private documentService: ComprovativosService, private processService: ProcessService, private authService: AuthService) {
     if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.state = this.route.getCurrentNavigation().extras.state["state"];
+    }
+    if (localStorage.getItem("documents") != null) {
+      var context = this;
+      var fileBinaries = JSON.parse(localStorage.getItem("documents"));;
+      fileBinaries.forEach(value => {
+        var blob = context.b64toBlob(value, 'application/pdf', 512);
+        context.selectFile({ target: { files: [blob] } });
+      });
     }
   }
 
@@ -168,6 +177,7 @@ export class PackContratualComponent implements OnInit {
   }
 
   selectFile(event: any) {
+    var context = this;
     this.docToShow = {id: "", type: "Teste", date: "123456789", file: null}
     const files = <File[]>event.target.files;
     for (var i = 0; i < files.length; i++) {
@@ -177,7 +187,7 @@ export class PackContratualComponent implements OnInit {
       const limSize = 10;
       this.result = "teste";
       if (this.result != null) {
-        if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
+        if ((sizeFile <= limSize)) {
           if (event.target.files && files[i]) {
             var reader = new FileReader();
             reader.onload = (event: any) => {
@@ -201,6 +211,17 @@ export class PackContratualComponent implements OnInit {
       }
     }
     this.logger.debug("Attached files " + JSON.stringify(this.files));
+    var fileBinaries = [];
+    let length = 0;
+    this.compsToShow.forEach(function (value, idx) {
+      length++;
+      context.documentService.readBase64(value.file).then(data => {
+        fileBinaries.push(data.split(',')[1]);
+        if (length == context.compsToShow.length) {
+          localStorage.setItem("documents", JSON.stringify(fileBinaries));
+        }
+      });
+    });
   }
 
   search(/*url: any, imgName: any*/ file: File) {
@@ -251,8 +272,15 @@ export class PackContratualComponent implements OnInit {
 
   downloadAll() {
     if (this.manualSignatureFileId != "") {
-      this.processService.getDocumentImageFromProcess(this.processId, this.manualSignatureFileId).subscribe(result => {
-        this.b64toBlob(result.binary, 'application/pdf', 512, true);
+      this.processService.getDocumentImageFromProcess(this.processId, this.manualSignatureFileId).then(async result => {
+        result.blob().then(data => {
+          var blob = new Blob([data], { type: 'application/pdf' });
+          let url = window.URL.createObjectURL(blob);
+          const link = document.createElement('a');
+          link.href = url;
+          link.download = "Contrato de Adesão";
+          link.click();
+        });
       });
     }
   }
@@ -261,6 +289,7 @@ export class PackContratualComponent implements OnInit {
     var context = this;
     var externalState;
     var stateType;
+
     if (!this.manualSignature) { //digital
       externalState = {} as ContractDigitalAcceptance;
       stateType = State.CONTRACT_DIGITAL_ACCEPTANCE;
@@ -273,6 +302,7 @@ export class PackContratualComponent implements OnInit {
       externalState.contractAcceptanceResult = state;
     }
     externalState.userObservations = this.form.get("observations").value;
+    externalState.submissionUser = this.authService.GetCurrentUser().userName;
 
     if (this.compsToShow.length > 0) {
       let length = 0;
@@ -280,7 +310,7 @@ export class PackContratualComponent implements OnInit {
         length++;
         context.documentService.readBase64(value.file).then(data => {
           var document: PostDocument = {
-            documentType: null,
+            documentType: "1101",
             file: {
               fileType: "PDF",
               binary: data.split(',')[1]
@@ -291,6 +321,8 @@ export class PackContratualComponent implements OnInit {
           context.queuesInfo.postProcessDocuments(document, context.processId, stateType).then(res => {
             if (context.compsToShow.length == length) {
               context.queuesInfo.postExternalState(context.processId, stateType, externalState).then(res => {
+                localStorage.removeItem("documents");
+                context.submeterPedidoModalRef?.hide();
                 context.route.navigate(['/']);
               });
             }
@@ -299,22 +331,14 @@ export class PackContratualComponent implements OnInit {
       })
     } else {
       this.queuesInfo.postExternalState(this.processId, stateType, externalState).then(res => {
-        //if (state == 'Cancel') {
-        //  let navigationExtras = {
-        //    state: {
-        //      returnedFrontOffice: true
-        //    }
-        //  } as NavigationExtras;
-        //  this.queuesInfo.markToCancel(this.processId).then(res => {
-        //    this.route.navigate(['/info-declarativa'], navigationExtras);
-        //  });
-        //}
-        this.route.navigate(['/']);
+        localStorage.removeItem("documents");
+        context.submeterPedidoModalRef?.hide();
+        context.route.navigate(['/']);
       });
     }
   }
 
-  b64toBlob(b64Data: any, contentType: string, sliceSize: number, download: boolean = false) {
+  b64toBlob(b64Data: any, contentType: string, sliceSize: number) {
     const byteCharacters = atob(b64Data);
     const byteArrays = [];
 
@@ -331,19 +355,6 @@ export class PackContratualComponent implements OnInit {
     }
 
     const blob = new Blob(byteArrays, { type: contentType });
-    const blobUrl = window.URL.createObjectURL(blob);
-    if (download) {
-      const link = document.createElement('a');
-      link.href = blobUrl;
-      link.download = 'contrato';
-      link.click();
-    } else {
-      window.open(blobUrl, '_blank',
-        `margin: auto;
-      width: 50%;
-      padding: 10px;
-      text-align: center;
-      border: 3px solid green;` );
-    }
+    return blob;
   }
 }

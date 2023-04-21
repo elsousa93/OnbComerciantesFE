@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
-import { BusinessIssueViewModel, ProcessList, ProcessService, SearchProcessHistory } from '../process/process.service';
+import { BusinessIssueViewModel, IssueViewModel, ProcessHistory, ProcessList, ProcessService, SearchProcessHistory } from '../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
 import { ClientService } from '../client/client.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
@@ -13,6 +13,13 @@ import { DatePipe } from '@angular/common';
 import { QueuesService } from '../queues-detail/queues.service';
 import { Client } from '../client/Client.interface';
 import { IStakeholders } from '../stakeholders/IStakeholders.interface';
+import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
+import { TableInfoService } from '../table-info/table-info.service';
+import { DocumentSearchType } from '../table-info/ITable-info.interface';
+import { ShopDetailsAcquiring } from '../store/IStore.interface';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 
 @Component({
   selector: 'app-devolucao',
@@ -20,7 +27,7 @@ import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 })
 
 
-export class DevolucaoComponent implements OnInit {
+export class DevolucaoComponent implements OnInit, AfterViewInit {
   form: FormGroup;
 
   public map = new Map();
@@ -40,11 +47,48 @@ export class DevolucaoComponent implements OnInit {
   public merchant: Client;
   public stakeholdersList: IStakeholders[] = [];
   public ready: boolean = false;
+  public firstTime: boolean = true;
+  docTypes: DocumentSearchType[] = [];
+  shopIssueList: ShopDetailsAcquiring[] = [];
+
+  historyMat = new MatTableDataSource<ProcessHistory>();
+  historyColumns: string[] = ['processNumber', 'processState', 'whenStarted', 'whoStarted', 'observations'];
+  @ViewChild('historySort') historySort = new MatSort();
+  @ViewChild('paginatorHistory') set paginatorHistory(pager: MatPaginator) {
+    if (pager) {
+      this.historyMat.paginator = pager;
+      this.historyMat.paginator._intl = new MatPaginatorIntl();
+      this.historyMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+
+  returnMat = new MatTableDataSource<IssueViewModel>();
+  returnColumns: string[] = ['name', 'type', 'issueDescription'];
+  @ViewChild('returnSort') returnSort = new MatSort();
+  @ViewChild('paginatorReturn') set paginatorReturn(pager: MatPaginator) {
+    if (pager) {
+      this.returnMat.paginator = pager;
+      this.returnMat.paginator._intl = new MatPaginatorIntl();
+      this.returnMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+
+  returnSelectedMat = new MatTableDataSource<IssueViewModel>();
+  returnSelectedColumns: string[] = ['name', 'type', 'issueDescription'];
+  @ViewChild('returnSelectedSort') returnSelectedSort = new MatSort();
+  @ViewChild('paginatorSelectedReturn') set paginatorSelectedReturn(pager: MatPaginator) {
+    if (pager) {
+      this.returnSelectedMat.paginator = pager;
+      this.returnSelectedMat.paginator._intl = new MatPaginatorIntl();
+      this.returnSelectedMat.paginator._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+    }
+  }
+  filterIssues: IssueViewModel[] = [];
 
   constructor(private logger: LoggerService,
     private route: Router, private data: DataService,
     private router: ActivatedRoute, private processService: ProcessService, private clientService: ClientService,
-    private stakeholderService: StakeholderService, private storeService: StoreService, public translate: TranslateService, private datePipe: DatePipe, private queuesService: QueuesService) {
+    private stakeholderService: StakeholderService, private storeService: StoreService, public translate: TranslateService, private datePipe: DatePipe, private queuesService: QueuesService, private processNrService: ProcessNumberService, private tableInfo: TableInfoService) {
 
   }
 
@@ -53,6 +97,7 @@ export class DevolucaoComponent implements OnInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.historyStream$.next(true);
     this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
+    this.processNrService.changeProcessId(this.processId);
     var context = this;
     this.getPageInfo();
     if (localStorage.getItem("returned") != 'consult') {
@@ -60,25 +105,146 @@ export class DevolucaoComponent implements OnInit {
     }
   }
 
-  async getNames(issues: BusinessIssueViewModel) {
-    await this.queuesService.getProcessMerchant(this.processId).then(res => {
-      issues.merchant.merchant["name"] = res.result.legalName;
-      this.merchant = res.result;
-    });
-    issues.shops.forEach(val => {
-      this.queuesService.getProcessShopDetails(this.processId, val?.shop?.id).then(res => {
-        val.shop["name"] = res.result.name;
+  async getNames(issues: BusinessIssueViewModel, isSelected: boolean) {
+    var context = this;
+    var lengthStake = 0;
+    var lengthStore = 0;
+    var finishedStake = false;
+    var finishedStore = false;
+    context.filterIssues = [];
+
+    let promise = new Promise((resolve, reject) => {
+      issues.documents.forEach(val => {
+        var found = context.docTypes.find(doc => doc.code == val.document.type);
+        if (found != undefined)
+          val.document.type = found.description;
       });
-    });
-    issues.stakeholders.forEach(val => {
-      this.queuesService.getProcessStakeholderDetails(this.processId, val?.stakeholder?.id).then(res => {
-        val.stakeholder["name"] = res.result.shortName;
-        this.stakeholdersList.push(res.result);
+      issues.documents.forEach(value => {
+        value.issues.forEach(val => {
+          if (val.issueDescription != null && val.issueDescription != "") {
+            val["name"] = value.document.type;
+            context.filterIssues.push(val);
+          }
+        });
       });
+      issues.process.forEach(value => {
+        if (value.issueDescription != null && value.issueDescription != "") {
+          value["name"] = "Processo";
+          context.filterIssues.push(value);
+        }
+      });
+      if (this.merchant == null) {
+        this.queuesService.getProcessMerchant(this.processId).then(res => {
+          issues.merchant.merchant["name"] = res.result.legalName;
+          this.merchant = res.result;
+          issues.merchant.issues.forEach(value => {
+            if (value.issueDescription != null && value.issueDescription != "") {
+              value["name"] = issues.merchant.merchant["name"];
+              context.filterIssues.push(value);
+            }
+          });
+        });
+      } else {
+        issues.merchant.merchant["name"] = this.merchant.legalName;
+        issues.merchant.issues.forEach(value => {
+          if (value.issueDescription != null && value.issueDescription != "") {
+            value["name"] = this.merchant.legalName;
+            context.filterIssues.push(value);
+          }
+        });
+      }
+        issues.shops.forEach(val => {
+          var index = context.shopIssueList.findIndex(shop => shop.id == val?.shop?.id);
+          if (index == -1) {
+            context.queuesService.getProcessShopDetails(context.processId, val?.shop?.id).then(res => {
+              lengthStore++;
+              val.shop["name"] = res.result.name;
+              context.shopIssueList.push(res.result);
+              val.issues.forEach(v => {
+                if (v.issueDescription != null && v.issueDescription != "") {
+                  v["name"] = val.shop["name"];
+                  context.filterIssues.push(v);
+                }
+              });
+              if (lengthStore == issues.shops.length) {
+                finishedStore = true;
+                if (finishedStake) {
+                  resolve(true);
+                }
+              }
+            });
+          } else {
+            lengthStore++;
+            val.shop["name"] = context.shopIssueList[index].name;
+            val.issues.forEach(v => {
+              if (v.issueDescription != null && v.issueDescription != "") {
+                v["name"] = val.shop["name"];
+                context.filterIssues.push(v);
+              }
+            });
+            if (lengthStore == issues.shops.length) {
+              finishedStore = true;
+              if (finishedStake) {
+                resolve(true);
+              }
+            }
+          }
+
+        });
+      
+      issues.stakeholders.forEach(val => {
+        var index1 = context.stakeholdersList.findIndex(stake => stake.id == val?.stakeholder?.id);
+          if (index1 == -1) {
+            context.queuesService.getProcessStakeholderDetails(context.processId, val?.stakeholder?.id).then(res => {
+              lengthStake++;
+              val.stakeholder["name"] = res.result.shortName;
+              context.stakeholdersList.push(res.result);
+              val.issues.forEach(v => {
+                if (v.issueDescription != null && v.issueDescription != "") {
+                  v["name"] = val.stakeholder["name"];
+                  context.filterIssues.push(v);
+                }
+              });
+              if (lengthStake == issues.stakeholders.length) {
+                finishedStake = true;
+                if (finishedStore) {
+                  resolve(true);
+                }
+              }
+            });
+          } else {
+            lengthStake++;
+            val.stakeholder["name"] = context.stakeholdersList[index1].shortName;
+            val.issues.forEach(v => {
+              if (v.issueDescription != null && v.issueDescription != "") {
+                v["name"] = val.stakeholder["name"];
+                context.filterIssues.push(v);
+              }
+            });
+            if (lengthStake == issues.stakeholders.length) {
+              finishedStake = true;
+              if (finishedStore) {
+                resolve(true);
+              }
+            }
+          }
+        });
+    }).finally(() => {
+      if (isSelected) {
+        this.loadSelectedReturnReasons(context.filterIssues);
+      } else {
+        this.loadReturnReasons(context.filterIssues);
+      }
     });
   }
-
+  
   getPageInfo() {
+    var context = this;
+
+    this.tableInfo.GetDocumentsDescription().subscribe(result => {
+      this.docTypes = result;
+    });
+
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.logger.info("Get process by id result: " + JSON.stringify(result));
       this.process = result;
@@ -88,13 +254,14 @@ export class DevolucaoComponent implements OnInit {
       this.processService.getProcessIssuesById(this.processId).subscribe(res => {
         this.logger.info("Get process issues result: " + JSON.stringify(result));
         this.issues = res;
-        this.getNames(this.issues);
+        this.getNames(this.issues, false);
       });
     });
 
     this.processService.getProcessHistory(this.processId).then(result => {
       this.logger.info("Get process history result: " + JSON.stringify(result));
       this.processHistoryItems = result.result;
+      this.processHistoryItems.items.sort((b, a) => new Date(b.whenStarted).getTime() - new Date(a.whenStarted).getTime());
       this.processHistoryItems.items.forEach(process => {
         process.whenStarted = this.datePipe.transform(process.whenStarted, 'yyyy-MM-dd HH:mm').toString();
         if (process.processState === 'Incomplete') {
@@ -132,6 +299,22 @@ export class DevolucaoComponent implements OnInit {
         }
         this.ready = true;
       });
+      this.loadHistory(this.processHistoryItems.items);
+    });
+
+    this.processService.getProcessEntities(this.processId).then(result => {
+      result.result.forEach(value => {
+        if (value.entityType === 'CorporateEntity') {
+          context.processService.getProcessCorporateEntity(context.processId, value.id).then(res => {
+            context.stakeholdersList.push(res.result);
+          });
+        }
+        if (value.entityType === 'PrivateEntity') {
+          context.processService.getProcessPrivateEntity(context.processId, value.id).then(res => {
+            context.stakeholdersList.push(res.result);
+          });
+        }
+      });
     });
   }
 
@@ -140,13 +323,40 @@ export class DevolucaoComponent implements OnInit {
     this.processService.getProcessIssuesById(this.processId, historyGuid).subscribe(res => {
       this.logger.info("Get process issues result: " + JSON.stringify(res));
       this.selectedIssue = res;
-      this.getNames(this.selectedIssue);
+      this.getNames(this.selectedIssue, true);
     });
+  }
+
+  loadHistory(history: ProcessHistory[]) {
+    this.historyMat.data = history;
+    this.historyMat.sort = this.historySort;
+  }
+
+  loadReturnReasons(reasons: IssueViewModel[]) {
+    this.returnMat.data = reasons;
+    this.returnMat.sort = this.returnSort;
+  }
+
+  loadSelectedReturnReasons(reasons: IssueViewModel[]) {
+    this.returnSelectedMat.data = reasons;
+    this.returnSelectedMat.sort = this.returnSelectedSort;
+  }
+
+  ngAfterViewInit(): void {
+    this.historyMat.sort = this.historySort;
+    this.returnMat.sort = this.returnSort;
+    this.returnSelectedMat.sort = this.returnSelectedSort;
   }
 
   nextPage() {
     this.logger.info("Redirecting to Client by id page");
     this.data.updateData(true, 0);
     this.route.navigate(['/clientbyid']);
+  }
+
+  goToHistoryTab() {
+    if (this.selectedHistoryGuid == '' || this.selectedHistoryGuid == null) {
+      this.getHistoryIssueDetails(this.processHistoryItems.items[this.processHistoryItems.items.length - 1].historyGuid);
+    }
   }
 }

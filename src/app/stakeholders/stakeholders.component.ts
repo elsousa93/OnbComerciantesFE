@@ -19,6 +19,8 @@ import { Client } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
 import { LoggerService } from '../logger.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
+import { ProcessService } from '../process/process.service';
 
 /** Listagem Intervenientes / Intervenientes
  *
@@ -38,6 +40,8 @@ export class StakeholdersComponent implements OnInit {
   previousStakeholderEvent: Observable<number>;
   sameNIFEvent: Observable<string>;
   submissionClient: Client;
+  existsStake: boolean = false;
+  stakeholders: boolean;
 
   emitUpdatedStakeholder(info) {
     this.updatedStakeholderEvent = info;
@@ -55,6 +59,10 @@ export class StakeholdersComponent implements OnInit {
 
   emitStakeNIF(nif) {
     this.sameNIFEvent = nif;
+  }
+
+  stakeExists(bool) {
+    this.existsStake = bool;
   }
 
   currentStakeholder: StakeholdersCompleteInformation = {};
@@ -106,7 +114,7 @@ export class StakeholdersComponent implements OnInit {
   editStakeInfo: boolean;
 
   selectedStakeholderComprovativos: OutboundDocument[] = [];
-  stakesLength: number = null;
+  stakesLength: number = 0;
   documents: DocumentSearchType[];
 
   crcStakeholders: IStakeholders[] = [];
@@ -117,23 +125,18 @@ export class StakeholdersComponent implements OnInit {
   contractAssociated: boolean = false;
   queueName: string = "";
   title: string;
+  processId: string;
 
   constructor(public modalService: BsModalService, private datePipe: DatePipe,
     private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService,
-    private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private clientService: ClientService, private logger: LoggerService, private translate: TranslateService) {
-
+    private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private clientService: ClientService, private logger: LoggerService, private translate: TranslateService, private processNrService: ProcessNumberService, private processService: ProcessService) {
+    this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
     if (this.route.getCurrentNavigation().extras.state) {
       this.editStakeInfo = this.route.getCurrentNavigation().extras.state["editStakeInfo"];
       this.isClient = this.route.getCurrentNavigation().extras.state["isClient"];
     }
-
-    this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
-      this.logger.info("Get client by id result: " + JSON.stringify(client));
-      this.submissionClient = client;
-    });
-
     this.crcStakeholders = JSON.parse(localStorage.getItem('crcStakeholders'));
-
+    this.returned = localStorage.getItem('returned');
     this.editStakes = this.fb.group({
       searchAddStakes: this.fb.group({
         searchStakes: this.fb.group({
@@ -150,6 +153,18 @@ export class StakeholdersComponent implements OnInit {
       }),
       stake: this.fb.group({})
     });
+
+    if (this.returned == 'consult' || (this.returned == 'edit' && this.processId != '' && this.processId != null)) {
+      this.processService.getMerchantFromProcess(this.processId).subscribe(res => {
+        this.logger.info("Get process client by id result: " + JSON.stringify(res));
+        this.submissionClient = res;
+      });
+    } else {
+      this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
+        this.logger.info("Get client by id result: " + JSON.stringify(client));
+        this.submissionClient = client;
+      });
+    }
   }
 
   redirectAddStakeholder() {
@@ -170,6 +185,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.subscription = this.data.currentStakeholders.subscribe(stakeholders => this.stakeholders = stakeholders);
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.subscription = this.data.currentQueueName.subscribe(queueName => {
@@ -180,10 +196,13 @@ export class StakeholdersComponent implements OnInit {
         });
       }
     });
-    this.data.updateData(false, 2, 1);
+    if (!this.stakeholders) {
+      this.data.updateData(false, 2, 1);
+    } else {
+      this.data.updateData(true, 2, 1);
+    }
     this.submissionId = localStorage.getItem('submissionId');
     this.processNumber = localStorage.getItem("processNumber");
-    this.returned = localStorage.getItem('returned');
     this.clickButton = true;
   }
 
@@ -231,14 +250,14 @@ export class StakeholdersComponent implements OnInit {
         var arr = this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode.split(" ");
         stakeForm.get("ZIPCode").setValue(arr[0]);
       } else {
-        stakeForm.get("ZIPCode").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode ?? this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["postalCode"]);
+        stakeForm.get("ZIPCode").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode ?? this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["postalCode"] ?? '');
       }
 
       stakeForm.get("Locality").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalArea ?? this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["postalArea"]);
       stakeForm.get("Address").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.address ?? this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["address"]);
     } else {
-      stakeForm.get("flagRecolhaEletronica").setValue(true);
-      stakeForm.get("documentType").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.type);
+      stakeForm.get("flagRecolhaEletronica").setValue(false);
+      //stakeForm.get("documentType").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.type);
       stakeForm.get("identificationDocumentCountry").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.country);
       stakeForm.get("identificationDocumentValidUntil").setValue(this.datePipe.transform(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate, 'dd-MM-yyyy'));
       stakeForm.get("identificationDocumentId").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.number);
@@ -325,23 +344,60 @@ export class StakeholdersComponent implements OnInit {
             this.currentStakeholder.stakeholderAcquiring.identificationDocument.country = stakeForm.get("identificationDocumentCountry").value;
             this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate = stakeForm.get("documentCountry").value;
           }
-          this.logger.info("Stakeholder data to update: " + JSON.stringify(this.currentStakeholder.stakeholderAcquiring));
-          this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
-            this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
+
+          if (!this.editStakes.controls["stake"].pristine) {
+            this.logger.info("Stakeholder data to update: " + JSON.stringify(this.currentStakeholder.stakeholderAcquiring));
+            if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+              this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
+                this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
+                this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+                this.visitedStakes = Array.from(new Set(this.visitedStakes));
+                if (this.visitedStakes.length < (this.stakesLength)) {
+                  this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+                } else {
+                  if (this.contractAssociated) {
+                    this.data.changeStakeholders(true);
+                    this.data.updateData(true, 2);
+                    this.logger.info("Redirecting to Store Comp page");
+                    this.route.navigate(['store-comp']);
+                  }
+                }
+              }, error => {
+                this.logger.error(error, "", "Error updating stakeholder");
+              });
+            } else {
+              this.processService.updateStakeholderProcess(this.processId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).then(result => {
+                this.logger.info("Updated stakeholder result: " + JSON.stringify(result.result));
+                this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+                this.visitedStakes = Array.from(new Set(this.visitedStakes));
+                if (this.visitedStakes.length < (this.stakesLength)) {
+                  this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+                } else {
+                  if (this.contractAssociated) {
+                    this.data.changeStakeholders(true);
+                    this.data.updateData(true, 2);
+                    this.logger.info("Redirecting to Store Comp page");
+                    this.route.navigate(['store-comp']);
+                  }
+                }
+              }, error => {
+                this.logger.error(error, "", "Error updating stakeholder");
+              });
+            }
+          } else {
             this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
             this.visitedStakes = Array.from(new Set(this.visitedStakes));
             if (this.visitedStakes.length < (this.stakesLength)) {
               this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
             } else {
               if (this.contractAssociated) {
+                this.data.changeStakeholders(true);
                 this.data.updateData(true, 2);
                 this.logger.info("Redirecting to Store Comp page");
                 this.route.navigate(['store-comp']);
               }
             }
-          }, error => {
-            this.logger.error(error, "", "Error updating stakeholder");
-          });
+          }
         } else {
           var corporateEntity: PostCorporateEntity = {};
           if (this.currentStakeholder.stakeholderAcquiring["headquartersAddress"] === null || this.currentStakeholder.stakeholderAcquiring["headquartersAddress"] === undefined)
@@ -357,37 +413,87 @@ export class StakeholdersComponent implements OnInit {
           corporateEntity.headquartersAddress.postalCode = stakeForm.get("ZIPCode").value;
           corporateEntity.clientId = this.currentStakeholder.stakeholderAcquiring.clientId;
           corporateEntity.fiscalId = this.currentStakeholder.stakeholderAcquiring.fiscalId;
-          corporateEntity.legalName = this.currentStakeholder.stakeholderAcquiring.fullName;
+          corporateEntity.legalName = this.currentStakeholder.stakeholderAcquiring["legalName"];
           corporateEntity.shortName = this.currentStakeholder.stakeholderAcquiring.shortName;
-          this.logger.info("Stakeholder data to update: " + JSON.stringify(this.currentStakeholder.stakeholderAcquiring));
-          this.stakeholderService.UpdateCorporateEntity(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, corporateEntity).then(result => {
-            this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
+
+          if (!this.editStakes.controls["stake"].pristine) {
+            this.logger.info("Stakeholder data to update: " + JSON.stringify(this.currentStakeholder.stakeholderAcquiring));
+            if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+              this.stakeholderService.UpdateCorporateEntity(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, corporateEntity).then(result => {
+                this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
+                this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+                this.visitedStakes = Array.from(new Set(this.visitedStakes));
+                if (this.visitedStakes.length < (this.stakesLength)) {
+                  this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+                } else {
+                  if (this.contractAssociated) {
+                    this.data.changeStakeholders(true);
+                    this.data.updateData(true, 2);
+                    this.logger.info("Redirecting to Store Comp page");
+                    this.route.navigate(['store-comp']);
+                  }
+                }
+              }, error => {
+                this.logger.error(error, "", "Error updating stakeholder");
+              });
+            } else {
+              this.processService.updateCorporateEntity(this.processId, this.currentStakeholder.stakeholderAcquiring.id, corporateEntity).then(result => {
+                this.logger.info("Updated stakeholder result: " + JSON.stringify(result.result));
+                this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+                this.visitedStakes = Array.from(new Set(this.visitedStakes));
+                if (this.visitedStakes.length < (this.stakesLength)) {
+                  this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+                } else {
+                  if (this.contractAssociated) {
+                    this.data.changeStakeholders(true);
+                    this.data.updateData(true, 2);
+                    this.logger.info("Redirecting to Store Comp page");
+                    this.route.navigate(['store-comp']);
+                  }
+                }
+              }, error => {
+                this.logger.error(error, "", "Error updating stakeholder");
+              });
+            }
+          } else {
             this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
             this.visitedStakes = Array.from(new Set(this.visitedStakes));
             if (this.visitedStakes.length < (this.stakesLength)) {
               this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
             } else {
               if (this.contractAssociated) {
+                this.data.changeStakeholders(true);
                 this.data.updateData(true, 2);
                 this.logger.info("Redirecting to Store Comp page");
                 this.route.navigate(['store-comp']);
               }
             }
-          }, error => {
-            this.logger.error(error, "", "Error updating stakeholder");
-          });
+          }
         }
        
       }
     } else {
+      this.data.changeStakeholders(true);
       this.data.updateData(true, 2);
       this.logger.info("Redirecting to Store Comp page");
       this.route.navigate(['store-comp']);
     }
+    this.editStakes.controls["stake"].markAsPristine();
   }
 
   getStakesListLength(value) {
-    this.stakesLength = value;
+    if (this.stakesLength != 0 && value != 1) {
+      this.stakesLength = value;
+      if (this.stakesLength == 0) {
+        this.data.changeStakeholders(false);
+        this.data.updateData(false, 2);
+      } else {
+        this.data.changeStakeholders(true);
+        this.data.updateData(true, 2);
+      }
+    } else {
+      this.stakesLength = value;
+    }
   }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {

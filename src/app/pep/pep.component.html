@@ -24,19 +24,19 @@
           <div class="showDiv form-group" *ngIf="isVisiblePep12months == true">
             <div class="row ms-0 me-0">
               <div class="col-6 mb-4 ms-0 me-0 ps-0 pe-5">
-                <p class="form-check-label titulo-form-simples mt-0" for="pepType">
+                <p class="form-check-label titulo-form-simples mt-0" >
                   {{'declarativeInformation.stakeholder.pep.PEPType'|translate}}:*</p>
                 <select (change)="checkSelectedPEP()" class="form-select campo_form" formControlName="pepType"
                   name="pepType" id="pepType">
                   <option *ngFor="let pep of PEPTypesP" value={{pep.code}}>{{pep.description}} </option>
                 </select>
-                <p class="form-check-label titulo-form-simples" for="pepSinceWhen">
+                <p class="form-check-label titulo-form-simples" >
                   {{'declarativeInformation.stakeholder.pep.since'|translate}}:</p>
                 <input (change)="checkSelectedPEP()" formControlName="pepSinceWhen" name="pepSinceWhen"
                   id="pepSinceWhen" type="date" [max]="date" class="form-control campo_form" value="">
               </div>
               <div class="col-6 ms-0 me-0 ps-0 pe-5">
-                <p class="form-check-label titulo-form-simples mt-0 text-start" for="pepCountry">
+                <p class="form-check-label titulo-form-simples mt-0 text-start" >
                   {{'declarativeInformation.stakeholder.pep.country'|translate}}:*</p>
                 <select (change)="checkSelectedPEP()" class="form-select campo_form" formControlName="pepCountry"
                   name="pepCountry" id="pepCountry">
@@ -71,7 +71,7 @@
             <div class="showDiv form-group" *ngIf="isVisiblePepFamiliarOf == true">
               <div class="row ms-0 me-0">
                 <div class="col-6 ms-0 me-0 pb-4 ps-0 pe-5">
-                  <p class="form-check-label titulo-form-simples mt-0" for="pepFamilyRelation">
+                  <p class="form-check-label titulo-form-simples mt-0" >
                     {{'declarativeInformation.stakeholder.pep.familyRelation'|translate}}:*</p>
                   <select (change)="checkSelectedFamiliar()" class="form-select" formControlName="pepFamilyRelation"
                     name="pepFamilyRelation" id="pepFamilyRelation">
@@ -104,7 +104,7 @@
             <p class="titulo-form-simples"></p>
             <div class="form-group" *ngIf="isVisiblePepRelations == true">
               <div class="col-6 ms-0 me-0 pb-4 ps-0 pe-5">
-                <p class="form-check-label titulo-form-simples mb-1" for="pepTypeOfRelation">
+                <p class="form-check-label titulo-form-simples mb-1" >
                   {{'declarativeInformation.stakeholder.pep.relationType'|translate}}:*
                 </p>
                 <select (change)="checkSelectedRelations()" class="form-select" formControlName="pepTypeOfRelation"
@@ -139,7 +139,7 @@
             <p class="titulo-form-simples"></p>
             <div class="form-group" *ngIf="isVisiblePepPoliticalPublicJobs == true">
               <div class="col-6 ms-0 me-0 pb-4 ps-0 pe-5">
-                <p class="form-check-label titulo-form-simples mt-0" for="pepType">
+                <p class="form-check-label titulo-form-simples mt-0" >
                   {{'declarativeInformation.stakeholder.pep.role'|translate}}:*</p>
                 <select class="form-select" formControlName="pepType" name="pepType" id="pepType">
                   <option *ngFor="let pep of PEPTypesC" [value]="pep.code">{{pep.description}} </option>

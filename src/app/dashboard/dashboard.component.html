@@ -281,8 +281,8 @@
         </div>
         <div class="offset-1 col-10 mb-3 mt-4 ps-0 pe-0 ">
           <div class="accordion1 accordion-flush" id="accordionFlushExample">
-            <div *ngIf="FTPermissions.pending" class="accordion1-item" (click)="callIncompleteCount()">
-              <h2 class="accordion1-header" id="flush-headingPending">
+            <div *ngIf="FTPermissions.pending" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingPending" (click)="callIncompleteCount()">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapsePending" aria-expanded="false" aria-controls="flush-collapsePending" id="accordionButton1">
                   <span class="material-symbols-outlined icon-accordion move-up icon-move-up">
@@ -372,8 +372,8 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.backOffice" class="accordion1-item" (click)="callBackOfficeCount()">
-              <h2 class="accordion1-header" id="flush-headingBackOffice">
+            <div *ngIf="FTPermissions.backOffice" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingBackOffice" (click)="callBackOfficeCount()">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseBackOffice" aria-expanded="false"
                         aria-controls="flush-collapseBackOffice" id="accordionButton2">
@@ -461,8 +461,8 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.returned" class="accordion1-item" (click)="callReturnedCount()">
-              <h2 class="accordion1-header" id="flush-headingReturned">
+            <div *ngIf="FTPermissions.returned" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingReturned" (click)="callReturnedCount()">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseReturned" aria-expanded="false" aria-controls="flush-collapseReturned" id="accordionButton3">
                   <span class="material-symbols-outlined icon-accordion assignment-return icon-assignment-return">
@@ -552,8 +552,8 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.acceptance" class="accordion1-item" (click)="callAcceptanceCount()">
-              <h2 class="accordion1-header" id="flush-headingAcceptance">
+            <div *ngIf="FTPermissions.acceptance" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingAcceptance" (click)="callAcceptanceCount()">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseAcceptance" aria-expanded="false"
                         aria-controls="flush-collapseAcceptance" id="accordionButton4">
@@ -643,8 +643,8 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.pendingSent" class="accordion1-item" (click)="callPendingSentCount()">
-              <h2 class="accordion1-header" id="flush-headingPendingSent">
+            <div *ngIf="FTPermissions.pendingSent" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingPendingSent" (click)="callPendingSentCount()">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapsePendingSent" aria-expanded="false"
                         aria-controls="flush-collapsePendingSent" id="accordionButton5">
@@ -732,9 +732,8 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.pendingEligibility" class="accordion1-item"
-                 (click)="callPendingEligibilityCount()">
-              <h2 class="accordion1-header" id="flush-headingPendingEligibility">
+            <div *ngIf="FTPermissions.pendingEligibility" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingPendingEligibility" (click)="callPendingEligibilityCount()">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapsePendingEligibility" aria-expanded="false"
                         aria-controls="flush-collapsePendingEligibility" id="accordionButton6">
@@ -786,7 +785,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.assigned'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{(row.userAssigned == null || row.userAssigned == '') ? '-' : row.userAssigned}} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
@@ -830,8 +829,8 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.multipleClientes" class="accordion1-item" (click)="callMultipleClientsCount()">
-              <h2 class="accordion1-header" id="flush-headingMultipleClients">
+            <div *ngIf="FTPermissions.multipleClientes" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingMultipleClients" (click)="callMultipleClientsCount()">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseMultipleClients" aria-expanded="false"
                         aria-controls="flush-collapseMultipleClients" id="accordionButton7">
@@ -883,7 +882,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.assigned'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{(row.userAssigned == null || row.userAssigned == '') ? '-' : row.userAssigned}} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
@@ -926,8 +925,8 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.DOValidation" class="accordion1-item" (click)="callDOValidationCount()">
-              <h2 class="accordion1-header" id="flush-headingDOValidation">
+            <div *ngIf="FTPermissions.DOValidation" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingDOValidation" (click)="callDOValidationCount()">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseDOValidation" aria-expanded="false"
                         aria-controls="flush-collapseDOValidation" id="accordionButton8">
@@ -979,7 +978,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.assigned'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{(row.userAssigned == null || row.userAssigned == '') ? '-' : row.userAssigned}} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
@@ -1022,9 +1021,8 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.negotiationAproval" class="accordion1-item"
-                 (click)="callNegotiationApprovalCount()">
-              <h2 class="accordion1-header" id="flush-headingNegotiationAproval">
+            <div *ngIf="FTPermissions.negotiationAproval" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingNegotiationAproval" (click)="callNegotiationApprovalCount()">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseNegotiationAproval" aria-expanded="false"
                         aria-controls="flush-collapseNegotiationAproval" id="accordionButton9">
@@ -1076,7 +1074,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.assigned'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{(row.userAssigned == null || row.userAssigned == '') ? '-' : row.userAssigned}} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
@@ -1120,8 +1118,8 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.MCCTreatment" class="accordion1-item" (click)="callMCCTreatmentCount()">
-              <h2 class="accordion1-header" id="flush-headingMCCTreatment">
+            <div *ngIf="FTPermissions.MCCTreatment" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingMCCTreatment" (click)="callMCCTreatmentCount()">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseMCCTreatment" aria-expanded="false"
                         aria-controls="flush-collapseMCCTreatment" id="accordionButton10">
@@ -1173,7 +1171,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.assigned'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{(row.userAssigned == null || row.userAssigned == '') ? '-' : row.userAssigned}} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
@@ -1216,8 +1214,8 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.validationSIBS" class="accordion1-item" (click)="callValidationSIBSCount()">
-              <h2 class="accordion1-header" id="flush-headingValidationSIBS">
+            <div *ngIf="FTPermissions.validationSIBS" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingValidationSIBS" (click)="callValidationSIBSCount()">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseValidationSIBS" aria-expanded="false"
                         aria-controls="flush-collapseValidationSIBS" id="accordionButton11">
@@ -1269,7 +1267,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.assigned'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{(row.userAssigned == null || row.userAssigned == '') ? '-' : row.userAssigned}} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
@@ -1312,8 +1310,8 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.riskOpinion" class="accordion1-item" (click)="callRiskOpinionCount()">
-              <h2 class="accordion1-header" id="flush-headingRiskOpinion">
+            <div *ngIf="FTPermissions.riskOpinion" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingRiskOpinion" (click)="callRiskOpinionCount()">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseRiskOpinion" aria-expanded="false"
                         aria-controls="flush-collapseRiskOpinion" id="accordionButton12">
@@ -1366,7 +1364,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.assigned'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{(row.userAssigned == null || row.userAssigned == '') ? '-' : row.userAssigned}} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
@@ -1409,8 +1407,8 @@
                 </div>
               </div>
             </div>
-            <div *ngIf="FTPermissions.complianceDoubts" class="accordion1-item" (click)="callComplianceDoubtsCount()">
-              <h2 class="accordion1-header" id="flush-headingComplianceDoubts">
+            <div *ngIf="FTPermissions.complianceDoubts" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingComplianceDoubts" (click)="callComplianceDoubtsCount()">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#flush-collapseComplianceDoubts" aria-expanded="false"
                         aria-controls="flush-collapseComplianceDoubts" id="accordionButton13">
@@ -1462,7 +1460,7 @@
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
                       {{'homepage.assigned'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> - </mat-cell>
+                    <mat-cell *matCellDef="let row"> {{(row.userAssigned == null || row.userAssigned == '') ? '-' : row.userAssigned}} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">

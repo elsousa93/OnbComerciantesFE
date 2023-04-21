@@ -7,6 +7,10 @@ import { APIRequestsService } from '../apirequests.service';
 import { AppConfigService } from '../app-config.service';
 import { BankInformation, Client, Contacts, ForeignFiscalInformation, HeadquartersAddress, ShareCapital } from '../client/Client.interface';
 import { HttpMethod } from '../enums/enum-data';
+import { AuthService } from '../services/auth.service';
+import { CorporateEntity, IStakeholders } from '../stakeholders/IStakeholders.interface';
+import { ShopDetailsAcquiring, ShopEquipment } from '../store/IStore.interface';
+import { PostDocument } from '../submission/document/ISubmission-document';
 import { SimplifiedReference } from '../submission/ISubmission.interface';
 import { Process } from './process.interface';
 
@@ -21,7 +25,7 @@ export class ProcessService {
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private API: APIRequestsService, public translate: TranslateService) {
+    private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private API: APIRequestsService, public translate: TranslateService, private authService: AuthService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.urlOutbound = configuration.getConfig().outboundUrl;
     this.neyondBackURL = configuration.getConfig().neyondBackUrl;
@@ -75,7 +79,16 @@ export class ProcessService {
   }
 
   getDocumentImageFromProcess(processId: string, documentId: string) : any {
-    return this.http.get(this.baseUrl + 'process/' + processId + '/document/' + documentId + '/image');
+    var URI = this.baseUrl + 'process/' + processId + '/document/' + documentId + '/image';
+    return fetch(URI, {
+      headers: {
+        Authorization: 'Bearer ' + this.authService.GetToken(),
+        responseType: 'blob',
+        observe: 'response',
+        "Accept": "application/pdf",
+        "Content-Type": "application/pdf"
+      }
+    });
   }
 
   getMerchantFromProcess(processId: string) {
@@ -99,7 +112,7 @@ export class ProcessService {
   }
 
   getStakeholderByIdFromProcess(processId: string, stakeholderId: string) {
-    return this.http.get(this.baseUrl + 'process/' + processId + '/stakeholder/' + stakeholderId);
+    return this.http.get<IStakeholders>(this.baseUrl + 'process/' + processId + '/stakeholder/' + stakeholderId);
   }
 
   changeProcessState(processId: string, state: string, update) {
@@ -128,6 +141,108 @@ export class ProcessService {
 
     return this.API.callAPIAcquiring(HttpMethod.GET, url);
   }
+
+  getProcessEntities(processId: string) {
+    var url = this.baseUrl + 'process/' + processId + '/entity';
+    return this.API.callAPIAcquiring(HttpMethod.GET, url);
+  }
+
+  getProcessCorporateEntity(processId: string, entityId: string) {
+    var url = this.baseUrl + 'process/' + processId + '/corporate-entity/' + entityId;
+    return this.API.callAPIAcquiring(HttpMethod.GET, url);
+  }
+
+  getProcessPrivateEntity(processId: string, entityId: string) {
+    var url = this.baseUrl + 'process/' + processId + '/private-entity/' + entityId;
+    return this.API.callAPIAcquiring(HttpMethod.GET, url);
+  }
+
+  getStakeholdersFromProcess(processId: string) {
+    var url = this.baseUrl + 'process/' + processId + '/stakeholder';
+    return this.API.callAPIAcquiring(HttpMethod.GET, url);
+  }
+
+  addProcessDocument(processId: string, document: PostDocument) {
+    var url = this.baseUrl + 'process/' + processId + '/document';
+    return this.API.callAPIAcquiring(HttpMethod.POST, url, document);
+  }
+
+  addProcessMerchantDocument(processId: string, document: PostDocument) {
+    var url = this.baseUrl + 'process/' + processId + '/merchant' + '/document';
+    return this.API.callAPIAcquiring(HttpMethod.POST, url, document);
+  }
+
+  addProcessShopDocument(processId: string, shopId: string, document: PostDocument) {
+    var url = this.baseUrl + 'process/' + processId + '/merchant/shop/' + shopId + '/document';
+    return this.API.callAPIAcquiring(HttpMethod.POST, url, document);
+  }
+
+  addShopToProcess(processId: string, shop: ShopDetailsAcquiring) {
+    var url = this.baseUrl + 'process/' + processId + '/merchant' + '/shop';
+    return this.API.callAPIAcquiring(HttpMethod.POST, url, shop);
+  }
+
+  addEquipmentToShopProcess(processId: string, shopId: string, equip: ShopEquipment) {
+    var url = this.baseUrl + 'process/' + processId + '/merchant/shop' + shopId + '/equipment';
+    return this.API.callAPIAcquiring(HttpMethod.POST, url, equip);
+  }
+
+  addStakeholderToProcess(processId: string, stakeholder: IStakeholders) {
+    var url = this.baseUrl + 'process/' + processId + '/stakeholder';
+    return this.API.callAPIAcquiring(HttpMethod.POST, url, stakeholder);
+  }
+
+  addDocumentToStakeholderProcess(processId: string, stakeholderId: string, document: PostDocument) {
+    var url = this.baseUrl + 'process/' + processId + '/stakeholder/' + stakeholderId + '/document';
+    return this.API.callAPIAcquiring(HttpMethod.POST, url, document);
+  }
+
+  addCorporateEntityToProcess(processId: string, corporate: CorporateEntity) {
+    var url = this.baseUrl + 'process/' + processId + '/corporate-entity';
+    return this.API.callAPIAcquiring(HttpMethod.POST, url, corporate);
+  }
+
+  updateProcess(processId: string, process: any) {
+    var url = this.baseUrl + 'process/' + processId;
+    return this.API.callAPIAcquiring(HttpMethod.PUT, url, process);
+  }
+
+  updateMerchantProcess(processId: string, merchant: Client) {
+    var url = this.baseUrl + 'process/' + processId + '/merchant';
+    return this.API.callAPIAcquiring(HttpMethod.PUT, url, merchant);
+  }
+
+  updateShopProcess(processId: string, shopId: string, shop: ShopDetailsAcquiring) {
+    var url = this.baseUrl + 'process/' + processId + '/merchant/shop/' + shopId;
+    return this.API.callAPIAcquiring(HttpMethod.PUT, url, shop);
+  }
+
+  updateEquipmentProcess(processId: string, shopId: string, equipId: string, equip: ShopEquipment) {
+    var url = this.baseUrl + 'process/' + processId + '/merchant/shop/' + shopId + '/equipment/' + equipId;
+    return this.API.callAPIAcquiring(HttpMethod.PUT, url, equip);
+  }
+
+  updateStakeholderProcess(processId: string, stakeId: string, stake: IStakeholders) {
+    var url = this.baseUrl + 'process/' + processId + '/stakeholder/' + stakeId;
+    return this.API.callAPIAcquiring(HttpMethod.PUT, url, stake);
+  }
+
+  updateCorporateEntity(processId: string, corporateId: string, corporate: CorporateEntity) {
+    var url = this.baseUrl + 'process/' + processId + '/corporate-entity/' + corporateId;
+    return this.API.callAPIAcquiring(HttpMethod.PUT, url, corporate);
+  }
+
+  deleteShopEquipmentFromProcess(processId: string, shopId: string, equipId: string) {
+    var url = this.baseUrl + 'process/' + processId + '/merchant/shop/' + shopId + '/equipment/' + equipId;
+    return this.API.callAPIAcquiring(HttpMethod.DELETE, url);
+  }
+
+  deleteStakeholderProcess(processId: string, stakeId: string) {
+    var url = this.baseUrl + 'process/' + processId + '/stakeholder/' + stakeId;
+    return this.API.callAPIAcquiring(HttpMethod.DELETE, url);
+  }
+
+  
 }
 export interface BusinessIssueViewModel {
   process?: IssueViewModel[]
@@ -142,7 +257,7 @@ export enum IssueTypeEnum {
   MANUAL_RULE = "ManualRule"
 }
 
-interface IssueViewModel {
+export interface IssueViewModel {
   issueType?: IssueTypeEnum
   originCode?: string
   issueCode?: string
@@ -241,6 +356,14 @@ export interface ProcessList {
   isClientAwaiting: boolean
   startedBy: StartedBy
   merchant: Merchant
+  userAssigned?: string
+  contractSignature?: ProcessSignature
+}
+
+interface ProcessSignature {
+  signType?: string
+  state?: string
+  digitalSignatureGuid?: string
 }
 
 interface Pagination {

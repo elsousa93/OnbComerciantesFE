@@ -80,6 +80,7 @@ import { MbscModule } from '@mobiscroll/angular-lite';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { PreRegistrationComponent } from './pre-registration/pre-registration.component';
 import { ExpiredComponent } from './expired/expired.component';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 registerLocaleData(localePT);
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -146,6 +147,7 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     BrowserModule,
     MatTableModule,
     MatSortModule,
+    MatProgressSpinnerModule,
     AppRoutingModule,
     CommonModule,
     ModalModule.forRoot(),

@@ -41,8 +41,8 @@
                   class="form-control campo_form" formControlName="processNumber">
               </div>
               <div class="col-5">
-                <p class="titulo-form-simples">{{'searches.documentType'|translate}}</p>
-                <select class="form-select campo-form-select" id="documentType" value="" formControlName="documentType">
+                <p class="titulo-form-simples">{{'searches.entityType'|translate}}</p>
+                <select (change)="changeDocType()" class="form-select campo-form-select" id="documentType" value="" formControlName="documentType">
                   <option value=""></option>
                   <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
                     {{docType.description}}
@@ -72,9 +72,23 @@
                 </select>
               </div>
               <div class="col-5">
-                <p class="titulo-form-simples">{{'searches.documentNumber'|translate}}</p>
-                <input type="text" (keypress)="numericOnly($event)" name="text3"
-                  class="form-control campo_form" formControlName="documentNumber">
+                <p class="titulo-form-simples">
+                  {{'searches.fiscalNumber'|translate}}
+                  <span class="titulo-form-error" *ngIf="incorrectNIF" class="titulo-form-simples-erro">
+                    {{'client.incorrectNIF'|translate}}
+                  </span>
+                  <span class="titulo-form-error" *ngIf="incorrectNIFSize" class="titulo-form-simples-erro">
+                    {{'client.incorrectNIFSize'|translate}}
+                  </span>
+                  <span class="titulo-form-error" *ngIf="incorrectNIPCSize" class="titulo-form-simples-erro">
+                    {{'client.incorrectNIPCSize'|translate}}
+                  </span>
+                  <span class="titulo-form-error" *ngIf="incorrectNIPC" class="titulo-form-simples-erro">
+                    {{'client.incorrectNIPC'|translate}}
+                  </span>
+                </p>
+                <input type="text" #docNumber (keypress)="numericOnly($event)" name="text3" (keyup)="checkValidationType(docNumber.value)"
+                       class="form-control campo_form" formControlName="documentNumber">
               </div>
             </div>
             <div class="row">

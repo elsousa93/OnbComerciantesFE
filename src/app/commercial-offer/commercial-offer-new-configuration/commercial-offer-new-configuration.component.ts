@@ -11,6 +11,8 @@ import { EquipmentOwnershipTypeEnum, CommunicationOwnershipTypeEnum, ProductPack
 import { CommercialOfferService } from '../commercial-offer.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { ProcessService } from '../../process/process.service';
+import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 
 @Component({
   selector: 'app-commercial-offer-new-configuration',
@@ -74,6 +76,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   list: ProductPackAttributeProductPackKind[];
   finalList: ProductPackAttributeProductPackKind[];
   firstTimeChanged: boolean = true;
+  processId: string;
 
   loadReferenceData() {
     this.subs.push(this.tableInfo.GetTenantCommunications().subscribe(result => {
@@ -89,7 +92,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   public subs: Subscription[] = [];
 
-  constructor(private logger: LoggerService, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService, private COService: CommercialOfferService, private translate: TranslateService, private snackBar: MatSnackBar) {
+  constructor(private logger: LoggerService, private data: DataService, private storeService: StoreService, private tableInfo: TableInfoService, private COService: CommercialOfferService, private translate: TranslateService, private snackBar: MatSnackBar, private processService: ProcessService, private processNrService: ProcessNumberService) {
     this.data.updateData(false, 5, 2);
   }
 
@@ -105,6 +108,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       }
     }
     if (changes["groupsList"]) {
+      this.changedPackValue = true;
       var oldArray = JSON.stringify(changes["groupsList"].currentValue);
       this.groupsList = JSON.parse(oldArray);
       if (this.changedPackValue == true && this.calledMensalidades == true) {
@@ -119,6 +123,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     }
     if (changes["equipmentSettings"]) {
       this.equipmentSettings = changes["equipmentSettings"].currentValue;
+      if (changes["equipmentSettings"].previousValue != undefined) {
+        this.initializeForm();
+      }
     }
   }
 
@@ -145,13 +152,12 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
     this.submissionId = localStorage.getItem("submissionId");
     this.returned = localStorage.getItem("returned");
     //this.loadReferenceData();
     this.initializeForm();
     if (this.isNewConfig == false) {
-      this.storeEquip.equipmentOwnership = this.storeEquip.equipmentOwnership.toLocaleLowerCase();
-      this.storeEquip.communicationOwnership = this.storeEquip.communicationOwnership.toLocaleLowerCase();
       this.updateFormData();
     }
   }
@@ -192,57 +198,10 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     });
 
     this.changedValue("", "");
-    //this.formConfig = new FormGroup({
-    //  name: new FormControl(this.isNewConfig == false ? this.storeEquip.shopEquipmentId : ''/*, Validators.required*/),
-    //  terminalProperty: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentOwnership.toLocaleLowerCase() : '', Validators.required),
-    //  communicationOwnership: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationOwnership.toLocaleLowerCase() : '', Validators.required),
-    //  terminalType: new FormControl(this.isNewConfig == false ? this.storeEquip.equipmentType : '', Validators.required),
-    //  communicationType: new FormControl(this.isNewConfig == false ? this.storeEquip.communicationType : '', Validators.required),
-    //  terminalAmount: new FormControl(this.isNewConfig == false ? this.storeEquip.quantity : '', Validators.required)
-    //});
 
     this.pricingForm = new FormGroup({});
 
     this.disableForm();
-
-    //this.formConfig.get("terminalProperty").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
-    //  if (val.toLocaleLowerCase() === 'self') {
-    //    this.formConfig.get('communicationOwnership').setValidators([Validators.required]);
-    //  } else if (val.toLocaleLowerCase() === 'client') {
-    //    this.formConfig.get('communicationOwnership').setValidators(null);
-    //  }
-    //  this.formConfig.get('communicationOwnership').updateValueAndValidity({ emitEvent: false });
-    //});
-
-    //this.formConfig.get("communicationOwnership").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
-    //  if (val.toLocaleLowerCase() === 'self') {
-    //    this.formConfig.get('terminalType').setValidators([Validators.required]);
-    //    this.formConfig.get('communicationType').setValidators([Validators.required]);
-    //    this.formConfig.get('terminalAmount').setValidators([Validators.required]);
-    //  } else if (val.toLocaleLowerCase() === 'client') {
-    //    this.formConfig.get('terminalType').setValidators(null);
-    //    this.formConfig.get('communicationType').setValidators(null);
-    //    this.formConfig.get('terminalAmount').setValidators(null);
-    //  }
-    //  this.formConfig.get('terminalType').updateValueAndValidity({ emitEvent: false });
-    //  this.formConfig.get('communicationType').updateValueAndValidity({ emitEvent: false });
-    //  this.formConfig.get('terminalAmount').updateValueAndValidity({ emitEvent: false });
-    //});
-
-    //this.formConfig.statusChanges.subscribe(res => {
-    //  if (res === 'VALID') {
-    //    if (this.calledMensalidades) {
-    //      this.loadMensalidades();
-    //    }
-    //    this.formValid = true;
-    //  } else {
-    //    if (this.formValid) {
-    //      this.pricingOptions = [];
-    //      this.pricingAttributeList = [];
-    //    }
-    //    this.formValid = false;
-    //  }
-    //})
   }
 
   updateFormData() {
@@ -256,82 +215,91 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   //chamar tabela onde podemos selecionar a mensalidade que pretendemos
   loadMensalidades() {
-    if (this.packId != "" && this.changedPackValue) {
-      this.groupsList.push(...this.list);
-      this.calledMensalidades = true;
-      this.changedPackValue = false;
-      this.productPackPricingFilter = {
-        processorId: this.packs[0].processors[0],
-        productCode: this.currentStore.productCode,
-        subproductCode: this.currentStore.subProductCode,
-        merchant: this.merchantCatalog,
-        packAttributes: this.groupsList,
-        store: {
-          activity: this.currentStore.activity,
-          subActivity: this.currentStore.subActivity,
-          supportEntity: this.currentStore.supportEntity,
-          referenceStore: this.currentStore.shopId,
-          supportBank: this.currentStore.supportEntity
-        },
-        equipment: {
-          //communicationOwnership: this.formConfig.get("communicationOwnership").value == 'self' ? 'Acquirer' : 'Client',
-          //communicationType: this.formConfig.get('communicationType').value,
-          //equipmentOwnership: this.formConfig.get("terminalProperty").value == 'self' ? 'Acquirer' : 'Client',
-          //equipmentType: this.formConfig.get('terminalType').value,
-          quantity: this.formConfig.get('terminalAmount').value
+    if ((this.processId != '' && this.processId != null) && this.returned != null) {
+      this.pricingOptions = [];
+      this.chooseMensalidade(this.storeEquip.pricing.id);
+    } else {
+      if (this.packId != "" && this.changedPackValue) {
+        this.groupsList.push(...this.list);
+        this.calledMensalidades = true;
+        //this.changedPackValue = false;
+        this.productPackPricingFilter = {
+          processorId: this.packs[0].processors[0],
+          productCode: this.currentStore.productCode,
+          subproductCode: this.currentStore.subProductCode,
+          merchant: this.merchantCatalog,
+          packAttributes: this.groupsList,
+          store: {
+            activity: this.currentStore.activity,
+            subActivity: this.currentStore.subActivity,
+            supportEntity: this.currentStore.supportEntity,
+            referenceStore: this.currentStore.shopId,
+            supportBank: this.currentStore.supportEntity
+          },
+          equipment: {
+            quantity: this.formConfig.get('terminalAmount').value
+          }
         }
-      }
-      this.logger.info("Filter to get commercial pack pricing list" + JSON.stringify(this.productPackPricingFilter));
-      this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
-        this.logger.info("Get commercial pack pricing list result: " + JSON.stringify(result));
-        this.pricingOptions = [];
-        if (this.storeEquip?.pricing == null) {
-          if (result.result.length == 1) {
-            this.pricingOptions.push(result.result[0]);
-            this.chooseMensalidade(result.result[0].id);
+        this.logger.info("Filter to get commercial pack pricing list" + JSON.stringify(this.productPackPricingFilter));
+        this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
+          this.logger.info("Get commercial pack pricing list result: " + JSON.stringify(result));
+          this.pricingOptions = [];
+          if (this.storeEquip?.pricing == null) {
+            if (result.result.length == 1) {
+              this.pricingOptions.push(result.result[0]);
+              this.chooseMensalidade(result.result[0].id);
+            } else {
+              result.result.forEach(options => {
+                this.pricingOptions.push(options);
+              });
+            }
           } else {
             result.result.forEach(options => {
               this.pricingOptions.push(options);
             });
+            if (this.firstTimeEdit) {
+              this.firstTimeEdit = false;
+              this.chooseMensalidade(this.storeEquip.pricing.id);
+            }
           }
-        } else {
-          result.result.forEach(options => {
-            this.pricingOptions.push(options);
-          });
-          if (this.firstTimeEdit) {
-            this.firstTimeEdit = false;
-            this.chooseMensalidade(this.storeEquip.pricing.id);
-          }
-        }
-      });
-    } else {
-      document.getElementById("flush-collapseThree").className = "accordion-collapse collapse";
-      document.getElementById("accordionButton3").className = "accordion1-button collapsed";
-      this.snackBar.open(this.translate.instant('commercialOffer.openError'), '', {
-        duration: 4000,
-        panelClass: ['snack-bar']
-      });
+        });
+      } else {
+        document.getElementById("flush-collapseThree").className = "accordion-collapse collapse";
+        document.getElementById("accordionButton3").className = "accordion1-button collapsed";
+        this.snackBar.open(this.translate.instant('commercialOffer.openError'), '', {
+          duration: 4000,
+          panelClass: ['snack-bar']
+        });
+      }
     }
+
   }
 
   //ao escolher uma mensalidade, é carregado os valores associados a essa mensalidade escolhida
   chooseMensalidade(id: string) {
     this.selectedMensalidadeId = id;
-    if (this.formConfig.valid) {
-      if (this.storeEquip?.pricing == null) {
-        this.COService.GetProductCommercialPackPricing(this.packId, id, this.productPackPricingFilter).then(res => {
-          this.logger.info("Get commercial pack pricing result: " + JSON.stringify(res));
-          this.pricingAttributeList = [];
-          res.result.attributes.forEach(attr => {
-            this.pricingAttributeList.push(attr);
+    if ((this.processId != '' && this.processId != null) && this.returned != null) {
+      this.pricingAttributeList = [];
+      this.pricingAttributeList.push(this.storeEquip.pricing.attribute);
+      this.addPricingForm();
+    } else {
+      if (this.formConfig.valid) {
+        if (this.storeEquip?.pricing == null) {
+          this.COService.GetProductCommercialPackPricing(this.packId, id, this.productPackPricingFilter).then(res => {
+            this.logger.info("Get commercial pack pricing result: " + JSON.stringify(res));
+            this.pricingAttributeList = [];
+            res.result.attributes.forEach(attr => {
+              this.pricingAttributeList.push(attr);
+            });
+            this.addPricingForm();
           });
+        } else {
+          this.pricingAttributeList.push(this.storeEquip.pricing.attribute);
           this.addPricingForm();
-        });
-      } else {
-        this.pricingAttributeList.push(this.storeEquip.pricing.attribute);
-        this.addPricingForm();
+        }
       }
     }
+
   }
 
   addPricingForm() {
@@ -339,16 +307,16 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     var valueGroup = new FormGroup({});
     if (this.isNewConfig) {
       this.pricingAttributeList.forEach(function (value, idx) {
-        valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl(value.value));
-        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(0, Validators.required));
-        valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl(value.value));
+        valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl((value.value == null) ? 0 : value.value));
+        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(0));
+        valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl((value.value == null) ? 0 : value.value));
         context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
       });
     } else {
       this.pricingAttributeList.forEach(function (value, idx) {
-        valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl(value.originalValue));
-        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.value - value.finalValue, Validators.required));
-        valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl(value.finalValue));
+        valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl((value.originalValue == null) ? 0 : value.originalValue));
+        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.originalValue - value.finalValue));
+        valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl((value.finalValue == null) ? 0 : value.finalValue));
         context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
       });
     }
@@ -363,7 +331,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.pricingAttributeList.forEach(function (value, idx) {
         var valueGroup = new FormGroup({});
         valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl(value.value));
-        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(0, Validators.required));
+        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(0));
         valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl(value.value));
         context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
       });
@@ -371,7 +339,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.pricingAttributeList.forEach(function (value, idx) {
         var valueGroup = new FormGroup({});
         valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl(value.originalValue));
-        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.value - value.finalValue, Validators.required));
+        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.value - value.finalValue));
         valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl(value.finalValue));
         context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
       });
@@ -412,19 +380,36 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
       if (this.isNewConfig == false) {
         //chamada à API para editar uma configuração
-        this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.currentStore.id, this.storeEquip.id, this.storeEquip).subscribe(result => {
-          this.changedStoreEvent.emit(true);
-          this.storeEquipEvent.emit(this.storeEquip);
-          this.logger.info("Update Shop Equipment From Submission Response " + JSON.stringify(result));
-        });
+        if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+          this.storeService.updateShopEquipmentConfigurationsInSubmission(this.submissionId, this.currentStore.id, this.storeEquip.id, this.storeEquip).subscribe(result => {
+            this.changedStoreEvent.emit(true);
+            this.storeEquipEvent.emit(this.storeEquip);
+            this.logger.info("Update Shop Equipment From Submission Response " + JSON.stringify(result));
+          });
+        } else {
+          this.processService.updateEquipmentProcess(this.processId, this.currentStore.id, this.storeEquip.id, this.storeEquip).then(result => {
+            this.changedStoreEvent.emit(true);
+            this.storeEquipEvent.emit(this.storeEquip);
+            this.logger.info("Update Shop Equipment From Submission Response " + JSON.stringify(result));
+          });
+        }
       } else {
         //chamada à API para criar uma nova configuração
-        this.storeService.addShopEquipmentConfigurationsToSubmission(this.submissionId, this.currentStore.id, this.storeEquip).subscribe(result => {
-          this.storeEquip.id = result.id;
-          this.changedStoreEvent.emit(true);
-          this.storeEquipEvent.emit(this.storeEquip);
-          this.logger.info("Add Shop Equipment To Submission Response " + JSON.stringify(result));
-        });
+        if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+          this.storeService.addShopEquipmentConfigurationsToSubmission(this.submissionId, this.currentStore.id, this.storeEquip).subscribe(result => {
+            this.storeEquip.id = result.id;
+            this.changedStoreEvent.emit(true);
+            this.storeEquipEvent.emit(this.storeEquip);
+            this.logger.info("Add Shop Equipment To Submission Response " + JSON.stringify(result));
+          });
+        } else {
+          this.processService.addEquipmentToShopProcess(this.processId, this.currentStore.id, this.storeEquip).then(result => {
+            this.storeEquip.id = result.result.id;
+            this.changedStoreEvent.emit(true);
+            this.storeEquipEvent.emit(this.storeEquip);
+            this.logger.info("Add Shop Equipment To Submission Response " + JSON.stringify(result.result));
+          });
+        }
       }
       this.el?.nativeElement?.focus();
     }
@@ -442,6 +427,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   changedValue(equipmentId: string, attrId: string) {
     var context = this;
     if (!this.firstTimeChanged) {
+      this.formConfig.enable();
       this.formConfig.removeValidators(Validators.required);
       this.formConfig.updateValueAndValidity();
       this.formConfig.get("terminalAmount").setValidators(Validators.required);
@@ -458,13 +444,16 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
               var attr = findGroupAttr.attributes.find(att => att.id == "AV_000099");
               if (attr.aggregatorId != null && attr.aggregatorId != "") {
                 this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr.aggregatorId).setValue("AV_000099"); // Tipo de Comunicações com o valor IP/ADSL
+                this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr.aggregatorId).disable();
               } else {
                 this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(true); // Tipo de Comunicações com o valor IP/ADSL
+                this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").disable();
               }
             }
           } else {
             if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000085").value) { //Tipo de Terminal ser fixo
               this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(true); // Tipo de Comunicações com o valor IP/ADSL
+              this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").disable();
             }
           }
 
@@ -599,13 +588,16 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
               var attr = findGroupAttr.attributes.find(att => att.id == "AV_000099");
               if (attr.aggregatorId != null && attr.aggregatorId != "") {
                 this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr.aggregatorId).setValue("AV_000099"); // Tipo de Comunicações com o valor IP/ADSL
+                this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr.aggregatorId).disable();
               } else {
                 this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(true); // Tipo de Comunicações com o valor IP/ADSL
+                this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").disable();
               }
             }
           } else {
             if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000085").value) { //Tipo de Terminal ser fixo
               this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(true); // Tipo de Comunicações com o valor IP/ADSL
+              this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").disable();
             }
           }
 
@@ -746,85 +738,25 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
           if (attr.aggregatorId != null && attr.aggregatorId != "") {
             this.formConfig.get("formGroup" + "AK_000017").get("formControl" + attr.aggregatorId).setValue("AV_000086");
+            this.formConfig.get("formGroup" + "AK_000017").get("formControl" + attr.aggregatorId).disable();
           } else {
             if (this.formConfig.get("formGroup" + "AK_000016").get("formControl" + "AV_000090").value) {
               this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000086").setValue(true); //Tipo de Terminal com o valor Móvel
+              this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000086").disable();
             }
           }
 
           if (attr2.aggregatorId != null && attr2.aggregatorId != "") {
             this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr2.aggregatorId).setValue("AV_000097");
+            this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr2.aggregatorId).disable();
           } else {
             if (this.formConfig.get("formGroup" + "AK_000016").get("formControl" + "AV_000090").value) {
               this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValue(true); //Tipo de Comunicações com o valor GPRS
+              this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").disable();
             }
           }
 
         }
-
-
-        //if (attrId == "AV_000091") { //AV_000091 - Comunicações Cliente
-        //  var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000017");
-        //  var attr = findGroupAttr.attributes.find(att => att.id == "AV_000085");
-        //  if (attr.aggregatorId != null && attr.aggregatorId != "") {
-        //    if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + attr.aggregatorId).value == "AV_000085") { //Tipo de Terminal ser fixo
-        //      var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
-        //      var attr = findGroupAttr.attributes.find(att => att.id == "AV_000099");
-        //      if (attr.aggregatorId != null && attr.aggregatorId != "") {
-        //        this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr.aggregatorId).setValue("AV_000099"); // Tipo de Comunicações com o valor IP/ADSL
-        //      } else {
-        //        this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(true); // Tipo de Comunicações com o valor IP/ADSL
-        //      }
-        //    }
-        //  } else {
-        //    if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000085").value) { //Tipo de Terminal ser fixo
-        //      this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(true); // Tipo de Comunicações com o valor IP/ADSL
-        //    }
-        //  }
-
-
-        //  var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000017");
-        //  var attr = findGroupAttr.attributes.find(att => att.id == "AV_000086");
-        //  if (attr.aggregatorId != null && attr.aggregatorId != "") {
-        //    if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + attr.aggregatorId).value == "AV_000086") { // Tipo de Terminal ser móvel
-        //      var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
-        //      findGroupAttr.attributes.forEach(value => {
-        //        if (value.aggregatorId != null && value.aggregatorId != "") {
-        //          if (value.id != "AV_000097" && value.id != "AV_000098") {
-        //            context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).disable();
-        //          } else {
-        //            context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValidators(Validators.required);
-        //          }
-        //        } else {
-        //          if (value.id != "AV_000097" && value.id != "AV_000098") {
-        //            context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).disable();
-        //          } else {
-        //            context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValidators(Validators.required);
-        //          }
-        //        }
-        //      });
-        //    }
-        //  } else {
-        //    if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000086").value) {
-        //      var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
-        //      findGroupAttr.attributes.forEach(value => {
-        //        if (value.aggregatorId != null && value.aggregatorId != "") {
-        //          if (value.id != "AV_000097" && value.id != "AV_000098") {
-        //            context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).disable();
-        //          } else {
-        //            context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValidators(Validators.required);
-        //          }
-        //        } else {
-        //          if (value.id != "AV_000097" && value.id != "AV_000098") {
-        //            context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).disable();
-        //          } else {
-        //            context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValidators(Validators.required);
-        //          }
-        //        }
-        //      });
-        //    }
-        //  }
-        //}
       }
 
       if (equipmentId == "AK_000015") { // Propriedade Terminal
@@ -833,9 +765,11 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
           var attr = findGroupAttr.attributes.find(att => att.id == "AV_000091");
           if (attr.aggregatorId != null && attr.aggregatorId != "") {
             this.formConfig.get("formGroup" + "AK_000016").get("formControl" + attr.aggregatorId).setValue("AV_000091");
+            this.formConfig.get("formGroup" + "AK_000016").get("formControl" + attr.aggregatorId).disable();
           } else {
             if (this.formConfig.get("formGroup" + "AK_000015").get("formControl" + "AV_000089").value) {
               this.formConfig.get("formGroup" + "AK_000016").get("formControl" + "AV_000091").setValue(true);
+              this.formConfig.get("formGroup" + "AK_000016").get("formControl" + "AV_000091").disable();
             }
           }
         }

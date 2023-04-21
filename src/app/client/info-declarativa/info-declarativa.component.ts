@@ -13,6 +13,8 @@ import { ClientService } from '../client.service';
 import { infoDeclarativaForm, validPhoneNumber, validPhoneAndMobileNumber } from 'src/app/client/info-declarativa/info-declarativa.model';
 import { LoggerService } from 'src/app/logger.service';
 import { TranslateService } from '@ngx-translate/core';
+import { ProcessService } from '../../process/process.service';
+import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 
 @Component({
   selector: 'app-info-declarativa',
@@ -52,6 +54,7 @@ export class InfoDeclarativaComponent implements OnInit {
   returnedFrontOffice: boolean = false;
   queueName: string = "";
   title: string;
+  processId: string;
 
   setForm(client: Client) {
     this.newClient = client;
@@ -70,11 +73,13 @@ export class InfoDeclarativaComponent implements OnInit {
 
   public subs: Subscription[] = [];
 
-  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService, private translate: TranslateService) {
+  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService, private translate: TranslateService, private processService: ProcessService, private processNrService: ProcessNumberService) {
 
     if (this.router?.getCurrentNavigation()?.extras?.state) {
       this.returnedFrontOffice = this.router.getCurrentNavigation().extras.state["returnedFrontOffice"];
     }
+    this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
+    this.returned = localStorage.getItem("returned");
 
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.logger.info("Fetch all countries " + JSON.stringify(result));
@@ -104,23 +109,22 @@ export class InfoDeclarativaComponent implements OnInit {
     this.phone2 = this.listValue.get("phone2");
 
     if (!this.newClient) {
-      if (this.returned != null || this.returnedFrontOffice == true) {
-        this.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(result => {
-          localStorage.setItem("submissionId", result.result[0].submissionId);
-          this.clientService.GetClientByIdAcquiring(result.result[0].submissionId).then(res => {
-            this.setForm(res);
-          });
-        });
-      } else {
+      if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
         this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(res => {
           this.logger.info("Get Merchant from submission " + JSON.stringify(res));
           this.setForm(res);
         });
+      } else {
+        this.processService.getMerchantFromProcess(this.processId).subscribe(res => {
+          this.logger.info("Get process client by id result: " + JSON.stringify(res));
+          this.setForm(res);
+        }); 
       }
     } else {
       this.logger.info("Get Merchant from local storage " + JSON.stringify(this.newClient));
     }
   }
+
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
@@ -133,7 +137,6 @@ export class InfoDeclarativaComponent implements OnInit {
       }
     });
     this.data.updateData(false, 6, 1);
-    this.returned = localStorage.getItem("returned");
     this.newClient = JSON.parse(localStorage.getItem("info-declarativa"))?.client ?? this.newClient;
   }
 
@@ -177,9 +180,15 @@ export class InfoDeclarativaComponent implements OnInit {
       storedForm.client = this.newClient;
       localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
       this.logger.info("Merchant data to send " + JSON.stringify(this.newClient));
-      this.clientService.EditClient(localStorage.getItem("submissionId"), this.newClient).subscribe(result => {
-        this.logger.info("Updated Merchant " + JSON.stringify(result));
-      });
+      if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+        this.clientService.EditClient(localStorage.getItem("submissionId"), this.newClient).subscribe(result => {
+          this.logger.info("Updated Merchant " + JSON.stringify(result));
+        });
+      } else {
+        this.processService.updateMerchantProcess(this.processId, this.newClient).then(result => {
+          this.logger.info("Updated Merchant " + JSON.stringify(result.result));
+        });
+      }
     }
     this.logger.info("Redirecting to Info Declarativa Stakeholder page");
     let navigationExtras = {

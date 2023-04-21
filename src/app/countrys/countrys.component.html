@@ -25,7 +25,7 @@
         <div class="ms-0 me-0" [ngClass]="{'row': window.outerWidth > 768}">
           <div class="col-6 ms-0 me-0 ps-0 pe-5">
             <p class="titulo-form-simples mt-0">{{'client.faturation'|translate|uppercase}}*</p>
-            <input type="number" (keypress)="numericOnly($event)" class="form-control campo_form"
+            <input type="text" (keypress)="numericOnly($event)" (keyup)="numberWithCommasAnual()" class="form-control campo_form"
                    formControlName="expectableAnualInvoicing" name="expectableAnualInvoicing" id="expectableAnualInvoicing"
                    [readonly]="returned == 'consult'">
             <div class="alert alert-danger"
@@ -44,8 +44,8 @@
               </div>
             </div>
             <p class="titulo-form-simples mb-1">{{'client.mediaTransactions'|translate}}*</p>
-            <input formControlName="transactionsAverage" name="transactionsAverage" type="number"
-                   (keypress)="numericOnly($event)" id="transactionsAverage" class="form-control campo_form"
+            <input formControlName="transactionsAverage" name="transactionsAverage" type="text"
+                   (keypress)="numericOnly($event)" (keyup)="numberWithCommas()" id="transactionsAverage" class="form-control campo_form"
                    [readonly]="returned == 'consult'">
             <div class="alert alert-danger"
                  *ngIf="this.form.get('transactionsAverage').touched && !this.form.get('transactionsAverage').valid">
@@ -60,7 +60,7 @@
                   <input class="form-check-input" name="preferenceDocuments" type="radio" value="Portal"
                          formControlName="preferenceDocuments" id="preferenceDocuments"
                          [attr.disabled]="returned == 'consult' ? true : null">
-                  <label class="form-check-label radio pe-5" for="preferenceDocuments">100% DIGITAL</label>
+                  <label class="form-check-label radio pe-5">100% DIGITAL</label>
                 </div>
               </span><span class="navbar-text">
                 <div class="form-check">
@@ -68,7 +68,7 @@
                          formControlName="preferenceDocuments" id="preferenceDocuments"
                          [attr.disabled]="returned == 'consult' ? true : null">
                   <label class="form-check-label radio"
-                         for="preferenceDocuments">{{'client.letter'|translate|uppercase}}</label>
+                         >{{'client.letter'|translate|uppercase}}</label>
                 </div>
               </span>
             </nav>
@@ -86,7 +86,7 @@
                          formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise"
                          (click)="setAssociatedWith(true)" [attr.disabled]="returned === 'consult' ? true : null">
                   <label class="form-check-label radio pe-5"
-                         for="associatedWithGroupOrFranchise">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                         >{{'generalKeywords.yes'|translate|uppercase}}</label>
                 </div>
               </span><span class="navbar-text">
                 <div class="form-check">
@@ -94,7 +94,7 @@
                          formControlName="associatedWithGroupOrFranchise" id="associatedWithGroupOrFranchise"
                          (click)="setAssociatedWith(false)" [attr.disabled]="returned === 'consult' ? true : null">
                   <label class="form-check-label radio"
-                         for="associatedWithGroupOrFranchise">{{'generalKeywords.no'|translate|uppercase}}</label>
+                         >{{'generalKeywords.no'|translate|uppercase}}</label>
                 </div>
               </span>
             </nav>
@@ -115,16 +115,17 @@
             </p>
             <div class="row me-0">
               <div class="ms-0 me-0">
-                <select class="form-select campo-form-select" (change)="countrys($event)" style="font-size: 20px;">
+                <select class="form-select campo-form-select" (change)="countrys($event)" style="font-size: 20px;" [attr.disabled]="returned === 'consult' ? true : null">
                   <option *ngFor="let item of continentOptions">{{item.value}}</option>
                 </select>
 
 
                 <div class="col mt-4" *ngIf="finalList?.length > 0">
-                  <ng-multiselect-dropdown formControlName="countries" name="countries" style="font-size: 20px;" placeholder="Selecione" [settings]="dropDownSettings"
+                  <ng-multiselect-dropdown formControlName="countries" name="countries" style="font-size: 20px;" placeholder="Selecione" [settings]="dropDownSettings" [attr.disabled]="returned === 'consult' ? true : null"
                                            [data]="lst"
                                            (onDeSelectAll)="removeAllCountries($event)" 
                                            (onSelect)="addCountry($event)"
+                                           (onSelectAll)="addAllCountries($event)"
                                            (onDeSelect)="removeCountry($event)">
                   </ng-multiselect-dropdown>
                 </div>

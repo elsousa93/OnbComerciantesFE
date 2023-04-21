@@ -1,4 +1,4 @@
-<form [formGroup]="formNewStakeholder" (ngSubmit)="submit()">
+<form [formGroup]="formNewStakeholder" (ngSubmit)="submit()" autocomplete="true">
   <div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
     <div class="row">
       <div class="row ms-0 me-0" *ngIf="currentStakeholder != null" #selectedBlueDiv id="selectedBlueDiv">
@@ -9,15 +9,14 @@
               <div class="form-check">
                 <input class="form-check-input" formControlName="contractAssociation" name="contractAssociation"
                        type="radio" value="true" id="contractAssociation" />
-                <label class="form-check-label radio pe-5"
-                       for="radio8">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                <label class="form-check-label radio pe-5">{{'generalKeywords.yes'|translate|uppercase}}</label>
               </div>
             </span>
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" formControlName="contractAssociation" name="contractAssociation"
                        type="radio" value="false" id="contractAssociation" />
-                <label class="form-check-label radio" for="radio2">{{'generalKeywords.no'|translate|uppercase}}</label>
+                <label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}</label>
               </div>
             </span>
           </nav>
@@ -37,8 +36,7 @@
                        type="radio" [value]=true id="flagRecolhaEletronica" [checked]="flagRecolhaEletronica"
                        [attr.disabled]="(flagRecolhaEletronica || returned === 'consult') ? true : null"
                        (click)="validateCC(true)" />
-                <label class="form-check-label radio pe-5"
-                       for="radio2">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                <label class="form-check-label radio pe-5">{{'generalKeywords.yes'|translate|uppercase}}</label>
               </div>
             </span>
             <span class="navbar-text">
@@ -47,7 +45,7 @@
                        name="flagRecolhaEletronica" type="radio" [value]=false id="flagRecolhaEletronica"
                        [attr.disabled]="(flagRecolhaEletronica || returned === 'consult') ? true : null"
                        (click)="validateCC(false)" />
-                <label class="form-check-label radio" for="radio2">{{'generalKeywords.no'|translate|uppercase}}</label>
+                <label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}</label>
               </div>
             </span>
           </nav>
@@ -58,6 +56,61 @@
             </div>
           </div>
           <p class="titulo-form-simples"></p>
+
+          <div *ngIf="isCC" class="titulo-form-simples">
+            {{'citizenCard.readClick'|translate}} <br>
+            <button type="button" class="btn botao_azul_pesquisa mb-3"
+                    (click)="openModal(template)">
+              {{'citizenCard.read'|translate}}
+            </button>
+            <div *ngIf="okCC">
+              <div class="row me-0">
+                <div class="col">
+                  <div class="me-0 ps-0 pe-0 col-7 mb-5">
+                    <p class="titulo-form-simples">
+                      {{'citizenCard.documentCountry'|translate}}:* <span>
+                      </span>
+                    </p>
+                    <input class="form-control campo_form" id="countryCC" value="{{countryCC}}" type="text" [disabled]="true">
+                  </div>
+                </div>
+              </div>
+              <table class="table table-sm table-light">
+                <thead>
+                  <tr class="titulo-form-simples">
+                    {{'citizenCard.readData'|translate|uppercase}}
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row" class="titulo-form-simples">{{'citizenCard.name'|translate}}:</th>
+                    <td>{{dataCCcontents.nameCC}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="titulo-form-simples">{{'citizenCard.ccNumber'|translate}}:</th>
+                    <td>{{dataCCcontents.cardNumberCC}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="titulo-form-simples">NIF:</th>
+                    <td>{{dataCCcontents.nifCC}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="titulo-form-simples">{{'citizenCard.address'|translate}}:</th>
+                    <td>{{dataCCcontents.addressCC}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="titulo-form-simples">{{'citizenCard.postalCode'|translate}}:</th>
+                    <td>{{dataCCcontents.postalCodeCC}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row" class="titulo-form-simples">{{'citizenCard.birthDate'|translate}}:</th>
+                    <td>{{dataCCcontents.birthdateCC}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
         </div>
         <div class="offset-1 ms-0 me-0 ps-5 pe-0 col-6">
           <p class="titulo-form-simples mb-3" *ngIf="currentStakeholder?.stakeholderAcquiring?.signType != null && currentStakeholder?.stakeholderAcquiring?.signType !== ''">{{'stakeholder.proxy'|translate}}:*</p>
@@ -66,15 +119,14 @@
               <div class="form-check">
                 <input class="form-check-input" formControlName="proxy" name="proxy" type="radio" value="true"
                        id="proxy" [attr.disabled]="returned === 'consult' ? true : null" />
-                <label class="form-check-label radio pe-5"
-                       for="radio1">{{'generalKeywords.yes'|translate|uppercase}}</label>
+                <label class="form-check-label radio pe-5">{{'generalKeywords.yes'|translate|uppercase}}</label>
               </div>
             </span>
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" formControlName="proxy" name="proxy" type="radio" value="false"
                        id="proxy" [attr.disabled]="returned === 'consult' ? true : null" />
-                <label class="form-check-label radio" for="radio1">{{'generalKeywords.no'|translate|uppercase}}</label>
+                <label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}</label>
               </div>
             </span>
           </nav>
@@ -95,10 +147,10 @@
         </div>
         <div class="row" *ngIf="!showYesCC && showNoCC">
           <div class="col-6">
-            <div class="row" id="country">
+            <div class="row">
               <p class="titulo-form-simples">{{'stakeholder.country'|translate|uppercase}} *</p>
-              <select id="streetAddressStakeholder" class="form-select campo-form-select" formControlName="Country"
-                      (click)="clean()" [attr.disabled]="returned === 'consult' ? true : null">
+              <select class="form-select campo-form-select" formControlName="Country"
+                      (click)="clean()" [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018') ? true : null">
                 <option *ngFor="let country of countries" value="{{country.code}}">
                   {{country.description}}
                 </option>
@@ -110,10 +162,10 @@
                 </div>
               </div>
             </div>
-            <div class="row" id="address">
+            <div class="row">
               <p class="titulo-form-simples">{{'stakeholder.address'|translate|uppercase}} *</p>
-              <input class="form-control" id="countryBillingAdressStakeholder" type="text" formControlName="Address"
-                     [disabled]="returned === 'consult'">
+              <input class="form-control" type="text" formControlName="Address" autocomplete="true"
+                     [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018') ? true : null">
               <div class="alert alert-danger"
                    *ngIf="formNewStakeholder.get('Address').touched && !formNewStakeholder.get('Address').valid">
                 <div *ngIf="formNewStakeholder.get('Address').errors && formNewStakeholder.get('Address').errors?.['required']">
@@ -123,11 +175,11 @@
             </div>
           </div>
           <div class="col-6">
-            <div class="row ms-0" id="zipcode">
+            <div class="row ms-0">
               <p class="titulo-form-simples">{{'stakeholder.postalCode'|translate|uppercase}} *</p>
-              <input class="form-control" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode"
-                     (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8"
-                     [disabled]="returned === 'consult'">
+              <input class="form-control" type="text" formControlName="ZIPCode"
+                     (keyup)="GetCountryByZipCode($event)" (keypress)="numericOnly($event)" maxlength="8" autocomplete="true"
+                     [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018') ? true : null">
               <div class="alert alert-danger"
                    *ngIf="formNewStakeholder.get('ZIPCode').touched && !formNewStakeholder.get('ZIPCode').valid">
                 <div *ngIf="formNewStakeholder.get('ZIPCode').errors && formNewStakeholder.get('ZIPCode').errors?.['required']">
@@ -135,10 +187,10 @@
                 </div>
               </div>
             </div>
-            <div class="row ms-0" id="locale">
+            <div class="row ms-0">
               <p class="titulo-form-simples">{{'stakeholder.locale'|translate|uppercase}} *</p>
-              <input class="form-control" id="areaBillingAdressStakeholder" type="text" formControlName="Locality"
-                     [readonly]="canEditLocality() === false || returned === 'consult'">
+              <input class="form-control" type="text" formControlName="Locality" autocomplete="true"
+                     [readonly]="canEditLocality() === false || returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018'">
               <div class="alert alert-danger"
                    *ngIf="formNewStakeholder.get('Locality').touched && !formNewStakeholder.get('Locality').valid">
                 <div *ngIf="formNewStakeholder.get('Locality').errors && formNewStakeholder.get('Locality').errors?.['required']">
@@ -152,14 +204,14 @@
           <div class="col-6">
             <p class="titulo-form-simples mt-0">NIF</p>
             <input id="fiscalId" class="form-control campo_form" type="text" formControlName="NIF"
-              [readonly]="selectedStakeholderIsFromCRC === true">
+                   [readonly]="true">
           </div>
           <!--<div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.role'|translate|uppercase}}</p>
             <select id="roleStakeholder" class="form-select campo-form-select" formControlName="Role"
               [attr.disabled]="(selectedStakeholderIsFromCRC === true && currentStakeholder.stakeholderAcquiring.fiscalId != null) ? true : null">-->
-              <!-- antes era chamado o método canEditRole()-->
-              <!--<option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
+          <!-- antes era chamado o método canEditRole()-->
+          <!--<option *ngFor="let role of stakeholdersRoles" value="{{role.code}}">{{role.description}}</option>
             </select>
           </div>-->
         </div>
@@ -167,40 +219,42 @@
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentType'|translate}}:*</p>
             <input readonly name="documentType" formControlName="documentType"
-              class="form-control campo_form" [value]="getDocumentDescription(currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type)">
+                   class="form-control campo_form">
           </div>
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentNumber'|translate}}:*</p>
             <input readonly name="identificationDocumentId" formControlName="identificationDocumentId"
-              class="form-control campo_form">
+                   class="form-control campo_form">
           </div>
         </div>
         <div class="row" *ngIf="showYesCC && !showNoCC">
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentCountry'|translate}}:*</p>
             <select readonly name="identificationDocumentCountry" formControlName="identificationDocumentCountry"
-              class="form-control campo_form">
+                    class="form-control campo_form">
               <option *ngFor="let country of countries" value={{country.code}}
-                [attr.selected]="(currentStakeholder.stakeholderAcquiring.identificationDocument.country == country.code) ? true : null">
-                {{country.description}}</option>
+                      [attr.selected]="(currentStakeholder.stakeholderAcquiring.identificationDocument.country == country.code) ? true : null">
+                {{country.description}}
+              </option>
             </select>
           </div>
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'citizenCard.identificationDocumentDate'|translate}}:*</p>
             <input readonly name="identificationDocumentValidUntil" formControlName="identificationDocumentValidUntil"
-              cols="30" rows="10" class="form-control campo_form">
+                   cols="30" rows="10" class="form-control campo_form">
           </div>
         </div>
         <div class="row" *ngIf="showYesCC && !showNoCC">
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.country'|translate|uppercase}}</p>
-            <select id="streetAddressStakeholder" class="form-select campo-form-select" formControlName="Country"
-              (click)="clean()" [attr.disabled]="returned === 'consult' ? true : null">
+            <select class="form-select campo-form-select" formControlName="Country"
+                    (click)="clean()" [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018') ? true : null">
               <option *ngFor="let country of countries" value="{{country.code}}">
-                {{country.description}}</option>
+                {{country.description}}
+              </option>
             </select>
             <div class="alert alert-danger"
-              *ngIf="formNewStakeholder.get('Country').touched && !formNewStakeholder.get('Country').valid">
+                 *ngIf="formNewStakeholder.get('Country').touched && !formNewStakeholder.get('Country').valid">
               <div *ngIf="formNewStakeholder.get('Country').errors && formNewStakeholder.get('Country').errors?.['required']">
                 {{'generalKeywords.mandatoryParameter'|translate}}
               </div>
@@ -208,8 +262,8 @@
           </div>
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.locale'|translate|uppercase}}</p>
-            <input class="form-control campo_form" id="areaBillingAdressStakeholder" type="text"
-                   formControlName="Locality" [readonly]="canEditLocality() === false">
+            <input class="form-control campo_form" type="text" autocomplete="true"
+                   formControlName="Locality" [readonly]="canEditLocality() === false || returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018'">
             <div class="alert alert-danger"
                  *ngIf="formNewStakeholder.get('Locality').touched && !formNewStakeholder.get('Locality').valid">
               <div *ngIf="formNewStakeholder.get('Locality').errors && formNewStakeholder.get('Locality').errors?.['required']">
@@ -221,9 +275,9 @@
         <div class="row" *ngIf="showYesCC && !showNoCC">
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.postalCode'|translate|uppercase}}</p>
-            <input class="form-control campo_form" id="postCodeAdressStakeholder" type="text" formControlName="ZIPCode"
-                   (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8"
-                   [readonly]="returned === 'consult'">
+            <input class="form-control campo_form" type="text" formControlName="ZIPCode"
+                   (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8" autocomplete="true"
+                   [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018') ? true : null">
             <div class="alert alert-danger"
                  *ngIf="formNewStakeholder.get('ZIPCode').touched && !formNewStakeholder.get('ZIPCode').valid">
               <div *ngIf="formNewStakeholder.get('ZIPCode').errors && formNewStakeholder.get('ZIPCode').errors?.['required']">
@@ -233,8 +287,8 @@
           </div>
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.address'|translate|uppercase}}</p>
-            <input class="form-control campo_form" id="countryBillingAdressStakeholder" type="text"
-                   formControlName="Address" [readonly]="returned === 'consult'">
+            <input class="form-control campo_form" type="text" autocomplete="true"
+                   formControlName="Address" [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018') ? true : null">
             <div class="alert alert-danger"
                  *ngIf="formNewStakeholder.get('Address').touched && !formNewStakeholder.get('Address').valid">
               <div *ngIf="formNewStakeholder.get('Address').errors && formNewStakeholder.get('Address').errors?.['required']">
@@ -247,3 +301,58 @@
     </div>
   </div>
 </form>
+<ng-template #template>
+  <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
+    <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
+      <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
+        <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
+          <nav class="navbar navbar-expand navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+            <span class="navbar-text ms-auto align-self-start">
+              <h2 class="text-light mt-1 mb-0 ms-0 me-1 pt-0 pb-0 ps-0 pe-4" style="cursor: pointer;"
+                  (click)="modalRef.hide()">
+                x
+              </h2>
+            </span>
+          </nav>
+        </div>
+        <div class="row mb-5 ms-0 me-0 ps-0 pe-0">
+          <div class="mb-5 ps-0 pe-0 col-12">
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
+              <span class="navbar-text"></span>
+              <span class="material-symbols-rounded img_badge">
+                <img src="assets/images/badge.svg" class="img_badge">
+              </span>
+            </nav>
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
+              <span class="navbar-text">
+                <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">
+                  {{'citizenCard.addressPIN'|translate}}
+                </h5>
+              </span>
+            </nav>
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
+              <span class="navbar-text"></span>
+              <span class="navbar-text pb-0 pt-sm-0">
+                <button id="btn5a"
+                        class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
+                        style="color: white;" wappler-command="editContent" data-bs-dismiss="modal"
+                        (click)="modalRef.hide(); callreadCCAddress()">
+                  {{'generalKeywords.yes'|translate|uppercase}}
+                </button>
+              </span>
+              <span class="navbar-text pt-0 pb-0">
+                <button id="btn5a1"
+                        class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
+                        style="color: white;" wappler-command="editContent"
+                        (click)="modalRef.hide(); callreadCC(); setAddressFalse()">
+                  {{'generalKeywords.no'|translate|uppercase}}
+                </button>
+              </span>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</ng-template>
+

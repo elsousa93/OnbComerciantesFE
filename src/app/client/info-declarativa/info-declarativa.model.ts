@@ -82,3 +82,7 @@ export function validEmail(control: AbstractControl): ValidationErrors | null {
     }
   }
 }
+
+export function noWhiteSpaceValidator(control: AbstractControl): ValidationErrors | null {
+  return (control.value || '').trim().length ? null : { 'whitespace': true };
+}

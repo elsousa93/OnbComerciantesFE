@@ -8,6 +8,7 @@ import { AuthService } from '../services/auth.service';
 import { User } from '../userPermissions/user';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 import { LoggerService } from '../logger.service';
+import { LoadingService } from '../loading.service';
 
 @Component({
   selector: 'app-sidenav-presencial',
@@ -27,10 +28,11 @@ export class SidenavPresencialComponent implements OnInit {
   userPermissions: MenuPermissions;
 
   currentUser: User = {};
+  loading$ = this.loader.loading$;
 
   constructor(private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher,
-    private dataService: DataService, private authService: AuthService, private processNrService: ProcessNumberService, private logger: LoggerService) {
+    private dataService: DataService, private authService: AuthService, private processNrService: ProcessNumberService, private logger: LoggerService, public loader: LoadingService) {
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);

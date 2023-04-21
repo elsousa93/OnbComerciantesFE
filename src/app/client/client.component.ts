@@ -122,7 +122,7 @@ export class ClientComponent implements OnInit {
     this.dataCCcontents.countryCC = countryIssuer;
     this.countryCC = countryIssuer; //HTML
 
-    var expireDate = expiryDate.replaceAll(" ", "/").split("/");
+    var expireDate = expiryDate.split(" ");//expiryDate.replaceAll(" ", "/").split("/");
     var date = expireDate[1] + "/" + expireDate[0] + "/" + expireDate[2];
     this.dataCCcontents.expiryDate = new Date(date).toISOString();
     this.dataCCcontents.emissonDate = emissonDate;
@@ -262,12 +262,13 @@ export class ClientComponent implements OnInit {
   potentialClientIds: string[] = [];
   queueName: string = "";
   title: string;
+  merchant: boolean;
 
   constructor(private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder, private translate: TranslateService,
     private route: Router, private data: DataService, private clientService: ClientService,
     private tableInfo: TableInfoService, public modalService: BsModalService,
     private readCardService: ReadcardService, private snackBar: MatSnackBar) {
-
+    this.data.currentMerchant.subscribe(merchant => this.merchant = merchant);
     this.subs.push(this.tableInfo.GetAllSearchTypes(UserTypes.MERCHANT).subscribe(result => {
       this.ListaDocType = result;
       this.ListaDocType = this.ListaDocType.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
@@ -278,7 +279,7 @@ export class ClientComponent implements OnInit {
 
     this.clientsMat.sort = this.sort;
     this.initializeForm();
-    this.data.updateData(false, 1);
+
     this.subscription = this.data.currentQueueName.subscribe(queueName => {
       if (queueName != null) {
         this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
@@ -312,6 +313,11 @@ export class ClientComponent implements OnInit {
           this.setOkCC();
         }
       }
+    }
+    if (!this.merchant) {
+      this.data.updateData(false, 1);
+    } else {
+      this.data.updateData(true, 1);
     }
   }
 
@@ -585,6 +591,7 @@ export class ClientComponent implements OnInit {
     localStorage.setItem("documentType", selectedClient.documentationDeliveryMethod);
     localStorage.setItem("documentNumber", selectedClient.clientId);
     this.logger.info("Redirecting to Client by id page");
+    this.data.changeMerchant(false);
     this.route.navigate(['/clientbyid', this.clientId], navigationExtras);
   }
   /**
@@ -718,7 +725,7 @@ export class ClientComponent implements OnInit {
     this.data.changeCurrentDataCC(this.dataCC);
     this.data.changeCurrentComprovativoCC(this.prettyPDF);
     this.data.changeCurrentTipologia(this.tipologia);
-
+    this.data.changeMerchant(false);
     if (NIFNIPC !== null && NIFNIPC !== undefined) {
       this.logger.info("Redirecting to Client by id page");
       this.route.navigate(['/clientbyid', NIFNIPC], navigationExtras);

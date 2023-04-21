@@ -90,6 +90,8 @@
                                   {{'declarativeInformation.signature.clientName'|translate}}
                                 </th>
                                 <th scope="col" class="text-center bg-light">NIF</th>
+                                <th scope="col" class="text-center bg-light">{{'client.representationPower'|translate}}</th>
+                                <th scope="col" class="text-center bg-light">{{'client.representationRestrictions'|translate}}</th>
                                 <th scope="col" class="text-center bg-white">
                                   {{'acceptance.contratualPack.signType'|translate|uppercase}}
                                 </th>
@@ -99,14 +101,18 @@
                               </tr>
                             </thead>
                             <tbody>
-                              <tr *ngFor="let stake of stakeholdersList">
-                                <td class="text-primary text-center align-middle">{{stake?.shortName}}</td>
-                                <td class="text-primary text-center align-middle">{{stake?.fiscalId}}</td>
-                                <td class="text-primary text-center align-middle" *ngIf="state != 'ContractAcceptance'">{{stake?.signType}}</td>
-                                <td class="text-primary text-center align-middle" *ngIf="state != 'ContractAcceptance'">{{stake?.identificationState}}</td>
-                                <td class="text-primary text-center align-middle" *ngIf="state == 'ContractAcceptance'">Manual</td>
-                                <td class="text-primary text-center align-middle" *ngIf="state == 'ContractAcceptance'">Recolha Assinatura</td>
-                              </tr>
+                              <ng-container *ngFor="let stake of stakeholdersList">
+                                <tr *ngIf="stake.representationPower?.representationPowers != null && stake.representationPower?.representationPowers != ''">
+                                  <td class="text-primary text-center align-middle">{{stake?.shortName}}</td>
+                                  <td class="text-primary text-center align-middle">{{stake?.fiscalId}}</td>
+                                  <td class="text-primary text-center align-middle">{{stake.representationPower?.representationPowers}}</td>
+                                  <td class="text-primary text-center align-middle">{{(stake.representationPower?.restrictions == null || stake.representationPower?.restrictions == '') ? '-' : stake.representationPower?.restrictions}}</td>
+                                  <td class="text-primary text-center align-middle" *ngIf="state != 'ContractAcceptance'">{{stake?.signType}}</td>
+                                  <td class="text-primary text-center align-middle" *ngIf="state != 'ContractAcceptance'">{{stake?.identificationState}}</td>
+                                  <td class="text-primary text-center align-middle" *ngIf="state == 'ContractAcceptance'">Manual</td>
+                                  <td class="text-primary text-center align-middle" *ngIf="state == 'ContractAcceptance'">Recolha Assinatura</td>
+                                </tr>
+                              </ng-container>
                             </tbody>
                           </table>
                         </div>
@@ -169,13 +175,16 @@
                     </span>
                   </nav>
 
-                  <span *ngIf="manualSignature" style="margin-top: 0px !important" class="titulo-form-simples mt-5 pt-2">
+                  <!--<span *ngIf="manualSignature" style="margin-top: 0px !important" class="titulo-form-simples mt-5 pt-2">
                     {{'acceptance.contratualPack.representation'|translate|uppercase}}:
                   </span>
                   <span *ngIf="manualSignature" class="bg-primary bg-opacity-10 text-primary mt-2 pt-2 pb-2 ps-3">
-                    CLIENTE
-                    BUAL PODE ASSINAR SOZINHO PARA ADICIONAR LOJAS
-                  </span>
+                    <ng-container *ngFor="let stake of stakeholdersList">
+                      <ng-container *ngIf="stake?.representationPower != null && stake?.representationPower.restrictions != null && stake?.representationPower.restrictions != ''">
+                        {{stake.representationPower.restrictions}}
+                      </ng-container>
+                    </ng-container>
+                  </span>-->
 
                   <h4 class="text-primary mt-5 ps-0">
                     <span class="attach-file icon-attach-file"></span>
