@@ -1,5 +1,5 @@
 {
-  "production": false,
+  "production": null,
   "baseUrl": "http://localhost:12000/AcquiringAPI/api/",
   "neyondBackUrl": "http://localhost:12000/BackendPortal/",
   "DOCASUrl": "http://localhost:11000/api/",

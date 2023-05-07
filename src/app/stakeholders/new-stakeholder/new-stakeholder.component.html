@@ -118,14 +118,14 @@
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" formControlName="proxy" name="proxy" type="radio" value="true"
-                       id="proxy" [attr.disabled]="returned === 'consult' ? true : null" />
+                       id="proxy" [attr.disabled]="returned === 'consult' ? true : null" (change)="changeProxy(true)"/>
                 <label class="form-check-label radio pe-5">{{'generalKeywords.yes'|translate|uppercase}}</label>
               </div>
             </span>
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" formControlName="proxy" name="proxy" type="radio" value="false"
-                       id="proxy" [attr.disabled]="returned === 'consult' ? true : null" />
+                       id="proxy" [attr.disabled]="returned === 'consult' ? true : null" (change)="changeProxy(false)"/>
                 <label class="form-check-label radio">{{'generalKeywords.no'|translate|uppercase}}</label>
               </div>
             </span>
@@ -150,7 +150,7 @@
             <div class="row">
               <p class="titulo-form-simples">{{'stakeholder.country'|translate|uppercase}} *</p>
               <select class="form-select campo-form-select" formControlName="Country"
-                      (click)="clean()" [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018') ? true : null">
+                      (click)="clean()" [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001') ? true : null">
                 <option *ngFor="let country of countries" value="{{country.code}}">
                   {{country.description}}
                 </option>
@@ -165,7 +165,7 @@
             <div class="row">
               <p class="titulo-form-simples">{{'stakeholder.address'|translate|uppercase}} *</p>
               <input class="form-control" type="text" formControlName="Address" autocomplete="true"
-                     [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018') ? true : null">
+                     [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001') ? true : null">
               <div class="alert alert-danger"
                    *ngIf="formNewStakeholder.get('Address').touched && !formNewStakeholder.get('Address').valid">
                 <div *ngIf="formNewStakeholder.get('Address').errors && formNewStakeholder.get('Address').errors?.['required']">
@@ -179,7 +179,7 @@
               <p class="titulo-form-simples">{{'stakeholder.postalCode'|translate|uppercase}} *</p>
               <input class="form-control" type="text" formControlName="ZIPCode"
                      (keyup)="GetCountryByZipCode($event)" (keypress)="numericOnly($event)" maxlength="8" autocomplete="true"
-                     [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018') ? true : null">
+                     [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001') ? true : null">
               <div class="alert alert-danger"
                    *ngIf="formNewStakeholder.get('ZIPCode').touched && !formNewStakeholder.get('ZIPCode').valid">
                 <div *ngIf="formNewStakeholder.get('ZIPCode').errors && formNewStakeholder.get('ZIPCode').errors?.['required']">
@@ -190,7 +190,7 @@
             <div class="row ms-0">
               <p class="titulo-form-simples">{{'stakeholder.locale'|translate|uppercase}} *</p>
               <input class="form-control" type="text" formControlName="Locality" autocomplete="true"
-                     [readonly]="canEditLocality() === false || returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018'">
+                     [readonly]="canEditLocality() === false || returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001'">
               <div class="alert alert-danger"
                    *ngIf="formNewStakeholder.get('Locality').touched && !formNewStakeholder.get('Locality').valid">
                 <div *ngIf="formNewStakeholder.get('Locality').errors && formNewStakeholder.get('Locality').errors?.['required']">
@@ -248,7 +248,7 @@
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.country'|translate|uppercase}}</p>
             <select class="form-select campo-form-select" formControlName="Country"
-                    (click)="clean()" [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018') ? true : null">
+                    (click)="clean()" [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001') ? true : null">
               <option *ngFor="let country of countries" value="{{country.code}}">
                 {{country.description}}
               </option>
@@ -263,7 +263,7 @@
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.locale'|translate|uppercase}}</p>
             <input class="form-control campo_form" type="text" autocomplete="true"
-                   formControlName="Locality" [readonly]="canEditLocality() === false || returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018'">
+                   formControlName="Locality" [readonly]="canEditLocality() === false || returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001'">
             <div class="alert alert-danger"
                  *ngIf="formNewStakeholder.get('Locality').touched && !formNewStakeholder.get('Locality').valid">
               <div *ngIf="formNewStakeholder.get('Locality').errors && formNewStakeholder.get('Locality').errors?.['required']">
@@ -277,7 +277,7 @@
             <p class="titulo-form-simples mt-0">{{'stakeholder.postalCode'|translate|uppercase}}</p>
             <input class="form-control campo_form" type="text" formControlName="ZIPCode"
                    (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8" autocomplete="true"
-                   [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018') ? true : null">
+                   [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001') ? true : null">
             <div class="alert alert-danger"
                  *ngIf="formNewStakeholder.get('ZIPCode').touched && !formNewStakeholder.get('ZIPCode').valid">
               <div *ngIf="formNewStakeholder.get('ZIPCode').errors && formNewStakeholder.get('ZIPCode').errors?.['required']">
@@ -288,7 +288,7 @@
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.address'|translate|uppercase}}</p>
             <input class="form-control campo_form" type="text" autocomplete="true"
-                   formControlName="Address" [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018') ? true : null">
+                   formControlName="Address" [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001') ? true : null">
             <div class="alert alert-danger"
                  *ngIf="formNewStakeholder.get('Address').touched && !formNewStakeholder.get('Address').valid">
               <div *ngIf="formNewStakeholder.get('Address').errors && formNewStakeholder.get('Address').errors?.['required']">

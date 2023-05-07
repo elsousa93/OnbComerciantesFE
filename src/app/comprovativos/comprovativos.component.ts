@@ -27,6 +27,7 @@ import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 import { ProcessService } from '../process/process.service';
 import { QueuesService } from '../queues-detail/queues.service';
+import { FormGroup, FormControl } from '@angular/forms';
 @Component({
   selector: 'app-comprovativos',
   templateUrl: './comprovativos.component.html',
@@ -95,6 +96,10 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   stakeOutbound: any = null;
   shopOutbound: any = null;
   processId: string;
+  stakePurposeList: string[] = [];
+  form: FormGroup;
+  updateProcessId: string;
+  processInfo: any;
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number, download: boolean = false) {
     const byteCharacters = atob(b64Data);
@@ -132,6 +137,20 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, public http: HttpClient, private route: Router, private router: ActivatedRoute,
     private modalService: BsModalService, private datepipe: DatePipe, private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private data: DataService, private submissionService: SubmissionService, private clientService: ClientService, private stakeholderService: StakeholderService, private documentService: SubmissionDocumentService, private authService: AuthService, private shopService: StoreService, private processNrService: ProcessNumberService, private processService: ProcessService, private queuesInfo: QueuesService) {
     var context = this;
+
+    this.form = new FormGroup({
+      observations: new FormControl('')
+    });
+
+    if (localStorage.getItem("documents") != null) {
+      var context = this;
+      var fileBinaries = JSON.parse(localStorage.getItem("documents"));;
+      fileBinaries.forEach(value => {
+        var blob = context.convertToBlob(value, 'application/pdf', 512);
+        context.selectFile({ target: { files: [blob] } }, null);
+      });
+    }
+
     this.ngOnInit();
     const now = new Date();
     var latest_date = context.datepipe.transform(now, 'dd-MM-yyyy').toString();
@@ -151,117 +170,356 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     });
 
     if (this.processId != '' && this.processId != null && this.returned != null) {
-      let promise = new Promise((resolve, reject) => {
-        var storeLength = 0;
-        var stakeLength = 0;
-        var submissionDocLength = 0;
-        var length = 0;
+      if (this.returned == 'consult') {
+        let promise = new Promise((resolve, reject) => {
+          var storeLength = 0;
+          var stakeLength = 0;
+          var submissionDocLength = 0;
+          var corporateLength = 0;
+          var length = 0;
 
-        this.processService.getMerchantFromProcess(this.processId).subscribe(c => {
-          this.submissionClient = c;
+          this.processService.getMerchantFromProcess(this.processId).subscribe(c => {
+            this.submissionClient = c;
+            this.getLegalNatureDescription();
+            this.logger.info('Get client: ' + JSON.stringify(c));
+            this.submissionClient.documents.forEach(val => {
+              context.compsToShow.push({
+                id: val.id,
+                type: "pdf",
+                expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                stakeholder: context.submissionClient.commercialName,
+                status: "não definido",
+                uploadDate: latest_date,
+                file: val?.id,
+                documentPurpose: val.purposes[0],
+                documentType: val.documentType
+              });
+            });
+
+            context.processService.getStakeholdersFromProcess(context.processId).then(result => {
+              var stakes = result.result;
+              stakeLength = stakes.length;
+              stakes.forEach(stake => {
+                context.processService.getStakeholderByIdFromProcess(context.processId, stake.id).subscribe(result => {
+                  context.logger.info("Get stakeholder outbound: " + JSON.stringify(result));
+                  var stake = result;
+                  context.stakeholdersList.push(stake);
+                  length++;
+                  stake.documents.forEach(val => {
+                    context.compsToShow.push({
+                      id: val.id,
+                      type: "pdf",
+                      expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                      stakeholder: stake.fullName,
+                      status: "não definido",
+                      uploadDate: latest_date,
+                      file: val?.id as any,
+                      documentPurpose: val.purposes[0],
+                      documentType: val.documentType
+                    });
+                  });
+                  if (length === storeLength + stakeLength + submissionDocLength + corporateLength) {
+                    resolve(null);
+                  }
+                }, error => {
+                  this.logger.error(error, "", "Erro getting stakeholder");
+                });
+              });
+            });
+
+            context.queuesInfo.getProcessShopsList(context.processId).then(res => {
+              var shops = res.result;
+              storeLength = shops.length;
+              shops.forEach(function (value, index) {
+                context.queuesInfo.getProcessShopDetails(context.processId, value.id).then(shop => {
+                  context.logger.info("Get shop from submission: " + JSON.stringify(shop));
+                  context.shopList.push(shop.result);
+                  length++;
+                  if (shop.result.documents.length > 0) {
+                    context.compsToShow.push({
+                      id: shop.result.documents[0].id,
+                      type: "pdf",
+                      expirationDate: context.datepipe.transform(shop.result.documents[0].validUntil, 'dd-MM-yyyy'),
+                      stakeholder: shop.result.name,
+                      status: "não definido",
+                      uploadDate: latest_date,
+                      file: shop.result.documents[0]?.id,
+                      documentPurpose: shop.result.documents[0].purposes[0],
+                      documentType: shop.result.documents[0].documentType
+                    });
+                  }
+                  if (length === storeLength + stakeLength + submissionDocLength + corporateLength) {
+                    resolve(null);
+                  }
+                });
+              });
+            });
+
+            context.processService.getProcessEntities(context.processId).then(corporate => {
+              corporate.result.forEach(function (value, index) {
+                if (value.entityType == 'CorporateEntity') {
+                  context.processService.getProcessCorporateEntity(context.processId, value.id).then(r => {
+                    var corp = r.result;
+                    context.stakeholdersList.push(corp);
+                    length++;
+                    corp.documents.forEach(val => {
+                      context.compsToShow.push({
+                        id: val.id,
+                        type: "pdf",
+                        expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                        stakeholder: corp.legalName,
+                        status: "não definido",
+                        uploadDate: latest_date,
+                        file: val?.id as any,
+                        documentPurpose: val.purposes[0],
+                        documentType: val.documentType
+                      });
+                    });
+                    if (length === storeLength + stakeLength + submissionDocLength + corporateLength) {
+                      resolve(null);
+                    }
+
+                  }, error => {
+                    this.logger.error(error, "", "Erro getting corporate entity");
+                  });
+                }
+              });
+            })
+
+            context.processService.getDocumentFromProcess(context.processId).subscribe(document => {
+              document.forEach(function (value, index) {
+                context.processService.getDocumentDetailsFromProcess(context.processId, value.id).subscribe(doc => {
+                  length++;
+                  context.compsToShow.push({
+                    id: doc.id,
+                    type: "pdf",
+                    expirationDate: context.datepipe.transform(doc.validUntil, 'dd-MM-yyyy'),
+                    stakeholder: "desconhecido",
+                    status: "não definido",
+                    uploadDate: latest_date,
+                    file: doc.id,
+                    documentPurpose: null,
+                    documentType: doc.documentType
+                  });
+                  if (length === storeLength + stakeLength + submissionDocLength + corporateLength) {
+                    resolve(null);
+                  }
+                });
+              });
+            });
+          });
+        }).finally(() => {
+          context.comprovativoService.getProcessRequiredDocuments(context.processId).then(result => {
+            context.logger.info("Get the submission's required documents: " + JSON.stringify(result));
+            context.requiredDocuments = result.result;
+            context.requiredDocuments.requiredDocumentPurposesStakeholders.forEach(value => {
+              value.documentPurposes.forEach(val => {
+                if (val.documentState !== 'NotApplicable') {
+                  context.stakePurposeList.push(val.purpose);
+                  context.stakePurposeList = Array.from(new Set(context.stakePurposeList));
+                  if (val.documentState == 'NotExists')
+                    val["existsOutbound"] = false;
+                  else
+                    val["existsOutbound"] = true;
+                }
+              });
+            });
+
+            context.requiredDocuments.requiredDocumentPurposesCorporateEntity.forEach(corporate => {
+              corporate.documentPurposes.forEach(val => {
+                if (val.documentState !== 'NotApplicable') {
+                  context.stakePurposeList.push(val.purpose);
+                  context.stakePurposeList = Array.from(new Set(context.stakePurposeList));
+                  if (val.documentState == 'NotExists')
+                    val["existsOutbound"] = false;
+                  else
+                    val["existsOutbound"] = true;
+                }
+              });
+            });
+
+            context.requiredDocuments.requiredDocumentPurposesMerchants.forEach(value => {
+              value.documentPurposes.forEach(val => {
+                if (val.documentState !== 'NotApplicable') {
+                  if (val.documentState == 'NotExists')
+                    val["existsOutbound"] = false;
+                  else
+                    val["existsOutbound"] = true;
+                }
+              });
+            });
+
+            context.requiredDocuments.requiredDocumentPurposesShops.forEach(value => {
+              value.documentPurposes.forEach(val => {
+                if (val.documentState !== 'NotApplicable') {
+                  if (val.documentState == 'NotExists')
+                    val["existsOutbound"] = false;
+                  else
+                    val["existsOutbound"] = true;
+                }
+              });
+            });
+          });
+        });
+      } else {
+        this.processService.getUpdateProcessInfo(this.processId, this.updateProcessId).then(result => {
+          this.processInfo = result.result;
+          this.submissionClient = result.result.merchant;
           this.getLegalNatureDescription();
-          this.logger.info('Get client: ' + JSON.stringify(c));
+          this.logger.info('Get client: ' + JSON.stringify(result.result.merchant));
           this.submissionClient.documents.forEach(val => {
-            context.compsToShow.push({
-              id: val.id,
-              type: "pdf",
-              expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
-              stakeholder: context.submissionClient.commercialName,
-              status: "não definido",
-              uploadDate: latest_date,
-              file: val?.id,
-              documentPurpose: val.purposes[0],
-              documentType: val.documentType
-            });
+            if (val.updateProcessAction != "Delete") {
+              context.compsToShow.push({
+                id: val.id,
+                type: "pdf",
+                expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                stakeholder: context.submissionClient.commercialName,
+                status: "não definido",
+                uploadDate: latest_date,
+                file: val?.id,
+                documentPurpose: val.purposes[0],
+                documentType: val.documentType
+              });
+            }
           });
 
-          context.processService.getStakeholdersFromProcess(context.processId).then(result => {
-            var stakes = result.result;
-            stakeLength = stakes.length;
-            stakes.forEach(stake => {
-              context.processService.getStakeholderByIdFromProcess(context.processId, stake.id).subscribe(result => {
-                context.logger.info("Get stakeholder outbound: " + JSON.stringify(result));
-                var stake = result;
-                context.stakeholdersList.push(stake);
-                length++;
+          this.processInfo.stakeholders.forEach(stake => {
+            if (stake.updateProcessAction != "Delete") {
+              context.stakeholdersList.push(stake);
+              if (stake.documents.length > 0) {
                 stake.documents.forEach(val => {
-                  context.compsToShow.push({
-                    id: val.id,
-                    type: "pdf",
-                    expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
-                    stakeholder: stake.fullName,
-                    status: "não definido",
-                    uploadDate: latest_date,
-                    file: val?.id as any,
-                    documentPurpose: val.purposes[0],
-                    documentType: val.documentType
-                  });
+                  if (val.updateProcessAction != "Delete") {
+                    context.compsToShow.push({
+                      id: val.id,
+                      type: "pdf",
+                      expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                      stakeholder: stake.fullName,
+                      status: "não definido",
+                      uploadDate: latest_date,
+                      file: val?.id as any,
+                      documentPurpose: val.purposes[0],
+                      documentType: val.documentType
+                    });
+                  }
                 });
-                if (length === storeLength + stakeLength + submissionDocLength) {
-                  resolve(null);
-                }
-              }, error => {
-                this.logger.error(error, "", "Erro getting stakeholder");
-              });
-            });
+              }
+            }
           });
 
-          context.queuesInfo.getProcessShopsList(context.processId).then(res => {
-            var shops = res.result;
-            storeLength = shops.length;
-            shops.forEach(function (value, index) {
-              context.queuesInfo.getProcessShopDetails(context.processId, value.id).then(shop => {
-                context.logger.info("Get shop from submission: " + JSON.stringify(shop));
-                context.shopList.push(shop.result);
-                length++;
-                if (shop.result.documents.length > 0) {
+          this.processInfo.shops.forEach(shop => {
+            if (shop.updateProcessAction != "Delete") {
+              context.shopList.push(shop);
+              if (shop.documents.length > 0) {
+                if (shop.updateProcessAction != "Delete") {
                   context.compsToShow.push({
-                    id: shop.result.documents[0].id,
+                    id: shop.documents[0].id,
                     type: "pdf",
-                    expirationDate: context.datepipe.transform(shop.result.documents[0].validUntil, 'dd-MM-yyyy'),
-                    stakeholder: shop.result.name,
+                    expirationDate: context.datepipe.transform(shop.documents[0].validUntil, 'dd-MM-yyyy'),
+                    stakeholder: shop.name,
                     status: "não definido",
                     uploadDate: latest_date,
-                    file: shop.result.documents[0]?.id,
-                    documentPurpose: shop.result.documents[0].purposes[0],
-                    documentType: shop.result.documents[0].documentType
+                    file: shop.documents[0]?.id,
+                    documentPurpose: shop.documents[0].purposes[0],
+                    documentType: shop.documents[0].documentType
                   });
                 }
-                if (length === storeLength + stakeLength + submissionDocLength) {
-                  resolve(null);
-                }
-              });
-            });
+              }
+            }
           });
 
-          context.processService.getDocumentFromProcess(context.processId).subscribe(document => {
-            document.forEach(function (value, index) {
-              context.processService.getDocumentDetailsFromProcess(context.submissionId, value.id).subscribe(doc => {
-                length++;
-                context.compsToShow.push({
-                  id: doc.id,
-                  type: "pdf",
-                  expirationDate: context.datepipe.transform(doc.validUntil, 'dd-MM-yyyy'),
-                  stakeholder: "desconhecido",
-                  status: "não definido",
-                  uploadDate: latest_date,
-                  file: doc.id,
-                  documentPurpose: null,
-                  documentType: doc.documentType
+          this.processInfo.corporateEntities.forEach(corp => {
+            if (corp.updateProcessAction != "Delete") {
+              context.stakeholdersList.push(corp);
+              if (corp.documents.length > 0) {
+                corp.documents.forEach(val => {
+                  if (val.updateProcessAction != "Delete") {
+                    context.compsToShow.push({
+                      id: val.id,
+                      type: "pdf",
+                      expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                      stakeholder: corp.legalName,
+                      status: "não definido",
+                      uploadDate: latest_date,
+                      file: val?.id as any,
+                      documentPurpose: val.purposes[0],
+                      documentType: val.documentType
+                    });
+                  }
                 });
-                if (length === storeLength + stakeLength + submissionDocLength) {
-                  resolve(null);
+              }
+            }
+          })
+
+          this.processInfo.documents.forEach(doc => {
+            if (doc.updateProcessAction != "Delete") {
+              context.compsToShow.push({
+                id: doc.id,
+                type: "pdf",
+                expirationDate: context.datepipe.transform(doc.validUntil, 'dd-MM-yyyy'),
+                stakeholder: "desconhecido",
+                status: "não definido",
+                uploadDate: latest_date,
+                file: doc.id,
+                documentPurpose: null,
+                documentType: doc.documentType
+              });
+            }
+          });
+
+          context.comprovativoService.getProcessRequiredDocuments(context.processId).then(result => {
+            context.logger.info("Get the submission's required documents: " + JSON.stringify(result));
+            context.requiredDocuments = result.result;
+            context.requiredDocuments.requiredDocumentPurposesStakeholders.forEach(value => {
+              value.documentPurposes.forEach(val => {
+                if (val.documentState !== 'NotApplicable') {
+                  context.stakePurposeList.push(val.purpose);
+                  context.stakePurposeList = Array.from(new Set(context.stakePurposeList));
+                  if (val.documentState == 'NotExists')
+                    val["existsOutbound"] = false;
+                  else
+                    val["existsOutbound"] = true;
                 }
               });
             });
-          });
+
+            context.requiredDocuments.requiredDocumentPurposesCorporateEntity.forEach(corporate => {
+              corporate.documentPurposes.forEach(val => {
+                if (val.documentState !== 'NotApplicable') {
+                  context.stakePurposeList.push(val.purpose);
+                  context.stakePurposeList = Array.from(new Set(context.stakePurposeList));
+                  if (val.documentState == 'NotExists')
+                    val["existsOutbound"] = false;
+                  else
+                    val["existsOutbound"] = true;
+                }
+              });
+            });
+
+            context.requiredDocuments.requiredDocumentPurposesMerchants.forEach(value => {
+              value.documentPurposes.forEach(val => {
+                if (val.documentState !== 'NotApplicable') {
+                  if (val.documentState == 'NotExists')
+                    val["existsOutbound"] = false;
+                  else
+                    val["existsOutbound"] = true;
+                }
+              });
+            });
+
+            context.requiredDocuments.requiredDocumentPurposesShops.forEach(value => {
+              value.documentPurposes.forEach(val => {
+                if (val.documentState !== 'NotApplicable') {
+                  if (val.documentState == 'NotExists')
+                    val["existsOutbound"] = false;
+                  else
+                    val["existsOutbound"] = true;
+                }
+              });
+            });
+          })
+
         });
-      }).finally(() => {
-        context.comprovativoService.getProcessRequiredDocuments(context.processId).then(result => {
-          context.logger.info("Get the submission's required documents: " + JSON.stringify(result));
-          context.requiredDocuments = result.result;
-        });
-      });
+      }
     } else {
       let promise = new Promise((resolve, reject) => {
         this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
@@ -269,6 +527,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           var storeLength = context.submission.shops.length;
           var stakeLength = context.submission.stakeholders.length;
           var submissionDocLength = context.submission.documents.length;
+          var corporateLength = context.submission.corporateEntities.length;
           var length = 0;
           this.logger.info('Get current submission: ' + JSON.stringify(result));
 
@@ -309,7 +568,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                     documentType: val.documentType
                   });
                 });
-                if (length === storeLength + stakeLength + submissionDocLength) {
+                if (length === storeLength + stakeLength + submissionDocLength + corporateLength) {
                   resolve(null);
                 }
               }, error => {
@@ -335,9 +594,36 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                     documentType: shop.result.documents[0].documentType
                   });
                 }
-                if (length === storeLength + stakeLength + submissionDocLength) {
+                if (length === storeLength + stakeLength + submissionDocLength + corporateLength) {
                   resolve(null);
                 }
+              });
+            });
+
+            context.submission.corporateEntities.forEach(corporate => {
+              context.stakeholderService.GetCorporateEntityById(context.submission.id, corporate.id, /*"8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag=="*/).then(result => {
+                context.logger.info("Get stakeholder outbound: " + JSON.stringify(result));
+                var corp = result.result;
+                context.stakeholdersList.push(corp);
+                length++;
+                corp.documents.forEach(val => {
+                  context.compsToShow.push({
+                    id: val.id,
+                    type: "pdf",
+                    expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                    stakeholder: corp.legalName,
+                    status: "não definido",
+                    uploadDate: latest_date,
+                    file: val?.id,
+                    documentPurpose: val.purposes[0],
+                    documentType: val.documentType
+                  });
+                });
+                if (length === storeLength + stakeLength + submissionDocLength + corporateLength) {
+                  resolve(null);
+                }
+              }, error => {
+                this.logger.error(error, "", "Erro getting stakeholder");
               });
             });
 
@@ -355,7 +641,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                   documentPurpose: null,
                   documentType: doc.documentType
                 });
-                if (length === storeLength + stakeLength + submissionDocLength) {
+                if (length === storeLength + stakeLength + submissionDocLength + corporateLength) {
                   resolve(null);
                 }
               });
@@ -383,6 +669,12 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           });
 
           context.requiredDocuments.requiredDocumentPurposesStakeholders.forEach(stakeholder => {
+            stakeholder.documentPurposes.forEach(val => {
+              if (val.documentState !== 'NotApplicable') {
+                context.stakePurposeList.push(val.purpose);
+                context.stakePurposeList = Array.from(new Set(context.stakePurposeList));
+              }
+            });
             context.stakeOutbound = null;
             stakeholder.documentPurposes.forEach(stakeholderDocPurposes => {
               if (stakeholderDocPurposes.documentState === 'NotExists') {
@@ -399,6 +691,31 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                 } else {
                   var exists = context.checkDocumentExists(null, stakeholderDocPurposes, 'stakeholder');
                   stakeholderDocPurposes["existsOutbound"] = exists;
+                }
+              }
+            });
+          });
+
+          context.requiredDocuments.requiredDocumentPurposesCorporateEntity.forEach(corporate => {
+            context.merchantOutbound = null;
+            corporate.documentPurposes.forEach(corporateDocPurposes => {
+              if (corporateDocPurposes.documentState !== 'NotApplicable') {
+                context.stakePurposeList.push(corporateDocPurposes.purpose);
+                context.stakePurposeList = Array.from(new Set(context.stakePurposeList));
+              }
+              if (corporateDocPurposes.documentState === 'NotExists') {
+                var foundCorporate = context.stakeholdersList.find(s => s.id == corporate.entityId);
+                if (foundCorporate.clientId != null && foundCorporate.clientId != "") {
+                  context.clientService.SearchClientByQuery(foundCorporate.clientId, "0502", "", "").subscribe(res => {
+                    var exists = context.checkDocumentExists(res[0].merchantId, corporateDocPurposes, 'corporateEntity');
+                    corporateDocPurposes["existsOutbound"] = exists;
+                  }, error => {
+                    var exists = context.checkDocumentExists(null, corporateDocPurposes, 'corporateEntity');
+                    corporateDocPurposes["existsOutbound"] = exists;
+                  });
+                } else {
+                  var exists = context.checkDocumentExists(null, corporateDocPurposes, 'corporateEntity');
+                  corporateDocPurposes["existsOutbound"] = exists;
                 }
               }
             });
@@ -534,6 +851,41 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           return docShopExists;
         }
       }
+
+      if (type === 'corporateEntity') {
+        var docCorporateExists = false;
+        if (context.merchantOutbound == null) {
+          context.clientService.GetClientByIdOutbound(entityId).then(client => {
+            this.logger.info("Get client outbound: " + JSON.stringify(client));
+            context.merchantOutbound = client;
+            if (context.merchantOutbound.documents != null && context.merchantOutbound.documents.length > 0) {
+              docCorporateExists = purpose.documentsTypeCodeFulfillPurpose.some(type => {
+                if (context.merchantOutbound.documents.find(elem => elem.documentType === type) == undefined) {
+                  return false;
+                } else {
+                  return true;
+                }
+              });
+            }
+          }, error => {
+            context.logger.error(error, "", "Client doesn't exist on outbound");
+            return false;
+          });
+          return docCorporateExists;
+        } else {
+          if (context.merchantOutbound.documents != null && context.merchantOutbound.documents.length > 0) {
+            docCorporateExists = purpose.documentsTypeCodeFulfillPurpose.some(type => {
+              if (context.merchantOutbound.documents.find(elem => elem.documentType === type) == undefined) {
+                return false;
+              } else {
+                return true;
+              }
+            });
+          }
+          return docCorporateExists;
+        }
+      }
+
     } else {
       return false;
     }
@@ -546,6 +898,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
+    this.subscription = this.processNrService.updateProcessId.subscribe(id => this.updateProcessId = id);
     this.subscription = this.data.currentQueueName.subscribe(queueName => {
       if (queueName != null) {
         this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
@@ -572,6 +925,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   selectFile(event: any, comp: any) {
+    var context = this;
     this.compToShow = { tipo: "desconhecido", interveniente: "desconhecido", dataValidade: "desconhecido", dataEntrada: "desconhecido", status: "Ativo" }
     const files = <File[]>event.target.files;
     for (var i = 0; i < files.length; i++) {
@@ -579,7 +933,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       const sizeFile = file.size / (1024 * 1024);
       var extensoesPermitidas = /(.pdf)$/i;
       const limSize = 10;
-      if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
+      if ((sizeFile <= limSize)) {
         if (event.target.files && files[i]) {
           var reader = new FileReader();
           reader.readAsDataURL(files[i]);
@@ -601,6 +955,18 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         }
       }
     }
+    var fileBinaries = [];
+    let length = 0;
+    this.files.forEach(function (value, idx) {
+      length++;
+      context.comprovativoService.readBase64(value).then(data => {
+        fileBinaries.push(data.split(',')[1]);
+        if (length == context.files.length) {
+          localStorage.setItem("documents", JSON.stringify(fileBinaries));
+        }
+      });
+    });
+
   }
 
   load() {
@@ -609,7 +975,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   //mandamos uma lista dos ficheiros (for)  recebemos um ficheiro e transformamos esse ficheiro em blob e depois redirecionamos para essa página
   search(file: any, format?: string) {
-    if (file instanceof File) {
+    if (file instanceof File || file instanceof Blob) {
       let blob = new Blob([file], { type: file.type });
       let url = window.URL.createObjectURL(blob);
 
@@ -639,12 +1005,12 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
   //mandar como parametro o ficheiro ou o nome do ficheiro
   download(file: any, format?: any) {
-    if (file instanceof File) {
+    if (file instanceof File || file instanceof Blob) {
       let blob = new Blob([file], { type: file.type });
       let url = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
-      link.download = file.name;
+      link.download = file["name"]; //file.name
       link.click();
     } else {
       this.documentService.GetDocumentImage(this.submissionId, file).then(async result => {
@@ -719,14 +1085,15 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   }
 
   submissionPut: SubmissionPutTemplate = {
-    "submissionType": "DigitalFirstHalf",
+    "submissionType": "DigitalComplete",
     "processKind": "MerchantOnboarding",
     "processType": "Standard",
     "isClientAwaiting": true,
     "startedAt": this.datepipe.transform(new Date(), "yyyy-MM-dd"),
     "id": localStorage.getItem("submissionId"), //uuid
     "bank": "0800",
-    "state": "Incomplete"
+    "state": "Incomplete",
+    "observation": ""
   }
 
   processPut = {
@@ -744,26 +1111,36 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         this.comprovativoService.readBase64(doc).then((data) => {
           var docToSend: PostDocument = {
             "documentType": "0000", //antes estava "1001"
-            "documentPurpose": "Identification",
+            //"documentPurpose": "Identification",
             "file": {
               "fileType": "PDF",
               "binary": data.split(',')[1] //para retirar a parte inicial "data:application/pdf;base64"
             },
-            "validUntil": "2022-07-20T11:03:13.001Z",
+            //"validUntil": "2022-07-20T11:03:13.001Z",
             "data": {}
           }
           this.logger.info("Sent document: " + JSON.stringify(docToSend));
-          this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(result => {
-            this.logger.info('Document submitted ' + JSON.stringify(result));
-          });
+          if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+            this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(result => {
+              this.logger.info('Document submitted ' + JSON.stringify(result));
+            });
+          } else {
+            this.processService.addProcessDocument(this.processId, docToSend).then(result => {
+              this.logger.info('Document submitted ' + JSON.stringify(result.result));
+            });
+          }
         })
       });
-
+      localStorage.removeItem("documents");
       var loginUser = this.authService.GetCurrentUser();
       this.submissionPut.submissionUser = {
         user: loginUser.userName,
         branch: loginUser.bankLocation,
         partner: loginUser.bankName
+      }
+      if (this.form.get("observations").value != null && this.form.get("observations").value != "") {
+        this.submissionPut.observation = this.form.get("observations").value;
+        this.processPut.observation = this.form.get("observations").value;
       }
       this.submissionPut.processNumber = localStorage.getItem("processNumber");
       this.processPut.submissionUser = loginUser.userName;
@@ -854,4 +1231,26 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       reader.readAsArrayBuffer(file)
     })
   }
+
+  convertToBlob(b64Data: any, contentType: string, sliceSize: number) {
+    const byteCharacters = atob(b64Data);
+    const byteArrays = [];
+
+    for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+      const slice = byteCharacters.slice(offset, offset + sliceSize);
+
+      const byteNumbers = new Array(slice.length);
+      for (let i = 0; i < slice.length; i++) {
+        byteNumbers[i] = slice.charCodeAt(i);
+      }
+
+      const byteArray = new Uint8Array(byteNumbers);
+      byteArrays.push(byteArray);
+    }
+
+    const blob = new Blob(byteArrays, { type: contentType });
+    return blob;
+  }
 }
+
+

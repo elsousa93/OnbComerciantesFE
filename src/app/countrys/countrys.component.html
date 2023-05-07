@@ -115,18 +115,19 @@
             </p>
             <div class="row me-0">
               <div class="ms-0 me-0">
-                <select class="form-select campo-form-select" (change)="countrys($event)" style="font-size: 20px;" [attr.disabled]="returned === 'consult' ? true : null">
-                  <option *ngFor="let item of continentOptions">{{item.value}}</option>
+                <select class="form-select campo-form-select" formControlName="continent" name="continent" (change)="countrys($event)" style="font-size: 20px;" [attr.disabled]="returned === 'consult' ? true : null">
+                  <option *ngFor="let item of continentOptions" value="{{item.value}}">{{item.value}}</option>
                 </select>
 
 
                 <div class="col mt-4" *ngIf="finalList?.length > 0">
-                  <ng-multiselect-dropdown formControlName="countries" name="countries" style="font-size: 20px;" placeholder="Selecione" [settings]="dropDownSettings" [attr.disabled]="returned === 'consult' ? true : null"
+                  <ng-multiselect-dropdown formControlName="countries" name="countries" style="font-size: 20px;" placeholder="Selecione" [settings]="dropDownSettings" [disabled]="disabled"
                                            [data]="lst"
                                            (onDeSelectAll)="removeAllCountries($event)" 
                                            (onSelect)="addCountry($event)"
                                            (onSelectAll)="addAllCountries($event)"
-                                           (onDeSelect)="removeCountry($event)">
+                                           (onDeSelect)="removeCountry($event)"
+                                           [ngStyle]="{'pointer-events': returned == 'consult' ? 'none' : null}">
                   </ng-multiselect-dropdown>
                 </div>
               </div>

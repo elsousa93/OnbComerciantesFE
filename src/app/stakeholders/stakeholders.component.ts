@@ -21,6 +21,7 @@ import { LoggerService } from '../logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 import { ProcessService } from '../process/process.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 /** Listagem Intervenientes / Intervenientes
  *
@@ -126,11 +127,13 @@ export class StakeholdersComponent implements OnInit {
   queueName: string = "";
   title: string;
   processId: string;
+  updateProcessId: string;
 
   constructor(public modalService: BsModalService, private datePipe: DatePipe,
     private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService,
-    private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private clientService: ClientService, private logger: LoggerService, private translate: TranslateService, private processNrService: ProcessNumberService, private processService: ProcessService) {
+    private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private clientService: ClientService, private logger: LoggerService, private translate: TranslateService, private processNrService: ProcessNumberService, private processService: ProcessService, private snackBar: MatSnackBar) {
     this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
+    this.subscription = this.processNrService.updateProcessId.subscribe(id => this.updateProcessId = id);
     if (this.route.getCurrentNavigation().extras.state) {
       this.editStakeInfo = this.route.getCurrentNavigation().extras.state["editStakeInfo"];
       this.isClient = this.route.getCurrentNavigation().extras.state["isClient"];
@@ -154,10 +157,14 @@ export class StakeholdersComponent implements OnInit {
       stake: this.fb.group({})
     });
 
-    if (this.returned == 'consult' || (this.returned == 'edit' && this.processId != '' && this.processId != null)) {
+    if (this.returned == 'consult') {
       this.processService.getMerchantFromProcess(this.processId).subscribe(res => {
         this.logger.info("Get process client by id result: " + JSON.stringify(res));
         this.submissionClient = res;
+      });
+    } else if (this.returned == 'edit' && this.processId != '' && this.processId != null) {
+      this.processService.getUpdateProcessInfo(this.processId, this.updateProcessId).then(result => {
+        this.submissionClient = result.result.merchant;
       });
     } else {
       this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
@@ -257,15 +264,23 @@ export class StakeholdersComponent implements OnInit {
       stakeForm.get("Address").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.address ?? this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["address"]);
     } else {
       stakeForm.get("flagRecolhaEletronica").setValue(false);
-      //stakeForm.get("documentType").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.type);
-      stakeForm.get("identificationDocumentCountry").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.country);
-      stakeForm.get("identificationDocumentValidUntil").setValue(this.datePipe.transform(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate, 'dd-MM-yyyy'));
-      stakeForm.get("identificationDocumentId").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.number);
+      if (stakeForm.get("identificationDocumentCountry")) {
+        stakeForm.get("identificationDocumentCountry").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.country);
+      }
+      if (stakeForm.get("identificationDocumentValidUntil")) {
+        stakeForm.get("identificationDocumentValidUntil").setValue(this.datePipe.transform(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate, 'dd-MM-yyyy'));
+      }
+      if (stakeForm.get("identificationDocumentValidUntil")) {
+        stakeForm.get("identificationDocumentId").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.number);
+      }
     }
   }
 
   selectStake(info) {
-    if(info.stakeholder != null) {
+    if (info.stakeholder != null) {
+      if (info.clickedTable) {
+        this.submit(true);
+      }
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
       this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
@@ -292,7 +307,7 @@ export class StakeholdersComponent implements OnInit {
     }
   }
 
-  submit() {
+  submit(clickedTable: boolean = false) {
     this.clickButton = null;
     var stakeForm = this.editStakes.controls["stake"];
     if (this.returned != 'consult') {
@@ -352,14 +367,21 @@ export class StakeholdersComponent implements OnInit {
                 this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
                 this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
                 this.visitedStakes = Array.from(new Set(this.visitedStakes));
-                if (this.visitedStakes.length < (this.stakesLength)) {
-                  this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
-                } else {
-                  if (this.contractAssociated) {
-                    this.data.changeStakeholders(true);
-                    this.data.updateData(true, 2);
-                    this.logger.info("Redirecting to Store Comp page");
-                    this.route.navigate(['store-comp']);
+                if (!clickedTable) {
+                  if (this.visitedStakes.length < (this.stakesLength)) {
+                    this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+                  } else {
+                    if (this.contractAssociated) {
+                      this.data.changeStakeholders(true);
+                      this.data.updateData(true, 2);
+                      this.logger.info("Redirecting to Store Comp page");
+                      this.route.navigate(['store-comp']);
+                    } else {
+                      this.snackBar.open(this.translate.instant('stakeholder.signError'), '', {
+                        duration: 15000,
+                        panelClass: ['snack-bar']
+                      });
+                    }
                   }
                 }
               }, error => {
@@ -370,14 +392,21 @@ export class StakeholdersComponent implements OnInit {
                 this.logger.info("Updated stakeholder result: " + JSON.stringify(result.result));
                 this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
                 this.visitedStakes = Array.from(new Set(this.visitedStakes));
-                if (this.visitedStakes.length < (this.stakesLength)) {
-                  this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
-                } else {
-                  if (this.contractAssociated) {
-                    this.data.changeStakeholders(true);
-                    this.data.updateData(true, 2);
-                    this.logger.info("Redirecting to Store Comp page");
-                    this.route.navigate(['store-comp']);
+                if (!clickedTable) {
+                  if (this.visitedStakes.length < (this.stakesLength)) {
+                    this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+                  } else {
+                    if (this.contractAssociated) {
+                      this.data.changeStakeholders(true);
+                      this.data.updateData(true, 2);
+                      this.logger.info("Redirecting to Store Comp page");
+                      this.route.navigate(['store-comp']);
+                    } else {
+                      this.snackBar.open(this.translate.instant('stakeholder.signError'), '', {
+                        duration: 15000,
+                        panelClass: ['snack-bar']
+                      });
+                    }
                   }
                 }
               }, error => {
@@ -387,14 +416,21 @@ export class StakeholdersComponent implements OnInit {
           } else {
             this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
             this.visitedStakes = Array.from(new Set(this.visitedStakes));
-            if (this.visitedStakes.length < (this.stakesLength)) {
-              this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
-            } else {
-              if (this.contractAssociated) {
-                this.data.changeStakeholders(true);
-                this.data.updateData(true, 2);
-                this.logger.info("Redirecting to Store Comp page");
-                this.route.navigate(['store-comp']);
+            if (!clickedTable) {
+              if (this.visitedStakes.length < (this.stakesLength)) {
+                this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+              } else {
+                if (this.contractAssociated) {
+                  this.data.changeStakeholders(true);
+                  this.data.updateData(true, 2);
+                  this.logger.info("Redirecting to Store Comp page");
+                  this.route.navigate(['store-comp']);
+                } else {
+                  this.snackBar.open(this.translate.instant('stakeholder.signError'), '', {
+                    duration: 15000,
+                    panelClass: ['snack-bar']
+                  });
+                }
               }
             }
           }
@@ -423,14 +459,21 @@ export class StakeholdersComponent implements OnInit {
                 this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
                 this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
                 this.visitedStakes = Array.from(new Set(this.visitedStakes));
-                if (this.visitedStakes.length < (this.stakesLength)) {
-                  this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
-                } else {
-                  if (this.contractAssociated) {
-                    this.data.changeStakeholders(true);
-                    this.data.updateData(true, 2);
-                    this.logger.info("Redirecting to Store Comp page");
-                    this.route.navigate(['store-comp']);
+                if (!clickedTable) {
+                  if (this.visitedStakes.length < (this.stakesLength)) {
+                    this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+                  } else {
+                    if (this.contractAssociated) {
+                      this.data.changeStakeholders(true);
+                      this.data.updateData(true, 2);
+                      this.logger.info("Redirecting to Store Comp page");
+                      this.route.navigate(['store-comp']);
+                    } else {
+                      this.snackBar.open(this.translate.instant('stakeholder.signError'), '', {
+                        duration: 15000,
+                        panelClass: ['snack-bar']
+                      });
+                    }
                   }
                 }
               }, error => {
@@ -441,14 +484,21 @@ export class StakeholdersComponent implements OnInit {
                 this.logger.info("Updated stakeholder result: " + JSON.stringify(result.result));
                 this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
                 this.visitedStakes = Array.from(new Set(this.visitedStakes));
-                if (this.visitedStakes.length < (this.stakesLength)) {
-                  this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
-                } else {
-                  if (this.contractAssociated) {
-                    this.data.changeStakeholders(true);
-                    this.data.updateData(true, 2);
-                    this.logger.info("Redirecting to Store Comp page");
-                    this.route.navigate(['store-comp']);
+                if (!clickedTable) {
+                  if (this.visitedStakes.length < (this.stakesLength)) {
+                    this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+                  } else {
+                    if (this.contractAssociated) {
+                      this.data.changeStakeholders(true);
+                      this.data.updateData(true, 2);
+                      this.logger.info("Redirecting to Store Comp page");
+                      this.route.navigate(['store-comp']);
+                    } else {
+                      this.snackBar.open(this.translate.instant('stakeholder.signError'), '', {
+                        duration: 15000,
+                        panelClass: ['snack-bar']
+                      });
+                    }
                   }
                 }
               }, error => {
@@ -458,14 +508,21 @@ export class StakeholdersComponent implements OnInit {
           } else {
             this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
             this.visitedStakes = Array.from(new Set(this.visitedStakes));
-            if (this.visitedStakes.length < (this.stakesLength)) {
-              this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
-            } else {
-              if (this.contractAssociated) {
-                this.data.changeStakeholders(true);
-                this.data.updateData(true, 2);
-                this.logger.info("Redirecting to Store Comp page");
-                this.route.navigate(['store-comp']);
+            if (!clickedTable) {
+              if (this.visitedStakes.length < (this.stakesLength)) {
+                this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+              } else {
+                if (this.contractAssociated) {
+                  this.data.changeStakeholders(true);
+                  this.data.updateData(true, 2);
+                  this.logger.info("Redirecting to Store Comp page");
+                  this.route.navigate(['store-comp']);
+                } else {
+                  this.snackBar.open(this.translate.instant('stakeholder.signError'), '', {
+                    duration: 15000,
+                    panelClass: ['snack-bar']
+                  });
+                }
               }
             }
           }
@@ -473,10 +530,12 @@ export class StakeholdersComponent implements OnInit {
        
       }
     } else {
-      this.data.changeStakeholders(true);
-      this.data.updateData(true, 2);
-      this.logger.info("Redirecting to Store Comp page");
-      this.route.navigate(['store-comp']);
+      if (!clickedTable) {
+        this.data.changeStakeholders(true);
+        this.data.updateData(true, 2);
+        this.logger.info("Redirecting to Store Comp page");
+        this.route.navigate(['store-comp']);
+      }
     }
     this.editStakes.controls["stake"].markAsPristine();
   }

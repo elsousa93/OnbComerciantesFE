@@ -41,8 +41,8 @@ export class DataService {
   private shops = new BehaviorSubject(false);
   //usar updateComprovativos
   private equips = new BehaviorSubject(false);
-
-
+  private continent = new BehaviorSubject("EUROPA");
+  private isNoDataReadable = new BehaviorSubject(null);
 
   currentData = this.dataSource.asObservable();
   currentPage = this.dataPage.asObservable();
@@ -57,6 +57,7 @@ export class DataService {
   currentFirstTimeStake = this.firstTimeStake.asObservable();
   currentQueueName = this.queueName.asObservable();
   currentSignType = this.signType.asObservable();
+  currentIsNoDataReadable = this.isNoDataReadable.asObservable();
 
   historyStream = this.historyStream$.asObservable();
 
@@ -66,6 +67,7 @@ export class DataService {
   currentStakeholders = this.stakeholders.asObservable();
   currentShops = this.shops.asObservable();
   currentEquips = this.equips.asObservable();
+  currentContinent = this.continent.asObservable();
 
   constructor(private logger: LoggerService,) { }
 
@@ -77,10 +79,17 @@ export class DataService {
   //função que altera o valor do map e da currentPage
   updateData(value: boolean, currentPage: number, currentSubPage: number = 1) {
     let map = this.dataSource.getValue()
-    map.set(currentPage, value);
+    if (localStorage.getItem("returned") != "consult")
+      map.set(currentPage, value);
+    else
+      map.set(currentPage, true);
     this.changeData(map);
     this.changeCurrentPage(currentPage);
     this.changeCurrentSubPage(currentSubPage);
+  }
+
+  updateStakeMap(map: Map<string, string>) {
+    this.dataStake.next(map);
   }
 
   updateStakeSignature(id: string, signType: string) {
@@ -152,6 +161,14 @@ export class DataService {
     this.equips.next(value);
   }
 
+  changeContinent(value: string) {
+    this.continent.next(value);
+  }
+
+  changeNoDataReadable(value: boolean) {
+    this.isNoDataReadable.next(value);
+  }
+
   reset() {
     this.dataSource = new BehaviorSubject(new Map().set(0, undefined)
       .set(1, undefined)
@@ -178,6 +195,7 @@ export class DataService {
     this.currentStakeholders = this.stakeholders.asObservable();
     this.currentShops = this.shops.asObservable();
     this.currentEquips = this.equips.asObservable();
+    this.currentContinent = this.continent.asObservable();
   }
 
   ngOnDestroy() {

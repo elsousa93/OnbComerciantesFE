@@ -45,9 +45,9 @@ export class AppComponent {
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
 
-    crcService.getAccessToken().then(result => {
-      localStorage.setItem("accessToken", result.access_token);
-    });
+    //crcService.getAccessToken().then(result => {
+    //  localStorage.setItem("accessToken", result.access_token);
+    //});
 
     authService.hasAuthenticated.subscribe(auth => {
       this.hasAuthenticated = auth;

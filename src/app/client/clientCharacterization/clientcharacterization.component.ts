@@ -57,7 +57,8 @@ export class ClientCharacterizationComponent implements OnInit {
     pdf: '',
     requestId: '',
     stakeholders: [],
-    byLaws: ''
+    byLaws: '',
+    creationDate: ''
   };
   tempClient: any;
   dataCC = null;
@@ -323,8 +324,10 @@ export class ClientCharacterizationComponent implements OnInit {
         this.initializeENI();
       } else {
         this.isCommercialSociety = true;
-        this.collectCRC = false;
-        this.initializeFormControlOther();
+        //this.collectCRC = false;
+        //this.initializeFormControlOther();
+        this.collectCRC = true;
+        this.initializeBasicCRCFormControl();
       }
     });
 
@@ -512,6 +515,7 @@ export class ClientCharacterizationComponent implements OnInit {
         this.processClient.pdf = clientByCRC.pdf;
         this.processClient.code = crcInserted;
         this.processClient.requestId = clientByCRC.requestId;
+        this.processClient.creationDate = clientByCRC.creationDate;
         this.initializeFormControlCRC();
       }, error: (error) => {
         this.crcNotExists = true;
@@ -524,7 +528,6 @@ export class ClientCharacterizationComponent implements OnInit {
   submit() {
     var formValues = this.form.value;
 
-    this.client.incorporationStatement = null;
     var delivery = this.client.documentationDeliveryMethod;
 
     if (delivery === 'viaDigital' || delivery === 'Portal')
@@ -533,56 +536,59 @@ export class ClientCharacterizationComponent implements OnInit {
       this.client.documentationDeliveryMethod = 'Mail';
 
     if (this.isCommercialSociety && this.collectCRC) { // adicionei o this.collectCRC
-      this.client.headquartersAddress = {
-        address: this.form.value["address"],
-        country: this.form.value["country"],
-        postalCode: this.form.value["ZIPCode"],
-        postalArea: this.form.value["location"]
+      if (this.processClient.code != "") {
+        this.client.headquartersAddress = {
+          address: this.form.value["address"],
+          country: this.form.value["country"],
+          postalCode: this.form.value["ZIPCode"],
+          postalArea: this.form.value["location"]
+        }
+        this.client.mainEconomicActivity = this.form.value["CAE1"];
+        this.client.otherEconomicActivities = [];
+
+        var CAESecondary1 = (this.form.value["CAESecondary1"]);
+        var CAESecondary2 = (this.form.value["CAESecondary2"]);
+        var CAESecondary3 = (this.form.value["CAESecondary3"]);
+
+        if (CAESecondary1 !== null)
+          this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"]);
+        if (CAESecondary2 !== null)
+          this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"]);
+        if (CAESecondary3 !== null)
+          this.client.otherEconomicActivities.push(this.form.value["CAESecondary3"]);
+        //Paises destino
+
+        if (this.form.value["constitutionDate"] == "" || this.form.value["constitutionDate"] == null) {
+          this.client.incorporationDate = null;
+        } else {
+          this.client.incorporationDate = this.form.value["constitutionDate"];
+        }
+        this.client.incorporationStatement = {
+          code: this.form.value["crcCode"],
+          validUntil: this.processClient.expirationDate
+        }
+        this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
+        this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
+        this.client.commercialName = this.form.value["socialDenomination"];
+        this.client.legalName = this.form.value["socialDenomination"];
+        this.client.shortName = this.form.value["socialDenomination"];
+        this.client.shareCapital = {
+          capital: this.processClient.capitalStock.capital,
+          date: this.processClient.capitalStock.date
+        }
+        this.client.byLaws = this.processClient.byLaws;
+        this.client.legalNature = this.processClient.legalNature;
+        this.client.legalNature2 = this.form.value["natJuridicaN2"];
+
+        if (this.tipologia === 'corporation' || this.tipologia === 'Corporate' || this.tipologia === 'Company' || this.tipologia === '01')
+          this.client.merchantType = 'Corporate';
+
+        if (this.tipologia === 'Entrepeneur' || this.tipologia === 'ENI' || this.tipologia === '02')
+          this.client.merchantType = 'Entrepeneur';
       }
-      this.client.mainEconomicActivity = this.form.value["CAE1"];
-      this.client.otherEconomicActivities = [];
-
-      var CAESecondary1 = (this.form.value["CAESecondary1"]);
-      var CAESecondary2 = (this.form.value["CAESecondary2"]);
-      var CAESecondary3 = (this.form.value["CAESecondary3"]);
-
-      if (CAESecondary1 !== null)
-        this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"]);
-      if (CAESecondary2 !== null)
-        this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"]);
-      if (CAESecondary3 !== null)
-        this.client.otherEconomicActivities.push(this.form.value["CAESecondary3"]);
-      //Paises destino
-
-      if (this.form.value["constitutionDate"] == "" || this.form.value["constitutionDate"] == null) {
-        this.client.incorporationDate = null;
-      } else {
-        this.client.incorporationDate = this.form.value["constitutionDate"];
-      }
-      this.client.incorporationStatement = {
-        code: this.form.value["crcCode"],
-        validUntil: this.processClient.expirationDate
-      }
-      this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
-      this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
-      this.client.commercialName = this.form.value["socialDenomination"];
-      this.client.legalName = this.form.value["socialDenomination"];
-      this.client.shortName = this.form.value["socialDenomination"];
-      this.client.shareCapital = {
-        capital: this.processClient.capitalStock.capital,
-        date: this.processClient.capitalStock.date
-      }
-      this.client.byLaws = this.processClient.byLaws;
-      this.client.legalNature = this.processClient.legalNature;
-      this.client.legalNature2 = this.form.value["natJuridicaN2"];
-
-      if (this.tipologia === 'corporation' || this.tipologia === 'Corporate' || this.tipologia === 'Company' || this.tipologia === '01')
-        this.client.merchantType = 'Corporate';
-
-      if (this.tipologia === 'Entrepeneur' || this.tipologia === 'ENI' || this.tipologia === '02')
-        this.client.merchantType = 'Entrepeneur';
     } else {
 
+      this.client.incorporationStatement = null;
       this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
       this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
 
@@ -634,6 +640,8 @@ export class ClientCharacterizationComponent implements OnInit {
     var crc = this.clientContext.crc;
     var context = this;
     var client = this.clientContext.getClient();
+    var CC = null;
+    this.data.currentDataCC.subscribe(dataCC => CC = dataCC);
 
     newSubmission.stakeholders = [];
     stakeholdersToInsert.forEach(function (value, idx) {
@@ -672,13 +680,40 @@ export class ClientCharacterizationComponent implements OnInit {
           binary: crc.pdf
         },
         validUntil: crc.expirationDate,
-        data: null
+        data: {
+          code: this.processClient.code,
+          corporateName: this.processClient.companyName,
+          fiscalId: this.processClient.fiscalId,
+          legalNature: this.legalNatureList.find(nature => nature.description.toLowerCase() == this.processClient.legalNature.toLowerCase()).code,
+          legalNature2: null,
+          shareCapital: this.processClient.capitalStock.capital,
+          byLaws: this.processClient.byLaws,
+          shareCapitalDate: this.processClient.capitalStock.date,
+          establishmentDate: this.processClient.creationDate,
+          address: this.processClient.headquartersAddress.address,
+          postalCode: this.processClient.headquartersAddress.postalCode,
+          postalArea: this.processClient.headquartersAddress.postalArea,
+          country: this.processClient.headquartersAddress.country,
+          economicActivityCode: this.processClient.mainEconomicActivity,
+          economicActivityCode2: this.processClient?.secondaryEconomicActivity[0],
+          economicActivityCode3: this.processClient?.secondaryEconomicActivity[1],
+          economicActivityCode4: this.processClient?.secondaryEconomicActivity[2],
+          economicActivityCode5: null,
+          economicActivityCode6: null,
+          validUntil: this.processClient.expirationDate
+        }
       })
     }
 
     var comprovativoCC = this.clientContext.comprovativoCC;
 
     if (comprovativoCC !== null && comprovativoCC !== undefined) {
+      if (CC?.notes != null || CC?.notes != "") {
+        var assinatura = "Sabe assinar";
+        if (CC?.notes.toLowerCase().includes("não sabe assinar") || CC.notes.toLowerCase().includes("não pode assinar")) {
+          assinatura = "Não sabe assinar";
+        }
+      }
       newSubmission.documents.push({
         documentType: "0018",
         documentPurpose: 'Identification',
@@ -687,9 +722,26 @@ export class ClientCharacterizationComponent implements OnInit {
           binary: comprovativoCC.file
         },
         validUntil: new Date(comprovativoCC.expirationDate).toISOString(),
-        data: null
+        data: {
+          fullName: CC.nameCC,
+          documentNumber: CC.cardNumberCC,
+          fiscalNumber: CC.nifCC,
+          gender: CC.gender,
+          birthday: CC.birthdateCC,
+          validUntil: CC.expiryDate,
+          canSign: assinatura == "Sabe assinar" ? true : false,
+          country: CC.countryCC,
+          address: CC.addressCC,
+          postalArea: CC.localityCC,
+          postalCode: CC.postalCodeCC 
+        }
       })
     }
+    if (newSubmission.documents.find(doc => doc.documentType == "0034") != undefined)
+      newSubmission.documents.find(doc => doc.documentType == "0034").data = Object.fromEntries(Object.entries(newSubmission.documents.find(doc => doc.documentType == "0034").data).filter(([_, v]) => v != null));
+    if (newSubmission.documents.find(doc => doc.documentType == "0018") != undefined)
+      newSubmission.documents.find(doc => doc.documentType == "0018").data = Object.fromEntries(Object.entries(newSubmission.documents.find(doc => doc.documentType == "0018").data).filter(([_, v]) => v != null));
+
     this.clientContext.newSubmission = newSubmission;
   }
 

@@ -19,21 +19,21 @@ export class CRCService {
     this.authTokenUrl = configuration.getConfig().authTokenUrl
   }
 
-  async getAccessToken(): Promise<any> {
-    var secret = btoa(this.configuration.getConfig().clientID + ":" + this.configuration.getConfig().clientSecret);
+  //async getAccessToken(): Promise<any> {
+  //  var secret = btoa(this.configuration.getConfig().clientID + ":" + this.configuration.getConfig().clientSecret);
 
-    const HTTP_OPTIONS_AUTH = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/x-www-form-urlencoded',
-        'Authorization': 'Basic ' + secret
-      })
-    };
+  //  const HTTP_OPTIONS_AUTH = {
+  //    headers: new HttpHeaders({
+  //      'Content-Type': 'application/x-www-form-urlencoded',
+  //      'Authorization': 'Basic ' + secret
+  //    })
+  //  };
 
-    this.logger.debug("a tentar obter o token");
+  //  this.logger.debug("a tentar obter o token");
 
-    return this.http.post(this.authTokenUrl, 'grant_type=client_credentials', HTTP_OPTIONS_AUTH).toPromise();
+  //  return this.http.post(this.authTokenUrl, 'grant_type=client_credentials', HTTP_OPTIONS_AUTH).toPromise();
 
-  }
+  //}
 
   getCRC(code: string, requestReason: string, requestedBy?: string): Observable<any> {
     const HTTP_OPTIONS = {

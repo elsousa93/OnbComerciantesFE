@@ -143,6 +143,17 @@ export interface ContractPackLanguage {
   description?: string
 }
 
+export interface DigitalSignature {
+  type: string
+  code: string
+  description: string
+}
+
+export interface RepresentationPowers {
+  code: string
+  description: string
+}
+
 export enum UserTypes {
   MERCHANT = "Merchant",
   STAKEHOLDER = "Stakeholder"

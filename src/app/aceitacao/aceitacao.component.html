@@ -77,7 +77,7 @@
                             <p class="mb-0 text-primary text-start">{{(processNumber == null) ? '-' : process.processNumber}}</p>
                             <p class="mb-0 text-primary text-start">{{processHistoryItems.items[0].processState}}</p>
                             <p class="mb-0 text-primary text-start">{{processHistoryItems.items[0].whenStarted}}</p>
-                            <p class="mb-0 text-primary text-start">{{processHistoryItems.items[0].whoStarted}}</p>
+                            <p class="mb-0 text-primary text-start">{{processHistoryItems.items[0].whoFinished}}</p>
                             <p class="mb-0 text-primary text-start">
                               {{(processHistoryItems.items[0].observations == null || processHistoryItems.items[0].observations == "") ? "-" : processHistoryItems.items[0].observations}}
                             </p>
@@ -224,11 +224,11 @@
                       </mat-header-cell>
                       <mat-cell *matCellDef="let row"> {{row.whenStarted | date: 'yyyy-MM-dd HH:mm'}} </mat-cell>
                     </ng-container>
-                    <ng-container matColumnDef="whoStarted">
+                    <ng-container matColumnDef="whoFinished">
                       <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
                         {{'acceptance.user'|translate}}
                       </mat-header-cell>
-                      <mat-cell *matCellDef="let row"> {{row.whoStarted}} </mat-cell>
+                      <mat-cell *matCellDef="let row"> {{row.whoFinished}} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="observations">
                       <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">

@@ -56,6 +56,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   queueName: string = "";
   title: string;
   public subscription: Subscription;
+  public visitedStores: string[] = [];
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -64,12 +65,14 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   public subs: Subscription[] = [];
   returnedFrontOffice: boolean = false;
   processId: string;
+  updateProcessId: string;
 
   constructor(private logger: LoggerService, private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService, private translate: TranslateService, private processService: ProcessService, private processNrService: ProcessNumberService) {
     if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.returnedFrontOffice = this.route.getCurrentNavigation().extras.state["returnedFrontOffice"];
     }
     this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
+    this.subscription = this.processNrService.updateProcessId.subscribe(id => this.updateProcessId = id);
     this.returned = localStorage.getItem("returned");
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.logger.info("Fetch all countries " + JSON.stringify(result));
@@ -85,10 +88,15 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
         this.client = result;
       });
     } else {
-      this.processService.getMerchantFromProcess(this.processId).subscribe(result => {
-        this.client = result;
-      });
-
+      if (this.returned == 'consult') {
+        this.processService.getMerchantFromProcess(this.processId).subscribe(result => {
+          this.client = result;
+        });
+      } else {
+        this.processService.getUpdateProcessInfo(this.processId, this.updateProcessId).then(result => {
+          this.client = result.result.merchant;
+        });
+      }
     }
 
   }
@@ -156,6 +164,9 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   }
 
   selectStore(info) {
+    if (info.clickedTable) {
+      this.submit(true);
+    }
     this.selectedStore = info.store;
     this.currentIdx = info.idx;
     this.logger.info("Selected store " + JSON.stringify(this.selectedStore));
@@ -163,7 +174,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     setTimeout(() => this.setForm(), 500);
   }
 
-  submit() {
+  submit(clickedTable: boolean = false) {
     if (this.returned != 'consult') {
       if (this.listValue.valid) {
         this.selectedStore.email = this.listValue.get("email").value;
@@ -175,33 +186,65 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
         this.selectedStore.phone2.phoneNumber = this.listValue.get("telephone").get("phoneNumber").value;
         this.logger.info("Shop data to send " + JSON.stringify(this.selectedStore));
         if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
-          this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.selectedStore.id, this.selectedStore).subscribe(result => {
-            if (this.currentIdx < (this.storesLength - 1)) {
+          if (!this.listValue.pristine) {
+            this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.selectedStore.id, this.selectedStore).subscribe(result => {
+              this.visitedStores.push(this.selectedStore.id);
+              this.visitedStores = Array.from(new Set(this.visitedStores));
+              if (this.visitedStores.length < this.storesLength) {
+                this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
+                this.onActivate();
+                this.logger.info("Updated shop: " + JSON.stringify(result));
+              } else {
+                this.logger.info("Redirecting to Info Declarativa Assinatura page");
+                this.route.navigate(['/info-declarativa-assinatura']);
+              }
+            });
+          } else {
+            this.visitedStores.push(this.selectedStore.id);
+            this.visitedStores = Array.from(new Set(this.visitedStores));
+            if (this.visitedStores.length < this.storesLength) {
               this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
               this.onActivate();
-              this.logger.info("Updated shop: " + JSON.stringify(result));
             } else {
               this.logger.info("Redirecting to Info Declarativa Assinatura page");
               this.route.navigate(['/info-declarativa-assinatura']);
             }
-          });
+          }
         } else {
-          this.processService.updateShopProcess(this.processId, this.selectedStore.id, this.selectedStore).then(result => {
-            if (this.currentIdx < (this.storesLength - 1)) {
+          if (!this.listValue.pristine) {
+            this.processService.updateShopProcess(this.processId, this.selectedStore.id, this.selectedStore).then(result => {
+              this.visitedStores.push(this.selectedStore.id);
+              this.visitedStores = Array.from(new Set(this.visitedStores));
+              if (this.visitedStores.length < this.storesLength) {
+                this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
+                this.onActivate();
+                this.logger.info("Updated shop: " + JSON.stringify(result));
+              } else {
+                this.logger.info("Redirecting to Info Declarativa Assinatura page");
+                this.route.navigate(['/info-declarativa-assinatura']);
+              }
+            });
+          } else {
+            this.visitedStores.push(this.selectedStore.id);
+            this.visitedStores = Array.from(new Set(this.visitedStores));
+            if (this.visitedStores.length < this.storesLength) {
               this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
               this.onActivate();
-              this.logger.info("Updated shop: " + JSON.stringify(result));
             } else {
               this.logger.info("Redirecting to Info Declarativa Assinatura page");
               this.route.navigate(['/info-declarativa-assinatura']);
             }
-          });
+          }
         }
       }
     } else {
-      this.logger.info("Redirecting to Info Declarativa Assinatura page");
-      this.route.navigate(['/info-declarativa-assinatura']);
+      if (!clickedTable) {
+        this.logger.info("Redirecting to Info Declarativa Assinatura page");
+        this.route.navigate(['/info-declarativa-assinatura']);
+      }
     }
+    this.listValue.markAsPristine();
+    this.listValue.markAsUntouched();
   }
 
   loadStores(storesValues: ShopDetailsAcquiring[]) {
@@ -214,7 +257,10 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     this.listValue.get("cellphone").get("phoneNumber").setValue(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneNumber : this.client?.contacts?.phone1?.phoneNumber);
     this.listValue.get("telephone").get("countryCode").setValue(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.client?.contacts?.phone2?.countryCode);
     this.listValue.get("telephone").get("phoneNumber").setValue(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneNumber : this.client?.contacts?.phone2?.phoneNumber);
-    this.listValue.get("email").setValue(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email);
+      this.listValue.get("email").setValue(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email);
+      if (this.selectedStore.phone1 == null || this.selectedStore.phone2 == null) {
+          this.listValue.markAsDirty();
+      }
     if (this.returned == 'consult')
       this.listValue.disable();
   }

@@ -44,7 +44,8 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   queueName: string = "";
   title: string;
   processId: string;
-  currentStakes: Map<string,string> = new Map<string,string>();
+  currentStakes: Map<string, string> = new Map<string, string>();
+  updateProcessId: string;
 
   constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService, private tableInfoService: TableInfoService, private processService: ProcessService) {
     if (this.router?.getCurrentNavigation()?.extras?.state) {
@@ -54,6 +55,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     this.submissionId = localStorage.getItem("submissionId");
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
     this.subscription = this.processNrService.processId.subscribe(processId => this.processId = processId);
+    this.subscription = this.processNrService.updateProcessId.subscribe(processId => this.updateProcessId = processId);
     this.initializeForm();
 
     this.returned = localStorage.getItem("returned");
@@ -121,9 +123,6 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
       panelClass: ['snack-bar']
     });
     this.sendFinalSubmission();
-    this.logger.info("Redirecting to Dashboard page");
-    this.router.navigate(["/"]);
-    this.data.reset();
   }
 
   declineCloseSubmission() {
@@ -157,11 +156,30 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
           }, error => {
           });
         } else {
-          this.processService.getStakeholdersFromProcess(this.processId).then(result => {
-            var stakeholders = result.result;
-            stakeholders.forEach(function (value, index) {
-              context.processService.getStakeholderByIdFromProcess(context.processId, value.id).subscribe(res => {
-                var stake = res;
+          if (this.returned == 'consult') {
+            this.processService.getStakeholdersFromProcess(this.processId).then(result => {
+              var stakeholders = result.result;
+              stakeholders.forEach(function (value, index) {
+                context.processService.getStakeholderByIdFromProcess(context.processId, value.id).subscribe(res => {
+                  var stake = res;
+                  if (stake.signType == 'CitizenCard') {
+                    if (context.currentStakes.has(stake.id)) {
+                      context.form.addControl(stake.id, new FormControl(context.currentStakes.get(stake.id), Validators.required));
+                    } else {
+                      context.form.addControl(stake.id, new FormControl(stake.signType, Validators.required));
+                    }
+                    context.submissionStakeholders.push(stake);
+                  }
+                }, error => {
+                  context.logger.error(error);
+                });
+              });
+            }, error => {
+            });
+          } else {
+            this.processService.getUpdateProcessInfo(this.processId, this.updateProcessId).then(result => {
+              var stakeholders = result.result.stakeholders;
+              stakeholders.forEach(stake => {
                 if (stake.signType == 'CitizenCard') {
                   if (context.currentStakes.has(stake.id)) {
                     context.form.addControl(stake.id, new FormControl(context.currentStakes.get(stake.id), Validators.required));
@@ -170,12 +188,9 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
                   }
                   context.submissionStakeholders.push(stake);
                 }
-              }, error => {
-                context.logger.error(error);
               });
             });
-          }, error => {
-          });
+          }
         }
       }
     }
@@ -220,6 +235,9 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
             this.logger.info("Updated submission data: " + JSON.stringify(submissionToSend));
             this.submissionService.EditSubmission(this.submissionId, submissionToSend).subscribe(result => {
               this.logger.info("Submission updated: " + JSON.stringify(result));
+              this.logger.info("Redirecting to Dashboard page");
+              this.router.navigate(["/"]);
+              this.data.reset();
             });
           });
         } else {
@@ -232,6 +250,9 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
             };
             context.processService.updateProcess(context.processId, result).then(result => {
               this.logger.info("Process updated: " + JSON.stringify(result));
+              this.logger.info("Redirecting to Dashboard page");
+              this.router.navigate(["/"]);
+              this.data.reset();
             });
           });
         }
@@ -240,7 +261,6 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
       this.router.navigate(["/"]);
       this.data.reset();
     }
-
   }
 
   goBack() {

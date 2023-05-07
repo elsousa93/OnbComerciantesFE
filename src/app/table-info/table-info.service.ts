@@ -277,4 +277,24 @@ export class TableInfoService {
     }
     return this.API.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS);
   }
+
+  GetRepresentationPowers() {
+    var url = this.acquiringUrl + 'representation-powers';
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+      }),
+    }
+    return this.API.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS);
+  }
+
+  GetDigitalSignatureType(type: string) {
+    var url = this.acquiringUrl + 'digital-signature' + '?type=' + type;
+    var HTTP_OPTIONS = {
+      headers: new HttpHeaders({
+        'Accept-Language': this.currentLanguage,
+      }),
+    }
+    return this.API.callAPIAcquiring(HttpMethod.GET, url, HTTP_OPTIONS);
+  }
 }

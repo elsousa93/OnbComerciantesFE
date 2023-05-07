@@ -185,7 +185,8 @@
     "addSuccess": "Stakeholder successfully added",
     "sameNIF": "It's not possible to add an already existing stakeholder",
     "particular": "Private",
-    "corporate": "Corporate"
+    "corporate": "Corporate",
+    "signError": "There must be at least one stakeholder who signs the contract"
   },
   "stores": {
     "title": "Stores",
@@ -263,9 +264,10 @@
     "bank": "IBAN Support Bank",
     "terminalNumber": "Terminal Number",
     "product": "Product",
+    "subproduct": "Subproduct",
     "relation": "Relationship Store Products",
     "replicate": "It intends to replicate products from other stores for all chosen terminals?",
-    "selectStore": "Select the store that you want to consider the same information as the products (Representation Store)",
+    "selectStore": "Select the store that you want to consider the same information as the products (Reference Store)",
     "EATUnicre": "Is the Terminal Support Entity (TSE) from Unicre?",
     "registrationTerminalNumber": "Registration SIBS Terminal Number",
     "reset": "Reset original values",
@@ -290,9 +292,9 @@
     "selection": "Selection",
     "package": "Package",
     "denomination": "Denomination",
-    "minimumValue": "Minimum Value",
-    "maximumValue": "Maximum Value",
-    "value": "Fixed Value",
+    "minimumValue": "Minimum Value (€)",
+    "maximumValue": "Maximum Value (€)",
+    "value": "Fixed Value (€)",
     "TSC": "TSC (%)",
     "property": "Terminal Property",
     "client": "Client",
@@ -382,7 +384,7 @@
     "placeholderSearch": "Process Nr.",
     "emptyList": "No results",
     "emptySearch": "You must fill in at least one search filter",
-    "errorDocs": "Search for documents must be by document type and number",
+    "errorDocs": "Search for entities must be by entity type and fiscal number",
     "search300": "Too many results returned, only the first 300 will be displayed, please refine your search"
   },
   "acceptance": {
@@ -455,7 +457,10 @@
         "pending": "Collect Signature",
         "canceled": "Canceled Signature",
         "refused": "Refused Signature"
-      }
+      },
+      "signType2": "Signature Type",
+      "identificationState": "Identification State",
+      "signatureState": "Signature State"
     }
   },
   "queues": {
@@ -533,7 +538,10 @@
     "performSearch": "Perform Search",
     "final": "Process submitted successfully",
     "assignProcess": "Assign Process",
-    "assign": "Assign"
+    "assign": "Assign",
+    "deleteStore": "Do you want to delete this store?",
+    "maintainStore": "Keep Store",
+    "confirmDeleteStore": "Delete Store"
   },
   "generalButtons": {
     "continue": "Continue",

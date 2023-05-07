@@ -64,7 +64,7 @@ export class InfoStakeholderComponent implements OnInit {
     this.emailRegex = '^(([^<>()\\[\\]\\\.,;:\\s@"]+(\.[^<>()\\[\\]\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$';
     this.formContactos = new FormGroup({
       phone: new FormGroup({
-        countryCode: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.countryCode : '', Validators.required),
+        countryCode: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.countryCode : 'PT', Validators.required),
         phoneNumber: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.phone1?.phoneNumber : '', Validators.required)
       }, { validators: [validPhoneNumber, Validators.required] }),
       email: new FormControl((this.currentStakeholder != null) ? this.currentStakeholder.email : '', Validators.pattern(this.emailRegex))

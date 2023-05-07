@@ -103,6 +103,7 @@ export class ProductSelectionComponent implements OnInit {
     this.formStores.get('subProduct').setValue('');
     this.products?.forEach(Prod => {
       if (productCode == Prod.code) {
+        this.formStores.get("solutionName").setValue(Prod.name);
         this.subProducts = Prod.subProducts;
         this.exists = true;
       }
@@ -110,11 +111,13 @@ export class ProductSelectionComponent implements OnInit {
     if (!this.exists) {
       //this.subProducts = [];
     }
+
   }
 
   chooseSubSolutionAPI(subproduct: any) {
     this.exists = true;
     this.formStores.get('subProduct').setValue(subproduct);
+    this.formStores.get('subProductName').setValue(this.subProducts?.find(prod => prod.code == subproduct)?.name);
   }
 
   URLFilled(filled: boolean) {
@@ -125,7 +128,9 @@ export class ProductSelectionComponent implements OnInit {
     this.formStores = new FormGroup({
       solutionType: new FormControl((this.store.productCode != null) ? this.store.productCode : '', Validators.required),
       subProduct: new FormControl((this.store.subProductCode != null) ? this.store.subProductCode : '', Validators.required),
-      url: new FormControl((this.store.website != null) ? this.store.website : '', Validators.email)
+      url: new FormControl((this.store.website != null) ? this.store.website : '', Validators.email),
+      solutionName: new FormControl(''),
+      subProductName: new FormControl('')
     });
 
     //URL só é obrigatório se caso o Tipo de Solução seja 'cardNotPresent'
@@ -157,5 +162,12 @@ export class ProductSelectionComponent implements OnInit {
     this.formStores.get("solutionType").setValue('');
     this.exists = false;
     this.subProducts = [];
+  }
+
+  chooseSolutionOne() {
+    if (this.products.length == 1) {
+      this.formStores.get("solutionType").setValue(this.products[0].code);
+      this.chooseSolutionAPI(this.products[0].code);
+    }
   }
 }

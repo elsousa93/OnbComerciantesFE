@@ -4,7 +4,7 @@ import { APIRequestsService } from '../apirequests.service';
 import { AppConfigService } from '../app-config.service';
 import { HttpMethod } from '../enums/enum-data';
 import { TreatedResponse } from '../table-info/ITable-info.interface';
-import { ProductOutbound, ProductPack, ProductPackCommission, ProductPackCommissionFilter, ProductPackEntry, ProductPackFilter, ProductPackPricing, ProductPackPricingEntry, ProductPackPricingFilter } from './ICommercialOffer.interface';
+import { ProductOutbound, ProductPack, ProductPackCommission, ProductPackCommissionFilter, ProductPackCommissionOutbound, ProductPackEntry, ProductPackFilter, ProductPackPricing, ProductPackPricingEntry, ProductPackPricingFilter } from './ICommercialOffer.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -128,9 +128,9 @@ export class CommercialOfferService {
     var id = encodeURIComponent(packId);
     var idCommission = encodeURIComponent(commissionId);
     var URI = this.urlOutbound + "api/v1/product/pack/" + this.currentLanguage + "/" + id + "/commission/" + idCommission;
-    var treatedResponse: TreatedResponse<ProductPackCommission> = {};
+    var treatedResponse: TreatedResponse<ProductPackCommissionOutbound> = {};
 
-    return new Promise<TreatedResponse<ProductPackCommission>>((resolve, reject) => {
+    return new Promise<TreatedResponse<ProductPackCommissionOutbound>>((resolve, reject) => {
       this.apiRequest.callAPIOutbound(HttpMethod.POST, URI, "por mudar", "por mudar", "por mudar", "por mudar", productPackCommissionFilter).then(success => {
         treatedResponse.result = success.result;
         treatedResponse.msg = "sucesso";

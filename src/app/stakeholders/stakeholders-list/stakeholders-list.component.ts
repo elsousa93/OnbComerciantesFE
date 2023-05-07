@@ -24,9 +24,12 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   @ViewChild('selectedBlueDiv') selectedBlueDiv: ElementRef<HTMLElement>;
 
   public submissionClient: Client;
+  updateProcessId: string;
+  processInfo: any;
 
   constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private clientService: ClientService, private dataService: DataService, private logger: LoggerService, private processNrService: ProcessNumberService, private processService: ProcessService) {
     this.processNrService.processId.subscribe(id => this.processId = id);
+    this.processNrService.updateProcessId.subscribe(id => this.updateProcessId = id);
     this.returned = localStorage.getItem("returned");
   }
 
@@ -75,7 +78,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
           }
         }
 
-        this.emitSelectedStakeholder(this.submissionStakeholders[nextIdx], nextIdx);
+        this.emitSelectedStakeholder(this.submissionStakeholders[nextIdx], nextIdx, false);
       });
     }
     if (changes["previousStakeholderEvent"]) {
@@ -91,7 +94,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
             };
             this.stakesMat.paginator.page.next(event);
           }
-          this.emitSelectedStakeholder(this.submissionStakeholders[prevIdx], prevIdx);
+          this.emitSelectedStakeholder(this.submissionStakeholders[prevIdx], prevIdx, false);
         }
       })
     }
@@ -111,15 +114,31 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
           this.submissionClient = client;
         });
       } else {
-        this.processService.getMerchantFromProcess(this.processId).subscribe(client => {
-          this.submissionClient = client;
-        });
+        if (this.returned == 'consult') {
+          this.processService.getMerchantFromProcess(this.processId).subscribe(client => {
+            this.submissionClient = client;
+          });
+        } else {
+          this.processService.getUpdateProcessInfo(this.processId, this.updateProcessId).then(result => {
+            this.processInfo = result.result;
+            this.submissionClient = this.processInfo.merchant;
+            this.getSubmissionStakeholders();
+          });
+        }
       }
-      
+    } else {
+      if (!(this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == '')))) {
+        if (this.returned == 'edit') {
+          this.processService.getUpdateProcessInfo(this.processId, this.updateProcessId).then(result => {
+            this.processInfo = result.result;
+            this.getSubmissionStakeholders();
+          });
+        }
+      }
     }
     if (changes["canSelect"]?.currentValue == true) {
       if (this.submissionStakeholders.length > 0) {
-        this.emitSelectedStakeholder(this.submissionStakeholders[0], 0);
+        this.emitSelectedStakeholder(this.submissionStakeholders[0], 0, false);
       }
     }
   }
@@ -149,7 +168,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   //Variáveis que vão retornar informação
   @Output() selectedStakeholderEmitter = new EventEmitter<{
     stakeholder: StakeholdersCompleteInformation,
-    idx: number
+    idx: number,
+    clickedTable: boolean
   }>();
 
   @Output() listLengthEmitter = new EventEmitter<number>();
@@ -170,7 +190,12 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       }
     });
     this.dataService.currentFirstTimeStake.subscribe(firstTime => this.firstTimeStake = firstTime);
-    this.getSubmissionStakeholders();
+    if ((this.processId != '' && this.processId != null) && this.returned == 'edit') {
+
+    } else {
+      this.getSubmissionStakeholders();
+    }
+
   }
 
   ngAfterViewInit(): void {
@@ -215,44 +240,62 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         this.loadStakeholders(context.submissionStakeholders);
         this.stakeholderExists();
         this.listLengthEmitter.emit(context.submissionStakeholders.length);
-        this.emitSelectedStakeholder(context.submissionStakeholders[0], 0);
+        this.emitSelectedStakeholder(context.submissionStakeholders[0], 0, false);
       });
     })
   }
 
   async getProcessCorporatePromise() {
     var context = this;
-    context.submissionStakeholders = [];
-    const promises = [
-      this.processService.getProcessEntities(this.processId)
-    ]
+    //context.submissionStakeholders = [];
+    if (this.returned == 'consult') {
+      const promises = [
+        this.processService.getProcessEntities(this.processId)
+      ]
 
-    var subpromises = [];
+      var subpromises = [];
 
-    Promise.all(promises).then(res => {
-      var corporate = res[0].result;
+      Promise.all(promises).then(res => {
+        var corporate = res[0].result;
 
-      corporate.forEach(function (value, index) {
-        if (value.entityType == 'CorporateEntity') {
-          subpromises.push(context.getAllCorporateProcessInfo(context.processId, value.id));
-        }
+        corporate.forEach(function (value, index) {
+          if (value.entityType == 'CorporateEntity') {
+            subpromises.push(context.getAllCorporateProcessInfo(context.processId, value.id));
+          }
+        });
+
+        const allPromisesWithErrorHandler = subpromises.map(promise =>
+          promise.catch(error => error),
+        );
+
+        Promise.all(allPromisesWithErrorHandler).then(resolve => {
+          context.logger.info("Success fetching stakeholders");
+        }, error => {
+          context.logger.error(error, "", "Error when fetching stakeholders");
+        }).then(stakeholderInfo => {
+          this.loadStakeholders(context.submissionStakeholders);
+          this.stakeholderExists();
+          this.listLengthEmitter.emit(context.submissionStakeholders.length);
+          this.emitSelectedStakeholder(context.submissionStakeholders[0], 0, false);
+        });
+      })
+    } else {
+      this.processInfo.corporateEntities.forEach(corp => {
+        //if (corp.updateProcessAction != "Delete") {
+          var stakeholderToInsert = {
+            displayName: corp.shortName,
+            eligibility: false,
+            stakeholderAcquiring: corp,
+            stakeholderOutbound: undefined
+          } as StakeholdersCompleteInformation
+          context.submissionStakeholders.push(stakeholderToInsert);
+        //}
       });
-
-      const allPromisesWithErrorHandler = subpromises.map(promise =>
-        promise.catch(error => error),
-      );
-
-      Promise.all(allPromisesWithErrorHandler).then(resolve => {
-        context.logger.info("Success fetching stakeholders");
-      }, error => {
-        context.logger.error(error, "", "Error when fetching stakeholders");
-      }).then(stakeholderInfo => {
-        this.loadStakeholders(context.submissionStakeholders);
-        this.stakeholderExists();
-        this.listLengthEmitter.emit(context.submissionStakeholders.length);
-        this.emitSelectedStakeholder(context.submissionStakeholders[0], 0);
-      });
-    })
+      this.loadStakeholders(context.submissionStakeholders);
+      this.stakeholderExists();
+      this.listLengthEmitter.emit(context.submissionStakeholders.length);
+      this.emitSelectedStakeholder(context.submissionStakeholders[0], 0, false);
+    }
   }
 
   async getSubmissionStakeholdersAux() {
@@ -292,7 +335,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         context.listLengthEmitter.emit(context.submissionStakeholders.length);
         context.loadStakeholders(context.submissionStakeholders);
         context.selectedStakeholder = context.submissionStakeholders[0];
-        context.selectedStakeholderEmitter.emit({ stakeholder: context.submissionStakeholders[0], idx: 0 });
+        context.selectedStakeholderEmitter.emit({ stakeholder: context.submissionStakeholders[0], idx: 0, clickedTable: false });
       }, error => {
         context.logger.error(error, "", "Error");
       });
@@ -481,7 +524,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         this.loadStakeholders(context.submissionStakeholders);
         this.stakeholderExists();
         this.listLengthEmitter.emit(context.submissionStakeholders.length);
-        this.emitSelectedStakeholder(context.submissionStakeholders[0], 0);
+        this.emitSelectedStakeholder(context.submissionStakeholders[0], 0, false);
       });
     })
   }
@@ -489,41 +532,68 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   getProcessStakeholdersPromise() {
     var context = this;
     context.submissionStakeholders = [];
-    const promises = [
-      this.processService.getStakeholdersFromProcess(this.processId)
-    ]
+    if (this.returned == 'consult') {
+      const promises = [
+        this.processService.getStakeholdersFromProcess(this.processId)
+      ]
 
-    var subpromises = [];
+      var subpromises = [];
 
-    Promise.all(promises).then(res => {
-      var stakeholders = res[0].result;
+      Promise.all(promises).then(res => {
+        var stakeholders = res[0].result;
 
-      stakeholders.forEach(function (value, index) {
-        subpromises.push(context.getAllStakeholderProcessInfo(context.processId, value.id));
+        stakeholders.forEach(function (value, index) {
+          subpromises.push(context.getAllStakeholderProcessInfo(context.processId, value.id));
+        });
+
+        const allPromisesWithErrorHandler = subpromises.map(promise =>
+          promise.catch(error => error),
+        );
+
+        Promise.all(allPromisesWithErrorHandler).then(resolve => {
+          context.logger.info("Success fetching stakeholders");
+        }, error => {
+          context.logger.error(error, "", "Error when fetching stakeholders");
+        }).then(stakeholderInfo => {
+          this.dataService.changeCurrentFirstTimeStake(false);
+          this.loadStakeholders(context.submissionStakeholders);
+          this.stakeholderExists();
+          this.listLengthEmitter.emit(context.submissionStakeholders.length);
+          this.emitSelectedStakeholder(context.submissionStakeholders[0], 0, false);
+        });
+      })
+    } else {
+      this.processInfo.stakeholders.forEach(stake => {
+        //if (stake.updateProcessAction != "Delete") {
+          stake.documents = null;
+          if (stake.phone1 != null) {
+            stake.phone1.phoneIndicative = null;
+          }
+          if (stake.phone2 != null) {
+            stake.phone2.phoneIndicative = null;
+          }
+          let o = Object.fromEntries(Object.entries(stake).filter(([_, v]) => v != null)) as any;
+          var stakeholderToInsert = {
+            displayName: o.shortName,
+            eligibility: false,
+            stakeholderAcquiring: o,
+            stakeholderOutbound: undefined
+          } as StakeholdersCompleteInformation
+          context.submissionStakeholders.push(stakeholderToInsert);
+        //}
       });
-
-      const allPromisesWithErrorHandler = subpromises.map(promise =>
-        promise.catch(error => error),
-      );
-
-      Promise.all(allPromisesWithErrorHandler).then(resolve => {
-        context.logger.info("Success fetching stakeholders");
-      }, error => {
-        context.logger.error(error, "", "Error when fetching stakeholders");
-      }).then(stakeholderInfo => {
-        this.dataService.changeCurrentFirstTimeStake(false);
-        this.loadStakeholders(context.submissionStakeholders);
-        this.stakeholderExists();
-        this.listLengthEmitter.emit(context.submissionStakeholders.length);
-        this.emitSelectedStakeholder(context.submissionStakeholders[0], 0);
-      });
-    })
+      this.dataService.changeCurrentFirstTimeStake(false);
+      this.loadStakeholders(context.submissionStakeholders);
+      this.stakeholderExists();
+      this.listLengthEmitter.emit(context.submissionStakeholders.length);
+      this.emitSelectedStakeholder(context.submissionStakeholders[0], 0, false);
+    }
   }
 
-  emitSelectedStakeholder(stakeholder, idx) {
+  emitSelectedStakeholder(stakeholder, idx, clickedTable) {
     if (!this.canSelect)
       return;
-    this.selectedStakeholderEmitter.emit({ stakeholder: stakeholder, idx: idx });
+    this.selectedStakeholderEmitter.emit({ stakeholder: stakeholder, idx: idx, clickedTable: clickedTable });
     this.selectedStakeholder = stakeholder;
   }
 

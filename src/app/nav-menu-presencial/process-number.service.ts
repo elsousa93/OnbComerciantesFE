@@ -13,6 +13,8 @@ export class ProcessNumberService {
   processId = this.dataProcessId.asObservable();
   private dataQueueName = new BehaviorSubject('');
   queueName = this.dataQueueName.asObservable();
+  private dataUpdateProcessId = new BehaviorSubject('');
+  updateProcessId = this.dataUpdateProcessId.asObservable();
   constructor() { }
   changeProcessNumber(value: string) {
     this.dataProcessNumber.next(value);
@@ -24,5 +26,9 @@ export class ProcessNumberService {
 
   changeQueueName(value: string) {
     this.dataQueueName.next(value);
+  }
+
+  changeUpdateProcessId(value: string) {
+    this.dataUpdateProcessId.next(value);
   }
 }

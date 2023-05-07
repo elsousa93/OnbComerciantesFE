@@ -77,6 +77,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   finalList: ProductPackAttributeProductPackKind[];
   firstTimeChanged: boolean = true;
   processId: string;
+  updateProcessId: string;
 
   loadReferenceData() {
     this.subs.push(this.tableInfo.GetTenantCommunications().subscribe(result => {
@@ -153,6 +154,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
+    this.subscription = this.processNrService.updateProcessId.subscribe(id => this.updateProcessId = id);
     this.submissionId = localStorage.getItem("submissionId");
     this.returned = localStorage.getItem("returned");
     //this.loadReferenceData();
@@ -219,7 +221,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.pricingOptions = [];
       this.chooseMensalidade(this.storeEquip.pricing.id);
     } else {
-      if (this.packId != "" && this.changedPackValue) {
+      if (this.packId != "") { // antes tinha && this.changedPackValue
         this.groupsList.push(...this.list);
         this.calledMensalidades = true;
         //this.changedPackValue = false;
@@ -308,14 +310,14 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     if (this.isNewConfig) {
       this.pricingAttributeList.forEach(function (value, idx) {
         valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl((value.value == null) ? 0 : value.value));
-        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(0));
+        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl("0"));
         valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl((value.value == null) ? 0 : value.value));
         context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
       });
     } else {
       this.pricingAttributeList.forEach(function (value, idx) {
         valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl((value.originalValue == null) ? 0 : value.originalValue));
-        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.originalValue - value.finalValue));
+        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.originalValue - value.finalValue + ""));
         valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl((value.finalValue == null) ? 0 : value.finalValue));
         context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
       });
@@ -331,7 +333,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.pricingAttributeList.forEach(function (value, idx) {
         var valueGroup = new FormGroup({});
         valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl(value.value));
-        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(0));
+        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl("0"));
         valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl(value.value));
         context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
       });
@@ -339,7 +341,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.pricingAttributeList.forEach(function (value, idx) {
         var valueGroup = new FormGroup({});
         valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl(value.originalValue));
-        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.value - value.finalValue));
+        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.value - value.finalValue + ""));
         valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl(value.finalValue));
         context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
       });
@@ -368,7 +370,14 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         var group = this.pricingForm.controls["formGroupPricing" + attr.id];
         if (!attr.isReadOnly) {
           attr.originalValue = group.get("formControlPricingOriginal" + attr.id).value;
-          attr.value = group.get("formControlPricingDiscount" + attr.id).value;
+          let discount;
+          if (group.get("formControlPricingDiscount" + attr.id).value.includes(",")) {
+            var aux = group.get("formControlPricingDiscount" + attr.id).value.replace(/,/g, '.');
+            discount = Number(aux);
+          } else {
+            discount = Number(group.get("formControlPricingDiscount" + attr.id).value);
+          }
+          attr.value = discount;
           attr.finalValue = group.get("formControlPricingFinal" + attr.id).value;
         }
       });
@@ -852,7 +861,13 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   }
 
   calculateValue(event) {
-    let discount = Number(event.target.value);
+    let discount;
+    if (event.target.value.includes(",")) {
+      var aux = event.target.value.replace(/,/g, '.');
+      discount = Number(aux);
+    } else {
+      discount = Number(event.target.value);
+    }
     let originalValue = this.pricingForm.get("formGroupPricing" + event.target.id).get("formControlPricingOriginal" + event.target.id).value;
     let finalValue = originalValue - discount;
     this.pricingForm.get("formGroupPricing" + event.target.id).get("formControlPricingFinal" + event.target.id).setValue(finalValue.toFixed(2));
@@ -865,11 +880,17 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
   decimalOnly(event): boolean { // restrict e,+,-,E characters in  input type number
     const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode == 101 || charCode == 69 || charCode == 45 || charCode == 43) {
+    if (charCode == 101 || charCode == 69 || charCode == 45 || charCode == 43 || charCode == 32) {
       return false;
     }
 
-    let discount = event.target.value;
+    let discount;
+    if (event.target.value.includes(",")) {
+      var aux = event.target.value.replace(/,/g, '.');
+      discount = Number(aux);
+    } else {
+      discount = Number(event.target.value);
+    }
     let originalValue = this.pricingForm.get("formGroupPricing" + event.target.id).get("formControlPricingOriginal" + event.target.id).value;
     if (discount > originalValue) {
       this.isInvalidNumber = true;
@@ -878,5 +899,15 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
 
     this.isInvalidNumber = false;
     return true;
+  }
+
+  onKeyDown(event: any) {
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
+    const regex = /^[0-9]+([,.][0-9]+)?$/;
+    if (allowedKeys.indexOf(event.key) !== -1 || regex.test(event.key)) {
+      return true;
+    }
+    event.preventDefault();
+    return false;
   }
 }

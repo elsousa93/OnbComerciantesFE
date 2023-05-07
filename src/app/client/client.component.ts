@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Client } from './Client.interface';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
@@ -291,9 +291,11 @@ export class ClientComponent implements OnInit {
     this.errorInput = "form-control campo_form_coment";
 
     if (localStorage.getItem("submissionId") != null) {
+      var readable;
       this.data.currentTipologia.subscribe(tipologia => this.tipologia = tipologia);//this.route.getCurrentNavigation().extras.state["tipologia"];
       this.searchedDocument = localStorage.getItem("documentType");
       this.clientId = localStorage.getItem("documentNumber");
+      this.data.currentIsNoDataReadable.subscribe(read => readable = read);
       this.data.currentComprovativoCC.subscribe(cc => this.prettyPDF = cc);//this.route.getCurrentNavigation().extras.state["comprovativoCC"];
       this.data.currentDataCC.subscribe(data => this.dataCCcontents = data);//this.route.getCurrentNavigation().extras.state["dataCC"];
       this.data.currentIsClient.subscribe(isClient => this.isClient = isClient);//this.route.getCurrentNavigation().extras.state["isClient"];
@@ -310,7 +312,11 @@ export class ClientComponent implements OnInit {
         if (this.dataCCcontents == null) {
           this.searchClient();
         } else {
-          this.setOkCC();
+          if (readable) {
+            this.setOkCC();
+          }
+          this.changeDataReadable(readable);
+          this.searchClient();
         }
       }
     }
@@ -720,8 +726,24 @@ export class ClientComponent implements OnInit {
         });
       }
       localStorage.setItem("clientName", fullName);
+    } else {
+      if (!this.isNoDataReadable) {
+        let clientName = this.newClientForm.get("denominacaoSocial")?.value ?? this.newClientForm.get("nome")?.value ?? '';
+        if (clientName != '') {
+          var nameArray = clientName.split(" ").filter(element => element);
+          var fullName = "";
+          nameArray.forEach((val, index) => {
+            if (index == 0) {
+              fullName = val;
+            } else {
+              fullName = fullName + " " + val;
+            }
+          });
+        }
+        localStorage.setItem("clientName", fullName);
+      }
     }
-
+    this.data.changeNoDataReadable(this.isNoDataReadable);
     this.data.changeCurrentDataCC(this.dataCC);
     this.data.changeCurrentComprovativoCC(this.prettyPDF);
     this.data.changeCurrentTipologia(this.tipologia);
@@ -749,13 +771,20 @@ export class ClientComponent implements OnInit {
     if (this.docType === '0501' || this.docType === '0502' || this.docType === '1010' || this.docType === '0101' || this.docType === '0302') {
       var ASCIICode = (event.which) ? event.which : event.keyCode;
 
-      if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
+      if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) || ASCIICode == 86)
         return false;
+
+      //if (this.docType == '0501' || this.docType == '0502') {
+      //  let pattern = /[0-9]+/g;
+      //  let result = pattern.test(event.key);
+      //  return result;
+      //}
+
       return true;
     }
   }
 
-  checkValidationType(str: string) {
+  checkValidationType(str: string, event) {
     if (this.docType === '1001')
       this.ValidateNumeroDocumentoCC(str);
 
@@ -893,5 +922,21 @@ export class ClientComponent implements OnInit {
       case 'Y': return 34;
       case 'Z': return 35;
     }
+  }
+
+  @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {
+    const clipboardData = event.clipboardData;
+    const pastedText = clipboardData.getData('text/plain');
+    if (this.docType === '0501' || this.docType === '0502' || this.docType === '1010' || this.docType === '0101' || this.docType === '0302') {
+      if (event.target["name"] != "nome" && event.target["name"] != "denominacaoSocial") {
+        if (!this.isNumeric(pastedText)) {
+          event.preventDefault();
+        }
+      }
+    }
+  }
+
+  isNumeric(value: string): boolean {
+    return /^\d+$/.test(value);
   }
 }

@@ -20,20 +20,20 @@
         {{'commercialOffer.bank'|translate|uppercase}} </th>
       <td mat-cell *matCellDef="let store"> {{getBank(store.bank.bank.bank)}} </td>
     </ng-container>
-    <ng-container matColumnDef="terminalNumber">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="!isCommercialOffer"
-        class="text-center text-primary bg-light table-white"> {{'commercialOffer.terminalNumber'|translate|uppercase}}
-      </th>
-      <td mat-cell *matCellDef="let store" [hidden]="!isCommercialOffer"></td>
-    </ng-container>
     <ng-container matColumnDef="product">
       <th mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="!isCommercialOffer"
         class="text-center text-primary bg-light table-white"> {{'commercialOffer.product'|translate|uppercase}}
       </th>
-      <td mat-cell *matCellDef="let store" [hidden]="!isCommercialOffer"></td>
+      <td mat-cell *matCellDef="let store" [hidden]="!isCommercialOffer">{{store.productCodeDescription}}</td>
+    </ng-container>
+    <ng-container matColumnDef="subproduct">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header [hidden]="!isCommercialOffer"
+        class="text-center text-primary bg-light table-white"> {{'commercialOffer.subproduct'|translate|uppercase}}
+      </th>
+      <td mat-cell *matCellDef="let store" [hidden]="!isCommercialOffer">{{store.subProductCodeDescription}}</td>
     </ng-container>
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-    <tr mat-row *matRowDef="let store; let idx = index; columns: displayedColumns;" (click)="emitSelectedStore(store, idx)"
+    <tr mat-row *matRowDef="let store; let idx = index; columns: displayedColumns;" (click)="emitSelectedStore(store, idx, true)"
       [ngClass]="{'row-selected': idx === currentIdx}">
     </tr>
   </table>

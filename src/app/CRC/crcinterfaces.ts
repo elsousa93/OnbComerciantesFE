@@ -15,4 +15,5 @@ export interface CRCProcess {
   requestId?: string
   stakeholders?: StakeholdersProcess[]
   byLaws?: string
+  creationDate?: string
 }

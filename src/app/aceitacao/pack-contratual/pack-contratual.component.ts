@@ -6,7 +6,7 @@ import { LoggerService } from 'src/app/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { TableInfoService } from '../../table-info/table-info.service';
-import { ContractPackLanguage } from '../../table-info/ITable-info.interface';
+import { ContractPackLanguage, DigitalSignature, RepresentationPowers } from '../../table-info/ITable-info.interface';
 import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
 import { IStakeholders } from '../../stakeholders/IStakeholders.interface';
 import { QueuesService } from '../../queues-detail/queues.service';
@@ -15,7 +15,7 @@ import { DatePipe } from '@angular/common';
 import { ContractAcceptance, ContractAcceptanceEnum, ContractDigitalAcceptance, ContractDigitalAcceptanceEnum, State } from '../../queues-detail/IQueues.interface';
 import { ComprovativosService } from '../../comprovativos/services/comprovativos.services';
 import { PostDocument } from '../../submission/document/ISubmission-document';
-import { ProcessService } from '../../process/process.service';
+import { ProcessList, ProcessService } from '../../process/process.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -60,6 +60,11 @@ export class PackContratualComponent implements OnInit {
   firstTime: boolean = true;
   state: string = "";
   manualSignatureFileId: string = "";
+  process: ProcessList;
+  signTypeList: DigitalSignature[] = [];
+  identificationStateList: DigitalSignature[] = [];
+  signatureStateList: DigitalSignature[] = [];
+  representationPowersList: RepresentationPowers[] = [];
 
   constructor(private logger: LoggerService,
     private modalService: BsModalService, private translate: TranslateService, private snackBar: MatSnackBar,
@@ -97,53 +102,69 @@ export class PackContratualComponent implements OnInit {
       this.updatedInfo = true;
     }
     this.stakeholdersList = [];
-    this.queuesInfo.getProcessStakeholdersList(this.processId).then(result => {
-      this.logger.info("Get stakeholders list from process result: " + JSON.stringify(result));
-      var stakeholders = result.result;
-      stakeholders.forEach(value => {
-        this.queuesInfo.getProcessStakeholderDetails(this.processId, value.id).then(result => {
-          if (result.result.signType == "NotSign") {
-            result.result.signType = context.translate.instant('acceptance.contratualPack.notSign');
-          } else if (result.result.signType == "CitizenCard") {
-            result.result.signType = context.translate.instant('acceptance.contratualPack.citizenCard');
-          } else if (result.result.signType == "DigitalCitizenCard") {
-            result.result.signType = context.translate.instant('acceptance.contratualPack.digitalCitizenCard');
-          } else if (result.result.signType == "OneTimePassword") {
-            result.result.signType = context.translate.instant('acceptance.contratualPack.oneTimePassword');
-          } else if (result.result.signType == "Biometric") {
-            result.result.signType = context.translate.instant('acceptance.contratualPack.biometric');
-          }
 
-          if (result.result.identificationState != "Identified" && result.result.signatureState == "NotSigned") {
-            if (result.result.identificationState == "NotIdentified") {
-              result.result.identificationState = context.translate.instant('acceptance.contratualPack.notIdentified');
-            } else if (result.result.identificationState == "Identified") {
-              result.result.identificationState = context.translate.instant('acceptance.contratualPack.identified');
-            } else if (result.result.identificationState == "Pending") {
-              result.result.identificationState = context.translate.instant('acceptance.contratualPack.pending');
-            } else if (result.result.identificationState == "Cancelled") {
-              result.result.identificationState = context.translate.instant('acceptance.contratualPack.canceled');
-            } else if (result.result.identificationState == "Refused") {
-              result.result.identificationState = context.translate.instant('acceptance.contratualPack.refused');
-            }
-          } else {
-            if (result.result.signatureState == "NotSigned") {
-              result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.notSigned');
-            } else if (result.result.signatureState == "Signed") {
-              result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.signed');
-            } else if (result.result.signatureState == "Pending") {
-              result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.pending');
-            } else if (result.result.signatureState == "Cancelled") {
-              result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.canceled');
-            } else if (result.result.signatureState == "Refused") {
-              result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.refused');
-            }
-          }
-
-          this.stakeholdersList.push(result.result);
+    this.tableInfoService.GetDigitalSignatureType("SignType").then(result => {
+      this.signTypeList = result.result;
+      this.tableInfoService.GetDigitalSignatureType("IdentificationState").then(res => {
+        this.identificationStateList = res.result;
+        this.tableInfoService.GetDigitalSignatureType("SignatureState").then(r => {
+          this.signatureStateList = r.result;
+          this.tableInfoService.GetRepresentationPowers().then(value => {
+            this.representationPowersList = value.result;
+          });
         });
       });
     });
+    this.processService.getProcessById(this.processId).subscribe(res => {
+      this.process = res;  
+      this.queuesInfo.getProcessStakeholdersList(this.processId).then(result => {
+        this.logger.info("Get stakeholders list from process result: " + JSON.stringify(result));
+        var stakeholders = result.result;
+        stakeholders.forEach(value => {
+          this.queuesInfo.getProcessStakeholderDetails(this.processId, value.id).then(result => {
+            if (result.result.signType == "NotSign") {
+              result.result.signType = context.translate.instant('acceptance.contratualPack.notSign');
+            } else if (result.result.signType == "CitizenCard") {
+              result.result.signType = context.translate.instant('acceptance.contratualPack.citizenCard');
+            } else if (result.result.signType == "DigitalCitizenCard") {
+              result.result.signType = context.translate.instant('acceptance.contratualPack.digitalCitizenCard');
+            } else if (result.result.signType == "OneTimePassword") {
+              result.result.signType = context.translate.instant('acceptance.contratualPack.oneTimePassword');
+            } else if (result.result.signType == "Biometric") {
+              result.result.signType = context.translate.instant('acceptance.contratualPack.biometric');
+            }
+
+            if (result.result.identificationState != "Identified" && result.result.signatureState == "NotSigned") {
+              if (result.result.identificationState == "NotIdentified") {
+                result.result.identificationState = context.translate.instant('acceptance.contratualPack.notIdentified');
+              } else if (result.result.identificationState == "Identified") {
+                result.result.identificationState = context.translate.instant('acceptance.contratualPack.identified');
+              } else if (result.result.identificationState == "Pending") {
+                result.result.identificationState = context.translate.instant('acceptance.contratualPack.pending');
+              } else if (result.result.identificationState == "Cancelled") {
+                result.result.identificationState = context.translate.instant('acceptance.contratualPack.canceled');
+              } else if (result.result.identificationState == "Refused") {
+                result.result.identificationState = context.translate.instant('acceptance.contratualPack.refused');
+              }
+            } else {
+              if (result.result.signatureState == "NotSigned") {
+                result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.notSigned');
+              } else if (result.result.signatureState == "Signed") {
+                result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.signed');
+              } else if (result.result.signatureState == "Pending") {
+                result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.pending');
+              } else if (result.result.signatureState == "Cancelled") {
+                result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.canceled');
+              } else if (result.result.signatureState == "Refused") {
+                result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.refused');
+              }
+            }
+
+            this.stakeholdersList.push(result.result);
+          });
+        });
+      });
+    })
     this.firstTime = false;
   }
 
@@ -356,5 +377,21 @@ export class PackContratualComponent implements OnInit {
 
     const blob = new Blob(byteArrays, { type: contentType });
     return blob;
+  }
+
+  getSignTypeDescription(code: string) {
+    return this.signTypeList.find(value => value.code == code).description;
+  }
+
+  getIdentificationStateDescription(code: string) {
+    return this.identificationStateList.find(value => value.code == code).description;
+  }
+
+  getSignatureStateDescription(code: string) {
+    return this.signatureStateList.find(value => value.code == code).description;
+  }
+
+  getRepresentaionPowersDescription(code: string) {
+    return this.representationPowersList.find(value => value.code == code).description;
   }
 }

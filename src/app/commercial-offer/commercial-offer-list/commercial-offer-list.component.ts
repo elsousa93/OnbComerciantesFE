@@ -122,6 +122,9 @@ export class CommercialOfferListComponent implements OnInit {
   processId: string;
   firstTime: boolean = true;
   equips: boolean;
+  public visitedStores: string[] = [];
+  updateProcessId: string;
+  processInfo: any;
 
   emitPreviousStore(idx) {
     this.previousStoreEvent = idx;
@@ -138,17 +141,32 @@ export class CommercialOfferListComponent implements OnInit {
     this.initializeForm();
 
     if ((this.processId != '' && this.processId != null) && this.returned != null) {
-      this.processService.getMerchantFromProcess(this.processId).subscribe(res => {
-        this.logger.info("Get process client by id result: " + JSON.stringify(res));
-        this.merchantCatalog = {
-          context: res.businessGroup.type.toLocaleLowerCase() as any,
-          contextId: res.businessGroup.branch,
-          fiscalIdentification: {
-            fiscalId: res.fiscalId,
-            issuerCountry: "PT"
+      if (this.returned == 'consult') {
+        this.processService.getMerchantFromProcess(this.processId).subscribe(res => {
+          this.logger.info("Get process client by id result: " + JSON.stringify(res));
+          this.merchantCatalog = {
+            context: res.businessGroup.type.toLocaleLowerCase() as any,
+            contextId: res.businessGroup.branch,
+            fiscalIdentification: {
+              fiscalId: res.fiscalId,
+              issuerCountry: "PT"
+            }
           }
-        }
-      });
+        });
+      } else {
+        this.processService.getUpdateProcessInfo(this.processId, this.updateProcessId).then(result => {
+          this.processInfo = result.result;
+          var merchant = this.processInfo.merchant;
+          this.merchantCatalog = {
+            context: merchant.businessGroup.type.toLocaleLowerCase() as any,
+            contextId: merchant.businessGroup.branch,
+            fiscalIdentification: {
+              fiscalId: merchant.fiscalId,
+              issuerCountry: "PT"
+            }
+          }
+        });
+      }
     } else {
       this.clientService.GetClientByIdAcquiring(this.submissionId).then(result => {
         this.logger.info("Get merchant from submission: " + JSON.stringify(result));
@@ -176,6 +194,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
+    this.subscription = this.processNrService.updateProcessId.subscribe(id => this.updateProcessId = id);
     this.subscription = this.data.currentQueueName.subscribe(queueName => {
       if (queueName != null) {
         this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
@@ -193,20 +212,32 @@ export class CommercialOfferListComponent implements OnInit {
     this.storeEquipList = [];
     var context = this;
     if ((this.processId != '' && this.processId != null) && this.returned != null) {
-      this.queuesInfo.getShopEquipmentConfigurationsFromProcess(this.processId, this.currentStore.id).then(result => {
-        this.logger.info("Get equipments from shop result: " + JSON.stringify(result));
-        var list = result.result;
-        if (list.length > 0) {
-          list.forEach(res => {
-            this.queuesInfo.getProcessShopEquipmentDetails(context.processId, context.currentStore.id, res.id).then(r => {
-              context.storeEquipList.push(r.result);
-            }).then(res => {
-              context.loadStoreEquips(this.storeEquipList);
+      if (this.returned == 'consult') {
+        this.queuesInfo.getShopEquipmentConfigurationsFromProcess(this.processId, this.currentStore.id).then(result => {
+          this.logger.info("Get equipments from shop result: " + JSON.stringify(result));
+          var list = result.result;
+          if (list.length > 0) {
+            list.forEach(res => {
+              this.queuesInfo.getProcessShopEquipmentDetails(context.processId, context.currentStore.id, res.id).then(r => {
+                context.storeEquipList.push(r.result);
+              }).then(res => {
+                context.loadStoreEquips(this.storeEquipList);
+              });
             });
+          }
+        }).then(res => {
+        });
+      } else {
+        var shop = this.processInfo.shops.find(shop => shop.id == context.currentStore.id);
+        if (shop.equipments.length > 0) {
+          shop.equipments.forEach(equip => {
+            if (equip.updateProcessAction != "Delete") {
+              context.storeEquipList.push(equip);
+            }
           });
+          this.loadStoreEquips(this.storeEquipList);
         }
-      }).then(res => {
-      });
+      }
     } else {
       this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.id).then(result => {
         this.logger.info("Get equipments from shop result: " + JSON.stringify(result));
@@ -239,10 +270,13 @@ export class CommercialOfferListComponent implements OnInit {
     this.paymentSchemes = null;
     this.groupsList = [];
     this.commissionId = "";
-    this.commissionOptions = []
+    this.commissionOptions = [];
+    this.commissionAttributeList = [];
     this.currentStore = info.store;
     this.currentIdx = info.idx;
-
+    this.changedEAT = true;
+    this.changedPackValue = true;
+    this.firstTime = true;
     this.logger.info("Selected store: " + JSON.stringify(this.currentStore));
     this.logger.info("Selected store index: " + this.currentIdx);
 
@@ -252,7 +286,11 @@ export class CommercialOfferListComponent implements OnInit {
     setTimeout(() => this.setFormData(), 500);
 
     this.getStoreEquipsFromSubmission();
-    //this.getPackDetails();
+
+    if (this.currentStore.pack != null) {
+      this.getPackDetails();
+    }
+
     this.resetValues();
 
     if (this.returned == 'consult')
@@ -262,10 +300,10 @@ export class CommercialOfferListComponent implements OnInit {
   resetValues() {
     var context = this;
     this.commissionAttributeList.forEach(function (value, idx) {
-      context.form.get("commission" + value.id).get("commissionMin" + value.id).setValue(value.minValue.value);
-      context.form.get("commission" + value.id).get("commissionMax" + value.id).setValue(value.maxValue.value);
-      context.form.get("commission" + value.id).get("commissionFixed" + value.id).setValue(value.fixedValue.value);
-      context.form.get("commission" + value.id).get("commissionPercentage" + value.id).setValue(Number((value.percentageValue.value * 100).toFixed(3)));
+      context.form.get("commission" + value.id).get("commissionMin" + value.id).setValue(value.minValue.originalValue);
+      context.form.get("commission" + value.id).get("commissionMax" + value.id).setValue(value.maxValue.originalValue);
+      context.form.get("commission" + value.id).get("commissionFixed" + value.id).setValue(value.fixedValue.originalValue);
+      context.form.get("commission" + value.id).get("commissionPercentage" + value.id).setValue(Number((value.percentageValue.originalValue * 100).toFixed(3)));
     });
     if (this.commissionId != "") {
       this.chooseCommission(this.commissionId);
@@ -356,10 +394,10 @@ export class CommercialOfferListComponent implements OnInit {
 
     if (this.currentStore.pack == null) {
       this.commissionAttributeList.forEach(function (value, idx) {
-        valueGroup.addControl("commissionMin" + value.id, new FormControl(value.minValue.value));
-        valueGroup.addControl("commissionMax" + value.id, new FormControl(value.maxValue.value));
-        valueGroup.addControl("commissionFixed" + value.id, new FormControl(value.fixedValue.value));
-        valueGroup.addControl("commissionPercentage" + value.id, new FormControl(Number((value.percentageValue.value * 100).toFixed(3))));
+        valueGroup.addControl("commissionMin" + value.id, new FormControl(value.minValue.originalValue));
+        valueGroup.addControl("commissionMax" + value.id, new FormControl(value.maxValue.originalValue));
+        valueGroup.addControl("commissionFixed" + value.id, new FormControl(value.fixedValue.originalValue));
+        valueGroup.addControl("commissionPercentage" + value.id, new FormControl(Number((value.percentageValue.originalValue * 100).toFixed(3))));
         context.form.addControl("commission" + value.id, valueGroup);
       });
     } else {
@@ -414,7 +452,7 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   selectCommercialPack(packId: string) {
-    if (this.returned == null && this.packId != "") {
+    if ((this.returned == null || this.returned == 'edit') && this.packId != "") {
       if (this.storeEquipList.length > 0) {
         this.storeEquipList.forEach(equip => {
           this.deleteConfiguration(equip);
@@ -423,6 +461,7 @@ export class CommercialOfferListComponent implements OnInit {
     }
     var context = this;
     this.packId = packId;
+    this.changedPackValue = true;
     context.groupsList = [];
     context.paymentSchemes = null;
 
@@ -443,6 +482,7 @@ export class CommercialOfferListComponent implements OnInit {
             this.form.disable();
         } else {
           context.updateCommercialPackInfo(res.result);
+          context.getCommissionsList();
         }
       });
     } else {
@@ -493,26 +533,6 @@ export class CommercialOfferListComponent implements OnInit {
     });
     context.groupsList = pack.otherGroups;
 
-    //this.storeEquipList.forEach(equip => {
-    //  pack.equipmentSettings.forEach(value => {
-    //    var group = equip.equipmentSettings.find(grp => grp.id == value.id);
-    //    if (group != undefined) {
-    //      value.attributes.forEach(val => {
-    //        var attr = group.attributes.find(att => att.id == val.id);
-    //        if (attr != undefined) {
-    //          val.isSelected = attr.isSelected;
-    //        } else {
-    //          val.isSelected = false;
-    //        }
-    //      });
-    //    } else {
-    //      //todos os atributos deste grupo vão ter o selected a false
-    //      value.attributes.forEach(v => {
-    //        v.isSelected = false;
-    //      });
-    //    }
-    //  });
-    //});
 
     context.equipmentSettings = pack.equipmentSettings;
     context.joinSameIdGroups();
@@ -541,7 +561,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.changedPackValue = true;
     var context = this;
 
-    if (this.returned == null && !this.firstTime) {
+    if ((this.returned == null || this.returned == 'edit') && !this.firstTime) {
       if (this.storeEquipList.length > 0) {
         this.storeEquipList.forEach(equip => {
           this.deleteConfiguration(equip);
@@ -674,11 +694,11 @@ export class CommercialOfferListComponent implements OnInit {
     } else {
       if (this.packId != "") {
         if (this.changedPackValue) {
-          this.changedPackValue = false;
+          //this.changedPackValue = false;
           this.commissionFilter = {
             productCode: this.currentStore.productCode,
             subproductCode: this.currentStore.subProductCode,
-            processorId: this.packs[0].processors[0],
+            processorId: this.packs.find(pack => pack.id == this.packId).processors[0],
             merchant: this.merchantCatalog,
             store: {
               activity: this.currentStore.activity,
@@ -723,13 +743,45 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   chooseCommission(commisionId: string) {
+    var context = this;
     this.commissionId = commisionId;
     var productCode = this.currentStore.productCode;
     this.commissionAttributeList = [];
-    if (this.currentStore.pack == null) {
+    if (this.currentStore.pack == null || this.returned == null && this.changedPackValue || (this.returned == 'edit' && (this.processId == null || this.processId == '') && this.changedPackValue)) {
       this.COService.GetProductCommercialPackCommission(this.packId, this.commissionId, this.commissionFilter).then(res => {
+        this.commissionAttributeList = [];
         this.logger.info("Get commercial pack commission result: " + JSON.stringify(res));
-        this.commissionAttributeList = res.result.attributes;
+        res.result.attributes.forEach(val => {
+          let value: ProductPackCommissionAttribute = {};
+          value.id = val.id;
+          value.description = val.description;
+          value.fixedValue = {
+            originalValue: val.fixedValue.value,
+            isReadOnly: val.fixedValue.isReadOnly,
+            isVisible: val.fixedValue.isVisible,
+            finalValue: context.currentStore.pack != null ? context.currentStore.pack.commission.attributes.find(comm => comm.id == val.id).fixedValue.finalValue : null
+          }
+          value.maxValue = {
+            originalValue: val.maxValue.value,
+            isReadOnly: val.maxValue.isReadOnly,
+            isVisible: val.maxValue.isVisible,
+            finalValue: context.currentStore.pack != null ? context.currentStore.pack.commission.attributes.find(comm => comm.id == val.id).maxValue.finalValue : null
+          }
+          value.minValue = {
+            originalValue: val.minValue.value,
+            isReadOnly: val.minValue.isReadOnly,
+            isVisible: val.minValue.isVisible,
+            finalValue: context.currentStore.pack != null ? context.currentStore.pack.commission.attributes.find(comm => comm.id == val.id).minValue.finalValue : null
+          }
+          value.percentageValue = {
+            originalValue: val.percentageValue.value,
+            isReadOnly: val.percentageValue.isReadOnly,
+            isVisible: val.percentageValue.isVisible,
+            finalValue: context.currentStore.pack != null ? context.currentStore.pack.commission.attributes.find(comm => comm.id == val.id).percentageValue.finalValue : null
+          }
+          context.commissionAttributeList.push(value);
+        });
+        //this.commissionAttributeList = res.result.attributes;
         this.addCommissionFormGroups();
         if (this.returned == 'consult')
           this.form.disable();
@@ -742,6 +794,7 @@ export class CommercialOfferListComponent implements OnInit {
       if (this.returned == 'consult')
         this.form.disable();
     }
+    this.changedPackValue = false;
   }
 
   getStoresListLength(length) {
@@ -783,11 +836,13 @@ export class CommercialOfferListComponent implements OnInit {
     this.isUnicre = bool;
     this.disableNewConfiguration = !bool;
     this.isNewConfig = null;
-    this.changedEAT = true;
+    if (!this.firstTime)
+      this.changedEAT = true;
     this.packs = [];
     this.packId = "";
     this.isPackSelected = false;
     this.form.get("productPackKind").setValue("");
+    this.form.get("productPackKind").markAsUntouched();
     if (!bool) {
       this.form.get("terminalRegistrationNumber").setValue(null);
       this.form.get("terminalRegistrationNumber").setValidators(Validators.required);
@@ -831,6 +886,8 @@ export class CommercialOfferListComponent implements OnInit {
       this.currentStore.equipments = this.storeEquipList;
       this.currentStore.pack = {
         packId: this.packId,
+        processorId: this.packs.find(pack => pack.id == this.packId).processors[0],
+        packDescription: this.packs.find(pack => pack.id == this.packId).description,
         commission: {
           commissionId: this.commissionId,
           attributes: this.commissionAttributeList
@@ -843,7 +900,9 @@ export class CommercialOfferListComponent implements OnInit {
       if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
         this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.id, this.currentStore).subscribe(result => {
           this.logger.info("Updated shop result: " + JSON.stringify(result));
-          if (this.currentIdx < (this.storesLength - 1)) {
+          this.visitedStores.push(this.currentStore.id);
+          this.visitedStores = Array.from(new Set(this.visitedStores));
+          if (this.visitedStores.length < this.storesLength) {
             this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
             this.closeAccordion();
           } else {
@@ -856,7 +915,9 @@ export class CommercialOfferListComponent implements OnInit {
       } else {
         this.processService.updateShopProcess(this.processId, this.currentStore.id, this.currentStore).then(result => {
           this.logger.info("Updated shop result: " + JSON.stringify(result.result));
-          if (this.currentIdx < (this.storesLength - 1)) {
+          this.visitedStores.push(this.currentStore.id);
+          this.visitedStores = Array.from(new Set(this.visitedStores));
+          if (this.visitedStores.length < this.storesLength) {
             this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
             this.closeAccordion();
           } else {

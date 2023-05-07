@@ -93,7 +93,7 @@
                 {{'client.sameNIFMatch'|translate}}
               </span>
               <input [hidden]="isCC && isNoDataReadable" #clientId (keyup)="checkValidationType(clientId.value)"
-                     (keypress)="numericOnly($event)" [(ngModel)]="stakeholderNumber" id="text1" name="text1"
+                     (keypress)="numericOnly($event)" [(ngModel)]="stakeholderNumber" id="text1" name="text1" (onpaste)="onPaste($event)"
                      style="padding: .200rem;" type="text" (ngModelChange)="clearNewForm()" class="form-control campo_form"
                      formControlName="documentNumber">
               <div class="alert alert-danger"
@@ -179,7 +179,7 @@
                     {{'client.incorrectNIPC'|translate}}
                   </span>
                 </p>
-                <input name="nipc" #nipc (keypress)="numericOnly($event)" (keyup)="validateNIPC(nipc.value)" type="text"
+                <input name="nipc" #nipc (keypress)="numericOnly($event)" (keyup)="validateNIPC(nipc.value)" type="text" (onpaste)="onPaste($event)"
                        class="form-control campo_form" formControlName="nipc">
                 <div class="alert alert-danger"
                      *ngIf="formNewStakeholder.get('nipc').touched && !formNewStakeholder.get('nipc').valid">
@@ -217,7 +217,7 @@
                   {{'stakeholder.sameNIF'|translate}}
                 </span>
               </p>
-              <input name="nif" #nif type="text" (keypress)="numericOnly($event)" (keyup)="validateNIF(nif.value)"
+              <input name="nif" #nif type="text" (keypress)="numericOnly($event)" (keyup)="validateNIF(nif.value)" (onpaste)="onPaste($event)"
                      class="form-control campo_form" formControlName="nif">
               <div class="alert alert-danger"
                    *ngIf="formNewStakeholder.get('nif').touched && !formNewStakeholder.get('nif').valid">

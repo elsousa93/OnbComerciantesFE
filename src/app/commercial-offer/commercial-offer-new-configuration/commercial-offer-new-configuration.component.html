@@ -212,8 +212,8 @@
               [attr.disabled]="true">
           </td>
           <td class="text-center align-middle texto_centrado" *ngIf="pricing.isVisible">
-            <input id="{{pricing.id}}" name="text2" type="number" (keyup)="calculateValue($event)"
-              (keypress)="decimalOnly($event)" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm"
+            <input id="{{pricing.id}}" name="text2" type="text" (keyup)="calculateValue($event)" (keypress)="decimalOnly($event)"
+              (keydown)="onKeyDown($event)" class="micro_campo_tabela texto_centrado ps-0 pe-0 form-control-sm"
               [ngStyle]="{'border': isInvalidNumber ? 'red 1px solid' : ''}" placeholder="0,00"
               formControlName="{{'formControlPricingDiscount'+ pricing.id}}"
               [attr.disabled]="pricing.isReadOnly ? true : null">

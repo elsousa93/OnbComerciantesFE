@@ -76,13 +76,15 @@ export class AuthComponent implements OnInit {
 
     //fazer um if para quando o utilizador for unicre ou banca conseguir realizar o login neste portal, caso contrario não deve ser possível
 
-    this.token.getLoginToken(user.userName, user.bankName, user.bankLocation).then(result => {
+    this.token.getLoginToken(user.userName, user.bankName, user.bankLocation, user.permissions).then(result => {
       this.logger.info("Get login token result: " + JSON.stringify(result));
       user.token = result.access_token;
       this.token.getLoginTokenInfo(user.token).then(res => {
-        user.userName = res.name;
+        user.userName = res["ext-display_name"];
+        //user.userName = res.name;
         user.bankName = res["ext-bank"];
         user.bankLocation = res["ext-bankLocation"];
+        user.permissions = res["ext-acquiring-profile"];
         var newDate = new Date(res.exp * 1000);
         this.timeout = newDate.getTime() - new Date().getTime();
         this.expirationCounter(this.timeout);

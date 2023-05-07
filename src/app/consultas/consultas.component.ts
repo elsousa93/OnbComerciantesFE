@@ -3,7 +3,7 @@ import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { ProcessService } from '../process/process.service';
@@ -191,7 +191,8 @@ export class ConsultasComponent implements OnInit {
               nipc: process?.merchant?.fiscalId,
               nome: process?.merchant?.name,
               estado: process?.state,
-              processId: process?.processId
+              processId: process?.processId,
+              state: ""
             };
           });
           processes.push(...processesArray);
@@ -202,7 +203,7 @@ export class ConsultasComponent implements OnInit {
             this.logger.info("Search total processes result: " + JSON.stringify(result));
 
             let processesArray: Process[] = result.items.map<Process>((process) => {
-
+              process["st"] = process.state;
               // mapear os estados para aparecer em PT ou EN
               process.state = this.translate.instant('searches.contractAcceptance');
 
@@ -211,7 +212,8 @@ export class ConsultasComponent implements OnInit {
                 nipc: process?.merchant?.fiscalId,
                 nome: process?.merchant?.name,
                 estado: process?.state,
-                processId: process?.processId
+                processId: process?.processId,
+                state: process["st"]
               };
             });
             processes.push(...processesArray);
@@ -248,6 +250,7 @@ export class ConsultasComponent implements OnInit {
           if (r.pagination.total == 1) {
             this.isLengthOne = true;
             let processesArray: Process[] = r.items.map<Process>((process) => {
+              process["st"] = process.state;
               // mapear os estados para aparecer em PT ou EN
               process.state = this.translate.instant('searches.contractDigitalAcceptance')
               return {
@@ -255,7 +258,8 @@ export class ConsultasComponent implements OnInit {
                 nipc: process?.merchant?.fiscalId,
                 nome: process?.merchant?.name,
                 estado: process?.state,
-                processId: process?.processId
+                processId: process?.processId,
+                state: process["st"]
               };
             });
             processes.push(...processesArray);
@@ -266,7 +270,7 @@ export class ConsultasComponent implements OnInit {
               this.logger.info("Search total processes result: " + JSON.stringify(result));
 
               let processesArray: Process[] = result.items.map<Process>((process) => {
-
+                process["st"] = process.state;
                 // mapear os estados para aparecer em PT ou EN
                 process.state = this.translate.instant('searches.contractDigitalAcceptance');
 
@@ -275,7 +279,8 @@ export class ConsultasComponent implements OnInit {
                   nipc: process?.merchant?.fiscalId,
                   nome: process?.merchant?.name,
                   estado: process?.state,
-                  processId: process?.processId
+                  processId: process?.processId,
+                  state: process["st"]
                 };
               });
               processes.push(...processesArray);
@@ -313,6 +318,7 @@ export class ConsultasComponent implements OnInit {
             this.isLengthOne = true;
 
             let processesArray: Process[] = r.items.map<Process>((process) => {
+              process["st"] = process.state;
               // mapear os estados para aparecer em PT ou EN
               process.state = this.translate.instant('searches.digitalIdentification')
 
@@ -321,7 +327,8 @@ export class ConsultasComponent implements OnInit {
                 nipc: process?.merchant?.fiscalId,
                 nome: process?.merchant?.name,
                 estado: process?.state,
-                processId: process?.processId
+                processId: process?.processId,
+                state: process["st"]
               };
             })
             processes.push(...processesArray);
@@ -332,6 +339,7 @@ export class ConsultasComponent implements OnInit {
               this.logger.info("Search total processes result: " + JSON.stringify(result));
 
               let processesArray: Process[] = result.items.map<Process>((process) => {
+                process["st"] = process.state;
                 // mapear os estados para aparecer em PT ou EN
                 process.state = this.translate.instant('searches.digitalIdentification')
 
@@ -340,7 +348,8 @@ export class ConsultasComponent implements OnInit {
                   nipc: process?.merchant?.fiscalId,
                   nome: process?.merchant?.name,
                   estado: process?.state,
-                  processId: process?.processId
+                  processId: process?.processId,
+                  state: process["st"]
                 };
               })
               processes.push(...processesArray);
@@ -363,6 +372,7 @@ export class ConsultasComponent implements OnInit {
           this.isLengthOne = true;
 
           let processesArray: Process[] = r.items.map<Process>((process) => {
+            process["st"] = process.state;
             // mapear os estados para aparecer em PT ou EN
             if (process.state === 'Incomplete') {
               process.state = this.translate.instant('searches.incompleted');
@@ -397,13 +407,14 @@ export class ConsultasComponent implements OnInit {
             } else if (process.state === 'ComplianceEvaluation') {
               process.state = this.translate.instant('searches.complianceDoubts')
             }
-
+            
             return {
               processNumber: process?.processNumber,
               nipc: process?.merchant?.fiscalId,
               nome: process?.merchant?.name,
               estado: process?.state,
-              processId: process?.processId
+              processId: process?.processId,
+              state: process["st"]
             };
           })
           if (processesArray.length == 0) {
@@ -420,7 +431,7 @@ export class ConsultasComponent implements OnInit {
             this.logger.info("Search total processes result: " + JSON.stringify(result));
 
             let processesArray: Process[] = result.items.map<Process>((process) => {
-
+              process["st"] = process.state;
               // mapear os estados para aparecer em PT ou EN
               if (process.state === 'Incomplete') {
                 process.state = this.translate.instant('searches.incompleted');
@@ -461,7 +472,8 @@ export class ConsultasComponent implements OnInit {
                 nipc: process?.merchant?.fiscalId,
                 nome: process?.merchant?.name,
                 estado: process?.state,
-                processId: process?.processId
+                processId: process?.processId,
+                state: process["st"]
               };
             })
             if (processesArray.length == 0) {
@@ -496,11 +508,58 @@ export class ConsultasComponent implements OnInit {
   }
 
   openProcess(process) {
-    localStorage.setItem("processNumber", process.processNumber);
-    this.processNrService.changeProcessId(process.processId);
-    localStorage.setItem("returned", 'consult');
-    this.logger.info("Redirecting to Client By Id page");
-    this.route.navigate(['/clientbyid']);
+    if (process.state === 'StandardIndustryClassificationChoice' || process.state === 'RiskAssessment' || process.state === 'EligibilityAssessment' || process.state === 'ClientChoice' || process.state === 'NegotiationApproval' || process.state === 'MerchantRegistration' || process.state === 'OperationsEvaluation' || process.state === 'ComplianceEvaluation') {
+      let navigationExtras: NavigationExtras = {
+        state: {
+          queueName: "",
+          processId: process.processId
+        }
+      };
+      if (process.state === 'StandardIndustryClassificationChoice') {
+        navigationExtras.state["queueName"] = "MCCTreatment";
+      } else if (process.state === 'RiskAssessment') {
+        navigationExtras.state["queueName"] = "risk";
+      } else if (process.state === 'EligibilityAssessment') {
+        navigationExtras.state["queueName"] = "eligibility";
+      } else if (process.state === 'ClientChoice') {
+        navigationExtras.state["queueName"] = "multipleClients";
+      } else if (process.state === 'NegotiationApproval') {
+        navigationExtras.state["queueName"] = "negotiationAproval";
+      } else if (process.state === 'MerchantRegistration') {
+        navigationExtras.state["queueName"] = "validationSIBS";
+      } else if (process.state === 'OperationsEvaluation') {
+        navigationExtras.state["queueName"] = "DOValidation";
+      } else if (process.state === 'ComplianceEvaluation') {
+        navigationExtras.state["queueName"] = "compliance";
+      }
+      this.logger.info('Redirecting to Queues Detail page');
+      this.route.navigate(["/queues-detail"], navigationExtras);
+    } else {
+      if (process.state == "Returned") {
+        this.data.historyStream$.next(true);
+        this.processNrService.changeProcessId(process.processId);
+        this.processNrService.changeQueueName("devolucao");
+        this.logger.info('Redirecting to Devolucao page');
+        this.route.navigate(['/app-devolucao/', process.processId]);
+      } else if (process.state == "ContractAcceptance" || process.state == "ContractDigitalAcceptance" || process.state == "DigitalIdentification") {
+        localStorage.setItem("processNumber", process.processNumber);
+        this.processNrService.changeProcessId(process.processId);
+        this.processNrService.changeQueueName("aceitacao");
+        this.logger.info("Redirecting to Aceitacao page");
+        this.route.navigate(['/app-aceitacao/', process.processId]);
+      } else if (process.state == "Incomplete") {
+        localStorage.setItem("processNumber", process.processNumber);
+        localStorage.setItem("returned", 'edit');
+        this.logger.info("Redirecting to Client By Id page");
+        this.route.navigate(['/clientbyid']);
+      } else {
+        localStorage.setItem("processNumber", process.processNumber);
+        this.processNrService.changeProcessId(process.processId);
+        localStorage.setItem("returned", 'consult');
+        this.logger.info("Redirecting to Client By Id page");
+        this.route.navigate(['/clientbyid']);
+      }
+    }
   }
 
   ngOnInit(): void {

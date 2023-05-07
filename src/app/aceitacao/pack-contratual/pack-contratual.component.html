@@ -75,8 +75,6 @@
                       <h2 class="accordion1-header" id="flush-headingOne">
                         <button class="accordion1-button" type="button" data-bs-toggle="collapse"
                                 data-bs-target="#flush-collapseOne" aria-expanded="true" aria-controls="flush-collapseOne">
-                          <!--<span class="material-symbols-outlined icon-accordion app-registration icon-app-registration">
-          </span>-->
                           &nbsp;&nbsp;{{'acceptance.contratualPack.representatives'|translate|uppercase}}
                         </button>
                       </h2>
@@ -95,8 +93,17 @@
                                 <th scope="col" class="text-center bg-white">
                                   {{'acceptance.contratualPack.signType'|translate|uppercase}}
                                 </th>
-                                <th scope="col" class="text-center bg-white">
+                                <th *ngIf="state == 'ContractAcceptance'" scope="col" class="text-center bg-white">
                                   {{'homepage.state'|translate|uppercase}}
+                                </th>
+                                <th *ngIf="state != 'ContractAcceptance'" scope="col" class="text-center bg-white">
+                                  {{'acceptance.contratualPack.signType2'|translate|uppercase}}
+                                </th>
+                                <th *ngIf="state != 'ContractAcceptance'" scope="col" class="text-center bg-white">
+                                  {{'acceptance.contratualPack.identificationState'|translate|uppercase}}
+                                </th>
+                                <th *ngIf="state != 'ContractAcceptance'" scope="col" class="text-center bg-white">
+                                  {{'acceptance.contratualPack.signatureState'|translate|uppercase}}
                                 </th>
                               </tr>
                             </thead>
@@ -105,10 +112,12 @@
                                 <tr *ngIf="stake.representationPower?.representationPowers != null && stake.representationPower?.representationPowers != ''">
                                   <td class="text-primary text-center align-middle">{{stake?.shortName}}</td>
                                   <td class="text-primary text-center align-middle">{{stake?.fiscalId}}</td>
-                                  <td class="text-primary text-center align-middle">{{stake.representationPower?.representationPowers}}</td>
+                                  <td class="text-primary text-center align-middle">{{getRepresentaionPowersDescription(stake.representationPower?.representationPowers)}}</td>
                                   <td class="text-primary text-center align-middle">{{(stake.representationPower?.restrictions == null || stake.representationPower?.restrictions == '') ? '-' : stake.representationPower?.restrictions}}</td>
-                                  <td class="text-primary text-center align-middle" *ngIf="state != 'ContractAcceptance'">{{stake?.signType}}</td>
-                                  <td class="text-primary text-center align-middle" *ngIf="state != 'ContractAcceptance'">{{stake?.identificationState}}</td>
+                                  <td class="text-primary text-center align-middle" *ngIf="state != 'ContractAcceptance'">{{getSignTypeDescription(process?.contractSignature?.signType)}}</td>
+                                  <td class="text-primary text-center align-middle" *ngIf="state != 'ContractAcceptance'">{{getSignTypeDescription(stake?.signType)}}</td>
+                                  <td class="text-primary text-center align-middle" *ngIf="state != 'ContractAcceptance'">{{getIdentificationStateDescription(stake?.identificationState)}}</td>
+                                  <td class="text-primary text-center align-middle" *ngIf="state != 'ContractAcceptance'">{{getSignatureStateDescription(stake?.signatureState)}}</td>
                                   <td class="text-primary text-center align-middle" *ngIf="state == 'ContractAcceptance'">Manual</td>
                                   <td class="text-primary text-center align-middle" *ngIf="state == 'ContractAcceptance'">Recolha Assinatura</td>
                                 </tr>
@@ -122,13 +131,13 @@
                             <button *ngIf="!canceled" id="btn5a2"
                                     class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                     wappler-command="editContent" (click)="cancelIdentification()">
-                              {{(updatedInfo == true ? 'acceptance.contratualPack.cancelSignature' : 'acceptance.contratualPack.cancelIdentification') |translate|uppercase}}&nbsp;
+                              {{'acceptance.contratualPack.manualSignature'|translate|uppercase}}&nbsp;
                             </button>
-                            <button *ngIf="canceled && updatedInfo && !manualSignature" id="btn5a2"
+                            <!--<button *ngIf="canceled && updatedInfo && !manualSignature" id="btn5a2"
                                     class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                     wappler-command="editContent" (click)="changeToManual()">
                               {{'acceptance.contratualPack.manualSignature'|translate|uppercase}}&nbsp;
-                            </button>
+                            </button>-->
                             <button *ngIf="!canceled" id="btn5a2"
                                     class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                     wappler-command="editContent" (click)="fetchStartingInfo()">

@@ -61,7 +61,7 @@
                            <td class="text-primary text-center">{{comp.status}}</td>
                            <td></td>
                            <td class="text-center text-primary" [ngStyle]="{'width': wnd.outerWidth <= 768 ? '15%' : null}">
-                              <span *ngIf="!(comp.documentType === '0001' || comp.documentType === '0018' || comp.documentType === '0034' || comp.documentType === '0071')" class="delete-blue-comp icon-delete-blue" (click)="onDelete(comp.file, comp.id)">
+                              <span *ngIf="!(comp.documentType === '0001' || comp.documentType === '0018' || comp.documentType === '0034' || comp.documentType === '0071' || returned == 'consult')" class="delete-blue-comp icon-delete-blue" (click)="onDelete(comp.file, comp.id)">
                                  <!--<img src="assets/images/delete_blue.svg"
                                     (click)="onDelete(comp.file, comp.id)"
                                     style="height: 25px !important; vertical-align: sub; cursor: pointer;">-->
@@ -105,16 +105,19 @@
                    </ng-container>
                  </span>
                </nav>
-               <p class="titulo-form-simples ms-2" for="observacoes">
-                  {{'supportingDocuments.observations'|translate|uppercase}}:</p>
-               <textarea required minlength="2" maxlength="100" ngModel #observacoes="ngModel" name="observacoes"
-                  type="text" id="observacoes" class="form-control campo_form ms-2" rows="3"></textarea>
+               <form [formGroup]="form" name="form" id="form">
+                 <p class="titulo-form-simples ms-2" for="observations">
+                   {{'supportingDocuments.observations'|translate|uppercase}}:
+                 </p>
+                 <textarea minlength="2" maxlength="100" formControlName="observations" name="observations"
+                           type="text" id="observations" class="form-control campo_form ms-2" rows="3"></textarea>
+               </form>
             </div>
          </div>
          <div class="row">
             <div class="ms-3 me-3 ps-3 pe-3 col-7">
                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="validate" name="validate"
+                  <input class="form-check-input" type="checkbox" id="validate" name="validate" [attr.disabled]="returned == 'consult' ? true : null"
                      [checked]="validatedDocuments" (change)="validatedDocumentsChange($event.target.checked)">
                   <label class="form-check-label"
                      for="validate">{{'supportingDocuments.checkUploadDocuments'|translate}}
@@ -126,7 +129,7 @@
          <div class="row">
             <div class="ms-3 me-3 ps-3 pe-3 col-7">
                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" id="clientPresence" name="clientPresence"
+                  <input class="form-check-input" type="checkbox" id="clientPresence" name="clientPresence" [attr.disabled]="returned == 'consult' ? true : null"
                      value="clientPresence">
                   <label class="form-check-label"
                      for="clientPresence">{{'supportingDocuments.customerPresence'|translate}}</label>
@@ -275,44 +278,65 @@
                            <tr class="text-center text-primary align-middle table-primary">
                               <th scope="col" class="align-baseline text-primary table-white">
                                  {{'supportingDocuments.checklistModal.name'|translate}}</th>
-                              <ng-container
-                                 *ngFor="let requiredStakeholderDocs of requiredDocuments?.requiredDocumentPurposesStakeholders; let length1 = index">
-                                 <ng-container
-                                    *ngFor="let stakeholderDocPurpose of requiredStakeholderDocs?.documentPurposes; let length2 = index">
-                                    <th scope="col"
-                                       *ngIf="length1 == 0 && stakeholderDocPurpose?.documentState !== 'NotApplicable'">
-                                       {{getDocumentPurposeDescription(stakeholderDocPurpose.purpose)}}</th>
-                                 </ng-container>
-                              </ng-container>
+                               <ng-container *ngFor="let purpose of stakePurposeList">
+                                 <th scope="col">
+                                   {{getDocumentPurposeDescription(purpose)}}
+                                 </th>
+                               </ng-container>
                            </tr>
                         </thead>
                         <tbody class="table-light text-primary">
-                           <ng-container
-                              *ngFor="let requiredStakeholderDocs of requiredDocuments?.requiredDocumentPurposesStakeholders">
-                              <tr class="table-white text-primary">
-                                 <td scope="row" class="text-center text-dark">{{requiredStakeholderDocs.entityName}}
-                                 </td>
-                                 <ng-container
-                                    *ngFor="let stakeholderPurposes of requiredStakeholderDocs?.documentPurposes; let length3 = index">
-                                    <td class="text-center text-dark"
-                                       *ngIf="stakeholderPurposes?.documentState !== 'NotApplicable'">
-                                       <img *ngIf="stakeholderPurposes?.documentState === 'Exists'"
-                                          src="assets/images/check-solid-comps.svg"
-                                          style="height: 20px !important; vertical-align: sub;">
+                          <ng-container *ngFor="let requiredStakeholderDocs of requiredDocuments?.requiredDocumentPurposesStakeholders">
+                            <tr class="table-white text-primary">
+                              <td scope="row" class="text-center text-dark">
+                                {{requiredStakeholderDocs.entityName}}
+                              </td>
+                              <ng-container *ngFor="let stakeholderPurposes of requiredStakeholderDocs?.documentPurposes; let length3 = index">
+                                <td class="text-center text-dark"
+                                    *ngIf="stakeholderPurposes?.documentState !== 'NotApplicable'">
+                                  <img *ngIf="stakeholderPurposes?.documentState === 'Exists'"
+                                       src="assets/images/check-solid-comps.svg"
+                                       style="height: 20px !important; vertical-align: sub;">
 
-                                       <img
-                                          *ngIf="stakeholderPurposes?.documentState === 'NotExists' && stakeholderPurposes['existsOutbound'] === true"
-                                          src="assets/images/check-solid-comps.svg"
-                                          style="height: 20px !important; vertical-align: sub;">
+                                  <img *ngIf="stakeholderPurposes?.documentState === 'NotExists' && stakeholderPurposes['existsOutbound'] === true"
+                                       src="assets/images/check-solid-comps.svg"
+                                       style="height: 20px !important; vertical-align: sub;">
 
-                                       <img
-                                          *ngIf="stakeholderPurposes?.documentState === 'NotExists' && stakeholderPurposes['existsOutbound'] === false"
-                                          src="assets/images/close-comps.svg"
-                                          style="height: 20px !important; vertical-align: sub;">
-                                    </td>
-                                 </ng-container>
-                              </tr>
-                           </ng-container>
+                                  <img *ngIf="stakeholderPurposes?.documentState === 'NotExists' && stakeholderPurposes['existsOutbound'] === false"
+                                       src="assets/images/close-comps.svg"
+                                       style="height: 20px !important; vertical-align: sub;">
+                                </td>
+                              </ng-container>
+                            </tr>
+                          </ng-container>
+                          <ng-container *ngFor="let requiredCorporateDocs of requiredDocuments?.requiredDocumentPurposesCorporateEntity">
+                            <tr class="table-white text-primary">
+                              <td scope="row" class="text-center text-dark">
+                                {{requiredCorporateDocs.entityName}}
+                              </td>
+                              <ng-container *ngFor="let purpose of stakePurposeList">
+                                <td scope="row" class="text-center text-dark" *ngIf="purpose !== 'CorporateBody'">
+                                  
+                                </td>
+                              </ng-container>
+                              <ng-container *ngFor="let corporatePurposes of requiredCorporateDocs?.documentPurposes; let length4 = index">
+                                <td class="text-center text-dark"
+                                    *ngIf="corporatePurposes?.documentState !== 'NotApplicable'">
+                                  <img *ngIf="corporatePurposes?.documentState === 'Exists'"
+                                       src="assets/images/check-solid-comps.svg"
+                                       style="height: 20px !important; vertical-align: sub;">
+
+                                  <img *ngIf="corporatePurposes?.documentState === 'NotExists' && corporatePurposes['existsOutbound'] === true"
+                                       src="assets/images/check-solid-comps.svg"
+                                       style="height: 20px !important; vertical-align: sub;">
+
+                                  <img *ngIf="corporatePurposes?.documentState === 'NotExists' && corporatePurposes['existsOutbound'] === false"
+                                       src="assets/images/close-comps.svg"
+                                       style="height: 20px !important; vertical-align: sub;">
+                                </td>
+                              </ng-container>
+                            </tr>
+                          </ng-container>
                         </tbody>
                      </table>
                   </div>

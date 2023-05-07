@@ -111,16 +111,16 @@ export class CountrysComponent implements OnInit {
 
   continentOptions = [
     {
-      "value": "EUROPA"
+      "value": "AFRICA"
     },
     {
-      "value": "AFRICA"
+      "value": "AMERICA DO NORTE / SUL"
     },
     {
       "value": "ASIA"
     },
     {
-      "value": "AMERICA DO NORTE / SUL"
+      "value": "EUROPA"
     },
     {
       "value": "OCEANIA"
@@ -137,12 +137,13 @@ export class CountrysComponent implements OnInit {
   lst = [];
   lstPreenchido = [];
   finalList = null;
+  continent: string;
 
   ngOnInit() {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
     this.returned = localStorage.getItem("returned");
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
-
+    this.subscription = this.data.currentContinent.subscribe(continent => this.continent = continent);
     this.initializeForm();
 
     if (this.returned == null) {
@@ -151,7 +152,7 @@ export class CountrysComponent implements OnInit {
           this.logger.info("Get country by id result: " + JSON.stringify(result));
           var index = this.lstPreenchido.findIndex(elem => elem.item_id == result.code);
           if (index == -1) {
-            this.countrys({ target: { value: "EUROPA" } });
+            this.countrys({ target: { value: this.continent } });
             this.addCountry({
               item_id: result.code,
               item_text: result.description
@@ -236,8 +237,10 @@ export class CountrysComponent implements OnInit {
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.logger.info("Get all countries result: " + JSON.stringify(result));
       this.countryList = result;
-      this.countryList = this.countryList.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
-      //this.countrys({ target: { value: "EUROPA" } });
+      this.countryList = this.countryList.sort(function (a, b) {
+        return a.description.localeCompare(b.description, 'pt-PT');
+      }); //ordenar resposta
+      this.countrys({ target: { value: this.continent } });
     }, error => this.logger.error(error, "", "Error fetching countries")));
 
     this.dropDownSettings = {
@@ -272,7 +275,8 @@ export class CountrysComponent implements OnInit {
         inputAsia: new FormControl(this.inputTypeAsia),
         franchiseName: new FormControl(this.client?.businessGroup?.type == 'Franchise' || this.client?.businessGroup?.type == 'Franchising' ? this.client?.businessGroup?.branch : null),
         NIPCGroup: new FormControl(this.client?.businessGroup?.type == 'Group' || this.client?.businessGroup?.type == 'Holding' ? this.client?.businessGroup?.branch : ''),
-        countries: new FormControl([])
+        countries: new FormControl([]),
+        continent: new FormControl(this.continent)
       }));
       this.editCountries(true);
     } else {
@@ -289,7 +293,8 @@ export class CountrysComponent implements OnInit {
         inputAsia: new FormControl(this.inputTypeAsia),
         franchiseName: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo?.businessGroup != null && (this.merchantInfo?.businessGroup?.type == 'Franchise' || this.merchantInfo?.businessGroup?.type == 'Franchising')) ? this.merchantInfo?.businessGroup?.branch : null),
         NIPCGroup: new FormControl((this.returned != null && this.merchantInfo != undefined && this.merchantInfo?.businessGroup != null && (this.merchantInfo?.businessGroup?.type == 'Group' || this.merchantInfo?.businessGroup?.type == 'Holding')) ? this.merchantInfo?.businessGroup?.branch : ''),
-        countries: new FormControl([])
+        countries: new FormControl([]),
+        continent: new FormControl(this.continent)
       }));
       if (this.returned != null) {
         this.editCountries(false);
@@ -298,8 +303,13 @@ export class CountrysComponent implements OnInit {
       }
     }
 
-    this.numberWithCommasAnual();
-    this.numberWithCommas();
+    if (this.form.get("expectableAnualInvoicing").value != null && this.form.get("expectableAnualInvoicing").value != "") {
+      this.numberWithCommasAnual();
+    }
+    if (this.form.get("transactionsAverage").value != null && this.form.get("transactionsAverage").value != "") {
+      this.numberWithCommas()
+    }
+;
 
     this.form.get("franchiseName").valueChanges.pipe(distinctUntilChanged()).subscribe(v => {
       if (v != "" && v != null) {
@@ -348,7 +358,8 @@ export class CountrysComponent implements OnInit {
       inputAsia: new FormControl(this.inputTypeAsia),
       franchiseName: new FormControl(null),
       NIPCGroup: new FormControl(''),
-      countries: new FormControl([])
+      countries: new FormControl([]),
+      continent: new FormControl('EUROPA')
     }));
 
     this.form.get("franchiseName").valueChanges.pipe(distinctUntilChanged()).subscribe(v => {
@@ -529,6 +540,8 @@ export class CountrysComponent implements OnInit {
       }
       item[0].hidden = true;
     }, 0);
+    this.continent = item.target.value;
+    this.data.changeContinent(this.continent);
     switch (item.target.value) {
       case 'EUROPA':
         this.inputEuropa = true;
@@ -645,21 +658,7 @@ export class CountrysComponent implements OnInit {
       this.client.knowYourSales.servicesOrProductsDestinations.forEach(countryID => {
         this.subs.push(this.tableInfo.GetCountryById(countryID).subscribe(result => {
           this.logger.info("Get country by id result: " + JSON.stringify(result));
-          if (result.continent == "Europa") {
-            this.countrys({ target: { value: "EUROPA" } });
-          }
-          if (result.continent == "Ásia") {
-            this.countrys({ target: { value: "ASIA" } });
-          }
-          if (result.continent == "América Sul" || result.continent == "América Central" || result.continent == "América Norte") {
-            this.countrys({ target: { value: "AMERICA DO NORTE / SUL" } });
-          }
-          if (result.continent == "Africa") {
-            this.countrys({ target: { value: "AFRICA" } });
-          }
-          if (result.continent == "Oceânia") {
-            this.countrys({ target: { value: "OCEANIA" } });
-          }
+          this.countrys({ target: { value: this.continent } });
           this.addCountry({
             item_id: result.code,
             item_text: result.description
@@ -676,21 +675,7 @@ export class CountrysComponent implements OnInit {
       this.merchantInfo.knowYourSales.servicesOrProductsDestinations.forEach(countryID => {
         this.subs.push(this.tableInfo.GetCountryById(countryID).subscribe(result => {
           this.logger.info("Get country by id result: " + JSON.stringify(result));
-          if (result.continent == "Europa") {
-            this.countrys({ target: { value: "EUROPA" } });
-          }
-          if (result.continent == "Ásia") {
-            this.countrys({ target: { value: "ASIA" } });
-          }
-          if (result.continent == "América Sul" || result.continent == "América Central" || result.continent == "América Norte") {
-            this.countrys({ target: { value: "AMERICA DO NORTE / SUL" } });
-          }
-          if (result.continent == "Africa") {
-            this.countrys({ target: { value: "AFRICA" } });
-          }
-          if (result.continent == "Oceânia") {
-            this.countrys({ target: { value: "OCEANIA" } });
-          }
+          this.countrys({ target: { value: this.continent } });
           this.addCountry({
             item_id: result.code,
             item_text: result.description
@@ -745,7 +730,7 @@ export class CountrysComponent implements OnInit {
           this.logger.info("Get country by id result: " + JSON.stringify(result));
           var index = this.lstPreenchido.findIndex(elem => elem.item_id == result.code);
           if (index == -1) {
-            this.countrys({ target: { value: "EUROPA" } });
+            this.countrys({ target: { value: this.continent } });
             this.addCountry({
               item_id: result.code,
               item_text: result.description
@@ -868,5 +853,12 @@ export class CountrysComponent implements OnInit {
     parts = parts.replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     this.form.get("expectableAnualInvoicing").setValue(parts);
     this.form.get("expectableAnualInvoicing").updateValueAndValidity();
+  }
+
+  get disabled() {
+    if (this.returned == 'consult') {
+      this.form?.get("countries")?.disable();
+    }
+    return this.form?.get("countries")?.disabled;
   }
 }

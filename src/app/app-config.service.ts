@@ -10,7 +10,12 @@ export class AppConfigService {
   constructor(private http: HttpClient) { }
 
   loadAppConfig() {
-    let path = environment.production ? './assets/config/config.prod.json' : './assets/config/config.json';
+    let path = '';
+    if (environment.production == null) {
+      path = './assets/config/config.json';
+    } else {
+      path = environment.production ? './assets/config/config.prod.json' : './assets/config/config.qa.json';
+    }
     return this.http.get<Configuration>(path)
       .toPromise()
       .then(data => {

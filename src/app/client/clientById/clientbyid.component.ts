@@ -137,6 +137,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   queueName: string = "";
   title: string;
   merchant: boolean;
+  updateProcessId: string;
+  processInfo: any;
 
   updateBasicForm() {
     this.form.get("clientCharacterizationForm").get("natJuridicaNIFNIPC").setValue(this.NIFNIPC);
@@ -189,7 +191,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         inputOceania: new FormControl(false),
         inputAsia: new FormControl(false),
         franchiseName: new FormControl(''),
-        NIPCGroup: new FormControl('')
+        NIPCGroup: new FormControl(''),
+        countries: new FormControl([]),
+        continent: new FormControl('EUROPA')
       }),
       powerRepresentationForm: formBuilder.group({}),
     })
@@ -212,12 +216,88 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     try {
       var context = this;
       return new Promise((resolve, reject) => {
-        if (this.returned == 'consult' || (this.returned == 'edit' && this.processId != null && this.processId != '')) {
+        if (this.returned == 'consult') {
           context.processService.getMerchantFromProcess(context.processId).subscribe(res => {
             context.logger.info("Get process client by id result: " + JSON.stringify(res));
             context.merchantInfo = res;
             resolve(res);
             return res;
+          });
+        } else if (this.returned == 'edit' && this.processId != null && this.processId != '') {
+          var updateProcessBody = {
+            submissionUser: "",
+            observation: "",
+            contractPackLanguage: "",
+            signType: "",
+            isClientAwaiting: false
+          };
+          context.processService.getProcessById(context.processId).subscribe(result => {
+            if (!result.updateProcessInformation.isInProgress) {
+              updateProcessBody.submissionUser = context.authService.GetCurrentUser().userName;
+              updateProcessBody.signType = result.contractSignature.signType;
+              updateProcessBody.isClientAwaiting = result.isClientAwaiting;
+              context.processService.updateProcess(context.processId, updateProcessBody).then(res => {
+                context.updateProcessId = res.result.updateProcessId;
+                context.processNrService.changeUpdateProcessId(context.updateProcessId);
+                context.processService.getUpdateProcessInfo(context.processId, context.updateProcessId).then(r => {
+                  context.processInfo = r.result;
+                  context.merchantInfo = r.result.merchant;
+                  context.clientDocs = [];
+                  context.merchantInfo.documents.forEach(doc => {
+                    var docOutbound = {
+                      documentType: doc.documentType,
+                      uniqueReference: doc.id,
+                      validUntil: doc.validUntil,
+                      purpose: doc.purposes[0],
+                    } as OutboundDocument;
+                    context.clientDocs.push(docOutbound);
+                  });
+                  context.merchantInfo.documents = null;
+                  context.merchantInfo.id = null;
+                  context.merchantInfo.riskAssessment = null;
+                  context.merchantInfo.updateProcessAction = null;
+                  if (context.merchantInfo.contacts.phone1 != null) {
+                    context.merchantInfo.contacts.phone1.phoneIndicative = null;
+                  }
+                  if (context.merchantInfo.contacts.phone2 != null) {
+                    context.merchantInfo.contacts.phone2.phoneIndicative = null;
+                  }
+                  context.merchantInfo = Object.fromEntries(Object.entries(context.processInfo.merchant).filter(([_, v]) => v != null));
+                  resolve(r.result.merchant);
+                  return r.result.merchant;
+                });
+              });
+            } else {
+              context.updateProcessId = result.updateProcessInformation.id;
+              context.processNrService.changeUpdateProcessId(context.updateProcessId);
+              context.processService.getUpdateProcessInfo(context.processId, context.updateProcessId).then(r => {
+                context.processInfo = r.result;
+                context.merchantInfo = r.result.merchant;
+                context.clientDocs = [];
+                context.merchantInfo.documents.forEach(doc => {
+                  var docOutbound = {
+                    documentType: doc.documentType,
+                    uniqueReference: doc.id,
+                    validUntil: doc.validUntil,
+                    purpose: doc.purposes[0],
+                  } as OutboundDocument;
+                  context.clientDocs.push(docOutbound);
+                });
+                context.merchantInfo.documents = null;
+                context.merchantInfo.id = null;
+                context.merchantInfo.riskAssessment = null;
+                context.merchantInfo.updateProcessAction = null;
+                if (context.merchantInfo.contacts.phone1 != null) {
+                  context.merchantInfo.contacts.phone1.phoneIndicative = null;
+                }
+                if (context.merchantInfo.contacts.phone2 != null) {
+                  context.merchantInfo.contacts.phone2.phoneIndicative = null;
+                }
+                context.merchantInfo = Object.fromEntries(Object.entries(context.processInfo.merchant).filter(([_, v]) => v != null));
+                resolve(r.result.merchant);
+                return r.result.merchant;
+              });
+            }
           });
         } else {
           context.submissionService.GetSubmissionByProcessNumber(localStorage.getItem("processNumber")).then(function (result) {
@@ -245,6 +325,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   async ngOnInit() {
     var context = this;
     this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
+    this.subscription = this.processNrService.updateProcessId.subscribe(id => this.updateProcessId = id);
     if (this.returned != null) {
       let promise = await context.getMerchantInfo();
       if (context.merchantInfo.clientId != null) {
@@ -330,45 +411,72 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       if (queueName == "devolucao") {
         this.submissionType = 'DigitalComplete';
       }
-      this.queueService.GetProcessStakeholders(this.processId).then(result => {
-        context.logger.info("Get all stakeholders from submission result: " + JSON.stringify(result));
-        var stakeholders = result;
-        let length = 0;
-        stakeholders.forEach(function (value, index) {
-          length++;
-          context.processService.getStakeholderByIdFromProcess(context.processId, value.id).subscribe(res => {
-            context.logger.info("Get stakeholder from submission result: " + JSON.stringify(res));
-            context.submissionStakeholders.push(res);
-            if (length == stakeholders.length) {
-              context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
-            }
-          }, error => {
-            context.logger.error(error);
-          })
+      if (this.returned == 'consult') {
+        this.queueService.GetProcessStakeholders(this.processId).then(result => {
+          context.logger.info("Get all stakeholders from submission result: " + JSON.stringify(result));
+          var stakeholders = result;
+          let length = 0;
+          stakeholders.forEach(function (value, index) {
+            length++;
+            context.processService.getStakeholderByIdFromProcess(context.processId, value.id).subscribe(res => {
+              context.logger.info("Get stakeholder from submission result: " + JSON.stringify(res));
+              context.submissionStakeholders.push(res);
+              if (length == stakeholders.length) {
+                context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
+              }
+            }, error => {
+              context.logger.error(error);
+            })
+          });
+        }, error => {
+          context.logger.error(error);
+        }).then(res => {
+          context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
         });
-      }, error => {
-        context.logger.error(error);
-      }).then(res => {
-        context.clientContext.setStakeholdersToInsert([...context.submissionStakeholders]);
-      });
 
-      this.processService.getDocumentFromProcess(this.processId).subscribe(result => {
-        context.logger.info("Get submission documents result: " + JSON.stringify(result));
-        if (result.length > 0) {
-          result.forEach(doc => {
-            this.processService.getDocumentDetailsFromProcess(this.processId, doc.id).subscribe(res => {
-              context.logger.info("Get submission document result: " + JSON.stringify(res));
-              this.submissionDocs.push(res);
+        this.processService.getDocumentFromProcess(this.processId).subscribe(result => {
+          context.logger.info("Get submission documents result: " + JSON.stringify(result));
+          if (result.length > 0) {
+            result.forEach(doc => {
+              this.processService.getDocumentDetailsFromProcess(this.processId, doc.id).subscribe(res => {
+                context.logger.info("Get submission document result: " + JSON.stringify(res));
+                this.submissionDocs.push(res);
+              });
             });
+          }
+        })
+      } else {
+        if (this.processInfo.stakeholders.length > 0) {
+          this.processInfo.stakeholders.forEach(stake => {
+            if (stake.updateProcessAction != "Delete") {
+              stake.documents = null;
+              if (stake.phone1 != null) {
+                stake.phone1.phoneIndicative = null;
+              }
+              if (stake.phone2 != null) {
+                stake.phone2.phoneIndicative = null;
+              }
+              let o = Object.fromEntries(Object.entries(stake).filter(([_, v]) => v != null));
+              this.submissionStakeholders.push(o);
+            }
+          });
+          this.clientContext.setStakeholdersToInsert([...this.submissionStakeholders]);
+        }
+
+        if (this.processInfo.documents.length > 0) {
+          this.processInfo.documents.forEach(doc => {
+            if (doc.updateProcessAction != "Delete") {
+              this.submissionDocs.push(doc);
+            }
           });
         }
-      })
+      }
 
     }
 
     if (this.returned == null) {
       if (!this.submissionExists || this.isFromSearch) {
-        if (this.dataCC != null) {
+        if (this.dataCC?.nifCC != null) {
           this.data.changeCurrentDataCC(this.dataCC);
           var client: AcquiringClientPost = {} as AcquiringClientPost;
 
@@ -416,11 +524,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 email: result.contacts?.email,
                 phone1: {
                   phoneNumber: result.contacts?.phone1?.phoneNumber,
-                  countryCode: result.contacts?.phone1?.internationalIndicative
+                  countryCode: result.contacts?.phone1?.country
                 },
                 phone2: {
                   phoneNumber: result.contacts?.phone2?.phoneNumber,
-                  countryCode: result.contacts?.phone2?.internationalIndicative
+                  countryCode: result.contacts?.phone2?.country
                 },
               }
 
@@ -538,11 +646,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 email: client.contacts?.email,
                 phone1: {
                   phoneNumber: client.contacts?.phone1?.phoneNumber,
-                  countryCode: client.contacts?.phone1?.internationalIndicative
+                  countryCode: client.contacts?.phone1?.country
                 },
                 phone2: {
                   phoneNumber: client.contacts?.phone2?.phoneNumber,
-                  countryCode: client.contacts?.phone2?.internationalIndicative
+                  countryCode: client.contacts?.phone2?.country
                 },
               }
               clientToInsert.businessGroup = {
@@ -562,6 +670,31 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               this.NIFNIPC = client.fiscalIdentification.fiscalId;
               this.clientContext.setNIFNIPC(client.fiscalIdentification.fiscalId);
               this.updateBasicForm();
+            }, error => {
+              var currentClient = this.clientContext.getClient();
+              var clientToInsert: AcquiringClientPost = {};
+              clientToInsert.fiscalId = this.NIFNIPC;
+              clientToInsert.legalName = this.socialDenomination;
+              clientToInsert.commercialName = this.socialDenomination;
+              clientToInsert.shortName = this.shortName ?? this.socialDenomination;
+              clientToInsert.knowYourSales = {
+                servicesOrProductsDestinations: [],
+                servicesOrProductsSold: []
+              }
+              clientToInsert.bankInformation = {}
+              clientToInsert.businessGroup = {}
+              clientToInsert.contacts = {
+                phone1: {},
+                phone2: {}
+              }
+              clientToInsert.otherEconomicActivities = [];
+              clientToInsert.otherTaxCodes = [];
+              clientToInsert.incorporationStatement = {};
+              clientToInsert.shareCapital = {};
+              clientToInsert.merchantType = this.tipologia;
+              clientToInsert.documentationDeliveryMethod = 'Portal';
+              this.clientContext.isClient = false;
+              this.clientContext.setNIFNIPC(this.NIFNIPC);
             }).then(result => {
               if (this.clientContext.isClient == false) {
                 this.countriesComponent.getClientContextValues();
@@ -716,7 +849,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           tipologia: this.tipologia,
           clientExists: this.clientExists,
           dataCC: this.dataCC,
-          isClient: this.clientContext.isClient,
+          isClient: this.clientContext?.isClient ?? false,
           comprovativoCC: this.comprovativoCC,
         }
       };
@@ -805,7 +938,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           phoneNumber: client.contacts?.phone2?.countryCode
         };
         stakeholder.email = client.contacts.email;
-        if (this.dataCC !== undefined && this.dataCC !== null) {
+        if (this.dataCC?.nifCC != undefined && this.dataCC?.nifCC != null) {
           stakeholder.signType = "DigitalCitizenCard";
           var birthDate = this.clientContext.dataCC.birthdateCC.split(" ");
           stakeholder.birthDate = this.datepipe.transform(new Date(birthDate[2] + " " + birthDate[1] + " " + birthDate[0]), 'yyyy-MM-dd');
@@ -1017,7 +1150,6 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             if (documents.length > 0) {
               documents.forEach(doc => {
                 if (doc.documentType !== '0001') {
-
                   context.clientService.merchantPostDocument(submissionID, doc).subscribe(result => {
                     context.logger.info('Added document to submission: ' + JSON.stringify(result));
                   });
@@ -1147,9 +1279,17 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         this.b64toBlob(result.binary, 'application/pdf', 512);
       });
     } else {
-      this.documentService.GetDocumentImage(localStorage.getItem("submissionId"), uniqueReference).subscribe(result => {
-        this.logger.info("Get document image result: " + JSON.stringify(result));
-      });
+      if (this.returned == null || this.returned == 'edit' && (this.processId == '' || this.processId == null)) {
+        this.documentService.GetDocumentImage(localStorage.getItem("submissionId"), uniqueReference).subscribe(result => {
+          this.logger.info("Get document image result: " + JSON.stringify(result));
+        });
+      } else {
+        this.processService.getDocumentImageFromProcess(this.processId, uniqueReference).subscribe(result => {
+          this.logger.info("Get document image result: " + JSON.stringify(result));
+        });
+      }
+
+
     }
   }
 

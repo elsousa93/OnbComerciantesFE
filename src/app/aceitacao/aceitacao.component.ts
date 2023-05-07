@@ -50,7 +50,7 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
   docTypes: DocumentSearchType[] = [];
 
   historyMat = new MatTableDataSource<ProcessHistory>();
-  historyColumns: string[] = ['processNumber', 'processState', 'whenStarted', 'whoStarted', 'observations'];
+  historyColumns: string[] = ['processNumber', 'processState', 'whenStarted', 'whoFinished', 'observations'];
   @ViewChild('historySort') historySort = new MatSort();
   @ViewChild('paginatorHistory') set paginatorHistory(pager: MatPaginator) {
     if (pager) {

@@ -88,7 +88,13 @@ export function ClearCCFields() {
 
 }
 
-var BASE_URL = require('../../assets/config/config.json');
+var BASE_URL;
+var environment = require('../../environments/environment');
+if (environment.environment.production == null) {
+  BASE_URL = require('../../assets/config/config.json');
+} else {
+  BASE_URL = environment.environment.production ? require('../../assets/config/config.prod.json') : require('../../assets/config/config.qa.json');
+}
 // const BASE_URL = 'http://localhost:12000/BackendPortal'; //FIXME
 
 (function () {

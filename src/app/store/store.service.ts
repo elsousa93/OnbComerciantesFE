@@ -106,6 +106,10 @@ export class StoreService {
     return this.http.delete(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId);
   }
 
+  deleteShopProcess(processId: string, shopId: string) {
+    return this.http.delete(this.baseUrl + 'process/' + processId + '/merchant/shop/' + shopId);
+  }
+
   getShopEquipmentConfigurationsFromProcess(processId: string, shopId: string) {
     return this.http.get<ShopEquipment>(this.baseUrl + 'process/' + processId + '/merchant/shop/' + shopId + '/equipment');
   }

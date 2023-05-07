@@ -11,7 +11,12 @@ export class ServerCustomService extends NGXLoggerServerService {
 
         if (!this.url){
             
-            let path = environment.production ? './assets/config/config.prod.json' : './assets/config/config.json';
+          let path = '';
+          if (environment.production == null) {
+            path = './assets/config/config.json';
+          } else {
+            path = environment.production ? './assets/config/config.prod.json' : './assets/config/config.qa.json';
+          }
 
 
             fetch(path)

@@ -15,11 +15,11 @@ export class dataCC {
   socialSecurityCC?: any;
   healthNumberCC?: any;
   signatureCC?: any;
-  
+  gender?: any;
   addressCC?: any;
   postalCodeCC?: any;
   localityCC?: any;
   countryCC?: any; //Country issuer of the document
-
+  notes?: any;
   documentType?: any;
 }

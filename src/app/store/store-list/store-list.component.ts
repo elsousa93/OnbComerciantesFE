@@ -26,6 +26,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from '../../logger.service';
 import { ProcessService } from '../../process/process.service';
 import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-store-list',
@@ -68,6 +69,8 @@ export class StoreComponent implements AfterViewInit {
   updatedStoreEvent: Observable<{ store: ShopDetailsAcquiring, idx: number }>;
   storesLength: number = 0;
   shops: boolean;
+  public visitedStores: string[] = [];
+  updateProcessId: string;
 
   ngAfterViewInit() {
 
@@ -89,6 +92,8 @@ export class StoreComponent implements AfterViewInit {
   queueName: string = "";
   title: string;
   processId: string;
+  deleteModalRef: BsModalRef | undefined;
+  @ViewChild('deleteModal') deleteModal;
 
   emitRemovedStore(store) {
     this.removedStoreSubject.next(store);
@@ -98,7 +103,7 @@ export class StoreComponent implements AfterViewInit {
     this.insertedStoreSubject.next(store);
   }
 
-  constructor(private translate: TranslateService, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private authService: AuthService, private comprovativoService: ComprovativosService, private documentService: SubmissionDocumentService, private datePipe: DatePipe, private logger: LoggerService, private processService: ProcessService, private processNrService: ProcessNumberService) {
+  constructor(private translate: TranslateService, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private authService: AuthService, private comprovativoService: ComprovativosService, private documentService: SubmissionDocumentService, private datePipe: DatePipe, private logger: LoggerService, private processService: ProcessService, private processNrService: ProcessNumberService, private modalService: BsModalService) {
     this.data.currentShops.subscribe(shops => this.shops = shops);
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.initializeForm();
@@ -133,6 +138,8 @@ export class StoreComponent implements AfterViewInit {
       productStores: this.formBuilder.group({
         "solutionType": [''],
         "subProduct": [''],
+        "solutionName": [''],
+        "subProductName": ['']
       })
     });
   }
@@ -141,6 +148,7 @@ export class StoreComponent implements AfterViewInit {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
+    this.subscription = this.processNrService.updateProcessId.subscribe(id => this.updateProcessId = id);
     this.subscription = this.data.currentQueueName.subscribe(queueName => {
       if (queueName != null) {
         this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
@@ -161,6 +169,11 @@ export class StoreComponent implements AfterViewInit {
 
   selectStore(info) {
     if (info.store != null && info.idx != null) {
+      if (this.currentIdx > -1) {
+        if (info.clickedTable) {
+          this.submit(false, false, true);
+        }
+      }
       this.currentStore = info.store;
       this.currentIdx = info.idx;
       setTimeout(() => this.setFormData(), 500); //esperar um tempo para que os form seja criado e depois conseguir popular os campos com os dados certos
@@ -170,6 +183,7 @@ export class StoreComponent implements AfterViewInit {
   addStore() {
     if (this.storesLength > 0 && this.currentStore != null) {
       this.resetForm();
+      this.productSelectionComponent.chooseSolutionOne();
     }
     this.currentStore = new ShopDetailsAcquiring();
     this.currentStore.address = new ShopAddressAcquiring();
@@ -185,6 +199,7 @@ export class StoreComponent implements AfterViewInit {
   close() {
     this.currentStore = null;
     this.currentIdx = -2;
+    this.resetForm();
   }
 
   updateContactPoint() {
@@ -249,9 +264,9 @@ export class StoreComponent implements AfterViewInit {
               var blob = new Blob([data], { type: 'application/pdf' });
               var file = new File([blob], context.translate.instant('supportingDocuments.checklistModal.IBAN'), { 'type': 'application/pdf' });
               context.ibansToShow = {
-                dataDocumento: context.currentStore.documents[0].validUntil == null ? "desconhecido" : context.datePipe.transform(context.currentStore.documents[0].validUntil, 'dd-MM-yyyy'),
+                dataDocumento: context.currentStore?.documents[0]?.validUntil == null ? "desconhecido" : context.datePipe.transform(context.currentStore?.documents[0]?.validUntil, 'dd-MM-yyyy'),
                 file: file,
-                id: context.currentStore.documents[0].id,
+                id: context.currentStore?.documents[0]?.id,
                 tipo: context.translate.instant('supportingDocuments.checklistModal.IBAN')
               };
             });
@@ -263,9 +278,9 @@ export class StoreComponent implements AfterViewInit {
               var blob = new Blob([data], { type: 'application/pdf' });
               var file = new File([blob], context.translate.instant('supportingDocuments.checklistModal.IBAN'), { 'type': 'application/pdf' });
               context.ibansToShow = {
-                dataDocumento: context.currentStore.documents[0].validUntil == null ? "desconhecido" : context.datePipe.transform(context.currentStore.documents[0].validUntil, 'dd-MM-yyyy'),
+                dataDocumento: context.currentStore?.documents[0]?.validUntil == null ? "desconhecido" : context.datePipe.transform(context.currentStore?.documents[0]?.validUntil, 'dd-MM-yyyy'),
                 file: file,
-                id: context.currentStore.documents[0].id,
+                id: context.currentStore?.documents[0]?.id,
                 tipo: context.translate.instant('supportingDocuments.checklistModal.IBAN')
               };
             });
@@ -285,20 +300,53 @@ export class StoreComponent implements AfterViewInit {
     }
   }
 
+  closeDeleteModal() {
+    this.deleteModalRef?.hide();
+  }
+
+  delete() {
+    this.deleteModalRef = this.modalService.show(this.deleteModal, { class: 'modal-lg' });
+  }
+
   deleteStore() {
     if (this.currentStore != null && this.returned != 'consult') {
-      this.storeService.deleteSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id).subscribe(result => {
-        this.logger.info("Deleted shop result: " + JSON.stringify(result));
-        this.resetForm();
-        this.emitRemovedStore(this.currentStore);
-        this.currentStore = null;
-        this.currentIdx = -2;
-        this.storeIbanComponent.removeFiles();
-      });
+      if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+        if (this.currentStore.documents?.length > 0) {
+          this.currentStore.documents.forEach(val => {
+            this.documentService.DeleteDocumentFromSubmission(localStorage.getItem("submissionId"), val.id).subscribe(res => {
+            });
+          });
+        }
+        this.storeService.deleteSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id).subscribe(result => {
+          this.deleteModalRef?.hide();
+          this.logger.info("Deleted shop result: " + JSON.stringify(result));
+          this.resetForm();
+          this.emitRemovedStore(this.currentStore);
+          this.currentStore = null;
+          this.currentIdx = -2;
+          this.storeIbanComponent.removeFiles();
+        });
+      } else {
+        if (this.currentStore.documents?.length > 0) {
+          this.currentStore.documents.forEach(val => {
+            this.documentService.DeleteDocumentFromProcess(this.processId, val.id).subscribe(res => {
+            });
+          });
+        }
+        this.storeService.deleteShopProcess(this.processId, this.currentStore.id).subscribe(result => {
+          this.deleteModalRef?.hide();
+          this.logger.info("Deleted shop result: " + JSON.stringify(result));
+          this.resetForm();
+          this.emitRemovedStore(this.currentStore);
+          this.currentStore = null;
+          this.currentIdx = -2;
+          this.storeIbanComponent.removeFiles();
+        });
+      }
     }
   }
 
-  submit(addStore: boolean, isEditButton?: boolean) {
+  submit(addStore: boolean, isEditButton?: boolean, clickedTable: boolean = false) {
     if (this.returned != 'consult') {
       if (this.editStores.valid) {
         var infoStores = this.editStores.get("infoStores");
@@ -349,6 +397,8 @@ export class StoreComponent implements AfterViewInit {
         this.currentStore.productCode = productStores.get("solutionType").value;
         this.currentStore.subProductCode = productStores.get("subProduct").value;
         this.currentStore.website = productStores.get("url").value;
+        this.currentStore.productCodeDescription = productStores.get("solutionName").value;
+        this.currentStore.subProductCodeDescription = productStores.get("subProductName").value;
 
         if (this.currentUser.permissions == "UNICRE") {
           this.currentStore.supportEntity = TerminalSupportEntityEnum.ACQUIRER;
@@ -362,6 +412,8 @@ export class StoreComponent implements AfterViewInit {
             this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
               this.logger.info("Added shop result: " + JSON.stringify(result));
               this.currentStore.id = result["id"];
+              this.visitedStores.push(this.currentStore.id);
+              this.visitedStores = Array.from(new Set(this.visitedStores));
               this.addDocumentToShop(result["id"], this.currentStore);
               this.emitInsertedStore(this.currentStore);
               this.resetForm();
@@ -372,6 +424,8 @@ export class StoreComponent implements AfterViewInit {
             this.processService.addShopToProcess(this.processId, this.currentStore).then(result => {
               this.logger.info("Added shop result: " + JSON.stringify(result.result));
               this.currentStore.id = result.result["id"];
+              this.visitedStores.push(this.currentStore.id);
+              this.visitedStores = Array.from(new Set(this.visitedStores));
               this.addDocumentToShop(result.result["id"], this.currentStore);
               this.emitInsertedStore(this.currentStore);
               this.resetForm();
@@ -381,20 +435,43 @@ export class StoreComponent implements AfterViewInit {
           }
         } else {
           if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
-            this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
-              this.logger.info("Updated shop result: " + JSON.stringify(result));
-              if (isEditButton) {
-                this.addDocumentToShop(this.currentStore.id, this.currentStore);
-                this.resetForm();
-                this.currentStore = null;
-                this.currentIdx = -2;
-              } else {
-                if (this.currentIdx < (this.storesLength - 1)) {
-                  this.addDocumentToShop(this.currentStore.id, this.currentStore);
+            if (!this.editStores.pristine) {
+              this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
+                this.visitedStores.push(this.currentStore.id);
+                this.visitedStores = Array.from(new Set(this.visitedStores));
+                this.logger.info("Updated shop result: " + JSON.stringify(result));
+                if (!clickedTable) {
+                  if (isEditButton) {
+                    this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                    this.resetForm();
+                    this.currentStore = null;
+                    this.currentIdx = -2;
+                  } else {
+                    if (this.visitedStores.length < this.storesLength) {
+                      this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                      this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                      this.resetForm();
+                    } else {
+                      this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                      this.resetForm();
+                      this.currentStore = null;
+                      this.currentIdx = -2;
+                      this.data.changeShops(true);
+                      this.logger.info("Redirecting to Comprovativos page");
+                      this.data.updateData(true, 3);
+                      this.route.navigate(['comprovativos']);
+                    }
+                  }
+                }
+              });
+            } else {
+              this.visitedStores.push(this.currentStore.id);
+              this.visitedStores = Array.from(new Set(this.visitedStores));
+              if (!clickedTable) {
+                if (this.visitedStores.length < this.storesLength) {
                   this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
                   this.resetForm();
                 } else {
-                  this.addDocumentToShop(this.currentStore.id, this.currentStore);
                   this.resetForm();
                   this.currentStore = null;
                   this.currentIdx = -2;
@@ -404,21 +481,44 @@ export class StoreComponent implements AfterViewInit {
                   this.route.navigate(['comprovativos']);
                 }
               }
-            });
+            }
           } else {
-            this.processService.updateShopProcess(this.processId, this.currentStore.id, this.currentStore).then(result => {
-              if (isEditButton) {
-                this.addDocumentToShop(this.currentStore.id, this.currentStore);
-                this.resetForm();
-                this.currentStore = null;
-                this.currentIdx = -2;
-              } else {
-                if (this.currentIdx < (this.storesLength - 1)) {
-                  this.addDocumentToShop(this.currentStore.id, this.currentStore);
+            if (!this.editStores.pristine) {
+              this.processService.updateShopProcess(this.processId, this.currentStore.id, this.currentStore).then(result => {
+                this.visitedStores.push(this.currentStore.id);
+                this.visitedStores = Array.from(new Set(this.visitedStores));
+                if (!clickedTable) {
+                  if (isEditButton) {
+                    this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                    this.resetForm();
+                    this.currentStore = null;
+                    this.currentIdx = -2;
+                  } else {
+                    if (this.visitedStores.length < this.storesLength) {
+                      this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                      this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                      this.resetForm();
+                    } else {
+                      this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                      this.resetForm();
+                      this.currentStore = null;
+                      this.currentIdx = -2;
+                      this.data.changeShops(true);
+                      this.logger.info("Redirecting to Comprovativos page");
+                      this.data.updateData(true, 3);
+                      this.route.navigate(['comprovativos']);
+                    }
+                  }
+                }
+              });
+            } else {
+              this.visitedStores.push(this.currentStore.id);
+              this.visitedStores = Array.from(new Set(this.visitedStores));
+              if (!clickedTable) {
+                if (this.visitedStores.length < this.storesLength) {
                   this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
                   this.resetForm();
                 } else {
-                  this.addDocumentToShop(this.currentStore.id, this.currentStore);
                   this.resetForm();
                   this.currentStore = null;
                   this.currentIdx = -2;
@@ -428,34 +528,41 @@ export class StoreComponent implements AfterViewInit {
                   this.route.navigate(['comprovativos']);
                 }
               }
-            });
+            }
           }
         }
-
       } else {
-        if (this.currentStore == null) {
-          this.data.changeShops(true);
-          this.logger.info("Redirecting to Comprovativos page");
-          this.data.updateData(true, 3);
-          this.route.navigate(['comprovativos']);
+        if (!clickedTable) {
+          if (this.currentStore == null) {
+            this.data.changeShops(true);
+            this.logger.info("Redirecting to Comprovativos page");
+            this.data.updateData(true, 3);
+            this.route.navigate(['comprovativos']);
+          }
         }
       }
       this.onActivate();
     } else {
-      this.data.changeShops(true);
-      this.logger.info("Redirecting to Comprovativos page");
-      this.data.updateData(true, 3);
-      this.route.navigate(['comprovativos']);
+      if (!clickedTable) {
+        this.data.changeShops(true);
+        this.logger.info("Redirecting to Comprovativos page");
+        this.data.updateData(true, 3);
+        this.route.navigate(['comprovativos']);
+      }
     }
   }
 
   resetForm() {
     this.editStores.reset();
     this.editStores.get("infoStores").get("countryStore").setValue("PT");
+    this.editStores.get("infoStores").get("replicate").setValue(true);
+    this.editStores.get("infoStores").get("commercialCenter").setValue(false);
+    this.editStores.get("bankStores").get("bankInformation").setValue(true);
     this.productSelectionComponent.clearSubProducts();
     this.addStoreComponent.chooseAddress(true);
     this.closeAccordion();
     this.storeIbanComponent.removeFiles();
+    this.editStores.markAsPristine();
   }
 
   emitUpdatedStore(info) {
@@ -474,10 +581,16 @@ export class StoreComponent implements AfterViewInit {
 
   fetchStartingInfo() {
     if ((this.processId != '' && this.processId != null) && this.returned != null) {
-      this.processService.getMerchantFromProcess(this.processId).subscribe(res => {
-        this.logger.info("Get process client by id result: " + JSON.stringify(res));
-        this.submissionClient = res;
-      });
+      if (this.returned == 'consult') {
+        this.processService.getMerchantFromProcess(this.processId).subscribe(res => {
+          this.logger.info("Get process client by id result: " + JSON.stringify(res));
+          this.submissionClient = res;
+        });
+      } else {
+        this.processService.getUpdateProcessInfo(this.processId, this.updateProcessId).then(result => {
+          this.submissionClient = result.result.merchant;
+        });
+      }
     } else {
       this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(client => {
         this.logger.info("Get client by id result: " + JSON.stringify(client));

@@ -68,7 +68,7 @@
                                 {{'homepage.' + queueName|translate}}
                               </p>
                               <p class="mb-0 text-primary text-start">{{processHistoryItems?.items[0].whenStarted}}</p>
-                              <p class="mb-0 text-primary text-start">{{processHistoryItems?.items[0].whoStarted}}</p>
+                              <p class="mb-0 text-primary text-start">{{processHistoryItems?.items[0].whoFinished}}</p>
                               <p class="mb-0 text-primary text-start">
                                 {{(processHistoryItems?.items[0].observations == null || processHistoryItems?.items[0].observations == "") ? "-" : processHistoryItems?.items[0].observations}}
                               </p>
@@ -850,7 +850,7 @@
                                  style="height: 25px !important; vertical-align: sub;">
                           </button>
 
-                          <button id="btn5a2" *ngIf="queueName === 'MCCTreatment'"
+                          <button id="btn5a2" *ngIf="queueName === 'MCCTreatment'" (click)="concludeOpinion()"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                   wappler-command="editContent" [disabled]="!form.valid">
                             {{'queues.concludeMCC'|translate|uppercase}}&nbsp;
@@ -922,11 +922,11 @@
                         </mat-header-cell>
                         <mat-cell *matCellDef="let row"> {{row.whenStarted | date: 'yyyy-MM-dd HH:mm'}} </mat-cell>
                       </ng-container>
-                      <ng-container matColumnDef="whoStarted">
+                      <ng-container matColumnDef="whoFinished">
                         <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
                           {{'acceptance.user'|translate}}
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let row"> {{row.whoStarted}} </mat-cell>
+                        <mat-cell *matCellDef="let row"> {{row.whoFinished}} </mat-cell>
                       </ng-container>
                       <ng-container matColumnDef="observations">
                         <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">

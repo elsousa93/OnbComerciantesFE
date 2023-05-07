@@ -185,7 +185,8 @@
     "addSuccess": "Interveniente adicionado com sucesso",
     "sameNIF": "Não é possivel adicionar um interveniente já existente",
     "particular": "Particular",
-    "corporate":  "Empresa"
+    "corporate": "Empresa",
+    "signError": "É necessário existir pelo menos um interveniente que assine o contrato"
   },
   "stores": {
     "title": "Lojas",
@@ -264,9 +265,10 @@
     "bank": "Banco Apoio IBAN",
     "terminalNumber": "Número de Terminal",
     "product": "Produto",
+    "subproduct": "Subproduto",
     "relation": "Relação Loja Produtos",
     "replicate": "Pretende replicar produtos de outras lojas para todos os terminais escolhidos?",
-    "selectStore": "Selecione a loja que pretende considerar a mesma informação dos produtos (Loja de Representação)",
+    "selectStore": "Selecione a loja que pretende considerar a mesma informação dos produtos (Loja de Referência)",
     "EATUnicre": "A Entidade de Apoio Terminal (EAT) é da Unicre?",
     "registrationTerminalNumber": "Número Matrícula Terminal SIBS",
     "commercialPack": "Pacote Comercial",
@@ -289,9 +291,9 @@
     "name": "Nome",
     "package": "Pacote",
     "denomination": "Denominação",
-    "minimumValue": "Valor Mínimo",
-    "maximumValue": "Valor Máximo",
-    "value": "Valor Fixo",
+    "minimumValue": "Valor Mínimo (€)",
+    "maximumValue": "Valor Máximo (€)",
+    "value": "Valor Fixo (€)",
     "TSC": "TSC (%)",
     "typology": "Tipologia",
     "selection": "Seleção",
@@ -383,7 +385,7 @@
     "placeholderSearch": "Nº processo",
     "emptyList": "Não existem resultados para esta pesquisa",
     "emptySearch": "Tem que preencher pelo menos um filtro de pesquisa",
-    "errorDocs": "A pesquisa por documentos tem de ser por tipo e número de documento",
+    "errorDocs": "A pesquisa por entidades tem de ser por tipo de entidade e número fiscal",
     "search300": "Foram retornados demasiados resultados, vão ser apresentados apenas os primeiros 300, por favor redifina a pesquisa"
   },
   "acceptance": {
@@ -456,7 +458,10 @@
         "pending": "Recolha Assinatura",
         "canceled": "Assinatura Cancelada",
         "refused": "Assinatura Recusada"
-      }
+      },
+      "signType2": "Tipo Assinatura",
+      "identificationState": "Estado de Identificação",
+      "signatureState": "Estado de Assinatura"
     }
   },
   "queues": {
@@ -534,7 +539,10 @@
     "performSearch": "Efetuar pesquisa",
     "final": "Processo submetido com sucesso",
     "assignProcess": "Atribuir Processo",
-    "assign": "Atribuir"
+    "assign": "Atribuir",
+    "deleteStore": "Quer apagar esta loja?",
+    "maintainStore": "Manter Loja",
+    "confirmDeleteStore": "Apagar Loja"
   },
   "generalButtons": {
     "continue": "Continuar",

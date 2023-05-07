@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
-import { BusinessIssueViewModel, IssueViewModel, ProcessHistory, ProcessList, ProcessService, SearchProcessHistory } from '../process/process.service';
+import { BusinessIssueViewModel, IssueTypeEnum, IssueViewModel, ProcessHistory, ProcessList, ProcessService, SearchProcessHistory } from '../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
 import { ClientService } from '../client/client.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
@@ -36,7 +36,7 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
   public processId: string;
   public process: ProcessList;
   public processNumber: string;
-  public issues: BusinessIssueViewModel
+  public issues: BusinessIssueViewModel;
   public processHistoryItems: SearchProcessHistory;
   public selectedIssue: BusinessIssueViewModel;
   public selectedHistoryGuid: string;
@@ -52,7 +52,7 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
   shopIssueList: ShopDetailsAcquiring[] = [];
 
   historyMat = new MatTableDataSource<ProcessHistory>();
-  historyColumns: string[] = ['processNumber', 'processState', 'whenStarted', 'whoStarted', 'observations'];
+  historyColumns: string[] = ['processNumber', 'processState', 'whenStarted', 'whoFinished', 'observations'];
   @ViewChild('historySort') historySort = new MatSort();
   @ViewChild('paginatorHistory') set paginatorHistory(pager: MatPaginator) {
     if (pager) {
@@ -135,8 +135,8 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
       });
       if (this.merchant == null) {
         this.queuesService.getProcessMerchant(this.processId).then(res => {
-          issues.merchant.merchant["name"] = res.result.legalName;
           this.merchant = res.result;
+          issues.merchant.merchant["name"] = res.result.legalName;
           issues.merchant.issues.forEach(value => {
             if (value.issueDescription != null && value.issueDescription != "") {
               value["name"] = issues.merchant.merchant["name"];

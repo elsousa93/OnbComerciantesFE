@@ -55,7 +55,7 @@
     <mat-header-row *matHeaderRowDef="displayedColumns" class="text-primary table-primary">X</mat-header-row>
     <mat-row *matRowDef="let stakeholder; let idx = index; columns: displayedColumns;"
       [ngClass]="{'row-selected': canSelect && (stakeholder === selectedStakeholder)}"
-      (click)="emitSelectedStakeholder(stakeholder, idx)" #selectedBlueDiv id="selectedBlueDiv">
+      (click)="emitSelectedStakeholder(stakeholder, idx, true)" #selectedBlueDiv id="selectedBlueDiv">
     </mat-row>
   </mat-table>
   <mat-paginator #paginator [pageSizeOptions]="[3, 10, 20]" showFirstLastButtons>

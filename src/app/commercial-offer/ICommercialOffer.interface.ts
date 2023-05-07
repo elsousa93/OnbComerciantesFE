@@ -171,12 +171,29 @@ export interface ProductPackCommissionAttribute {
   percentageValue?: ProductPackCommissionAttributeValue
 }
 interface ProductPackCommissionAttributeValue {
-  value?: number
   originalValue?: number
   finalValue?: number
   isReadOnly?: boolean
   isVisible?: boolean
 }
+
+export interface ProductPackCommissionOutbound {
+  attributes?: ProductPackCommissionAttributeOutbound[]
+}
+export interface ProductPackCommissionAttributeOutbound {
+  id?: string
+  description?: string
+  fixedValue?: ProductPackCommissionAttributeValueOutbound
+  maxValue?: ProductPackCommissionAttributeValueOutbound
+  minValue?: ProductPackCommissionAttributeValueOutbound
+  percentageValue?: ProductPackCommissionAttributeValueOutbound
+}
+interface ProductPackCommissionAttributeValueOutbound {
+  value?: number
+  isReadOnly?: boolean
+  isVisible?: boolean
+}
+
 export interface ProductPackPaymentSchemes {
   id?: string
   description?: string

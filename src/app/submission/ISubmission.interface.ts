@@ -31,7 +31,7 @@ export interface SubmissionPostDocumentTemplate {
   documentPurpose?: string
   file?: File
   validUntil?: string
-  data?: string
+  data?: any
 }
 
 export interface File {
@@ -65,6 +65,7 @@ export interface SubmissionPutTemplate {
   bank?: string
   startedAt?: string
   state?: string
+  observation?: string
 }
 export interface SubmissionGetTemplate {
   id?: string
@@ -74,6 +75,7 @@ export interface SubmissionGetTemplate {
   stakeholders?: SimplifiedReference[]
   documents?: SimplifiedDocument[]
   shops?: SimplifiedReference[]
+  corporateEntities?: SimplifiedReference[]
   submissionType?: string
   processNumber?: string
   processKind?: string

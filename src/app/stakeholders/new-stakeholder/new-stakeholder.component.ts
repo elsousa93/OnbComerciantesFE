@@ -277,7 +277,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     if (changes["currentStakeholder"]) {
       this.isStakeholderFromCC(this.currentStakeholder);
       this.isStakeholderFromCRC(this.currentStakeholder);
-      if (identificationDocument != undefined && (identificationDocument?.type === '0018' || identificationDocument?.type === 'Cartão do Cidadão')) {
+      if (identificationDocument != undefined && (identificationDocument?.type === '0018' || identificationDocument?.type === 'Cartão do Cidadão' || identificationDocument?.type === '0001')) {
         this.createFormCC();
       } else {
         this.initializeFormWithoutCC();
@@ -324,6 +324,8 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     this.flagRecolhaEletronica = false;
     this.showNoCC = true;
     this.showYesCC = false;
+    this.isCC = false;
+    this.okCC = false;
   }
 
   ngOnInit(): void {
@@ -354,7 +356,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       documentType: new FormControl(''),
       identificationDocumentCountry: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.country : ''), //
       identificationDocumentValidUntil: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.datePipe.transform(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate, 'dd-MM-yyyy') : ''), //
-      identificationDocumentId: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.number : 'THIS'), //
+      identificationDocumentId: new FormControl((this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined) ? this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.number : ''), //
       contractAssociation: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.signType === 'CitizenCard' || this.currentStakeholder?.stakeholderAcquiring?.signType === 'DigitalCitizenCard' ? 'true' : 'false', Validators.required),
       proxy: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.isProxy != null ? this.currentStakeholder?.stakeholderAcquiring?.isProxy + '' : 'false', Validators.required),
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined) ? this.currentStakeholder?.stakeholderAcquiring.fiscalId : '', Validators.required),
@@ -366,14 +368,16 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
     this.showYesCC = true;
     this.showNoCC = false;
+    this.isCC = false;
+    this.okCC = false;
     this.formNewStakeholder.get('flagRecolhaEletronica').setValue(false);
     this.changeValueCC();
     //this.GetCountryByZipCode();
   }
 
   changeValueCC(){
-    if (this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type === '0018') {
-      this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = '0018';
+    if (this.currentStakeholder?.stakeholderAcquiring?.identificationDocument != undefined && (this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type === '0018' || this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type === '0001')) {
+      //this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = '0018';
       var desc = this.documents?.find(document => document.code == this.currentStakeholder.stakeholderAcquiring.identificationDocument.type)?.description;
       this.formNewStakeholder.get("documentType").setValue(desc);
     }
@@ -453,22 +457,26 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     //}
     //troquei a ordem
     if (validate == true) { //sim
-      if (this.currentStakeholder.stakeholderAcquiring.identificationDocument.type == '0018') {
+      //if (this.currentStakeholder.stakeholderAcquiring.identificationDocument.type == '0018' || this.currentStakeholder.stakeholderAcquiring.identificationDocument.type == '0001') {
         this.showBtnCC = true; // false
         this.showYesCC = true; // false
         this.showNoCC = false; // true
         this.isCC = true; //mostrar o módulo CC
-      }
+      //}
     }
     else { // não
-      if (this.currentStakeholder.stakeholderAcquiring.identificationDocument.type == '0018') {
+      //if (this.currentStakeholder.stakeholderAcquiring.identificationDocument.type == '0018' || this.currentStakeholder.stakeholderAcquiring.identificationDocument.type == '0001') {
         this.showBtnCC = true;
         this.showYesCC = true;
         this.showNoCC = false;
         this.isCC = false; //retirar o módulo CC
         this.okCC = false;
+      if (this.currentStakeholder.stakeholderAcquiring.identificationDocument.type == '0018' || this.currentStakeholder.stakeholderAcquiring.identificationDocument.type == '0001') {
         this.createFormCC();
+      } else {
+        this.initializeFormWithoutCC();
       }
+      //}
     }
   }
 
@@ -531,6 +539,10 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     }, error => this.logger.error(error, "", "Error reading citizen card"));
   }
 
+  changeProxy(value: boolean) {
+    this.currentStakeholder.stakeholderAcquiring.isProxy = value;
+  }
+
   numericOnly(event): boolean {
     var ASCIICode = (event.which) ? event.which : event.keyCode;
 
@@ -539,7 +551,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     else
       this.sameZIPCode = false;
 
-    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && ASCIICode!=45)
+    if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && (ASCIICode < 96 || ASCIICode > 105) && ASCIICode != 45)
       return false;
     return true;
   }
@@ -560,7 +572,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   GetCountryByZipCode(event?: any) {
     if (event != undefined) {
       var ASCIICode = (event.which) ? event.which : event.keyCode;
-      if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && ASCIICode != 45)
+      if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && (ASCIICode < 96 || ASCIICode > 105) && ASCIICode != 45)
         return false;
     }
     if (this.sameZIPCode)

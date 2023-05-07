@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Input, Output, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, OnInit, EventEmitter, Input, Output, OnChanges, SimpleChanges, HostListener } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { of, Subject, Subscription } from 'rxjs';
@@ -83,7 +83,9 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     postalCodeCC: null,
     localityCC: null,
     countryCC: null,
-    documentType: null
+    documentType: null,
+    notes: null,
+    gender: null
   };
   public prettyPDF: FileAndDetailsCC = null;
 
@@ -503,6 +505,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       return false;
 
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
+
     this.emitSameNIF(of(this.stakeholderNumber)); //evento que serve para comparar o NIF inserido com os stakeholders já existentes
 
     if (this.submissionClient.fiscalId === this.stakeholderNumber) {
@@ -794,6 +797,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
    *  email de 14/09
    */
   addStakeholderWithCC() {
+    var stakeholderToInsert : IStakeholders;
     this.isCC = true;
     var dateCC = this.dataCCcontents.expiricyDateCC;
     var separated = dateCC?.split(' ');
@@ -802,7 +806,12 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     } else {
       var formatedDate = '2023-10-10';
     }
-
+    if (this.dataCCcontents?.notes != null || this.dataCCcontents?.notes != "") {
+      var assinatura = "Sabe assinar";
+      if (this.dataCCcontents?.notes?.toLowerCase().includes("não sabe assinar") || this.dataCCcontents?.notes?.toLowerCase().includes("não pode assinar")) {
+        assinatura = "Não sabe assinar";
+      }
+    }
     if (this.prettyPDF != null) { 
       //Colocar comprovativo do CC na Submissao
       var documentCC: PostDocument = {
@@ -813,81 +822,208 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
           fileType: 'PDF',
         },
         validUntil: new Date(this.prettyPDF?.expirationDate).toISOString(),
-        data: null
+        data: {
+          fullName: this.dataCCcontents?.nameCC,
+          documentNumber: this.dataCCcontents?.cardNumberCC,
+          fiscalNumber: this.dataCCcontents?.nifCC,
+          gender: this.dataCCcontents?.gender,
+          birthday: this.dataCCcontents?.birthdateCC,
+          validUntil: this.dataCCcontents?.expiricyDateCC,
+          canSign: assinatura == "Sabe assinar" ? true : false,
+          country: this.dataCCcontents?.countryCC,
+          address: this.dataCCcontents?.addressCC,
+          postalArea: this.dataCCcontents?.localityCC,
+          postalCode: this.dataCCcontents?.postalCodeCC 
+        }
       };
       this.logger.info("Document to add: " + JSON.stringify(documentCC));
-      //this.submissionDocumentService.SubmissionPostDocument(this.submissionId, documentCC).subscribe(result => {
-      //  this.logger.info('Added document: ' + JSON.stringify(result));
-      //});
     }
+    var nif = this.dataCCcontents?.nifCC ?? this.formNewStakeholder?.get("nif")?.value;
+    this.stakeholderService.SearchStakeholderByQuery(nif, this.docType, "", "").then(result => {
+      var stake = result.result;
+      this.stakeholderService.getStakeholderByID(stake[0].stakeholderId, this.docType, 'por mudar').then(stakeholder => {
+        this.logger.info("Get stakeholder outbound: " + JSON.stringify(stakeholder));
+        stakeholderToInsert = stakeholder.result;
+        stakeholderToInsert["fiscalId"] = stakeholderToInsert["fiscalIdentification"]["fiscalId"];
+        stakeholderToInsert["stakeholderId"] = stakeholderToInsert["stakeholderId"];
+        stakeholderToInsert["clientId"] = stakeholderToInsert.stakeholderId;
+        stakeholderToInsert["fiscalAddress"] = stakeholderToInsert["address"];
 
-    var fullName = this.dataCCcontents.nameCC ?? this.formNewStakeholder.get("name")?.value;
-    var nameArray = fullName.split(" ").filter(element => element);
-    var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
-    
+        if (stakeholderToInsert["phone1"] != null) {
+          stakeholderToInsert["phone1"] = {
+            countryCode: stakeholderToInsert["contacts"]["phone1"]["country"],
+            phoneNumber: stakeholderToInsert["contacts"]["phone1"]["phoneNumber"]
+          }
+        }
 
-    var stakeholderToInsert: IStakeholders = {
-      "fiscalId": this.dataCCcontents.nifCC ?? this.formNewStakeholder.get("nif")?.value,
-      "fullName": fullName,
-      "shortName": shortName,
-      "contactName": shortName,
-      "identificationDocument": {
-        "type": '0001',
-        "number": this.dataCCcontents.cardNumberCC ?? this.stakeholderNumber,
-        "country": this.dataCCcontents.countryCC ?? 'PT',
-        "expirationDate": new Date(formatedDate).toISOString(),
-        "checkDigit": null     //FIXME
-      },
-      "fiscalAddress": {
-        "address": this.dataCCcontents.addressCC,
-        "postalCode": this.dataCCcontents?.postalCodeCC?.split(" ")[0], //
-        "postalArea": this.dataCCcontents.localityCC,
-        "country": this.dataCCcontents.countryCC,
-      },
-      "phone1": {},
-      "phone2": {},
-      "signType": "DigitalCitizenCard",
-    }
-    this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
-    if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
-      this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-        this.logger.info("Added stakeholder result: " + JSON.stringify(result));
-        stakeholderToInsert.id = result["id"];
-        this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
-          duration: 4000,
-          panelClass: ['snack-bar']
-        });
-        if (this.prettyPDF != null) {
-          this.logger.info("Document to add " + JSON.stringify(documentCC));
-          this.stakeholderService.AddNewDocumentStakeholder(this.submissionId, stakeholderToInsert.id, documentCC).subscribe(res => {
-            this.logger.info("Added document to stakeholder " + JSON.stringify(res));
+        if (stakeholderToInsert["phone2"] != null)
+          stakeholderToInsert["phone2"] = {
+            countryCode: stakeholderToInsert["contacts"]["phone2"]["country"],
+            phoneNumber: stakeholderToInsert["contacts"]["phone2"]["phoneNumber"]
+          }
+
+        stakeholderToInsert["email"] = stakeholderToInsert["contacts"]["email"];
+        stakeholderToInsert["contacts"] = null;
+        stakeholderToInsert["contactName"] = stakeholderToInsert["shortName"];
+
+        if (stakeholderToInsert["documents"].length == 0) {
+          stakeholderToInsert["documents"] = null;
+        }
+
+        if (stakeholderToInsert["identificationDocument"] != null) {
+          stakeholderToInsert["identificationDocument"] = {
+            type: stakeholderToInsert["identificationDocument"]["documentType"],
+            number: stakeholderToInsert["identificationDocument"]["documentId"],
+            country: stakeholderToInsert["identificationDocument"]["documentIssuer"],
+            expirationDate: stakeholderToInsert["identificationDocument"]["validUntil"],
+            checkDigit: stakeholderToInsert["identificationDocument"]["checkDigit"],
+          }
+        }
+
+        stakeholderToInsert["potentialClientIds"] = this.potentialClientIds;
+        if (stakeholderToInsert["signType"] == null) {
+          stakeholderToInsert["signType"] = "CitizenCard";
+        } else {
+          stakeholderToInsert["signType"] = stakeholderToInsert["signType"];
+        }
+        this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
+        let o = Object.fromEntries(Object.entries(stakeholderToInsert).filter(([_, v]) => v != null));
+
+      }, error => {
+        var fullName = this.dataCCcontents.nameCC ?? this.formNewStakeholder.get("name")?.value;
+        var nameArray = fullName.split(" ").filter(element => element);
+        var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
+        stakeholderToInsert = {
+          "fiscalId": this.dataCCcontents.nifCC ?? this.formNewStakeholder.get("nif")?.value,
+          "fullName": fullName,
+          "shortName": shortName,
+          "contactName": shortName,
+          "identificationDocument": {
+            "type": '0001',
+            "number": this.dataCCcontents.cardNumberCC ?? this.stakeholderNumber,
+            "country": this.dataCCcontents.countryCC ?? 'PT',
+            "expirationDate": new Date(formatedDate).toISOString(),
+            "checkDigit": null     //FIXME
+          },
+          "fiscalAddress": {
+            "address": this.dataCCcontents.addressCC,
+            "postalCode": this.dataCCcontents?.postalCodeCC?.split(" ")[0], //
+            "postalArea": this.dataCCcontents.localityCC,
+            "country": this.dataCCcontents.countryCC,
+          },
+          "phone1": {},
+          "phone2": {},
+          "signType": "DigitalCitizenCard",
+        }
+      }).finally(() => {
+        this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
+        if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+          this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+            this.logger.info("Added stakeholder result: " + JSON.stringify(result));
+            stakeholderToInsert.id = result["id"];
+            this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
+            if (this.prettyPDF != null) {
+              this.logger.info("Document to add " + JSON.stringify(documentCC));
+              this.stakeholderService.AddNewDocumentStakeholder(this.submissionId, stakeholderToInsert.id, documentCC).subscribe(res => {
+                this.logger.info("Added document to stakeholder " + JSON.stringify(res));
+              });
+            }
+            this.emitInsertedStake(of(stakeholderToInsert));
+            this.clearForm();
+          }, error => {
+            this.logger.error(error, "", "Error creating stakeholder with citizen card");
+          });
+        } else {
+          this.processService.addStakeholderToProcess(this.processId, stakeholderToInsert).then(result => {
+            this.logger.info("Added stakeholder result: " + JSON.stringify(result));
+            stakeholderToInsert.id = result.result["id"];
+            this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
+            if (this.prettyPDF != null) {
+              this.logger.info("Document to add " + JSON.stringify(documentCC));
+              this.processService.addDocumentToStakeholderProcess(this.processId, stakeholderToInsert.id, documentCC).then(res => {
+                this.logger.info("Added document to stakeholder " + JSON.stringify(res.result));
+              });
+            }
+            this.emitInsertedStake(of(stakeholderToInsert));
+            this.clearForm();
+          }, error => {
+            this.logger.error(error, "", "Error creating stakeholder with citizen card");
           });
         }
-        this.emitInsertedStake(of(stakeholderToInsert));
-        this.clearForm();
-      }, error => {
-        this.logger.error(error, "", "Error creating stakeholder with citizen card");
       });
-    } else {
-      this.processService.addStakeholderToProcess(this.processId, stakeholderToInsert).then(result => {
-        this.logger.info("Added stakeholder result: " + JSON.stringify(result));
-        stakeholderToInsert.id = result.result["id"];
-        this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
-          duration: 4000,
-          panelClass: ['snack-bar']
-        });
-        if (this.prettyPDF != null) {
-          this.logger.info("Document to add " + JSON.stringify(documentCC));
-          this.processService.addDocumentToStakeholderProcess(this.processId, stakeholderToInsert.id, documentCC).then(res => {
-            this.logger.info("Added document to stakeholder " + JSON.stringify(res.result));
+    }, error => {
+      var fullName = this.dataCCcontents.nameCC ?? this.formNewStakeholder.get("name")?.value;
+      var nameArray = fullName.split(" ").filter(element => element);
+      var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
+      stakeholderToInsert = {
+        "fiscalId": this.dataCCcontents.nifCC ?? this.formNewStakeholder.get("nif")?.value,
+        "fullName": fullName,
+        "shortName": shortName,
+        "contactName": shortName,
+        "identificationDocument": {
+          "type": '0001',
+          "number": this.dataCCcontents.cardNumberCC ?? this.stakeholderNumber,
+          "country": this.dataCCcontents.countryCC ?? 'PT',
+          "expirationDate": new Date(formatedDate).toISOString(),
+          "checkDigit": null     //FIXME
+        },
+        "fiscalAddress": {
+          "address": this.dataCCcontents.addressCC,
+          "postalCode": this.dataCCcontents?.postalCodeCC?.split(" ")[0], //
+          "postalArea": this.dataCCcontents.localityCC,
+          "country": this.dataCCcontents.countryCC,
+        },
+        "phone1": {},
+        "phone2": {},
+        "signType": "DigitalCitizenCard",
+      }
+      this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
+      if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+        this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+          this.logger.info("Added stakeholder result: " + JSON.stringify(result));
+          stakeholderToInsert.id = result["id"];
+          this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
           });
-        }
-        this.emitInsertedStake(of(stakeholderToInsert));
-        this.clearForm();
-      }, error => {
-        this.logger.error(error, "", "Error creating stakeholder with citizen card");
-      });
-    }
+          if (this.prettyPDF != null) {
+            this.logger.info("Document to add " + JSON.stringify(documentCC));
+            this.stakeholderService.AddNewDocumentStakeholder(this.submissionId, stakeholderToInsert.id, documentCC).subscribe(res => {
+              this.logger.info("Added document to stakeholder " + JSON.stringify(res));
+            });
+          }
+          this.emitInsertedStake(of(stakeholderToInsert));
+          this.clearForm();
+        }, error => {
+          this.logger.error(error, "", "Error creating stakeholder with citizen card");
+        });
+      } else {
+        this.processService.addStakeholderToProcess(this.processId, stakeholderToInsert).then(result => {
+          this.logger.info("Added stakeholder result: " + JSON.stringify(result));
+          stakeholderToInsert.id = result.result["id"];
+          this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
+          if (this.prettyPDF != null) {
+            this.logger.info("Document to add " + JSON.stringify(documentCC));
+            this.processService.addDocumentToStakeholderProcess(this.processId, stakeholderToInsert.id, documentCC).then(res => {
+              this.logger.info("Added document to stakeholder " + JSON.stringify(res.result));
+            });
+          }
+          this.emitInsertedStake(of(stakeholderToInsert));
+          this.clearForm();
+        }, error => {
+          this.logger.error(error, "", "Error creating stakeholder with citizen card");
+        });
+      }
+    });
 
 
   }
@@ -903,7 +1039,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   }
 
   numericOnly(event): boolean {
-    if (this.docType === '0501' || this.docType === '0502') {
+    if (this.docType === '0501' || this.docType === '0502' || this.docType === '1010' || this.docType === '0101' || this.docType === '0302') {
       var ASCIICode = (event.which) ? event.which : event.keyCode;
 
       if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
@@ -1075,5 +1211,21 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       case 'Y': return 34;
       case 'Z': return 35;
     }
+  }
+
+  @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {
+    const clipboardData = event.clipboardData;
+    const pastedText = clipboardData.getData('text/plain');
+    if (this.docType === '0501' || this.docType === '0502' || this.docType === '1010' || this.docType === '0101' || this.docType === '0302') {
+      if (event.target["name"] != "name" && event.target["name"] != "socialDenomination") {
+        if (!this.isNumeric(pastedText)) {
+          event.preventDefault();
+        }
+      }
+    }
+  }
+
+  isNumeric(value: string): boolean {
+    return /^\d+$/.test(value);
   }
 }

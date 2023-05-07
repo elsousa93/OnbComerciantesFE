@@ -48,7 +48,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
   }
 
   historyMat = new MatTableDataSource<ProcessHistory>();
-  historyColumns: string[] = ['processNumber', 'processState', 'whenStarted', 'whoStarted', 'observations'];
+  historyColumns: string[] = ['processNumber', 'processState', 'whenStarted', 'whoFinished', 'observations'];
   @ViewChild('historySort') historySort = new MatSort();
   @ViewChild('paginatorHistory') set paginatorHistory(pager: MatPaginator) {
     if (pager) {
@@ -1057,11 +1057,11 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
       };
 
       var stakeholders = this.form.get("stakeholdersEligibility") as FormGroup;
-      queueModel.stakeholderAssessment = [];
+      queueModel.stakeholdersAssessment = [];
 
       for (const cont in stakeholders.controls) {
         const control = this.form.get("stakeholdersEligibility").get(cont);
-        queueModel.stakeholderAssessment.push({
+        queueModel.stakeholdersAssessment.push({
           stakeholderId: cont,
           accepted: control.value
         });
@@ -1076,11 +1076,11 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
       queueModel.userObservations = observation;
       this.documentType = "0059";
       var stakeholders = this.form.get("stakeholdersEligibility") as FormGroup;
-      queueModel.stakeholderAssessment = [];
+      queueModel.stakeholdersAssessment = [];
 
       for (const cont in stakeholders.controls) {
         const control = this.form.get("stakeholdersEligibility").get(cont);
-        queueModel.stakeholderAssessment.push({
+        queueModel.stakeholdersAssessment.push({
           stakeholderId: cont,
           accepted: control.value
         });
@@ -1096,7 +1096,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
           context.route.navigate(['/']);
         });
       } else {
-        queueModel.stakeholderAssessment.forEach(stake => {
+        queueModel.stakeholdersAssessment.forEach(stake => {
           if (stake.accepted == false) {
             context.queuesInfo.markToCancel(context.processId).then(res => {
               localStorage.removeItem("documents");
@@ -1171,11 +1171,10 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
     } else if (this.queueName === 'validationSIBS') {
       this.state = State.MERCHANT_REGISTRATION;
       queueModel = {} as MerchantRegistration;
+      queueModel.$type = StateResultDiscriminatorEnum.MERCHANT_REGISTRATION;
       queueModel.shops = [];
       var observation = this.form.get('observation').value;
-      queueModel.$type = StateResultDiscriminatorEnum.MERCHANT_REGISTRATION;
       queueModel.userObservations = observation;
-
       queueModel.decision = type;
 
       queueModel.merchantRegistrationId = this.form.get("enrollmentMerchantNumber").value;

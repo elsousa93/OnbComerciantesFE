@@ -7,6 +7,7 @@ import { APIRequestsService } from '../apirequests.service';
 import { AppConfigService } from '../app-config.service';
 import { BankInformation, Client, Contacts, ForeignFiscalInformation, HeadquartersAddress, ShareCapital } from '../client/Client.interface';
 import { HttpMethod } from '../enums/enum-data';
+import { LoadingService } from '../loading.service';
 import { AuthService } from '../services/auth.service';
 import { CorporateEntity, IStakeholders } from '../stakeholders/IStakeholders.interface';
 import { ShopDetailsAcquiring, ShopEquipment } from '../store/IStore.interface';
@@ -25,7 +26,7 @@ export class ProcessService {
   languageStream$ = new BehaviorSubject<string>(''); //temos de estar à escuta para termos a currentLanguage
 
   constructor(private router: ActivatedRoute,
-    private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private API: APIRequestsService, public translate: TranslateService, private authService: AuthService) {
+    private http: HttpClient, /*@Inject(configurationToken)*/ private configuration: AppConfigService, private API: APIRequestsService, public translate: TranslateService, private authService: AuthService, private loader: LoadingService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.urlOutbound = configuration.getConfig().outboundUrl;
     this.neyondBackURL = configuration.getConfig().neyondBackUrl;
@@ -78,7 +79,8 @@ export class ProcessService {
     return this.http.get(this.baseUrl + 'process/' + processId + '/document/' + documentId);
   }
 
-  getDocumentImageFromProcess(processId: string, documentId: string) : any {
+  getDocumentImageFromProcess(processId: string, documentId: string): any {
+    this.loader.show();
     var URI = this.baseUrl + 'process/' + processId + '/document/' + documentId + '/image';
     return fetch(URI, {
       headers: {
@@ -88,6 +90,8 @@ export class ProcessService {
         "Accept": "application/pdf",
         "Content-Type": "application/pdf"
       }
+    }).finally(() => {
+      this.loader.hide();
     });
   }
 
@@ -242,7 +246,17 @@ export class ProcessService {
     return this.API.callAPIAcquiring(HttpMethod.DELETE, url);
   }
 
-  
+  finishProcessUpdate(processId: string, body: any) {
+    var url = this.baseUrl + 'process/' + processId;
+    return this.API.callAPIAcquiring(HttpMethod.PATCH, url, body);
+  }
+
+  getUpdateProcessInfo(processId: string, processUpdateId?: string) {
+    var url = this.baseUrl + 'process/' + processId + '/update-process';
+    if (processUpdateId != "" && processUpdateId != null)
+      url += '?processUpdateId=' + processUpdateId;
+    return this.API.callAPIAcquiring(HttpMethod.GET, url);
+  }
 }
 export interface BusinessIssueViewModel {
   process?: IssueViewModel[]
@@ -358,6 +372,7 @@ export interface ProcessList {
   merchant: Merchant
   userAssigned?: string
   contractSignature?: ProcessSignature
+  updateProcessInformation?: UpdateProcessInformation
 }
 
 interface ProcessSignature {
@@ -390,4 +405,9 @@ export interface ProcessHistory {
   whoFinished?: string
   observations?: string
   externalState?: string
+}
+
+export interface UpdateProcessInformation {
+  isInProgress?: boolean
+  id?: string
 }

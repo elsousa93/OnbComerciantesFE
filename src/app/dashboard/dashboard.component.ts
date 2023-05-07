@@ -160,6 +160,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ongoingCount: number;
   returnedCount: number;
   contractAcceptanceCount: number;
+  contractDigitalIdentificationCount: number;
+  contractDigitalAcceptanceCount: number;
+  contractTotal: number;
   pendingSentCount: number;
   pendingEligibilityCount: number;
   multipleClientesCount: number;
@@ -213,11 +216,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             this.authService.changeExpired(true);
             this.authService.reset();
           } else {
-            user.userName = res.name;
+            //user.userName = res.name;
+            user.userName = res["ext-display_name"];
             user.bankName = res["ext-bank"];
             user.bankLocation = res["ext-bankLocation"];
             user.authTime = (new Date()).toLocaleString('pt-PT');
-            user.permissions = UserPermissions.UNICRE;
+            //user.permissions = UserPermissions.UNICRE;
+            user.permissions = res["ext-acquiring-profile"];
             var newDate = new Date(res.exp * 1000);
             this.timeout = newDate.getTime() - new Date().getTime();
             this.expirationCounter(this.timeout);
@@ -268,9 +273,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     if (this.FTPermissions?.acceptance) {
       this.processService.searchProcessByState('ContractAcceptance', 0, 1).subscribe(result => {
         this.logger.info('Pendentes de Aceitação' + JSON.stringify(result));
+        this.contractAcceptanceCount = result.pagination.total;
         this.processService.searchProcessByState('ContractDigitalAcceptance', 0, 1).subscribe(res => {
+          this.contractDigitalAcceptanceCount = res.pagination.total;
           this.processService.searchProcessByState('DigitalIdentification', 0, 1).subscribe(r => {
-            this.contractAcceptanceCount = result.pagination.total + res.pagination.total + r.pagination.total;
+            this.contractDigitalIdentificationCount = r.pagination.total;
+            this.contractTotal = this.contractAcceptanceCount + this.contractDigitalAcceptanceCount + this.contractDigitalIdentificationCount;
           });
         });
       });
@@ -412,46 +420,52 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   callAcceptanceCount() {
-    if (this.contractAcceptanceCount > 0 && !this.contractAcceptanceOpened) {
+    if (this.contractAcceptanceCount + this.contractDigitalAcceptanceCount + this.contractDigitalIdentificationCount > 0 && !this.contractAcceptanceOpened) {
       this.resetOpened();
       this.contractAcceptanceOpened = true;
-      this.processService.searchProcessByState('ContractAcceptance', 0, this.contractAcceptanceCount).subscribe(resul => {
-        this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
-        this.contractAcceptanceProcessess = resul;
-        this.contractAcceptanceProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-          // mapear os estados para aparecer em PT ou EN
-          if (process.state === 'ContractAcceptance') {
-            process.state = this.translate.instant('searches.contractAcceptance')
-          }
-        });
-      });
 
-      this.processService.searchProcessByState('ContractDigitalAcceptance', 0, this.contractAcceptanceCount).subscribe(resul => {
-        this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
-        var contractAcceptanceProcessess = resul;
-        contractAcceptanceProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-          // mapear os estados para aparecer em PT ou EN
-          if (process.state === 'ContractDigitalAcceptance') {
-            process.state = this.translate.instant('searches.contractDigitalAcceptance')
+      let promise = new Promise((resolve, reject) => {
+        this.processService.searchProcessByState('ContractAcceptance', 0, this.contractAcceptanceCount).subscribe(resul => {
+          this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
+          this.contractAcceptanceProcessess = resul;
+          if (this.contractAcceptanceProcessess.items.length > 0) {
+            this.contractAcceptanceProcessess.items.forEach(process => {
+              process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
+              // mapear os estados para aparecer em PT ou EN
+              if (process.state === 'ContractAcceptance') {
+                process.state = this.translate.instant('searches.contractAcceptance')
+              }
+            });
           }
+          resolve(null);
         });
-        this.contractAcceptanceProcessess.items.push(...contractAcceptanceProcessess.items);
-      });
+      }).finally(() => {
+        this.processService.searchProcessByState('ContractDigitalAcceptance', 0, this.contractDigitalAcceptanceCount).subscribe(resul => {
+          this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
+          var contractAcceptanceProcessess = resul;
+          contractAcceptanceProcessess.items.forEach(process => {
+            process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
+            // mapear os estados para aparecer em PT ou EN
+            if (process.state === 'ContractDigitalAcceptance') {
+              process.state = this.translate.instant('searches.contractDigitalAcceptance')
+            }
+          });
+          this.contractAcceptanceProcessess.items.push(...contractAcceptanceProcessess.items);
+        });
 
-      this.processService.searchProcessByState('DigitalIdentification', 0, this.contractAcceptanceCount).subscribe(resul => {
-        this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
-        var contractAcceptanceProcessess = resul;
-        contractAcceptanceProcessess.items.forEach(process => {
-          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-          // mapear os estados para aparecer em PT ou EN
-          if (process.state === 'DigitalIdentification') {
-            process.state = this.translate.instant('searches.digitalIdentification')
-          }
+        this.processService.searchProcessByState('DigitalIdentification', 0, this.contractDigitalIdentificationCount).subscribe(resul => {
+          this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
+          var contractAcceptanceProcessess = resul;
+          contractAcceptanceProcessess.items.forEach(process => {
+            process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
+            // mapear os estados para aparecer em PT ou EN
+            if (process.state === 'DigitalIdentification') {
+              process.state = this.translate.instant('searches.digitalIdentification')
+            }
+          });
+          this.contractAcceptanceProcessess.items.push(...contractAcceptanceProcessess.items); // entrou aqui
+          this.orderProcesses(this.dataSourceAceitacao, this.empTbSortAceitacao, this.contractAcceptanceProcessess);
         });
-        this.contractAcceptanceProcessess.items.push(...contractAcceptanceProcessess.items);
-        this.orderProcesses(this.dataSourceAceitacao, this.empTbSortAceitacao, this.contractAcceptanceProcessess);
       });
     }
   }
@@ -824,6 +838,13 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.dataService.changeUpdatedClient(false);
     this.dataService.changeCurrentFirstTimeStake(true);
     this.dataService.changeQueueName(null);
+    this.dataService.changeContinent("EUROPA");
+    this.dataService.changeMerchant(false);
+    this.dataService.changeStakeholders(false);
+    this.dataService.changeShops(false);
+    this.dataService.changeEquips(false);
+    this.dataService.updateStakeMap(new Map());
+    this.dataService.changeSignType(true);
     this.processNrService.changeProcessNumber(null);
     this.processNrService.changeProcessId(null);
     this.processNrService.changeQueueName(null);

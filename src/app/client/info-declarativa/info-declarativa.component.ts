@@ -55,6 +55,7 @@ export class InfoDeclarativaComponent implements OnInit {
   queueName: string = "";
   title: string;
   processId: string;
+  updateProcessId: string;
 
   setForm(client: Client) {
     this.newClient = client;
@@ -79,6 +80,7 @@ export class InfoDeclarativaComponent implements OnInit {
       this.returnedFrontOffice = this.router.getCurrentNavigation().extras.state["returnedFrontOffice"];
     }
     this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
+    this.subscription = this.processNrService.updateProcessId.subscribe(id => this.updateProcessId = id);
     this.returned = localStorage.getItem("returned");
 
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
@@ -115,10 +117,16 @@ export class InfoDeclarativaComponent implements OnInit {
           this.setForm(res);
         });
       } else {
-        this.processService.getMerchantFromProcess(this.processId).subscribe(res => {
-          this.logger.info("Get process client by id result: " + JSON.stringify(res));
-          this.setForm(res);
-        }); 
+        if (this.returned == 'consult') {
+          this.processService.getMerchantFromProcess(this.processId).subscribe(res => {
+            this.logger.info("Get process client by id result: " + JSON.stringify(res));
+            this.setForm(res);
+          });
+        } else {
+          this.processService.getUpdateProcessInfo(this.processId, this.updateProcessId).then(res => {
+            this.setForm(res.result.merchant);
+          });
+        }
       }
     } else {
       this.logger.info("Get Merchant from local storage " + JSON.stringify(this.newClient));

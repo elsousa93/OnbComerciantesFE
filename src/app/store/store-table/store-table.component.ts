@@ -29,7 +29,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   public CommunicationOwnershipTypeEnum = CommunicationOwnershipTypeEnum;
   public ProductPackKindEnum = ProductPackKindEnum;
 
-  displayedColumns: string[] = ['name', 'activity', 'subActivity', 'bank', 'terminalNumber', 'product'];
+  displayedColumns: string[] = ['name', 'activity', 'subActivity', 'bank', 'product', 'subproduct'];
 
   //Variáveis que podem ser preenchidas
   @Input() submissionId: string;
@@ -42,7 +42,8 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   //Variáveis que vão retornar informação
   @Output() selectedStoreEmitter = new EventEmitter<{
     store: ShopDetailsAcquiring,
-    idx: number
+    idx: number,
+    clickedTable: boolean
   }>();
 
   selectedStore: ShopDetailsAcquiring = {
@@ -63,8 +64,9 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   banks: Bank[];
   processId: string;
+  updateProcessId: string;
 
-  constructor(private submissionService: SubmissionService, private storeService: StoreService, private translate: TranslateService, private tableInfo: TableInfoService, private logger: LoggerService, private processNrService: ProcessNumberService, private queuesInfo: QueuesService) {
+  constructor(private submissionService: SubmissionService, private storeService: StoreService, private translate: TranslateService, private tableInfo: TableInfoService, private logger: LoggerService, private processNrService: ProcessNumberService, private queuesInfo: QueuesService, private processService: ProcessService) {
     this.fetchActivities();
   }
 
@@ -84,7 +86,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   }
 
   getActivityDescription(activityCode) {
-    this.activities.forEach(act => {
+    this.activities?.forEach(act => {
       if (activityCode == act.activityCode) {
         this.subActivities = act.subActivities;
       }
@@ -113,14 +115,14 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     if (changes["updatedStoreEvent"] && this.updatedStoreEvent != null) {
       this.updatedStoreEvent.subscribe(result => {
         var nextIdx = result.idx + 1;
-        this.emitSelectedStore(this.storesList[nextIdx], nextIdx);
+        this.emitSelectedStore(this.storesList[nextIdx], nextIdx, false);
       });
     }
     if (changes["previousStoreEvent"] && this.previousStoreEvent != null) {
       this.previousStoreEvent.subscribe(result => {
         if (result > 0) {
           var prevIdx = result - 1;
-          this.emitSelectedStore(this.storesList[prevIdx], prevIdx);
+          this.emitSelectedStore(this.storesList[prevIdx], prevIdx, false);
         }
       });
     }
@@ -129,6 +131,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   ngOnInit(): void {
     this.returned = localStorage.getItem("returned");
     this.processNrService.processId.subscribe(id => this.processId = id);
+    this.processNrService.updateProcessId.subscribe(id => this.updateProcessId = id);
     this.getStoreList();
 
     if (this.deleteStoreEvent != null) {
@@ -201,24 +204,48 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
 
   getStoreList() {
     if ((this.processId != '' && this.processId != null) && this.returned != null) {
-      this.getStoreListFromProcess().then(result => {
-        this.loadStores(this.storesList);
-        this.listLengthEmitter.emit(this.storesList.length);
-        if (this.storesList.length > 0)
-          this.emitSelectedStore(this.storesList[0], 0);
-      });
+      if (this.returned == 'consult') {
+        this.getStoreListFromProcess().then(result => {
+          this.loadStores(this.storesList);
+          this.listLengthEmitter.emit(this.storesList.length);
+          if (this.storesList.length > 0)
+            this.emitSelectedStore(this.storesList[0], 0, false);
+        });
+      } else {
+        this.processService.getUpdateProcessInfo(this.processId, this.updateProcessId).then(result => {
+          var shops = result.result.shops;
+          if (shops.length > 0) {
+            shops.forEach(val => {
+              //if (val.updateProcessAction != "Delete") {
+                if (val.phone1 != null) {
+                  val.phone1.phoneIndicative = null;
+                }
+                if (val.phone2 != null) {
+                  val.phone2.phoneIndicative = null;
+                }
+                let o = Object.fromEntries(Object.entries(val).filter(([_, v]) => v != null)) as any;
+                this.storesList.push(o);
+              //}
+            });
+            this.loadStores(this.storesList);
+            this.listLengthEmitter.emit(this.storesList.length);
+            if (this.storesList.length > 0)
+              this.emitSelectedStore(this.storesList[0], 0, false);
+          }
+        });
+      }
     } else {
       this.getStoreListFromSubmission().then(result => {
         this.loadStores(this.storesList);
         this.listLengthEmitter.emit(this.storesList.length);
         if (this.storesList.length > 0)
-          this.emitSelectedStore(this.storesList[0], 0);
+          this.emitSelectedStore(this.storesList[0], 0, false);
       });
     }
   }
 
-  emitSelectedStore(store, idx) {
-    this.selectedStoreEmitter.emit({ store: store, idx: idx });
+  emitSelectedStore(store, idx, clickedTable) {
+    this.selectedStoreEmitter.emit({ store: store, idx: idx, clickedTable: clickedTable });
     this.selectedStore = store;
     this.currentIdx = idx;
   }

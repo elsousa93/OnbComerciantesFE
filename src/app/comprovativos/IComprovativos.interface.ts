@@ -25,6 +25,8 @@ export interface AceitacaoDoc {
 }
 
 export interface RequiredDocuments {
+  requiredDocumentPurposesPrivateEntity?: RequiredDocumentPurpose[],
+  requiredDocumentPurposesCorporateEntity?: RequiredDocumentPurpose[],
   requiredDocumentPurposesMerchants?: RequiredDocumentPurpose[],
   requiredDocumentPurposesStakeholders?: RequiredDocumentPurpose[],
   requiredDocumentPurposesShops?: RequiredDocumentPurpose[]

@@ -226,7 +226,7 @@ const appInitializerFn = (appConfig: AppConfigService) => {
       }
     }),
     LoggerModule.forRoot({
-      level: environment.production ? NgxLoggerLevel.LOG : NgxLoggerLevel.DEBUG,
+      level: (environment.production || environment.production == false) ? NgxLoggerLevel.LOG : NgxLoggerLevel.DEBUG,
       enableSourceMaps: true,
       serverLoggingUrl: "BELogging",
       serverLogLevel: NgxLoggerLevel.DEBUG

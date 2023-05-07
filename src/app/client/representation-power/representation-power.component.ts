@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { LoggerService } from '../../logger.service';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { StakeholdersCompleteInformation, StakeholdersProcess } from '../../stakeholders/IStakeholders.interface';
+import { RepresentationPowers } from '../../table-info/ITable-info.interface';
+import { TableInfoService } from '../../table-info/table-info.service';
 import { ClientContext } from '../clientById/clientById.model';
 
 @Component({
@@ -33,6 +35,7 @@ export class RepresentationPowerComponent implements OnInit, OnChanges {
   stakeholdersToInsert: StakeholdersProcess[];
   merchantInfo: any;
   crc: any;
+  representationPowersList: RepresentationPowers[] = [];
 
   loadStakeholders() {
     this.clientContext?.currentStakeholdersToInsert?.subscribe(result => {
@@ -40,9 +43,12 @@ export class RepresentationPowerComponent implements OnInit, OnChanges {
     });
   }
 
-  constructor(private route: ActivatedRoute, private router: Router, private data: DataService, private logger: LoggerService) {
+  constructor(private route: ActivatedRoute, private router: Router, private data: DataService, private logger: LoggerService, private tableInfoService: TableInfoService) {
     this.submissionId = localStorage.getItem('submissionId');
     this.returned = localStorage.getItem('returned');
+    this.tableInfoService.GetRepresentationPowers().then(value => {
+      this.representationPowersList = value.result;
+    });
   }
 
   ngOnChanges(changes: SimpleChanges): void {
@@ -50,10 +56,14 @@ export class RepresentationPowerComponent implements OnInit, OnChanges {
     }
 
   ngOnInit(): void {
-    this.logger.debug("Context inside representation.component: " + JSON.stringify(this.clientContext));
+    
   }
 
   submit() {
 
+  }
+
+  getRepresentaionPowersDescription(code: string) {
+    return this.representationPowersList?.find(value => value.code == code)?.description;
   }
 }

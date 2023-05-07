@@ -168,7 +168,7 @@
               </ng-container>
               <div class="row" *ngIf="isPackSelected">
                 <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0"
-                  *ngIf="paymentSchemes?.kind == 'simple'">
+                  *ngIf="paymentSchemes?.kind == 'simple' || paymentSchemes?.kind == 'Simple'">
                   <div class="row">
                     <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">
                       {{paymentSchemes.description}}
@@ -190,7 +190,7 @@
                   </div>
                 </div>
                 <ng-container *ngFor="let group of groupsList">
-                  <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngIf="!existsNotVisibleAttr(group) && group.kind == 'simple'"
+                  <div class="align-self-start col-3 mt-0 ms-0 me-0 pt-0 ps-3 pe-0" *ngIf="!existsNotVisibleAttr(group) && (group.kind == 'simple' || group.kind == 'Simple')"
                        formGroupName="{{'formGroup' + group.id}}">
                     <div class="row">
                       <div class="row">
@@ -216,7 +216,7 @@
                                 <ng-container *ngIf="attribute.bundles?.length > 0 && !existsNotVisibleBundleAttr(attribute.bundles)">
                                   <div *ngFor="let bundle of attribute.bundles"
                                        formGroupName="{{'formGroupBundle' + bundle.id}}">
-                                    <div *ngIf="bundle.kind == 'simple'">
+                                    <div *ngIf="bundle.kind == 'simple' || bundle.kind == 'Simple'">
                                       <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">
                                         {{bundle.description}}
                                       </p>
@@ -260,7 +260,7 @@
                   </div>
                 </div>
                 <ng-container *ngIf="showMore">
-                  <ng-container *ngIf="paymentSchemes?.kind == 'advanced'">
+                  <ng-container *ngIf="paymentSchemes?.kind == 'advanced' || paymentSchemes?.kind == 'Advanced'">
                     <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">
                       {{paymentSchemes.description}}
                     </p>
@@ -281,7 +281,7 @@
                   </ng-container>
                   <ng-container *ngFor="let group of groupsList" >
                     <ng-container *ngIf="!existsNotVisibleAttr(group)" formGroupName="{{'formGroup' + group.id}}">
-                      <ng-container *ngIf="group.kind == 'advanced'">
+                      <ng-container *ngIf="group.kind == 'advanced' || group.kind == 'Advanced'">
                         <div class="col-3">
                           <p class="titulo-form-simples align-self-start mb-1" wappler-command="editContent">
                             {{group.description}}
@@ -305,7 +305,7 @@
                                   <ng-container *ngIf="attribute.bundles?.length > 0 && !existsNotVisibleBundleAttr(attribute.bundles)">
                                     <div *ngFor="let bundle of attribute.bundles"
                                          formGroupName="{{'formGroupBundle' + bundle.id}}">
-                                      <div *ngIf="bundle.kind == 'advanced'">
+                                      <div *ngIf="bundle.kind == 'advanced' || bundle.kind == 'Advanced'">
                                         <p class="titulo-form-simples align-self-start mb-1"
                                            wappler-command="editContent">{{bundle.description}}</p>
                                         <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0"
@@ -512,7 +512,7 @@
               </div>
               <span *ngIf="commissionAttributeList != null && commissionAttributeList.length > 0"
                 class="navbar-text me-2 align-self-center ms-0 me-0">
-                <button id="btn5a1" (click)="resetValues()"
+                <button id="btn5a1" (click)="resetValues()" [attr.disabled]="returned == 'consult' ? true : null"
                   class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
                   wappler-command="editContent">{{'commercialOffer.reset'|translate|uppercase}}&nbsp;
                 </button>

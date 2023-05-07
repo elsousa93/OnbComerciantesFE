@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppConfigService } from '../../app-config.service';
+import { LoadingService } from '../../loading.service';
 import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 import { AuthService } from '../../services/auth.service';
 import { ISubmissionDocument, PostDocument, SimplifiedDocument } from './ISubmission-document';
@@ -12,7 +13,7 @@ export class SubmissionDocumentService {
   private baseUrl;
   private urlOutbound;
 
-  constructor(private http: HttpClient, private configuration: AppConfigService, private authService: AuthService, private processNrService: ProcessNumberService) {
+  constructor(private http: HttpClient, private configuration: AppConfigService, private authService: AuthService, private processNrService: ProcessNumberService, private loader: LoadingService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.urlOutbound = configuration.getConfig().outboundUrl;
   }
@@ -27,6 +28,7 @@ export class SubmissionDocumentService {
   }
 
   GetDocumentImage(submissionID: string, documentID: string): any {
+    this.loader.show();
     var URI = this.baseUrl + 'submission/' + submissionID + '/document/' + documentID + '/image';
     return fetch(URI, {
       headers: {
@@ -36,6 +38,8 @@ export class SubmissionDocumentService {
         "Accept": "application/pdf",
         "Content-Type": "application/pdf"
       }
+    }).finally(() => {
+      this.loader.hide();
     });
   }
 
@@ -85,5 +89,9 @@ export class SubmissionDocumentService {
 
   DeleteDocumentFromSubmission(submissionID: string, docId: string) {
     return this.http.delete(this.baseUrl + 'submission/' + submissionID + '/document/' + docId);
+  }
+
+  DeleteDocumentFromProcess(processID: string, docId: string) {
+    return this.http.delete(this.baseUrl + 'process/' + processID + '/document/' + docId);
   }
 }

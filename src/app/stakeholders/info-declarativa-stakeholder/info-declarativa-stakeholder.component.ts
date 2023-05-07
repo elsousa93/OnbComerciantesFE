@@ -55,6 +55,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   title: string;
   public subscription: Subscription;
   processId: string;
+  updateProcessId: string;
 
   emitPreviousStakeholder(idx) {
     this.previousStakeholderEvent = idx;
@@ -83,6 +84,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   ngOnInit(): void {
     this.data.updateData(false, 6, 2);
     this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
+    this.subscription = this.processNrService.updateProcessId.subscribe(id => this.updateProcessId = id);
     this.subscription = this.data.currentQueueName.subscribe(queueName => {
       if (queueName != null) {
         this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
@@ -98,6 +100,9 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
 
   selectStakeholder(info) {
     if (info != null) {
+      if (info.clickedTable) {
+        this.submit(true);
+      }
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
       this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
@@ -160,14 +165,14 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     }    
   }
 
-  submit() {
+  submit(clickedTable: boolean = false) {
     if (this.returned != 'consult') {
       if (this.infoStakeholders.valid) {
         if (this.currentStakeholder.stakeholderAcquiring?.signType != null) {
           var contacts = this.infoStakeholders.get("contacts");
 
           if (contacts.get("phone").value) {
-            if (this.currentStakeholder.stakeholderAcquiring.phone1 === null) {
+            if (this.currentStakeholder.stakeholderAcquiring.phone1 == null) {
               this.currentStakeholder.stakeholderAcquiring.phone1 = {};
             }
             this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = contacts.get("phone").get("countryCode").value;
@@ -209,12 +214,14 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
               this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
               this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
               this.visitedStakes = Array.from(new Set(this.visitedStakes));
-              if (this.visitedStakes.length < (this.stakesLength)) {
-                this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
-              } else {
-                this.data.updateData(false, 6, 3);
-                this.logger.info("Redirecting to Info Declarativa Lojas page");
-                this.route.navigate(['info-declarativa-lojas']);
+              if (!clickedTable) {
+                if (this.visitedStakes.length < (this.stakesLength)) {
+                  this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+                } else {
+                  this.data.updateData(false, 6, 3);
+                  this.logger.info("Redirecting to Info Declarativa Lojas page");
+                  this.route.navigate(['info-declarativa-lojas']);
+                }
               }
             });
           } else {
@@ -222,31 +229,37 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
               this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
               this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
               this.visitedStakes = Array.from(new Set(this.visitedStakes));
-              if (this.visitedStakes.length < (this.stakesLength)) {
-                this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
-              } else {
-                this.data.updateData(false, 6, 3);
-                this.logger.info("Redirecting to Info Declarativa Lojas page");
-                this.route.navigate(['info-declarativa-lojas']);
+              if (!clickedTable) {
+                if (this.visitedStakes.length < (this.stakesLength)) {
+                  this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+                } else {
+                  this.data.updateData(false, 6, 3);
+                  this.logger.info("Redirecting to Info Declarativa Lojas page");
+                  this.route.navigate(['info-declarativa-lojas']);
+                }
               }
             });
           }
         } else {
           this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
           this.visitedStakes = Array.from(new Set(this.visitedStakes));
-          if (this.visitedStakes.length < (this.stakesLength)) {
-            this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
-          } else {
-            this.data.updateData(false, 6, 3);
-            this.logger.info("Redirecting to Info Declarativa Lojas page");
-            this.route.navigate(['info-declarativa-lojas']);
+          if (!clickedTable) {
+            if (this.visitedStakes.length < (this.stakesLength)) {
+              this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+            } else {
+              this.data.updateData(false, 6, 3);
+              this.logger.info("Redirecting to Info Declarativa Lojas page");
+              this.route.navigate(['info-declarativa-lojas']);
+            }
           }
         }
       } 
     } else {
-      this.data.updateData(false, 6, 3);
-      this.logger.info("Redirecting to Info Declarativa Lojas page");
-      this.route.navigate(['info-declarativa-lojas']);
+      if (!clickedTable) {
+        this.data.updateData(true, 6, 3);
+        this.logger.info("Redirecting to Info Declarativa Lojas page");
+        this.route.navigate(['info-declarativa-lojas']);
+      }
     }
   }
 
