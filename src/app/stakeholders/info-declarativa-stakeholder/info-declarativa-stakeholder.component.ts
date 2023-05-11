@@ -98,6 +98,10 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     this.processNumber = localStorage.getItem("processNumber");
   }
 
+  checkVisitedStakes(visitedStakes) {
+    this.visitedStakes = visitedStakes;
+  }
+
   selectStakeholder(info) {
     if (info != null) {
       if (info.clickedTable) {
@@ -212,7 +216,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
           if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
             this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
               this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
-              this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+              this.visitedStakes.push(result.id);
               this.visitedStakes = Array.from(new Set(this.visitedStakes));
               if (!clickedTable) {
                 if (this.visitedStakes.length < (this.stakesLength)) {
@@ -227,7 +231,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
           } else {
             this.processService.updateStakeholderProcess(this.processId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).then(result => {
               this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
-              this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+              this.visitedStakes.push(result.result.id);
               this.visitedStakes = Array.from(new Set(this.visitedStakes));
               if (!clickedTable) {
                 if (this.visitedStakes.length < (this.stakesLength)) {

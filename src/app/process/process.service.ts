@@ -187,7 +187,7 @@ export class ProcessService {
   }
 
   addEquipmentToShopProcess(processId: string, shopId: string, equip: ShopEquipment) {
-    var url = this.baseUrl + 'process/' + processId + '/merchant/shop' + shopId + '/equipment';
+    var url = this.baseUrl + 'process/' + processId + '/merchant/shop/' + shopId + '/equipment';
     return this.API.callAPIAcquiring(HttpMethod.POST, url, equip);
   }
 
@@ -243,6 +243,11 @@ export class ProcessService {
 
   deleteStakeholderProcess(processId: string, stakeId: string) {
     var url = this.baseUrl + 'process/' + processId + '/stakeholder/' + stakeId;
+    return this.API.callAPIAcquiring(HttpMethod.DELETE, url);
+  }
+
+  deleteCorporateProcess(processId: string, corporateId: string) {
+    var url = this.baseUrl + 'process/' + processId + '/corporate-entity/' + corporateId;
     return this.API.callAPIAcquiring(HttpMethod.DELETE, url);
   }
 

@@ -210,9 +210,9 @@ export class ClientCharacterizationComponent implements OnInit {
 
     this.changeFormStructure(new FormGroup({
       crcCode: new FormControl(this.processClient.code /*this.client.incorporationStatement.code*/, [Validators.required]), //sim
-      natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: true/*, disabled: this.clientExists */ }, [Validators.required]), //sim
+      natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: (this.processClient.legalNature == "" || this.processClient.legalNature == null) ? false : true/*, disabled: this.clientExists */ }, [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
-      natJuridicaN2: new FormControl({ value: '', disabled: true/*, disabled: this.clientExists*/ }), //sim
+      natJuridicaN2: new FormControl(''), //sim
       socialDenomination: new FormControl(this.processClient.companyName, Validators.required), //sim
       CAE1: new FormControl(this.processClient.mainEconomicActivity, Validators.required), //sim
       CAE1Branch: new FormControl(branch1), //talvez
@@ -494,7 +494,18 @@ export class ClientCharacterizationComponent implements OnInit {
 
         this.crcFound = true;
         this.errorMsg = '';
-        this.processClient.legalNature = clientByCRC.legalNature;
+        let legalNatureCode = this.legalNatureList?.find(nature => nature.description.toLowerCase() == clientByCRC.legalNature.toLowerCase())?.code;
+        if (legalNatureCode == undefined) {
+          if (clientByCRC.legalNature.toLowerCase().includes("quotas")) {
+            legalNatureCode = this.legalNatureList?.find(nature => nature.description.includes("quotas"))?.code;
+            if (legalNatureCode == undefined) {
+              legalNatureCode = "";
+            }
+          }
+        }
+
+        this.processClient.legalNature = legalNatureCode;
+
         this.processClient.mainEconomicActivity = economicActivity;
         this.processClient.secondaryEconomicActivity[0] = clientByCRC.economicActivity?.secondary[0]?.split('-')[0];
         this.processClient.secondaryEconomicActivity[1] = clientByCRC.economicActivity?.secondary[1]?.split('-')[0];
@@ -577,8 +588,8 @@ export class ClientCharacterizationComponent implements OnInit {
           date: this.processClient.capitalStock.date
         }
         this.client.byLaws = this.processClient.byLaws;
-        this.client.legalNature = this.processClient.legalNature;
-        this.client.legalNature2 = this.form.value["natJuridicaN2"];
+        this.client.legalNature = this.form.get("natJuridicaN1").value;//this.processClient.legalNature;
+        this.client.legalNature2 = (this.form.value["natJuridicaN2"] != '' && this.form.value["natJuridicaN2"] != null) ? this.form.value["natJuridicaN2"] : null;
 
         if (this.tipologia === 'corporation' || this.tipologia === 'Corporate' || this.tipologia === 'Company' || this.tipologia === '01')
           this.client.merchantType = 'Corporate';
@@ -684,8 +695,8 @@ export class ClientCharacterizationComponent implements OnInit {
           code: this.processClient.code,
           corporateName: this.processClient.companyName,
           fiscalId: this.processClient.fiscalId,
-          legalNature: this.legalNatureList.find(nature => nature.description.toLowerCase() == this.processClient.legalNature.toLowerCase()).code,
-          legalNature2: null,
+          legalNature: this.form.get("natJuridicaN1").value,
+          legalNature2: (this.form.get("natJuridicaN2").value != null && this.form.get("natJuridicaN2").value != "") ? this.form.get("natJuridicaN2").value : null,
           shareCapital: this.processClient.capitalStock.capital,
           byLaws: this.processClient.byLaws,
           shareCapitalDate: this.processClient.capitalStock.date,

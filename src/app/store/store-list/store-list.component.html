@@ -45,7 +45,7 @@
           [deleteStoreEvent]="removedStoreSubject.asObservable()"
           [insertStoreEvent]="insertedStoreSubject.asObservable()" [updatedStoreEvent]="updatedStoreEvent"
           (listLengthEmitter)="getStoresListLength($event)" [previousStoreEvent]="previousStoreEvent"
-          (fileEmitter)="getUploadedFiles($event)"></app-store-table>
+          (fileEmitter)="getUploadedFiles($event)" (visitedStoresEmitter)="getVisitedStores($event)"></app-store-table>
       </div>
       <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">
         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>

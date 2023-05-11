@@ -145,6 +145,7 @@ export class ConsultasFTComponent implements OnInit {
       processDateStart: new FormControl(''), //Não é obrigatorio por enquanto
       processDateEnd: new FormControl('') //Não é obrigatorio por enquanto
     });
+    this.loadProcesses([]);
   }
 
   submitSearch() {

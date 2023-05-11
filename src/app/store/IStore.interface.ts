@@ -124,6 +124,7 @@ export class ShopAddressAcquiring {
   address?: FiscalAddress
   isInsideShoppingCenter?: boolean
   shoppingCenter?: string
+  shoppingCenterPostalCode?: string
 }
 
 interface ShopContacts {

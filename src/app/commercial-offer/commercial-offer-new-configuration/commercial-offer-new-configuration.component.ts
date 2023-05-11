@@ -173,7 +173,8 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     this.formConfig = new FormGroup({
       terminalAmount: new FormControl(this.isNewConfig == false ? this.storeEquip.quantity : '', Validators.required)
     });
-    this.equipmentSettings.forEach(function (value, idx) {
+
+    this.equipmentSettings?.forEach(function (value, idx) {
       var group = new FormGroup({});
       var attributes = value.attributes;
 
@@ -219,10 +220,58 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   loadMensalidades() {
     if ((this.processId != '' && this.processId != null) && this.returned != null) {
       this.pricingOptions = [];
-      this.chooseMensalidade(this.storeEquip.pricing.id);
+      if (!this.isNewConfig) {
+        this.chooseMensalidade(this.storeEquip.pricing.id);
+      } else {
+        if (this.list != undefined && this.list != null)
+          this.groupsList.push(...this.list);
+        this.calledMensalidades = true;
+        //this.changedPackValue = false;
+        this.productPackPricingFilter = {
+          processorId: this.packs[0].processors[0],
+          productCode: this.currentStore.productCode,
+          subproductCode: this.currentStore.subProductCode,
+          merchant: this.merchantCatalog,
+          packAttributes: this.groupsList,
+          store: {
+            activity: this.currentStore.activity,
+            subActivity: this.currentStore.subActivity,
+            supportEntity: this.currentStore.supportEntity,
+            referenceStore: this.currentStore.shopId,
+            supportBank: this.currentStore.supportEntity
+          },
+          equipment: {
+            quantity: this.formConfig.get('terminalAmount').value
+          }
+        }
+        this.logger.info("Filter to get commercial pack pricing list" + JSON.stringify(this.productPackPricingFilter));
+        this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
+          this.logger.info("Get commercial pack pricing list result: " + JSON.stringify(result));
+          this.pricingOptions = [];
+          if (this.storeEquip?.pricing == null) {
+            if (result.result.length == 1) {
+              this.pricingOptions.push(result.result[0]);
+              this.chooseMensalidade(result.result[0].id);
+            } else {
+              result.result.forEach(options => {
+                this.pricingOptions.push(options);
+              });
+            }
+          } else {
+            result.result.forEach(options => {
+              this.pricingOptions.push(options);
+            });
+            if (this.firstTimeEdit) {
+              this.firstTimeEdit = false;
+              this.chooseMensalidade(this.storeEquip.pricing.id);
+            }
+          }
+        });
+      }
     } else {
       if (this.packId != "") { // antes tinha && this.changedPackValue
-        this.groupsList.push(...this.list);
+        if (this.list != undefined && this.list != null)
+          this.groupsList.push(...this.list);
         this.calledMensalidades = true;
         //this.changedPackValue = false;
         this.productPackPricingFilter = {
@@ -282,8 +331,19 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     this.selectedMensalidadeId = id;
     if ((this.processId != '' && this.processId != null) && this.returned != null) {
       this.pricingAttributeList = [];
-      this.pricingAttributeList.push(this.storeEquip.pricing.attribute);
-      this.addPricingForm();
+      if (!this.isNewConfig) {
+        this.pricingAttributeList.push(this.storeEquip.pricing.attribute);
+        this.addPricingForm();
+      } else {
+        this.COService.GetProductCommercialPackPricing(this.packId, id, this.productPackPricingFilter).then(res => {
+          this.logger.info("Get commercial pack pricing result: " + JSON.stringify(res));
+          this.pricingAttributeList = [];
+          res.result.attributes.forEach(attr => {
+            this.pricingAttributeList.push(attr);
+          });
+          this.addPricingForm();
+        });
+      }
     } else {
       if (this.formConfig.valid) {
         if (this.storeEquip?.pricing == null) {
@@ -904,7 +964,12 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   onKeyDown(event: any) {
     const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
     const regex = /^[0-9]+([,.][0-9]+)?$/;
-    if (allowedKeys.indexOf(event.key) !== -1 || regex.test(event.key)) {
+    let currentValue = this.pricingForm.get("formGroupPricing" + event.target.id).get("formControlPricingDiscount" + event.target.id).value as string;
+    currentValue = currentValue + event.key;
+    if (currentValue.endsWith(",") || currentValue.endsWith(".")) {
+      currentValue = currentValue + "0";
+    }
+    if (allowedKeys.indexOf(event.key) !== -1 || regex.test(currentValue)) {
       return true;
     }
     event.preventDefault();

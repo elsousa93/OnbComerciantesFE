@@ -85,20 +85,46 @@
               </div>
               <div class="row">
                 <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 768 }">
-                  <p class="titulo-form-simples" for="natJuridicaN1">{{'client.legalNature'|translate}} N1:*</p>
-                  <input type="text" formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
-                         class="form-select campo-form-select" />
+                  <p class="titulo-form-simples">
+                    {{'client.legalNature'|translate}} N1:*
+                    <span class="titulo-form-error" *ngIf="legalNatError == true" class="titulo-form-simples-erro">
+                      {{'client.incorrectLegalNat'|translate}}
+                    </span>
+                  </p>
+                  <!--<input type="text" formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
+                         class="form-select campo-form-select" /> -->
+                  <select formControlName="natJuridicaN1" name="natJuridicaN1" id="natJuridicaN1"
+                          class="form-select campo-form-select" (change)="onLegalNatureSelected()"
+                          [attr.disabled]="returned === 'consult' ? true : null">
+                    <option *ngFor="let legalNature of legalNatureList" value={{legalNature.code}}>
+                      {{legalNature.description}}
+                    </option>
+                  </select>
                   <div class="alert alert-danger"
                        *ngIf="this.form.get('natJuridicaN1').touched && !this.form.get('natJuridicaN1').valid">
-                    <div *ngIf="this.form.get('natJuridicaN1').errors && this.form.get('natJuridicaN1').errors?.['required']">
+                    <div *ngIf="this.form.get('natJuridicaN1').errors && (this.form.get('natJuridicaN1').errors?.['required'] || this.form.get('natJuridicaN1').errors?.['incorrect'])">
                       {{'generalKeywords.mandatoryParameter'|translate}}
                     </div>
                   </div>
                 </div>
                 <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 768 }">
                   <p class="titulo-form-simples" for="natJuridicaN2">{{'client.legalNature'|translate}} N2:*</p>
-                  <input type="text" formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
-                         class="form-select campo-form-select" />
+                  <!--<input type="text" formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
+  class="form-select campo-form-select" />
+
+           <div class="alert alert-danger"
+                *ngIf="this.form.get('natJuridicaN2').touched && !this.form.get('natJuridicaN2').valid">
+             <div *ngIf="this.form.get('natJuridicaN2').errors && this.form.get('natJuridicaN2').errors?.['required']">
+               {{'generalKeywords.mandatoryParameter'|translate}}
+             </div>
+           </div>-->
+                  <select formControlName="natJuridicaN2" name="natJuridicaN2" id="natJuridicaN2"
+                          class="form-select campo-form-select"
+                          [attr.disabled]="(legalNatureList2?.length === 0 || returned === 'consult') ? true : null">
+                    <option *ngFor="let legalNature2 of legalNatureList2" value={{legalNature2.code}}>
+                      {{legalNature2.description}}
+                    </option>
+                  </select>
                   <div class="alert alert-danger"
                        *ngIf="this.form.get('natJuridicaN2').touched && !this.form.get('natJuridicaN2').valid">
                     <div *ngIf="this.form.get('natJuridicaN2').errors && this.form.get('natJuridicaN2').errors?.['required']">

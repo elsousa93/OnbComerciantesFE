@@ -167,6 +167,10 @@ export class StoreComponent implements AfterViewInit {
     this.route.navigate(['/add-store/', id]);
   }
 
+  getVisitedStores(visitedStores) {
+    this.visitedStores = visitedStores;
+  }
+
   selectStore(info) {
     if (info.store != null && info.idx != null) {
       if (this.currentIdx > -1) {
@@ -244,7 +248,7 @@ export class StoreComponent implements AfterViewInit {
           infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
         } else {
           if (this.currentStore.address.isInsideShoppingCenter && this.currentStore.address.useMerchantAddress) {
-            infoStores.get("zipCodeStore").setValue(this.currentStore.address.address.postalCode);
+            infoStores.get("zipCodeStore").setValue(this.currentStore.address.shoppingCenterPostalCode); // antes estava postalCode
             this.addStoreComponent.GetComercialCenterByZipCode();
             infoStores.get("subZoneStore").setValue(this.currentStore.address.shoppingCenter);
           }
@@ -258,33 +262,37 @@ export class StoreComponent implements AfterViewInit {
       if (!this.currentStore.bank.useMerchantBank) {
         bankStores.get("bankIban").setValue(this.currentStore.bank.bank.iban);
         if (this.returned == null || this.returned == 'edit' && (this.processId == '' || this.processId == null)) {
-          context.documentService.GetDocumentImage(context.submissionId, context.currentStore?.documents[0]?.id).then(async res => {
-            context.logger.info("Get document image result: " + JSON.stringify(res));
-            res.blob().then(data => {
-              var blob = new Blob([data], { type: 'application/pdf' });
-              var file = new File([blob], context.translate.instant('supportingDocuments.checklistModal.IBAN'), { 'type': 'application/pdf' });
-              context.ibansToShow = {
-                dataDocumento: context.currentStore?.documents[0]?.validUntil == null ? "desconhecido" : context.datePipe.transform(context.currentStore?.documents[0]?.validUntil, 'dd-MM-yyyy'),
-                file: file,
-                id: context.currentStore?.documents[0]?.id,
-                tipo: context.translate.instant('supportingDocuments.checklistModal.IBAN')
-              };
+          if (context.currentStore.documents?.length > 0) {
+            context.documentService.GetDocumentImage(context.submissionId, context.currentStore?.documents[0]?.id).then(async res => {
+              context.logger.info("Get document image result: " + JSON.stringify(res));
+              res.blob().then(data => {
+                var blob = new Blob([data], { type: 'application/pdf' });
+                var file = new File([blob], context.translate.instant('supportingDocuments.checklistModal.IBAN'), { 'type': 'application/pdf' });
+                context.ibansToShow = {
+                  dataDocumento: context.currentStore?.documents[0]?.validUntil == null ? "desconhecido" : context.datePipe.transform(context.currentStore?.documents[0]?.validUntil, 'dd-MM-yyyy'),
+                  file: file,
+                  id: context.currentStore?.documents[0]?.id,
+                  tipo: context.translate.instant('supportingDocuments.checklistModal.IBAN')
+                };
+              });
             });
-          });
+          }
         } else {
-          context.processService.getDocumentImageFromProcess(context.processId, context.currentStore?.documents[0]?.id).then(async res => {
-            context.logger.info("Get document image result: " + JSON.stringify(res));
-            res.blob().then(data => {
-              var blob = new Blob([data], { type: 'application/pdf' });
-              var file = new File([blob], context.translate.instant('supportingDocuments.checklistModal.IBAN'), { 'type': 'application/pdf' });
-              context.ibansToShow = {
-                dataDocumento: context.currentStore?.documents[0]?.validUntil == null ? "desconhecido" : context.datePipe.transform(context.currentStore?.documents[0]?.validUntil, 'dd-MM-yyyy'),
-                file: file,
-                id: context.currentStore?.documents[0]?.id,
-                tipo: context.translate.instant('supportingDocuments.checklistModal.IBAN')
-              };
+          if (context.currentStore.documents?.length > 0) {
+            context.processService.getDocumentImageFromProcess(context.processId, context.currentStore?.documents[0]?.id).then(async res => {
+              context.logger.info("Get document image result: " + JSON.stringify(res));
+              res.blob().then(data => {
+                var blob = new Blob([data], { type: 'application/pdf' });
+                var file = new File([blob], context.translate.instant('supportingDocuments.checklistModal.IBAN'), { 'type': 'application/pdf' });
+                context.ibansToShow = {
+                  dataDocumento: context.currentStore?.documents[0]?.validUntil == null ? "desconhecido" : context.datePipe.transform(context.currentStore?.documents[0]?.validUntil, 'dd-MM-yyyy'),
+                  file: file,
+                  id: context.currentStore?.documents[0]?.id,
+                  tipo: context.translate.instant('supportingDocuments.checklistModal.IBAN')
+                };
+              });
             });
-          });
+          }
         }
       } else {
         this.ibansToShow = null;
@@ -365,7 +373,7 @@ export class StoreComponent implements AfterViewInit {
             this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
             this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
           } else {
-            this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
+            this.currentStore.address.shoppingCenterPostalCode = infoStores.get("zipCodeStore").value; //antes estava address.postalCode
           }
         }
 

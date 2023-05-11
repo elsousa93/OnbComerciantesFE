@@ -75,7 +75,8 @@ export class CommercialOfferListComponent implements OnInit {
   public storeEquip: ShopEquipment;
   public returned: string;
   public showMore: boolean;
-  storesList: ShopDetailsAcquiring[];
+  storesList: ShopDetailsAcquiring[] = [];
+  replicateStoresList: ShopDetailsAcquiring[] = [];
 
   merchantCatalog: MerchantCatalog;
   productPack: ProductPackFilter = {
@@ -128,6 +129,10 @@ export class CommercialOfferListComponent implements OnInit {
 
   emitPreviousStore(idx) {
     this.previousStoreEvent = idx;
+  }
+
+  getVisitedStores(visitedStores) {
+    this.visitedStores = visitedStores;
   }
 
   ngAfterViewInit() {
@@ -228,15 +233,19 @@ export class CommercialOfferListComponent implements OnInit {
         }).then(res => {
         });
       } else {
-        var shop = this.processInfo.shops.find(shop => shop.id == context.currentStore.id);
-        if (shop.equipments.length > 0) {
-          shop.equipments.forEach(equip => {
-            if (equip.updateProcessAction != "Delete") {
-              context.storeEquipList.push(equip);
-            }
-          });
-          this.loadStoreEquips(this.storeEquipList);
-        }
+        this.processService.getUpdateProcessInfo(this.processId, this.updateProcessId).then(result => {
+          this.processInfo = result.result;
+          var shop = this.processInfo.shops.find(shop => shop.id == context.currentStore.id);
+          if (shop.equipments.length > 0) {
+           context.equipmentSettings = shop.equipments[0].equipmentSettings;
+           shop.equipments.forEach(equip => {
+              if (equip.updateProcessAction != "Delete") {
+                context.storeEquipList.push(equip);
+              }
+           });
+            this.loadStoreEquips(this.storeEquipList);
+          }
+        });
       }
     } else {
       this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.id).then(result => {
@@ -263,6 +272,9 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   selectStore(info) {
+    if (info.clickedTable) {
+      this.submit(true);
+    }
     this.storeEquipList = [];
     this.loadStoreEquips(this.storeEquipList);
     this.packId = "";
@@ -280,10 +292,10 @@ export class CommercialOfferListComponent implements OnInit {
     this.logger.info("Selected store: " + JSON.stringify(this.currentStore));
     this.logger.info("Selected store index: " + this.currentIdx);
 
+    //setTimeout(() => this.setFormData(), 100);
+    this.setFormData();
     if (this.form.get("replicateProducts").value)
       this.loadStoresWithSameBank(this.currentStore.bank.bank.bank);
-
-    setTimeout(() => this.setFormData(), 500);
 
     this.getStoreEquipsFromSubmission();
 
@@ -378,11 +390,12 @@ export class CommercialOfferListComponent implements OnInit {
 
   decimalOnly(event): boolean {
     const charCode = (event.which) ? event.which : event.keyCode;
-    if (charCode == 101 || charCode == 69 || charCode == 45 || charCode == 43) {
+    if (charCode == 101 || charCode == 69 || charCode == 45 || charCode == 43 || charCode == 32) {
       return false;
     }
     return true;
   }
+
 
   addCommissionFormGroups() {
     var valueGroup = new FormGroup({});
@@ -415,14 +428,46 @@ export class CommercialOfferListComponent implements OnInit {
   //utilizado para mostrar os valores no PACOTE COMERCIAL
   getPackDetails() {
     if ((this.processId != '' && this.processId != null) && this.returned != null) {
-      this.packs = [];
-      this.packs.push({
-        id: this.currentStore.pack.packId,
-        description: this.currentStore.pack.packDescription 
-      })
-      this.selectCommercialPack(this.currentStore.pack.packId);
+      if (this.currentStore["updateProcessAction"] != null && this.currentStore["updateProcessAction"] == "Add" && this.currentStore.pack == null) {
+        this.packs = [];
+        this.changedEAT = false;
+        this.paymentSchemes = null;
+        this.groupsList = [];
+        this.productPack.productCode = this.currentStore.productCode;
+        this.productPack.subproductCode = this.currentStore.subProductCode;
+        this.productPack.merchant = this.merchantCatalog;
+        this.productPack.store = {
+          activity: this.currentStore.activity,
+          subActivity: this.currentStore.subActivity,
+          supportEntity: this.form.get("isUnicre").value ? "acquirer" : "other",
+          referenceStore: this.currentStore.shopId,
+          supportBank: this.currentStore?.bank?.bank?.bank
+        }
+
+        this.logger.info("Data sent to outbound get packs: " + JSON.stringify(this.productPack));
+        this.COService.OutboundGetPacks(this.productPack).then(result => {
+          this.logger.info("Get packs: " + JSON.stringify(result));
+          this.packs = result.result;
+          if (this.packs.length === 1) {
+            this.selectCommercialPack(this.packs[0].id);
+          } else if (this.currentStore.pack != null) {
+            this.selectCommercialPack(this.currentStore.pack.packId);
+          }
+        });
+      } else {
+        if (this.firstTime) { 
+          this.packs = [];
+          this.packs.push({
+            id: this.currentStore.pack.packId,
+            description: this.currentStore.pack.packDescription,
+            processors: this.currentStore.pack.processorId != null ? [this.currentStore.pack.processorId] : ["teste"]
+          })
+          this.selectCommercialPack(this.currentStore.pack.packId);
+        }
+      }
     } else {
       if (this.changedEAT) {
+        this.packs = [];
         this.changedEAT = false;
         this.paymentSchemes = null;
         this.groupsList = [];
@@ -452,7 +497,7 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   selectCommercialPack(packId: string) {
-    if ((this.returned == null || this.returned == 'edit') && this.packId != "") {
+    if ((this.returned == null || this.returned == 'edit') && this.packId != "" && !this.firstTime) { //adicionei o firstTime
       if (this.storeEquipList.length > 0) {
         this.storeEquipList.forEach(equip => {
           this.deleteConfiguration(equip);
@@ -489,7 +534,30 @@ export class CommercialOfferListComponent implements OnInit {
       context.paymentSchemes = context.currentStore.pack.paymentSchemes;
       context.addPaymentFormGroups();
       context.groupsList = context.currentStore.pack.otherPackDetails;
-      context.equipmentSettings = context.currentStore.pack.equipmentSettings;
+
+      /*if (this.returned == 'edit') {
+        this.productPack.productCode = this.currentStore.productCode;
+        this.productPack.subproductCode = this.currentStore.subProductCode;
+        this.productPack.merchant = this.merchantCatalog;
+        this.productPack.store = {
+          activity: this.currentStore.activity,
+          subActivity: this.currentStore.subActivity,
+          supportEntity: this.form.get("isUnicre").value ? "acquirer" : "other",
+          referenceStore: this.currentStore.shopId,
+          supportBank: this.currentStore?.bank?.bank?.bank
+        }
+        this.COService.OutboundGetPackDetails(packId, this.productPack).then(res => {
+          context.equipmentSettings = res.result.equipmentSettings;
+          context.joinSameIdGroups();
+          context.addFormGroups();
+          context.changedValue();
+          if (this.returned == 'consult')
+            this.form.disable();
+          this.form.get("productPackKind").setValue(packId);
+        });
+      }*/
+
+      //context.equipmentSettings = context.currentStore.pack.equipmentSettings;
       context.joinSameIdGroups();
       context.addFormGroups();
       context.changedValue();
@@ -690,7 +758,44 @@ export class CommercialOfferListComponent implements OnInit {
   getCommissionsList() {
     if ((this.processId != '' && this.processId != null) && this.returned != null) {
       this.commissionOptions = [];
-      this.chooseCommission(this.currentStore.pack.commission.commissionId);
+      if (this.currentStore["updateProcessAction"] != null && this.currentStore["updateProcessAction"] == "Add" && this.currentStore.pack == null && this.currentStore.pack.commission == null) {
+        this.commissionFilter = {
+          productCode: this.currentStore.productCode,
+          subproductCode: this.currentStore.subProductCode,
+          processorId: this.packs.find(pack => pack.id == this.packId).processors[0],
+          merchant: this.merchantCatalog,
+          store: {
+            activity: this.currentStore.activity,
+            subActivity: this.currentStore.subActivity,
+            supportEntity: this.form.get("isUnicre").value ? "acquirer" : "other",
+            referenceStore: this.currentStore.shopId,
+            supportBank: this.currentStore.supportEntity
+          },
+          packAttributes: this.list //ter em atenção se os valores são alterados à medida que vamos interagindo com a interface
+        }
+        this.logger.info("Filter sent to get commercial pack commission list: " + JSON.stringify(this.commissionFilter));
+        this.COService.ListProductCommercialPackCommission(this.packId, this.commissionFilter).then(result => {
+          this.logger.info("Get commercial pack commission list result: " + JSON.stringify(result));
+          this.commissionOptions = [];
+          if (this.currentStore.pack == null || this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+            if (result.result.length == 1) {
+              this.commissionOptions.push(result.result[0]);
+              this.chooseCommission(result.result[0].id);
+            } else {
+              result.result.forEach(options => {
+                this.commissionOptions.push(options);
+              });
+            }
+          } else {
+            result.result.forEach(options => {
+              this.commissionOptions.push(options);
+            });
+            this.chooseCommission(this.currentStore.pack.commission.commissionId);
+          }
+        });
+      } else {
+        this.chooseCommission(this.currentStore.pack.commission.commissionId);
+      }
     } else {
       if (this.packId != "") {
         if (this.changedPackValue) {
@@ -857,6 +962,8 @@ export class CommercialOfferListComponent implements OnInit {
 
   changeReplicateProducts(bool: boolean) {
     this.replicate = bool;
+    if (bool)
+      this.loadStoresWithSameBank(this.currentStore.bank.bank.bank);
   }
 
   createNewConfiguration() {
@@ -866,7 +973,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.isNewConfig = true;
   }
 
-  submit() {
+  submit(clickedTable: boolean = false) {
     var context = this;
 
     this.commissionAttributeList.forEach(commission => {
@@ -883,50 +990,88 @@ export class CommercialOfferListComponent implements OnInit {
       this.list.splice(index, 1);
     
     if (this.returned != 'consult') {
-      this.currentStore.equipments = this.storeEquipList;
-      this.currentStore.pack = {
-        packId: this.packId,
-        processorId: this.packs.find(pack => pack.id == this.packId).processors[0],
-        packDescription: this.packs.find(pack => pack.id == this.packId).description,
-        commission: {
-          commissionId: this.commissionId,
-          attributes: this.commissionAttributeList
-        },
-        paymentSchemes: this.paymentList,
-        otherPackDetails: this.list
-      }
-      this.currentStore.registrationId = this.form.get("terminalRegistrationNumber")?.value?.toString();
-      this.logger.info("Store data update " + JSON.stringify(this.currentStore));
-      if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
-        this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.id, this.currentStore).subscribe(result => {
-          this.logger.info("Updated shop result: " + JSON.stringify(result));
-          this.visitedStores.push(this.currentStore.id);
-          this.visitedStores = Array.from(new Set(this.visitedStores));
-          if (this.visitedStores.length < this.storesLength) {
-            this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-            this.closeAccordion();
+      if (this.form.valid) {
+        this.currentStore.equipments = this.storeEquipList;
+        this.currentStore.pack = {
+          packId: this.packId,
+          processorId: this.packs.find(pack => pack.id == this.packId).processors[0],
+          packDescription: this.packs.find(pack => pack.id == this.packId).description,
+          commission: {
+            commissionId: this.commissionId,
+            attributes: this.commissionAttributeList
+          },
+          paymentSchemes: this.paymentList,
+          otherPackDetails: this.list
+        }
+        this.currentStore.registrationId = this.form.get("terminalRegistrationNumber")?.value?.toString();
+        this.logger.info("Store data update " + JSON.stringify(this.currentStore));
+        if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+          if (!this.form.pristine) {
+            this.storeService.updateSubmissionShop(this.submissionId, this.currentStore.id, this.currentStore).subscribe(result => {
+              this.logger.info("Updated shop result: " + JSON.stringify(result));
+              this.visitedStores.push(result.id);
+              this.visitedStores = Array.from(new Set(this.visitedStores));
+              if (!clickedTable) {
+                if (this.visitedStores.length < this.storesLength) {
+                  this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                  this.closeAccordion();
+                } else {
+                  this.data.changeEquips(true);
+                  this.data.updateData(true, 5);
+                  this.logger.info("Redirecting to Info Declarativa page");
+                  this.route.navigate(['info-declarativa']);
+                }
+              }
+            });
           } else {
-            this.data.changeEquips(true);
-            this.data.updateData(true, 5);
-            this.logger.info("Redirecting to Info Declarativa page");
-            this.route.navigate(['info-declarativa']);
+            this.visitedStores.push(this.currentStore.id);
+            this.visitedStores = Array.from(new Set(this.visitedStores));
+            if (!clickedTable) {
+              if (this.visitedStores.length < this.storesLength) {
+                this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                this.closeAccordion();
+              } else {
+                this.data.changeEquips(true);
+                this.data.updateData(true, 5);
+                this.logger.info("Redirecting to Info Declarativa page");
+                this.route.navigate(['info-declarativa']);
+              }
+            }
           }
-        });
-      } else {
-        this.processService.updateShopProcess(this.processId, this.currentStore.id, this.currentStore).then(result => {
-          this.logger.info("Updated shop result: " + JSON.stringify(result.result));
-          this.visitedStores.push(this.currentStore.id);
-          this.visitedStores = Array.from(new Set(this.visitedStores));
-          if (this.visitedStores.length < this.storesLength) {
-            this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-            this.closeAccordion();
+        } else {
+          if (!this.form.pristine) {
+            this.processService.updateShopProcess(this.processId, this.currentStore.id, this.currentStore).then(result => {
+              this.logger.info("Updated shop result: " + JSON.stringify(result.result));
+              this.visitedStores.push(result.result.id);
+              this.visitedStores = Array.from(new Set(this.visitedStores));
+              if (!clickedTable) {
+                if (this.visitedStores.length < this.storesLength) {
+                  this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                  this.closeAccordion();
+                } else {
+                  this.data.changeEquips(true);
+                  this.data.updateData(true, 5);
+                  this.logger.info("Redirecting to Info Declarativa page");
+                  this.route.navigate(['info-declarativa']);
+                }
+              }
+            });
           } else {
-            this.data.changeEquips(true);
-            this.data.updateData(true, 5);
-            this.logger.info("Redirecting to Info Declarativa page");
-            this.route.navigate(['info-declarativa']);
+            this.visitedStores.push(this.currentStore.id);
+            this.visitedStores = Array.from(new Set(this.visitedStores));
+            if (!clickedTable) {
+              if (this.visitedStores.length < this.storesLength) {
+                this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                this.closeAccordion();
+              } else {
+                this.data.changeEquips(true);
+                this.data.updateData(true, 5);
+                this.logger.info("Redirecting to Info Declarativa page");
+                this.route.navigate(['info-declarativa']);
+              }
+            }
           }
-        });
+        }
       }
     } else {
       this.data.changeEquips(true);
@@ -956,7 +1101,74 @@ export class CommercialOfferListComponent implements OnInit {
     this.showMore = !this.showMore;
   }
 
+  emitStoreList(storeList) {
+    this.storesList = storeList;
+  }
+
   loadStoresWithSameBank(bank: string) {
+    this.replicateStoresList = [];
+    this.storesList.forEach(value => {
+      if (value.pack != null && value.pack?.commission != null && value.pack?.otherPackDetails != null && value.productCode == this.currentStore.productCode && value.subProductCode == this.currentStore.subProductCode && value.activity == this.currentStore.activity && value.subActivity == this.currentStore.subActivity && value.bank.bank.bank == bank && this.currentStore.id != value.id) {
+        this.replicateStoresList.push(value);
+      }
+    });
+  }
+
+  storeToReplicate(e) {
+    var context = this;
+    var replicateShop = this.replicateStoresList.find(x => x.id == e.target.value);
+    let length = 0;
+    if (replicateShop != undefined) {
+      this.currentStore.pack = replicateShop.pack;
+      this.currentStore.registrationId = replicateShop.registrationId;
+      if ((this.processId != '' && this.processId != null) && this.returned != null) {
+        this.storeService.getShopEquipmentConfigurationsFromProcess(context.processId, replicateShop.id).subscribe(result => {
+          result.forEach(res => {
+            context.queuesInfo.getProcessShopEquipmentDetails(context.processId, replicateShop.id, res.id).then(r => {
+              var equip = r.result;
+              var equipToAdd: ShopEquipment = {};
+              equipToAdd.pricing = equip.pricing;
+              equipToAdd.quantity = equip.quantity;
+              equipToAdd.equipmentSettings = equip.equipmentSettings;
+              if ((this.processId != '' && this.processId != null) && this.returned != null) {
+                context.processService.addEquipmentToShopProcess(context.processId, context.currentStore.id, equipToAdd).then(res => {
+                  length++;
+                  equipToAdd.id = res.result.id;
+                  context.storeEquipList.push(equipToAdd);
+                  context.logger.info("Add Shop Equipment To Submission Response " + JSON.stringify(res.result));
+                  if (result.length == length) {
+                    context.loadStoreEquips(context.storeEquipList);
+                    context.getPackDetails();
+                  }
+                });
+              }
+            });
+          });
+        });
+      } else {
+        this.storeService.getShopEquipmentConfigurationsFromSubmission(context.submissionId, replicateShop.id).then(result => {
+          result.result.forEach(res => {
+            context.storeService.getShopEquipmentFromSubmission(context.submissionId, replicateShop.id, res.id).then(r => {
+              var equip = r.result;
+              var equipToAdd: ShopEquipment = {};
+              equipToAdd.pricing = equip.pricing;
+              equipToAdd.quantity = equip.quantity;
+              equipToAdd.equipmentSettings = equip.equipmentSettings;
+              context.storeService.addShopEquipmentConfigurationsToSubmission(context.submissionId, context.currentStore.id, equipToAdd).subscribe(res => {
+                length++;
+                equipToAdd.id = res.id;
+                context.storeEquipList.push(equipToAdd);
+                context.logger.info("Add Shop Equipment To Submission Response " + JSON.stringify(res));
+                if (result.result.length == length) {
+                  context.loadStoreEquips(context.storeEquipList);
+                  context.getPackDetails();
+                }
+              });
+            });
+          });
+        });
+      }
+    }
   }
 
   deleteConfiguration(shopEquipment: ShopEquipment) {

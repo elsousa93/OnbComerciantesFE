@@ -129,8 +129,8 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
       });
       if (this.merchant == null) {
         this.queuesService.getProcessMerchant(this.processId).then(res => {
-          issues.merchant.merchant["name"] = res.result.legalName;
           this.merchant = res.result;
+          issues.merchant.merchant["name"] = res.result.legalName;
           issues.merchant.issues.forEach(value => {
             if (value.issueDescription != null && value.issueDescription != "") {
               value["name"] = issues.merchant.merchant["name"];

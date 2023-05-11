@@ -60,8 +60,10 @@ export class QueuesService {
     return this.APIService.callAPIAcquiring(HttpMethod.POST, URI, processStateNotif);
   }
 
-  markToCancel(processId: string) {
+  markToCancel(processId: string, username?: string) {
     var URI = this.acquiringUrl + "process/" + processId + "/mark_to_cancel";
+    if (username != null && username != "")
+      URI += "?submissionUser=" + username;
     return this.APIService.callAPIAcquiring(HttpMethod.PATCH, URI);
   }
 

@@ -1145,6 +1145,19 @@ progress {
   vertical-align: middle;
 }
 
+.delete-icon-consult {
+  width: 30px !important;
+  height: 30px !important;
+  padding: 10px;
+  padding-top: 10px !important;
+  justify-content: center;
+  align-items: center;
+  display: inline-block;
+  background: rgb(var(--bs-primary-rgb));
+  mask-size: cover;
+  vertical-align: bottom;
+}
+
 .edit-icon {
   width: 20px !important;
   height: 20px !important;

@@ -159,6 +159,9 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     this.subs.forEach((sub) => sub?.unsubscribe);
   }
 
+  getVisitedStores(visitedStores) {
+    this.visitedStores = visitedStores;
+  }
 
   changeListElement(variavel: string, e: any) {
   }
@@ -188,51 +191,59 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
         if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
           if (!this.listValue.pristine) {
             this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.selectedStore.id, this.selectedStore).subscribe(result => {
-              this.visitedStores.push(this.selectedStore.id);
+              this.visitedStores.push(result.id);
               this.visitedStores = Array.from(new Set(this.visitedStores));
-              if (this.visitedStores.length < this.storesLength) {
-                this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
-                this.onActivate();
-                this.logger.info("Updated shop: " + JSON.stringify(result));
-              } else {
-                this.logger.info("Redirecting to Info Declarativa Assinatura page");
-                this.route.navigate(['/info-declarativa-assinatura']);
+              if (!clickedTable) {
+                if (this.visitedStores.length < this.storesLength) {
+                  this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
+                  this.onActivate();
+                  this.logger.info("Updated shop: " + JSON.stringify(result));
+                } else {
+                  this.logger.info("Redirecting to Info Declarativa Assinatura page");
+                  this.route.navigate(['/info-declarativa-assinatura']);
+                }
               }
             });
           } else {
             this.visitedStores.push(this.selectedStore.id);
             this.visitedStores = Array.from(new Set(this.visitedStores));
-            if (this.visitedStores.length < this.storesLength) {
-              this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
-              this.onActivate();
-            } else {
-              this.logger.info("Redirecting to Info Declarativa Assinatura page");
-              this.route.navigate(['/info-declarativa-assinatura']);
+            if (!clickedTable) {
+              if (this.visitedStores.length < this.storesLength) {
+                this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
+                this.onActivate();
+              } else {
+                this.logger.info("Redirecting to Info Declarativa Assinatura page");
+                this.route.navigate(['/info-declarativa-assinatura']);
+              }
             }
           }
         } else {
           if (!this.listValue.pristine) {
             this.processService.updateShopProcess(this.processId, this.selectedStore.id, this.selectedStore).then(result => {
-              this.visitedStores.push(this.selectedStore.id);
+              this.visitedStores.push(result.result.id);
               this.visitedStores = Array.from(new Set(this.visitedStores));
-              if (this.visitedStores.length < this.storesLength) {
-                this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
-                this.onActivate();
-                this.logger.info("Updated shop: " + JSON.stringify(result));
-              } else {
-                this.logger.info("Redirecting to Info Declarativa Assinatura page");
-                this.route.navigate(['/info-declarativa-assinatura']);
+              if (!clickedTable) {
+                if (this.visitedStores.length < this.storesLength) {
+                  this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
+                  this.onActivate();
+                  this.logger.info("Updated shop: " + JSON.stringify(result));
+                } else {
+                  this.logger.info("Redirecting to Info Declarativa Assinatura page");
+                  this.route.navigate(['/info-declarativa-assinatura']);
+                }
               }
             });
           } else {
             this.visitedStores.push(this.selectedStore.id);
             this.visitedStores = Array.from(new Set(this.visitedStores));
-            if (this.visitedStores.length < this.storesLength) {
-              this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
-              this.onActivate();
-            } else {
-              this.logger.info("Redirecting to Info Declarativa Assinatura page");
-              this.route.navigate(['/info-declarativa-assinatura']);
+            if (!clickedTable) {
+              if (this.visitedStores.length < this.storesLength) {
+                this.emitUpdatedStore(of({ store: this.selectedStore, idx: this.currentIdx }));
+                this.onActivate();
+              } else {
+                this.logger.info("Redirecting to Info Declarativa Assinatura page");
+                this.route.navigate(['/info-declarativa-assinatura']);
+              }
             }
           }
         }

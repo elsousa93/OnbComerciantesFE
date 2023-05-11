@@ -105,14 +105,24 @@
             </div>
           </div>
         </div>
-        <div class="col-12 ms-0 me-0 pb-5 ps-0 pe-0"><button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1"
-            wappler-command="editContent">{{'searches.search'|translate|uppercase}}
-            &nbsp;<img src="assets/images/search_white.svg" style="height: 30px; vertical-align: bottom;"></button>
+        <div class="col-12 ms-0 me-0 pb-5 ps-0 pe-0">
+          <button id="btn5a6" class="btn botao_azul btn-lg mt-5 ms-0 me-1"
+                  wappler-command="editContent">
+            {{'searches.search'|translate|uppercase}}
+            &nbsp;<img src="assets/images/search_white.svg" style="height: 30px; vertical-align: bottom;">
+          </button>
+          <button id="btn5a1" type="button"
+                  class="btn botao_branco btn-lg mt-5 ms-0 me-1 ms-4"
+                  wappler-command="editContent" (click)="initializeForm()">
+            {{'generalKeywords.clean'|translate|uppercase}}&nbsp;
+            <span class="material-symbols-rounded delete-icon-consult icon-delete-blue"></span>
+          </button>
 
           <mat-table [hidden]="processes.data.length==0" [dataSource]="processes" class="table-success" matSort>
             <!-- Nº Processo Column -->
             <ng-container matColumnDef="processNumber">
-              <mat-header-cell *matHeaderCellDef mat-sort-header> {{'searches.processNumber'|translate|uppercase}}
+              <mat-header-cell *matHeaderCellDef mat-sort-header>
+                {{'searches.processNumber'|translate|uppercase}}
               </mat-header-cell>
               <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
             </ng-container>

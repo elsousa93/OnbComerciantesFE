@@ -99,7 +99,7 @@ export class StoreService {
   }
 
   updateSubmissionShop(submissionId: string, shopId: string, newShop: ShopDetailsAcquiring) {
-    return this.http.put(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId, newShop);
+    return this.http.put<SimplifiedReference>(this.baseUrl + 'submission/' + submissionId + '/merchant/shop/' + shopId, newShop);
   }
 
   deleteSubmissionShop(submissionId: string, shopId: string) {
@@ -111,7 +111,7 @@ export class StoreService {
   }
 
   getShopEquipmentConfigurationsFromProcess(processId: string, shopId: string) {
-    return this.http.get<ShopEquipment>(this.baseUrl + 'process/' + processId + '/merchant/shop/' + shopId + '/equipment');
+    return this.http.get<ShopEquipment[]>(this.baseUrl + 'process/' + processId + '/merchant/shop/' + shopId + '/equipment');
   }
 
   getShopEquipmentConfigurationsFromSubmission(submissionId: string, shopId: string) {

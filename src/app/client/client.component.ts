@@ -370,11 +370,11 @@ export class ClientComponent implements OnInit {
       this.dataCC = {
         nameCC: this.nameCC,
         cardNumberCC: this.cardNumberCC,
-        nifCC: this.nifCC,
+        nifCC: this.nifCC, 
         addresssCC: this.addressCC,
         postalCodeCC: this.postalCodeCC
       };
-      return this.nifCC;
+      return this.dataCCcontents.nifCC;
     }
     if ((this.newClientForm?.get("nif")?.value != '' && this.newClientForm?.get("nif")?.value != null) || (this.newClientForm?.get("nipc")?.value != '' && this.newClientForm?.get("nipc")?.value != null)) {
       return this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value;
@@ -575,7 +575,7 @@ export class ClientComponent implements OnInit {
         addresssCC: this.addressCC,
         postalCodeCC: this.postalCodeCC,
       };
-      NIFNIPC = this.nifCC + "";
+      NIFNIPC = this.dataCCcontents.nifCC + "";
     }
 
     let navigationExtras: NavigationExtras = {
@@ -744,11 +744,11 @@ export class ClientComponent implements OnInit {
       }
     }
     this.data.changeNoDataReadable(this.isNoDataReadable);
-    this.data.changeCurrentDataCC(this.dataCC);
+    this.data.changeCurrentDataCC(this.dataCCcontents);
     this.data.changeCurrentComprovativoCC(this.prettyPDF);
     this.data.changeCurrentTipologia(this.tipologia);
     this.data.changeMerchant(false);
-    if (NIFNIPC !== null && NIFNIPC !== undefined) {
+    if (NIFNIPC != null && NIFNIPC != undefined && NIFNIPC != "") {
       this.logger.info("Redirecting to Client by id page");
       this.route.navigate(['/clientbyid', NIFNIPC], navigationExtras);
     } else {

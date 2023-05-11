@@ -332,11 +332,11 @@
                   <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
-                      <a (click)="deleteProcess(row.processId)" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                      <a (click)="deleteProcess(row.processId)" data-bs-toggle="modal" data-bs-target="#exampleModal" style="cursor: pointer; padding: 5px;">
                         <span class="material-symbols-rounded delete-icon icon-delete-blue">
                         </span>
                       </a>&nbsp;&nbsp;
-                      <a (click)="redirectToProcessStart(row)">
+                      <a (click)="redirectToProcessStart(row)" style="padding: 5px;">
                         <span class="material-symbols-rounded edit-icon icon-edit-square" style="cursor: pointer;">
                           <!--<img src="assets/images/edit_square.svg" title="Edit">-->
                         </span>
@@ -512,12 +512,12 @@
                   <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
-                      <a (click)="deleteProcess(row.processId)">
+                      <a (click)="deleteProcess(row.processId)" style="padding: 5px;">
                         <span class="material-symbols-rounded delete-icon icon-delete-blue" style="cursor: pointer;">
                         </span>
                       </a>&nbsp;&nbsp;
-                      <a (click)="streamHistoryMenu(row)">
-                        <span class="material-symbols-rounded edit-icon icon-edit-square">
+                      <a (click)="streamHistoryMenu(row)" style="padding: 5px;">
+                        <span class="material-symbols-rounded edit-icon icon-edit-square" style="cursor: pointer;">
                           <!--<img src="assets/images/edit_square.svg">-->
                         </span>
                       </a>
@@ -604,11 +604,11 @@
                   <ng-container matColumnDef="buttons">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
-                      <a (click)="deleteQueueProcess(row)" data-bs-toggle="modal" data-bs-target="#exampleModal">
-                        <span class="material-symbols-rounded delete-icon icon-delete-blue">
+                      <a (click)="deleteQueueProcess(row)" data-bs-toggle="modal" data-bs-target="#exampleModal" style="padding: 5px;">
+                        <span class="material-symbols-rounded delete-icon icon-delete-blue" style="cursor: pointer;">
                         </span>
                       </a>
-                      <a>
+                      <a style="padding: 5px;">
                         <span (click)="openProcessAceitacao(row)" class="material-symbols-rounded edit-icon icon-search-blue" style="cursor: pointer;">
                         </span>
                       </a>

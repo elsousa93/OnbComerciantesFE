@@ -66,6 +66,10 @@ export class StakeholdersComponent implements OnInit {
     this.existsStake = bool;
   }
 
+  checkVisitedStakes(visitedStakes) {
+    this.visitedStakes = visitedStakes;
+  }
+
   currentStakeholder: StakeholdersCompleteInformation = {};
   currentIdx: number;
   allStakeholdersComprovativos = {}; 
@@ -180,7 +184,15 @@ export class StakeholdersComponent implements OnInit {
   }
 
   redirectInfoStakeholder() {
-    this.editStakeInfo = true;
+    if (this.existsStake) {
+      this.editStakeInfo = true;
+    } else {
+      this.snackBar.open(this.translate.instant('stakeholder.stakeExistsError'), '', {
+        duration: 15000,
+        panelClass: ['snack-bar']
+      });
+    }
+
   }
 
   refreshPage() {
@@ -274,6 +286,9 @@ export class StakeholdersComponent implements OnInit {
         stakeForm.get("identificationDocumentId").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.number);
       }
     }
+    if (this.returned == 'consult') {
+      this.editStakes.get("stake").disable();
+    }
   }
 
   selectStake(info) {
@@ -365,7 +380,7 @@ export class StakeholdersComponent implements OnInit {
             if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
               this.stakeholderService.UpdateStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).subscribe(result => {
                 this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
-                this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+                this.visitedStakes.push(result.id);
                 this.visitedStakes = Array.from(new Set(this.visitedStakes));
                 if (!clickedTable) {
                   if (this.visitedStakes.length < (this.stakesLength)) {
@@ -390,7 +405,7 @@ export class StakeholdersComponent implements OnInit {
             } else {
               this.processService.updateStakeholderProcess(this.processId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).then(result => {
                 this.logger.info("Updated stakeholder result: " + JSON.stringify(result.result));
-                this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+                this.visitedStakes.push(result.result.id);
                 this.visitedStakes = Array.from(new Set(this.visitedStakes));
                 if (!clickedTable) {
                   if (this.visitedStakes.length < (this.stakesLength)) {
@@ -457,7 +472,7 @@ export class StakeholdersComponent implements OnInit {
             if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
               this.stakeholderService.UpdateCorporateEntity(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, corporateEntity).then(result => {
                 this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
-                this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+                this.visitedStakes.push(result.result.id);
                 this.visitedStakes = Array.from(new Set(this.visitedStakes));
                 if (!clickedTable) {
                   if (this.visitedStakes.length < (this.stakesLength)) {
@@ -482,7 +497,7 @@ export class StakeholdersComponent implements OnInit {
             } else {
               this.processService.updateCorporateEntity(this.processId, this.currentStakeholder.stakeholderAcquiring.id, corporateEntity).then(result => {
                 this.logger.info("Updated stakeholder result: " + JSON.stringify(result.result));
-                this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+                this.visitedStakes.push(result.result.id);
                 this.visitedStakes = Array.from(new Set(this.visitedStakes));
                 if (!clickedTable) {
                   if (this.visitedStakes.length < (this.stakesLength)) {

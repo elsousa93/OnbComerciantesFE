@@ -57,6 +57,8 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Input() updatedStoreEvent: Observable<{ store: ShopDetailsAcquiring, idx: number }>;
 
   @Output() listLengthEmitter = new EventEmitter<number>();
+  @Output() visitedStoresEmitter?= new EventEmitter<string[]>();
+  @Output() storeListEmitter?= new EventEmitter<ShopDetailsAcquiring[]>();
 
   public subs: Subscription[] = [];
   activities: ShopActivities[];
@@ -65,6 +67,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   banks: Bank[];
   processId: string;
   updateProcessId: string;
+  visitedStores: string[] = [];
 
   constructor(private submissionService: SubmissionService, private storeService: StoreService, private translate: TranslateService, private tableInfo: TableInfoService, private logger: LoggerService, private processNrService: ProcessNumberService, private queuesInfo: QueuesService, private processService: ProcessService) {
     this.fetchActivities();
@@ -115,14 +118,16 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     if (changes["updatedStoreEvent"] && this.updatedStoreEvent != null) {
       this.updatedStoreEvent.subscribe(result => {
         var nextIdx = result.idx + 1;
-        this.emitSelectedStore(this.storesList[nextIdx], nextIdx, false);
+        this.checkVisitedStores();
+        //this.emitSelectedStore(this.storesList[nextIdx], nextIdx, false);
       });
     }
     if (changes["previousStoreEvent"] && this.previousStoreEvent != null) {
       this.previousStoreEvent.subscribe(result => {
         if (result > 0) {
           var prevIdx = result - 1;
-          this.emitSelectedStore(this.storesList[prevIdx], prevIdx, false);
+          this.checkVisitedStores();
+          //this.emitSelectedStore(this.storesList[prevIdx], prevIdx, false);
         }
       });
     }
@@ -207,16 +212,18 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
       if (this.returned == 'consult') {
         this.getStoreListFromProcess().then(result => {
           this.loadStores(this.storesList);
+          this.storeListEmitter.emit(this.storesList);
           this.listLengthEmitter.emit(this.storesList.length);
           if (this.storesList.length > 0)
-            this.emitSelectedStore(this.storesList[0], 0, false);
+            this.checkVisitedStores();
+            //this.emitSelectedStore(this.storesList[0], 0, false);
         });
       } else {
         this.processService.getUpdateProcessInfo(this.processId, this.updateProcessId).then(result => {
           var shops = result.result.shops;
           if (shops.length > 0) {
             shops.forEach(val => {
-              //if (val.updateProcessAction != "Delete") {
+              if (val.updateProcessAction != "Delete") {
                 if (val.phone1 != null) {
                   val.phone1.phoneIndicative = null;
                 }
@@ -225,21 +232,25 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
                 }
                 let o = Object.fromEntries(Object.entries(val).filter(([_, v]) => v != null)) as any;
                 this.storesList.push(o);
-              //}
+              }
             });
             this.loadStores(this.storesList);
+            this.storeListEmitter.emit(this.storesList);
             this.listLengthEmitter.emit(this.storesList.length);
             if (this.storesList.length > 0)
-              this.emitSelectedStore(this.storesList[0], 0, false);
+              this.checkVisitedStores();
+              //this.emitSelectedStore(this.storesList[0], 0, false);
           }
         });
       }
     } else {
       this.getStoreListFromSubmission().then(result => {
         this.loadStores(this.storesList);
+        this.storeListEmitter.emit(this.storesList);
         this.listLengthEmitter.emit(this.storesList.length);
         if (this.storesList.length > 0)
-          this.emitSelectedStore(this.storesList[0], 0, false);
+          this.checkVisitedStores();
+          //this.emitSelectedStore(this.storesList[0], 0, false);
       });
     }
   }
@@ -253,5 +264,37 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   loadStores(storesValues: ShopDetailsAcquiring[]) {
     this.storesMat.data = storesValues;
     this.storesMat.sort = this.sort;
+  }
+
+  checkVisitedStores() {
+    let currentPage = location.href.split("/")[5];
+    this.storesList.forEach(shop => {
+      if (currentPage == "store-comp") {
+        if (shop.activity != null && shop.activity != "" && shop.productCode != null && shop.productCode != "") {
+          this.visitedStores.push(shop.id);
+          this.visitedStores = Array.from(new Set(this.visitedStores));
+        }
+      } else if (currentPage == "commercial-offert-list") {
+        if (shop.pack != null) {
+          this.visitedStores.push(shop.id);
+          this.visitedStores = Array.from(new Set(this.visitedStores));
+        }
+      } else {
+        if ((shop.phone1 != null && shop.phone1 != {}) || (shop.phone2 != null && shop.phone2 != {})) {
+          this.visitedStores.push(shop.id);
+          this.visitedStores = Array.from(new Set(this.visitedStores));
+        }
+      }
+    });
+    if (this.visitedStores.length < this.storesList.length) {
+      var index = this.storesList.findIndex(value => !this.visitedStores.includes(value.id));
+      if (index != -1)
+        this.emitSelectedStore(this.storesList[index], index, false);
+      else
+        this.emitSelectedStore(this.storesList[0], 0, false);
+    } else {
+      this.emitSelectedStore(this.storesList[0], 0, false);
+    }
+    this.visitedStoresEmitter.emit(this.visitedStores);
   }
 }

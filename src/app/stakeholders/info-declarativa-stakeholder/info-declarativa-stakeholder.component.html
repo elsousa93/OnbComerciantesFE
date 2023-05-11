@@ -63,7 +63,7 @@
                 <app-stakeholders-list [submissionId]="submissionId" [processNumber]="processNumber" [canDelete]=false
                   [isInfoDeclarativa]=true (selectedStakeholderEmitter)="selectStakeholder($event)"
                   [updatedStakeholderEvent]="updatedStakeholderEvent" (listLengthEmitter)="getStakesListLength($event)"
-                  [previousStakeholderEvent]="previousStakeholderEvent"></app-stakeholders-list>
+                  [previousStakeholderEvent]="previousStakeholderEvent" (visitedStakesEmitter)="checkVisitedStakes($event)"></app-stakeholders-list>
               </div>
               <div class="bg-white align-self-center col-12 laterais_tabs mt-0 ms-0 me-0 pt-5 ps-5 pe-5">
                 <ng-container *ngIf="currentStakeholder != null && currentStakeholder.stakeholderAcquiring.signType != null && currentStakeholder.stakeholderAcquiring.signType !== ''" [formGroup]="infoStakeholders">

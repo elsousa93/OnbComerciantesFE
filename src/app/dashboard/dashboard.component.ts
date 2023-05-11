@@ -679,22 +679,23 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.username = this.authService.GetCurrentUser().userName;
     this.queueService.getActiveWorkQueue(processId).then(result => {
       this.workQueue = result.result;
-      if (result.result.lockedBy != this.authService.GetCurrentUser().userName) {
-        if (result.result.lockedBy == "" || result.result.lockedBy == null) {
-          this.existsUser = false;
-        } else {
+      if (result.result.lockedBy != null && result.result.lockedBy != "") {
+        if (result.result.lockedBy.trim() != this.authService.GetCurrentUser().userName.trim()) {
           this.existsUser = true;
+          this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
+        } else {
+          let navigationExtras: NavigationExtras = {
+            state: {
+              queueName: this.queue,
+              processId: this.processToAssign
+            }
+          };
+          this.logger.info('Redirecting to Queues Detail page');
+          this.router.navigate(["/queues-detail"], navigationExtras);
         }
-        this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
       } else {
-        let navigationExtras: NavigationExtras = {
-          state: {
-            queueName: this.queue,
-            processId: this.processToAssign
-          }
-        };
-        this.logger.info('Redirecting to Queues Detail page');
-        this.router.navigate(["/queues-detail"], navigationExtras);
+        this.existsUser = false;
+        this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
       }
     }, error => {
       this.logger.error(error, "Error while searching for active work queue");
@@ -774,7 +775,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   delete() {
     if (this.processToDelete != "") {
       this.deleteModalRef?.hide();
-      this.queueService.markToCancel(this.processToDelete).then(res => {
+      this.queueService.markToCancel(this.processToDelete, this.authService.GetCurrentUser().userName).then(res => {
         if (this.pendingEligibilityProcessess != null) {
           var index = this.pendingEligibilityProcessess.items.findIndex(process => process.processId == this.processToDelete);
           this.pendingEligibilityProcessess.items.splice(index, 1);

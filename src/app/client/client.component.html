@@ -107,7 +107,7 @@
                              (keypress)="numericOnly($event)" [(ngModel)]="newClient.clientId" name="clientId"
                              #clientId="ngModel" (ngModelChange)="clearNewForm()" [class]="errorInput" (onpaste)="onPaste($event)"
                              [hidden]="isCC && isNoDataReadable" required>
-                      <div class="alert alert-danger" *ngIf="clientId.touched && !clientId.valid">
+                      <div [hidden]="isCC && isNoDataReadable" class="alert alert-danger" *ngIf="clientId.touched && !clientId.valid">
                         <div *ngIf="clientId.errors && clientId.errors?.['required']">
                           {{'generalKeywords.mandatoryParameter'|translate}}
                         </div>
@@ -163,7 +163,7 @@
                              (keyup)="checkValidationType(clientId.value, $event)" [(ngModel)]="newClient.clientId" name="clientId"
                              #clientId="ngModel" (ngModelChange)="clearNewForm()" [class]="errorInput" (onpaste)="onPaste($event)"
                              [hidden]="isCC && isNoDataReadable" required>
-                      <div class="alert alert-danger" *ngIf="clientId.touched && !clientId.valid">
+                      <div [hidden]="isCC && isNoDataReadable" class="alert alert-danger" *ngIf="clientId.touched && !clientId.valid">
                         <div *ngIf="clientId.errors && clientId.errors?.['required']">
                           {{'generalKeywords.mandatoryParameter'|translate}}
                         </div>

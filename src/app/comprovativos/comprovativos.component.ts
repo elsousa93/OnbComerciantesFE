@@ -987,19 +987,35 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
         border: 3px solid green;
         `);
     } else {
-      this.documentService.GetDocumentImage(this.submissionId, file).then(async result => {
-        this.logger.info("Get document image outbound: " + JSON.stringify(result));
-        result.blob().then(data => {
-          var blob = new Blob([data], { type: 'application/pdf' });
-          let url = window.URL.createObjectURL(blob);
-          window.open(url, '_blank',
-            `margin: auto;
+      if (this.processId != '' && this.processId != null && this.returned != null) {
+        this.processService.getDocumentImageFromProcess(this.processId, file).then(async result => {
+          this.logger.info("Get document image outbound: " + JSON.stringify(result));
+          result.blob().then(data => {
+            var blob = new Blob([data], { type: 'application/pdf' });
+            let url = window.URL.createObjectURL(blob);
+            window.open(url, '_blank',
+              `margin: auto;
             width: 50%;
             padding: 10px;
             text-align: center;
             border: 3px solid green;`);
-        }); 
-      });
+          });
+        });
+      } else {
+        this.documentService.GetDocumentImage(this.submissionId, file).then(async result => {
+          this.logger.info("Get document image outbound: " + JSON.stringify(result));
+          result.blob().then(data => {
+            var blob = new Blob([data], { type: 'application/pdf' });
+            let url = window.URL.createObjectURL(blob);
+            window.open(url, '_blank',
+              `margin: auto;
+            width: 50%;
+            padding: 10px;
+            text-align: center;
+            border: 3px solid green;`);
+          });
+        });
+      }
     }
   }
 
@@ -1013,17 +1029,31 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       link.download = file["name"]; //file.name
       link.click();
     } else {
-      this.documentService.GetDocumentImage(this.submissionId, file).then(async result => {
-        this.logger.info("Get document image outbound: " + JSON.stringify(result));
-        result.blob().then(data => {
-          var blob = new Blob([data], { type: 'application/pdf' });
-          let url = window.URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = file.name;
-          link.click();
+      if (this.processId != '' && this.processId != null && this.returned != null) {
+        this.processService.getDocumentImageFromProcess(this.processId, file).then(async result => {
+          this.logger.info("Get document image outbound: " + JSON.stringify(result));
+          result.blob().then(data => {
+            var blob = new Blob([data], { type: 'application/pdf' });
+            let url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = file.name;
+            link.click();
+          });
         });
-      });
+      } else {
+        this.documentService.GetDocumentImage(this.submissionId, file).then(async result => {
+          this.logger.info("Get document image outbound: " + JSON.stringify(result));
+          result.blob().then(data => {
+            var blob = new Blob([data], { type: 'application/pdf' });
+            let url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = file.name;
+            link.click();
+          });
+        });
+      }
     }
   }
 

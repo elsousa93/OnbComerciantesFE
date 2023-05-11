@@ -102,6 +102,7 @@ export class ConsultasComponent implements OnInit {
       processDateStart: new FormControl(''),
       processDateEnd: new FormControl('')
     });
+    this.loadProcesses([]);
   }
 
   callEndDate() {

@@ -15,6 +15,7 @@ import { StakeholderService } from 'src/app/stakeholders/stakeholder.service';
 import { TableInfoService } from '../../../table-info/table-info.service';
 import { ContractPackLanguage } from '../../../table-info/ITable-info.interface';
 import { ProcessService } from '../../../process/process.service';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-info-declarativa-assinatura',
@@ -47,7 +48,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   currentStakes: Map<string, string> = new Map<string, string>();
   updateProcessId: string;
 
-  constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService, private tableInfoService: TableInfoService, private processService: ProcessService) {
+  constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService, private tableInfoService: TableInfoService, private processService: ProcessService, private authService: AuthService) {
     if (this.router?.getCurrentNavigation()?.extras?.state) {
       this.returnedFrontOffice = this.router.getCurrentNavigation().extras.state["returnedFrontOffice"];
     }
@@ -242,17 +243,28 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
           });
         } else {
           this.processService.getProcessById(this.processId).subscribe(result => {
-            result.state = "Completed";
-            result.startedAt = new Date().toISOString(),
-            result.contractSignature = {
-              signType: this.isVisible ? "Manual" : "Digital",
-              state: 'Pending'
+            var updateProcessBody = {
+              submissionUser: "",
+              observation: "",
+              contractPackLanguage: "",
+              signType: "",
+              isClientAwaiting: false
             };
-            context.processService.updateProcess(context.processId, result).then(result => {
+            updateProcessBody.submissionUser = context.authService.GetCurrentUser().userName;
+            updateProcessBody.isClientAwaiting = result.isClientAwaiting;
+            updateProcessBody.signType = this.isVisible ? "Manual" : "Digital";
+            updateProcessBody.contractPackLanguage = "PT";
+            context.processService.updateProcess(context.processId, updateProcessBody).then(result => {
               this.logger.info("Process updated: " + JSON.stringify(result));
               this.logger.info("Redirecting to Dashboard page");
-              this.router.navigate(["/"]);
-              this.data.reset();
+              var object = {
+                submissionUser: context.authService.GetCurrentUser().userName,
+                observations: null
+              };
+              context.processService.finishProcessUpdate(context.processId, object).then(res => {
+                this.router.navigate(["/"]);
+                this.data.reset();
+              });
             });
           });
         }

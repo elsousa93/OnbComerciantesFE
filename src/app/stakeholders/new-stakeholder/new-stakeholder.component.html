@@ -233,7 +233,7 @@
             <select readonly name="identificationDocumentCountry" formControlName="identificationDocumentCountry"
                     class="form-control campo_form">
               <option *ngFor="let country of countries" value={{country.code}}
-                      [attr.selected]="(currentStakeholder.stakeholderAcquiring.identificationDocument.country == country.code) ? true : null">
+                      [attr.selected]="(currentStakeholder?.stakeholderAcquiring?.identificationDocument?.country == country.code) ? true : null">
                 {{country.description}}
               </option>
             </select>

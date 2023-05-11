@@ -186,7 +186,8 @@
     "sameNIF": "Não é possivel adicionar um interveniente já existente",
     "particular": "Particular",
     "corporate": "Empresa",
-    "signError": "É necessário existir pelo menos um interveniente que assine o contrato"
+    "signError": "É necessário existir pelo menos um interveniente que assine o contrato",
+    "stakeExistsError": "É necessário adicionar pelo menos um interveniente particular"
   },
   "stores": {
     "title": "Lojas",
@@ -542,7 +543,8 @@
     "assign": "Atribuir",
     "deleteStore": "Quer apagar esta loja?",
     "maintainStore": "Manter Loja",
-    "confirmDeleteStore": "Apagar Loja"
+    "confirmDeleteStore": "Apagar Loja",
+    "clean": "Limpar"
   },
   "generalButtons": {
     "continue": "Continuar",

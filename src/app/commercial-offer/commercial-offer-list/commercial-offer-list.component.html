@@ -41,7 +41,7 @@
         <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [isCommercialOffer]=true
           [updatedStoreEvent]="updatedStoreEvent" [currentStore]="currentStore" [currentIdx]="currentIdx"
           (selectedStoreEmitter)="selectStore($event)" [previousStoreEvent]="previousStoreEvent"
-          (listLengthEmitter)="getStoresListLength($event)"></app-store-table>
+          (listLengthEmitter)="getStoresListLength($event)" (visitedStoresEmitter)="getVisitedStores($event)" (storeListEmitter)="emitStoreList($event)"></app-store-table>
       </div>
       <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">
         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
@@ -96,8 +96,9 @@
                 <div class="col-7 ms-0 me-0 ps-3 pe-0" *ngIf="replicate">
                   <p class="titulo-form-simples pb-4" wappler-command="editContent">
                     {{'commercialOffer.selectStore'|translate}}*:</p>
-                  <select id="select1" class="form-select  campo_form" formControlName="store">
+                  <select id="select1" class="form-select campo_form" formControlName="store" name="store" (change)="storeToReplicate($event)">
                     <option value="-">-</option>
+                    <option *ngFor="let store of replicateStoresList" value="{{store.id}}">{{store.name}}</option>
                   </select>
                   <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
                 </div>

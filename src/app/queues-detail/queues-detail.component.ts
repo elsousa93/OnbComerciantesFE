@@ -24,6 +24,7 @@ import { DocumentSearchType, UserTypes } from '../table-info/ITable-info.interfa
 import { TableInfoService } from '../table-info/table-info.service';
 import { AuthService } from '../services/auth.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
+import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 
 @Component({
   selector: 'queues-detail',
@@ -204,7 +205,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
 
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, private http: HttpClient,
     private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService,
-    private datePipe: DatePipe, private queuesService: QueuesService, private processService: ProcessService, private clientService: ClientService, private tableInfo: TableInfoService, private authService: AuthService, private stakeholderService: StakeholderService) {
+    private datePipe: DatePipe, private queuesService: QueuesService, private processService: ProcessService, private clientService: ClientService, private tableInfo: TableInfoService, private authService: AuthService, private stakeholderService: StakeholderService, private processNrService: ProcessNumberService) {
 
     //Gets Queue Name and processId from the Dashboard component 
     if (this.route.getCurrentNavigation().extras.state) {
@@ -488,8 +489,8 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
       });
       if (this.merchant == null) {
         this.queuesService.getProcessMerchant(this.processId).then(res => {
-          issues.merchant.merchant["name"] = res.result.legalName;
           this.merchant = res.result;
+          issues.merchant.merchant["name"] = res.result.legalName;
           issues.merchant.issues.forEach(value => {
             if (value.issueDescription != null && value.issueDescription != "") {
               value["name"] = issues.merchant.merchant["name"];
@@ -781,6 +782,8 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
   nextPage() {
     localStorage.setItem('returned', 'consult');
     this.data.changeQueueName(this.queueName);
+    localStorage.setItem("processNumber", this.process.processNumber);
+    this.processNrService.changeProcessId(this.process.processId);
     this.logger.info("Redirecting to Client By Id page");
     this.route.navigate(['/clientbyid']);
   }
@@ -1208,19 +1211,26 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
     } else if (this.queueName === 'MCCTreatment') {
       this.state = State.STANDARD_INDUSTRY_CLASSIFICATION_CHOICE;
       queueModel = {} as StandardIndustryClassificationChoice;
-
-      var observation = this.form.get('observation').value;
       queueModel.$type = StateResultDiscriminatorEnum.STANDARD_INDUSTRY_CLASSIFICATION_MODEL;
-      queueModel.userObservations = observation;
-
+      queueModel.shopsClassification = [];
       this.shopsList.forEach(shop => {
+        let schemaClassifications = [];
         shop.industryClassifications.forEach(industry => {
-          var classification = context.form.get("shopsMCC").get(shop.id + industry.industryClassificationCode).value;
-          queueModel.shopId = shop.id;
-          queueModel.schemaClassifications.push({
-            paymentSchemaId: industry.paymentSchemeAttributeId,
+          var classification = "";
+          if (industry.industryClassificationCode == null || industry.industryClassificationCode == '') {
+            classification = context.form.get("shopsMCC").get(shop.id + industry.paymentSchemeAttributeId).value;
+          } else {
+            classification = context.form.get("shopsMCC").get(shop.id + industry.industryClassificationCode).value;
+          }
+          schemaClassifications.push({
+            paymentSchemeId: industry.paymentSchemeAttributeId,
+            subPaymentSchemaId: industry.subPaymentSchemeAttributeId,
             classification: classification
           });
+        });
+        queueModel.shopsClassification.push({
+          shopId: shop.id,
+          schemaClassifications: schemaClassifications
         });
       });
     }
