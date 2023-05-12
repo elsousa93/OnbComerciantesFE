@@ -115,7 +115,7 @@
         </div>
 
         <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
-                type="submit" [disabled]="incorrectNIFSize || incorrectNIF || incorrectNIPCSize || incorrectNIPC">
+                type="submit" [disabled]="!registrationForm.valid || incorrectNIFSize || incorrectNIF || incorrectNIPCSize || incorrectNIPC">
           &nbsp;{{'registration.register'|translate}}
         </button>
       </form>

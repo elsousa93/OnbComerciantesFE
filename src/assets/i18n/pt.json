@@ -610,6 +610,10 @@
     "NIF": "NIF/NIPC",
     "email": "Email",
     "contact": "Telemóvel",
-    "register": "Registo"
+    "register": "Registo",
+    "resumeJourney": "Retoma da Jornada",
+    "validation": "Validação palavra-passe de uso único",
+    "password": "Código",
+    "expired": "O Código inserido encontra-se expirado"
   }
 }

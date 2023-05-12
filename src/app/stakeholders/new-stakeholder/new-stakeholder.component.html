@@ -182,7 +182,7 @@
                      [attr.disabled]="(returned === 'consult' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001') ? true : null">
               <div class="alert alert-danger"
                    *ngIf="formNewStakeholder.get('ZIPCode').touched && !formNewStakeholder.get('ZIPCode').valid">
-                <div *ngIf="formNewStakeholder.get('ZIPCode').errors && formNewStakeholder.get('ZIPCode').errors?.['required']">
+                <div *ngIf="formNewStakeholder.get('ZIPCode').errors && (formNewStakeholder.get('ZIPCode').errors?.['required'] || formNewStakeholder.get('ZIPCode').errors?.['minlength'] || formNewStakeholder.get('ZIPCode').errors?.['maxlength'])">
                   {{'generalKeywords.mandatoryParameter'|translate}}
                 </div>
               </div>

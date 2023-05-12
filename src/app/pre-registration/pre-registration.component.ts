@@ -1,19 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { NavigationExtras, Router } from '@angular/router';
 import { authenticator, totp } from 'otplib';
 import { Subscription } from 'rxjs';
 import { validPhoneNumber } from '../client/info-declarativa/info-declarativa.model';
 import { LoggerService } from '../logger.service';
 import { CountryInformation } from '../table-info/ITable-info.interface';
 import { TableInfoService } from '../table-info/table-info.service';
-import { Buffer } from 'buffer';
 
 @Component({
   selector: 'app-pre-registration',
   templateUrl: './pre-registration.component.html',
   styleUrls: ['./pre-registration.component.css']
 })
-export class PreRegistrationComponent implements OnInit {
+export class PreRegistrationComponent implements OnInit, OnDestroy {
 
   registrationForm: FormGroup;
   incorrectNIFSize: boolean = false;
@@ -30,8 +30,9 @@ export class PreRegistrationComponent implements OnInit {
   timeRemaining: number;
   timeUsed: number;
   isValid: boolean;
+  timer = null;
 
-  constructor(private tableInfo: TableInfoService, private logger: LoggerService) {
+  constructor(private tableInfo: TableInfoService, private logger: LoggerService, private route: Router) {
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.logger.info("Fetch all countries " + JSON.stringify(result));
       this.internationalCallingCodes = result;
@@ -40,6 +41,10 @@ export class PreRegistrationComponent implements OnInit {
       }); //ordenar resposta
     }, error => this.logger.error(error)));
     this.emailRegex = '^(([^<>()\\[\\]\\\.,;:\\s@"]+(\.[^<>()\\[\\]\\\.,;:\\s@"]+)*)|(".+"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$';
+  }
+
+  ngOnDestroy(): void {
+    //this.stopTimer();
   }
 
   ngOnInit(): void {
@@ -135,30 +140,56 @@ export class PreRegistrationComponent implements OnInit {
     }
   }
 
+  stopTimer() {
+    if (this.timer)
+      clearInterval(this.timer);
+  }
+
   submit() {
     if (this.secret == "") {
       totp.options = {
         digits: 6,
-        step: 30,
-        window: 0
+        step: 30
       }
+      var username = this.registrationForm.get("username").value;
+      var nif = this.registrationForm.get("nif").value;
+      var email = this.registrationForm.get("email").value;
+      var countryCode = this.registrationForm.get("contact").get("countryCode").value;
+      var phoneNumber = this.registrationForm.get("contact").get("phoneNumber").value;
+      //enviar dados do form para API SIBS
+
+
+      //gerar código e redirecionar para outra página
       this.secret = authenticator.generateSecret(20);
       console.log("Secret ", this.secret);
       this.token = totp.generate(this.secret);
       console.log("Token ", this.token);
+      console.log("Valido ", totp.check(this.token, this.secret));
       this.timeRemaining = totp.timeRemaining();
       this.timeUsed = totp.timeUsed();
       this.isValid = totp.check(this.token, this.secret);
-      setInterval(() => {
-        if (totp.timeRemaining() > 1) {
-          this.timeRemaining = totp.timeRemaining();
+      this.stopTimer();
+      this.timer = setInterval(() => {
+        this.timeRemaining = totp.timeRemaining();
+        console.log("Time remaining ", this.timeRemaining);
+        if (totp.check(this.token, this.secret)) {
           this.timeUsed = totp.timeUsed();
           this.isValid = totp.check(this.token, this.secret);
         } else {
           this.token = totp.generate(this.secret);
-          console.log("Token ", this.token);
+          console.log("Token depois expirado", this.token);
+          console.log("Valido depois expirado", totp.check(this.token, this.secret));
         }
       }, 1000);
+
+      let navigationExtras = {
+        state: {
+          secret: this.secret,
+          page: "registration",
+          name: username
+        }
+      } as NavigationExtras;
+      this.route.navigate(['validate-code'], navigationExtras);
     }
   }
 

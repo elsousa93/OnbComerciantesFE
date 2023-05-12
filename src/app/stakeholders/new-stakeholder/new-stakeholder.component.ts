@@ -38,7 +38,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   modalRef: BsModalRef;
   showSameNIFError: boolean = false;
-
   openModal(template: TemplateRef<any>) {
     this.modalRef = this.modalService.show(template);
   }
@@ -308,6 +307,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   }
 
   initializeFormWithoutCC() {
+    var zipcode = this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode?.replace(/\s/g, "");
     this.formNewStakeholder = new FormGroup({
       contractAssociation: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.signType === 'CitizenCard' || this.currentStakeholder?.stakeholderAcquiring?.signType === 'DigitalCitizenCard' ? 'true' : 'false', Validators.required),
       flagRecolhaEletronica: new FormControl(false), //tava a false
@@ -315,7 +315,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalId : '', Validators.required),
       //Role: new FormControl(''),
       Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.country : 'PT', Validators.required), // tirei do if (this.returned != null)
-      ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.postalCode : '', Validators.required), //
+      ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress != null) ? zipcode : '', [Validators.required, Validators.maxLength(8), Validators.minLength(8)]), //
       Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.postalArea : '', Validators.required), //
       Address: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.address : '', Validators.required) //
     });
@@ -348,9 +348,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   stringJson: any;
 
   createFormCC() {
-
-    var zipcode = this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode?.split(" - ")[0];
-
+    var zipcode = this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode?.replace(/\s/g, "");
     this.formNewStakeholder = this.fb.group({
       flagRecolhaEletronica: new FormControl(false), //estava a true
       documentType: new FormControl(''),
@@ -361,7 +359,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       proxy: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.isProxy != null ? this.currentStakeholder?.stakeholderAcquiring?.isProxy + '' : 'false', Validators.required),
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined) ? this.currentStakeholder?.stakeholderAcquiring.fiscalId : '', Validators.required),
       Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country : 'PT', Validators.required), // tirei do if (this.returned != null)
-      ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? zipcode : '', Validators.required), //
+      ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? zipcode : '', [Validators.required, Validators.maxLength(8), Validators.minLength(8)]), //
       Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea : '', Validators.required), //
       Address: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address : '', Validators.required) //
     });
@@ -582,7 +580,6 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     var zipcode = this.formNewStakeholder.value['ZIPCode'];
     this.formNewStakeholder.get('Address').setValue('');
     this.formNewStakeholder.get('Locality').setValue('');
-
     if (currentCountry === 'PT') {
       this.lockLocality = true;
       if (zipcode != null && zipcode.length >= 8) {

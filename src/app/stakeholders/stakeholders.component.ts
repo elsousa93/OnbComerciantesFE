@@ -266,8 +266,8 @@ export class StakeholdersComponent implements OnInit {
         stakeForm.get("Country").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country ?? this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["country"]);
 
       if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode?.includes(" ")) {
-        var arr = this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalCode.split(" ");
-        stakeForm.get("ZIPCode").setValue(arr[0]);
+        var zipcode = this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode?.replace(/\s/g, "");
+        stakeForm.get("ZIPCode").setValue(zipcode);
       } else {
         stakeForm.get("ZIPCode").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode ?? this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["postalCode"] ?? '');
       }

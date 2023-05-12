@@ -1,0 +1,34 @@
+<div class="offset-1 bg-white center-align col-10 ps-3">
+  <form [formGroup]="form" name="form" (ngSubmit)="submit()">
+    <h2 class="text-primary mt-5 ps-0 center-align">
+      <span class="material-symbols-rounded icon-titulos m-align group-add-blue icon-group-add-blue">
+      </span>&nbsp;{{'registration.validation'|translate|uppercase}}<br>
+    </h2>
+    <p class="titul campo_obrigatrio">{{'generalKeywords.mandatoryField'|translate}}</p>
+    <div class="row">
+      <div class="col-xxl col-6">
+        <div *ngIf="page == 'registration'">
+          <div>
+            <input type="text" formControlName="name" name="name" id="name"
+                   class="form-control campo_form" disabled />
+          </div>
+        </div>
+        <div>
+          <p class="titulo-form-simples" for="code">{{'registration.password'|translate}}: *</p>
+          <input type="text" formControlName="code" name="code" id="code"
+                 class="form-control campo_form" />
+        </div>
+        <div class="alert alert-danger"
+             *ngIf="form.get('code').touched && !form.get('code').valid">
+          <div *ngIf="form.get('code').errors && form.get('code').errors?.['required']">
+            {{'generalKeywords.mandatoryParameter'|translate}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
+            type="submit" [disabled]="!form.valid">
+      &nbsp;{{'auth.submit'|translate}}
+    </button>
+  </form>
+</div>

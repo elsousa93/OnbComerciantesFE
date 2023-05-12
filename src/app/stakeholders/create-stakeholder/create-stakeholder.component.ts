@@ -143,6 +143,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.dataCCcontents.documentType = documentType;
     this.dataCCcontents.nifCC = nif;
     this.dataCCcontents.localityCC = postalCode.split(" ").pop();
+    this.dataCCcontents.gender = gender;
     this.emitSameNIF(of(this.dataCCcontents.nifCC));
     this.dataCCcontents.countryCC = countryIssuer;
     this.countryCC = countryIssuer; //HTML

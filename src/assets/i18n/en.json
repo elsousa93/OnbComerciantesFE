@@ -609,6 +609,10 @@
     "NIF": "NIF/NIPC",
     "email": "Email",
     "contact": "Cellphone",
-    "register": "Register"
+    "register": "Register",
+    "resumeJourney": "Resume of the Journey",
+    "validation": "One-time password validation",
+    "password": "Code",
+    "expired": "The code has expired"
   }
 }
