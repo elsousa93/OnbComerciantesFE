@@ -126,8 +126,8 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
       this.previousStoreEvent.subscribe(result => {
         if (result > 0) {
           var prevIdx = result - 1;
-          this.checkVisitedStores();
-          //this.emitSelectedStore(this.storesList[prevIdx], prevIdx, false);
+          //this.checkVisitedStores();
+          this.emitSelectedStore(this.storesList[prevIdx], prevIdx, false);
         }
       });
     }

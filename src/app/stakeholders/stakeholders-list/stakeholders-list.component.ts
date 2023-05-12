@@ -125,8 +125,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
             };
             this.stakesMat.paginator.page.next(event);
           }
-          this.checkVisitedStakes();
-          //this.emitSelectedStakeholder(this.submissionStakeholders[prevIdx], prevIdx, false);
+          //this.checkVisitedStakes();
+          this.emitSelectedStakeholder(this.submissionStakeholders[prevIdx], prevIdx, false);
         }
       })
     }

@@ -1217,16 +1217,14 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
         let schemaClassifications = [];
         shop.industryClassifications.forEach(industry => {
           var classification = "";
-          if (industry.industryClassificationCode == null || industry.industryClassificationCode == '') {
+          if (industry.industryClassificationCode == null || industry.industryClassificationCode == '' || industry.industryClassificationPotentialCodes?.length > 0) {
             classification = context.form.get("shopsMCC").get(shop.id + industry.paymentSchemeAttributeId).value;
-          } else {
-            classification = context.form.get("shopsMCC").get(shop.id + industry.industryClassificationCode).value;
+            schemaClassifications.push({
+              paymentSchemeId: industry.paymentSchemeAttributeId,
+              subPaymentSchemaId: industry.subPaymentSchemeAttributeId,
+              classification: classification
+            });
           }
-          schemaClassifications.push({
-            paymentSchemeId: industry.paymentSchemeAttributeId,
-            subPaymentSchemaId: industry.subPaymentSchemeAttributeId,
-            classification: classification
-          });
         });
         queueModel.shopsClassification.push({
           shopId: shop.id,

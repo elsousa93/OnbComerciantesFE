@@ -15,6 +15,8 @@ import { LoggerService } from '../../logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProcessService } from '../../process/process.service';
 import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
+import { Client } from '../../client/Client.interface';
+import { ClientService } from '../../client/client.service';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -56,6 +58,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   public subscription: Subscription;
   processId: string;
   updateProcessId: string;
+  merchant: Client;
 
   emitPreviousStakeholder(idx) {
     this.previousStakeholderEvent = idx;
@@ -68,7 +71,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   ngAfterViewInit() {
   }
 
-  constructor(private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService, private logger: LoggerService, private translate: TranslateService, private processService: ProcessService, private processNrService: ProcessNumberService) {
+  constructor(private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService, private logger: LoggerService, private translate: TranslateService, private processService: ProcessService, private processNrService: ProcessNumberService, private clientService: ClientService) {
     if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.returnedFrontOffice = this.route.getCurrentNavigation().extras.state["returnedFrontOffice"];
     }
@@ -107,11 +110,23 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       if (info.clickedTable) {
         this.submit(true);
       }
-      this.currentStakeholder = info.stakeholder;
-      this.currentIdx = info.idx;
-      this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
-      this.logger.info("Selected stakeholder index: " + this.currentIdx);
-      setTimeout(() => this.setFormData(), 500);
+      if (this.merchant == null) {
+        this.clientService.GetClientByIdAcquiring(this.submissionId).then(result => {
+          this.merchant = result;
+        }).finally(() => {
+          this.currentStakeholder = info.stakeholder;
+          this.currentIdx = info.idx;
+          this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
+          this.logger.info("Selected stakeholder index: " + this.currentIdx);
+          setTimeout(() => this.setFormData(), 500);
+        });
+      } else {
+        this.currentStakeholder = info.stakeholder;
+        this.currentIdx = info.idx;
+        this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
+        this.logger.info("Selected stakeholder index: " + this.currentIdx);
+        setTimeout(() => this.setFormData(), 500);
+      }
     }
   }
 
@@ -126,12 +141,30 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       var stake = this.currentStakeholder.stakeholderAcquiring;
 
       if (stake.phone1 != undefined || stake.phone1 != null) {
-        contacts.get("phone").get("countryCode").setValue(stake.phone1?.countryCode);
-        contacts.get("phone").get("phoneNumber").setValue(stake.phone1?.phoneNumber);
+        if (this.merchant.merchantType == "Entrepeneur" && this.merchant.fiscalId == stake.fiscalId) {
+          contacts.get("phone").get("countryCode").setValue(this.merchant?.contacts?.phone1?.countryCode);
+          contacts.get("phone").get("phoneNumber").setValue(this.merchant?.contacts?.phone1?.phoneNumber);
+        } else {
+          contacts.get("phone").get("countryCode").setValue(stake.phone1?.countryCode);
+          contacts.get("phone").get("phoneNumber").setValue(stake.phone1?.phoneNumber);
+        }
+      } else {
+        if (this.merchant.merchantType == "Entrepeneur" && this.merchant.fiscalId == stake.fiscalId) {
+          contacts.get("phone").get("countryCode").setValue(this.merchant?.contacts?.phone1?.countryCode);
+          contacts.get("phone").get("phoneNumber").setValue(this.merchant?.contacts?.phone1?.phoneNumber);
+        }
       }
 
       if (stake.email != '' && stake.email != null) {
-        contacts.get("email").setValue(stake.email);
+        if (this.merchant.merchantType == "Entrepeneur" && this.merchant.fiscalId == stake.fiscalId) {
+          contacts.get("email").setValue(this.merchant?.contacts?.email);
+        } else {
+          contacts.get("email").setValue(stake.email);
+        }
+      } else {
+        if (this.merchant.merchantType == "Entrepeneur" && this.merchant.fiscalId == stake.fiscalId) {
+          contacts.get("email").setValue(this.merchant?.contacts?.email);
+        }
       }
 
       var pep = this.infoStakeholders.controls["pep"];
