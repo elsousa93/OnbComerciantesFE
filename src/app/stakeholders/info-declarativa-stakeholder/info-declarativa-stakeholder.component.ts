@@ -111,15 +111,26 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
         this.submit(true);
       }
       if (this.merchant == null) {
-        this.clientService.GetClientByIdAcquiring(this.submissionId).then(result => {
-          this.merchant = result;
-        }).finally(() => {
-          this.currentStakeholder = info.stakeholder;
-          this.currentIdx = info.idx;
-          this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
-          this.logger.info("Selected stakeholder index: " + this.currentIdx);
-          setTimeout(() => this.setFormData(), 500);
-        });
+        if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+          this.clientService.GetClientByIdAcquiring(this.submissionId).then(result => {
+            this.merchant = result;
+          }).finally(() => {
+            this.currentStakeholder = info.stakeholder;
+            this.currentIdx = info.idx;
+            this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
+            this.logger.info("Selected stakeholder index: " + this.currentIdx);
+            setTimeout(() => this.setFormData(), 500);
+          });
+        } else {
+          this.processService.getMerchantFromProcess(this.processId).subscribe(client => {
+            this.merchant = client;
+            this.currentStakeholder = info.stakeholder;
+            this.currentIdx = info.idx;
+            this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
+            this.logger.info("Selected stakeholder index: " + this.currentIdx);
+            setTimeout(() => this.setFormData(), 500);
+          });
+        }
       } else {
         this.currentStakeholder = info.stakeholder;
         this.currentIdx = info.idx;
@@ -203,6 +214,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   }
 
   submit(clickedTable: boolean = false) {
+    let updateAction = null;
     if (this.returned != 'consult') {
       if (this.infoStakeholders.valid) {
         if (this.currentStakeholder.stakeholderAcquiring?.signType != null) {
@@ -262,10 +274,18 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
               }
             });
           } else {
+            if (this.updateProcessId != null && this.updateProcessId != "") {
+              updateAction = this.currentStakeholder.stakeholderAcquiring["updateProcessAction"];
+              this.currentStakeholder.stakeholderAcquiring["updateProcessAction"] = null;
+            }
+            let o = Object.fromEntries(Object.entries(this.currentStakeholder.stakeholderAcquiring).filter(([_, v]) => v != null));
             this.processService.updateStakeholderProcess(this.processId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).then(result => {
               this.logger.info("Updated stakeholder result: " + JSON.stringify(result));
               this.visitedStakes.push(result.result.id);
               this.visitedStakes = Array.from(new Set(this.visitedStakes));
+              if (this.updateProcessId != null && this.updateProcessId != "") {
+                this.currentStakeholder.stakeholderAcquiring["updateProcessAction"] = updateAction;
+              }
               if (!clickedTable) {
                 if (this.visitedStakes.length < (this.stakesLength)) {
                   this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
@@ -318,20 +338,28 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
     }
   }
 
-  //getCountryInternationalCallingCode() {
-  //  return new Promise(resolve => {
-  //    if (this.currentStakeholder.stakeholderAcquiring?.phone1?.countryCode != null && !this.currentStakeholder?.stakeholderAcquiring?.phone1?.countryCode.startsWith("+")) {
-  //      this.tableInfo.GetCountryById(this.currentStakeholder?.stakeholderAcquiring?.phone1?.countryCode).subscribe(result => {
-  //        this.logger.info("Get country by id result: " + JSON.stringify(result));
-  //        if (result != null) {
-  //          this.currentStakeholder.stakeholderAcquiring.phone1.countryCode = result.internationalCallingCode;
-  //        }
-  //        resolve(true);
-  //      }, error => resolve(false));
-  //    } else {
-  //      resolve(false);
-  //    }
-  //  });
-  //}
+  openCancelPopup() {
+    //this.cancelModalRef = this.modalService.show(this.cancelModal);
+    this.route.navigate(['/']);
+  }
+
+  closeCancelPopup() {
+    //this.cancelModalRef?.hide();
+  }
+
+  confirmCancel() {
+    //var context = this;
+    //var processNumber = "";
+    //this.processNrService.processNumber.subscribe(res => processNumber = res);
+    //var encodedCode = encodeURIComponent(processNumber);
+    //var baseUrl = this.configuration.getConfig().acquiringAPIUrl;
+    //var url = baseUrl + 'process?number=' + encodedCode;
+    //this.processService.advancedSearch(url, 0, 1).subscribe(result => {
+    //  context.queueService.markToCancel(result.items[0].processId, context.authService.GetCurrentUser().userName).then(res => {
+    //    context.closeCancelPopup();
+    //    context.route.navigate(['/']);
+    //  });
+    //});
+  }
 
 }

@@ -276,6 +276,8 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
           process.processState = this.translate.instant('searches.cancelled');
         } else if (process.processState === 'ContractAcceptance') {
           process.processState = this.translate.instant('searches.contractAcceptance')
+        } else if (process.processState === 'AwaitingCompletion') {
+          process.processState = this.translate.instant('searches.awaitingCompletion')
         } else if (process.processState === 'StandardIndustryClassificationChoice') {
           process.processState = this.translate.instant('searches.MCCTreatment');
         } else if (process.processState === 'RiskAssessment') {

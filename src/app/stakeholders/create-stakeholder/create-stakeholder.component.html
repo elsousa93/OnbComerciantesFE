@@ -191,7 +191,7 @@
               <div class="col-md-6">
                 <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:</p>
                 <input name="socialDenomination" type="text" class="form-control campo_form"
-                       formControlName="socialDenomination">
+                       formControlName="socialDenomination" maxlength="40">
                 <div class="alert alert-danger"
                      *ngIf="formNewStakeholder.get('socialDenomination').touched && !formNewStakeholder.get('socialDenomination').valid">
                   <div *ngIf="formNewStakeholder.get('socialDenomination').errors && formNewStakeholder.get('socialDenomination').errors?.['required']">
@@ -228,7 +228,7 @@
             </div>
             <div class="col-md-6">
               <p class="titulo-form-simples">{{'stakeholder.name'|translate|uppercase}}:</p>
-              <input name="name" type="text" class="form-control campo_form" formControlName="name">
+              <input name="name" type="text" class="form-control campo_form" formControlName="name" maxlength="40">
               <div class="alert alert-danger"
                    *ngIf="formNewStakeholder.get('name').touched && !formNewStakeholder.get('name').valid">
                 <div *ngIf="formNewStakeholder.get('name').errors && formNewStakeholder.get('name').errors?.['required']">

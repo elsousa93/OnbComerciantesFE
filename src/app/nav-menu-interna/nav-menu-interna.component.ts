@@ -64,7 +64,7 @@ export class NavMenuInternaComponent implements OnInit {
 
     this.resizeObservable$ = fromEvent(window, "resize");
     this.resizeObservable$.subscribe(evt => {
-      if (window.outerWidth > 768) {
+      if (window.outerWidth > 1024) {
         this.isMinWidth = false;
       } else {
         this.isMinWidth = true;
@@ -73,7 +73,7 @@ export class NavMenuInternaComponent implements OnInit {
   }
 
   setListItem(page: number) {
-    if (window.outerWidth > 768) {
+    if (window.outerWidth > 1024) {
       this.isMinWidth = false;
       if (page == this.currentPage) {
         return 'text-center text-lg-center text-center align-self-start mt-4'; //ativo -> atualizado
@@ -97,7 +97,7 @@ export class NavMenuInternaComponent implements OnInit {
   }
 
   setAnchor(page: number) {
-    if (window.outerWidth > 768) {
+    if (window.outerWidth > 1024) {
       if (page == this.currentPage) {
         return 'active text-white texto-menu-secundario'; // página atual -> atualizado
       } else {
@@ -115,7 +115,7 @@ export class NavMenuInternaComponent implements OnInit {
   }
 
   setImage(page: number) {
-    if (window.outerWidth > 768) {
+    if (window.outerWidth > 1024) {
       if (page == this.currentPage) {
         return 'icone-menu-secundario'; //caso seja a página atual
       }
@@ -123,7 +123,7 @@ export class NavMenuInternaComponent implements OnInit {
   }
 
   setImageSrc(page: number) {
-    if (window.outerWidth > 768) {
+    if (window.outerWidth > 1024) {
       if (page == this.currentPage) {
         return 'assets/images/circle-solid.svg';
       } else {
@@ -246,6 +246,9 @@ export class NavMenuInternaComponent implements OnInit {
       } else if (queueName == 'aceitacao') {
         this.logger.info("Redirecting to Aceitacao page");
         this.route.navigate(['/app-aceitacao/', processId]);
+      } else if (queueName == 'history') {
+        this.logger.info("Redirecting to History page");
+        this.route.navigate(['/app-history/', processId]);
       } else {
         let navigationExtras: NavigationExtras = {
           state: {
@@ -274,8 +277,10 @@ export class NavMenuInternaComponent implements OnInit {
         this.route.navigate(['app-consultas']);
       }
     } else {
-      this.logger.info("Redirecting to Client page");
-      this.route.navigate(['clientbyid']);
+      if (this.currentPage > 1 || this.map.get(1) != undefined) {
+        this.logger.info("Redirecting to Client page");
+        this.route.navigate(['clientbyid']);
+      }
     }
   }
 

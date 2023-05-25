@@ -1,5 +1,5 @@
 <div class="offset-1 bg-white center-align col-10 ps-3">
-  <form [formGroup]="form" name="form" (ngSubmit)="submit()">
+  <form [formGroup]="form" name="form" (ngSubmit)="submit()" *ngIf="!validateCode">
     <h2 class="text-primary mt-5 ps-0 center-align">
       <span class="material-symbols-rounded icon-titulos m-align group-add-blue icon-group-add-blue">
       </span>&nbsp;{{'registration.resumeJourney'|translate|uppercase}}<br>
@@ -25,4 +25,5 @@
       &nbsp;{{'generalKeywords.search'|translate}}
     </button>
   </form>
+  <app-validate-code *ngIf="validateCode" [secret]="secret" [page]="'resume'" [processNumber]="processNumber" (goBackEmitter)="goBack($event)"></app-validate-code>
 </div>

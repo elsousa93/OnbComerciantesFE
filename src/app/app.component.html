@@ -1,10 +1,14 @@
 <app-auth *ngIf="!hasAuthenticated && !expired"></app-auth>
 <app-expired *ngIf="expired"></app-expired>
-<app-nav-menu-presencial *ngIf="hasAuthenticated" (toggleNavEvent)="toggleSideNav($event)"
+
+<app-pre-registration *ngIf="isPreRegistration"></app-pre-registration>
+<app-resume-journey *ngIf="isResumeJourney"></app-resume-journey>
+
+<app-nav-menu-presencial *ngIf="hasAuthenticated && !isPreRegistration && !isResumeJourney" (toggleNavEvent)="toggleSideNav($event)"
   (autoHide)="toggleAutoHide($event)"></app-nav-menu-presencial>
-<main class="mt-xxl-n5" *ngIf="hasAuthenticated">
+<main class="mt-xxl-n5" *ngIf="hasAuthenticated && !isPreRegistration && !isResumeJourney">
   <app-sidenav-presencial [isToggle]="isToggle" [isAutoHide]="isAutoHide"></app-sidenav-presencial>
 </main>
-<app-footer-presencial *ngIf="hasAuthenticated" class="footer py-3 mt-auto"></app-footer-presencial>
+<app-footer-presencial *ngIf="hasAuthenticated && !isPreRegistration && !isResumeJourney" class="footer py-3 mt-auto"></app-footer-presencial>
 
 

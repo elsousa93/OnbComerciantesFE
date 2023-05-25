@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -25,6 +25,8 @@ import { TableInfoService } from '../table-info/table-info.service';
 import { AuthService } from '../services/auth.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
+import { User } from '../userPermissions/user';
+import { UserPermissions } from '../userPermissions/user-permissions';
 
 @Component({
   selector: 'queues-detail',
@@ -32,7 +34,7 @@ import { ProcessNumberService } from '../nav-menu-presencial/process-number.serv
   styleUrls: ['./queues-detail.component.css']
 })
 
-export class QueuesDetailComponent implements OnInit, AfterViewInit {
+export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   form: FormGroup;
   @Input() queueName: string;
   @Input() processId: string;
@@ -202,6 +204,8 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
   allStakesSearched: boolean = false;
   isCompany: boolean;
   riskFinished: boolean = false;
+  currentUser: User = {};
+  readonly UserPermissions = UserPermissions;
 
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, private http: HttpClient,
     private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService,
@@ -212,6 +216,9 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
       this.queueName = this.route.getCurrentNavigation().extras.state["queueName"];
       this.processId = this.route.getCurrentNavigation().extras.state["processId"];
     }
+
+    authService.currentUser.subscribe(user => this.currentUser = user);
+    
     // Preencher os dados da fila de trabalho consoante o processId recebido
     this.fetchStartingInfo();
     this.data.updateData(true, 0);
@@ -234,24 +241,160 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
     })));
   }
 
+  ngOnDestroy(): void {
+    var context = this;
+    if (this.queueName == "eligibility") {
+      var observation = this.form.get('observation').value;
+      var merchantAccepted = this.form.get("merchantEligibility").value; //this.merchant.id
+      var stakeholders = this.form.get("stakeholdersEligibility") as FormGroup;
+      var stakes = [];
+      for (const cont in stakeholders.controls) {
+        const control = this.form.get("stakeholdersEligibility").get(cont);
+        stakes.push({
+          stakeholderId: cont,
+          accepted: control.value
+        })
+      }
+
+      this.processNrService.changeObservation(observation);
+      this.processNrService.changeMerchant(merchantAccepted);
+      this.processNrService.changeList(stakes);
+
+
+    } else if (this.queueName == "risk") {
+      var observation = this.form.get('observation').value;
+      var merchantAccepted = this.form.get("merchantEligibility").value; //this.merchant.id
+      var stakeholders = this.form.get("stakeholdersEligibility") as FormGroup;
+      var stakes = [];
+      for (const cont in stakeholders.controls) {
+        const control = this.form.get("stakeholdersEligibility").get(cont);
+        stakes.push({
+          stakeholderId: cont,
+          accepted: control.value
+        })
+      }
+
+      this.processNrService.changeObservation(observation);
+      this.processNrService.changeMerchant(merchantAccepted);
+      this.processNrService.changeList(stakes);
+
+    } else if (this.queueName == "compliance") {
+      var observation = this.form.get('observation').value;
+      this.processNrService.changeObservation(observation);
+    } else if (this.queueName == "DOValidation") {
+      var observation = this.form.get('observation').value;
+      this.processNrService.changeObservation(observation);
+    } else if (this.queueName == "validationSIBS") {
+      var observation = this.form.get('observation').value;
+      var merchantRegistrationId = this.form.get("enrollmentMerchantNumber").value;
+      let shops = [];
+      this.shopsList.forEach(shop => {
+        var equips = [];
+        this.equipmentList.forEach(equip => {
+          if (shop.id === equip["shopId"]) {
+            equips.push({
+              equipmentId: equip.shopEquipmentId,
+              equipmentRegistrationId: context.form.get("equipments")?.get(equip.shopEquipmentId)?.value
+            });
+          }
+        });
+        var model = {
+          shopId: shop.id,
+          shopRegistrationId: context.form.get("shops").get(shop.id).value,
+          equipments: equips
+        };
+        shops.push(model);
+      });
+
+      this.processNrService.changeObservation(observation);
+      this.processNrService.changeMerchant(merchantRegistrationId);
+      this.processNrService.changeList(shops);
+
+    } else if (this.queueName == "negotiationAproval") {
+      var observation = this.form.get('observation').value;
+      this.processNrService.changeObservation(observation);
+    } else if (this.queueName == "multipleClients") {
+      var observation = this.form.get('observation').value;
+      var merchantChoice = {};
+      var found = context.multipleStakeList.find(value => value.id == this.merchant.id);
+      if (found != undefined) {
+        merchantChoice = {
+          id: found.id,
+          clientNumber: found["clientNumber"]
+        };
+      }
+      let stakeholdersChoice = [];
+      context.multipleStakeList.forEach(value => {
+        if (value["type"] == "Particular") {
+          stakeholdersChoice.push({
+            id: value.id,
+            clientNumber: value["clientNumber"]
+          });
+        }
+      });
+
+      this.processNrService.changeObservation(observation);
+      this.processNrService.changeMerchant(merchantChoice);
+      this.processNrService.changeList(stakeholdersChoice);
+
+    } else if (this.queueName == "MCCTreatment") {
+      let shopsClassification = [];
+      this.shopsList.forEach(shop => {
+        let schemaClassifications = [];
+        shop.industryClassifications.forEach(industry => {
+          var classification = "";
+          if (industry.industryClassificationCode == null || industry.industryClassificationCode == '' || industry.industryClassificationPotentialCodes?.length > 0) {
+            classification = context.form.get("shopsMCC").get(shop.id + industry.paymentSchemeAttributeId + industry.subPaymentSchemeAttributeId).value;
+            schemaClassifications.push({
+              paymentSchemeId: industry.paymentSchemeAttributeId,
+              subPaymentSchemaId: industry.subPaymentSchemeAttributeId,
+              classification: classification
+            });
+          }
+        });
+        shopsClassification.push({
+          shopId: shop.id,
+          schemaClassifications: schemaClassifications
+        });
+      });
+      this.processNrService.changeList(shopsClassification);
+    }
+
+  }
+
   initializeElegibilityForm() {
     this.form = new FormGroup({
       observation: new FormControl(''),
       stakeholdersEligibility: new FormGroup({}),
       merchantEligibility: new FormControl('', Validators.required)
     });
+    if ((this.queueName == "risk" && this.currentUser.permissions != UserPermissions.COMPLIANCEOFFICE) || this.queueName == "eligibility" && (this.currentUser.permissions != UserPermissions.UNICRE && this.currentUser.permissions != UserPermissions.CALLCENTER && this.currentUser.permissions != UserPermissions.COMERCIAL)) {
+      this.form.disable();
+    }
   }
 
   initializeMCCForm() {
     this.form = new FormGroup({
       shopsMCC: new FormGroup({})
     });
+    if (this.currentUser.permissions != UserPermissions.DO) {
+      this.form.disable();
+    }
   }
 
   initializeComplianceForm() {
     this.form = new FormGroup({
       observation: new FormControl('', Validators.required)
     });
+    var observation = "";
+    this.processNrService.observation.subscribe(obs => observation = obs);
+    if (observation != null && observation != "") {
+      this.form.get("observation").setValue(observation);
+      this.form.updateValueAndValidity();
+    }
+    if (((this.queueName == "negotiationAproval" || this.queueName == "DOValidation") && this.currentUser.permissions != UserPermissions.DO) || (this.queueName == "compliance" && this.currentUser.permissions != UserPermissions.COMPLIANCEOFFICE)) {
+      this.form.disable();
+    }
   }
 
   initializeMultipleClientsForm() {
@@ -260,6 +403,15 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
       documentNumber: new FormControl(''),
       observation: new FormControl('')
     });
+    var observation = "";
+    this.processNrService.observation.subscribe(obs => observation = obs);
+    if (observation != null && observation != "") {
+      this.form.get("observation").setValue(observation);
+      this.form.updateValueAndValidity();
+    }
+    if (this.currentUser.permissions != UserPermissions.DO) {
+      this.form.disable();
+    }
   }
 
   initializeValidationSIBSForm() {
@@ -269,6 +421,9 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
       shops: new FormGroup({}),
       equipments: new FormGroup({})
     });
+    if (this.currentUser.permissions != UserPermissions.DO) {
+      this.form.disable();
+    }
   }
 
   updateStakeForm() {
@@ -284,6 +439,30 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
     });
     this.form.setControl("stakeholdersEligibility", formGroupStakeholdersEligibility);
     this.riskFinished = true;
+
+    var observation = "";
+    var merchant;
+    var stakes = [];
+    this.processNrService.observation.subscribe(obs => observation = obs);
+    if (observation != null && observation != "") {
+      this.form.get("observation").setValue(observation);
+    }
+    this.processNrService.merchant.subscribe(m => merchant = m);
+    if (merchant != null && merchant != "") {
+      this.form.get("merchantEligibility").setValue(merchant);
+    }
+    this.processNrService.list.subscribe(value => stakes = value);
+    if (stakes != null && stakes.length > 0) {
+      stakes.forEach(val => {
+        if (this.form.get("stakeholdersEligibility").get(val.stakeholderId)) { 
+          this.form.get("stakeholdersEligibility").get(val.stakeholderId).setValue(val.accepted);
+        }
+      });
+    }
+    this.form.updateValueAndValidity();
+    if ((this.queueName == "risk" && this.currentUser.permissions != UserPermissions.COMPLIANCEOFFICE) || this.queueName == "eligibility" && (this.currentUser.permissions != UserPermissions.UNICRE && this.currentUser.permissions != UserPermissions.CALLCENTER && this.currentUser.permissions != UserPermissions.COMERCIAL)) {
+      this.form.disable();
+    }
   }
 
   updateShopForm() {
@@ -291,7 +470,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
     this.shopsList.forEach(function (value, idx) {
       value.industryClassifications.forEach(val => {
         if (val.industryClassificationCode == null || val.industryClassificationCode == '') {
-          formGroupShop.addControl(value.id + val.paymentSchemeAttributeId, new FormControl('', Validators.required)); 
+          formGroupShop.addControl(value.id + val.paymentSchemeAttributeId + val.subPaymentSchemeAttributeId, new FormControl('', Validators.required)); 
         } else {
           formGroupShop.addControl(value.id + val.industryClassificationCode, new FormControl(val.industryClassificationCode, Validators.required));
         }
@@ -299,6 +478,23 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
     });
     this.form.setControl("shopsMCC", formGroupShop);
     this.MCCFinished = true;
+
+    var context = this;
+    var shops = [];
+    this.processNrService.list.subscribe(value => shops = value);
+    if (shops != null && shops.length > 0) {
+      shops.forEach(val => {
+        val.schemaClassifications.forEach(v => {
+          if (context.form.get("shopsMCC").get(val.shopId + v.paymentSchemeId)) {
+            context.form.get("shopsMCC").get(val.shopId + v.paymentSchemeId).setValue(v.classification);
+          }
+        });
+      });
+      this.form.updateValueAndValidity();
+    }
+    if (this.currentUser.permissions != UserPermissions.DO) {
+      this.form.disable();
+    }
   }
 
   updateShopValidationForm() {
@@ -317,6 +513,36 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
     this.form.setControl("shops", formGroupShop);
     this.form.get("enrollmentMerchantNumber").setValue(this.merchant.merchantRegistrationId);
     this.finished = true;
+
+    var context = this;
+    var shops = [];
+    var merchant;
+    var observation = "";
+    this.processNrService.observation.subscribe(obs => observation = obs);
+    if (observation != null && observation != "") {
+      this.form.get("observation").setValue(observation);
+    }
+    this.processNrService.merchant.subscribe(m => merchant = m);
+    if (merchant != null && merchant != "") {
+      this.form.get("enrollmentMerchantNumber").setValue(merchant);
+    }
+    this.processNrService.list.subscribe(value => shops = value);
+    if (shops != null && shops.length > 0) {
+      shops.forEach(val => {
+        if (context.form.get("shops").get(val.shopId)) {
+          context.form.get("shops").get(val.shopId).setValue(val.shopRegistrationId);
+        }
+        val.equipments.forEach(v => {
+          if (context.form.get("equipments").get(v.equipmentId)) {
+            context.form.get("equipments").get(v.equipmentId).setValue(v.equipmentRegistrationId);
+          }
+        });
+      });
+      this.form.updateValueAndValidity();
+    }
+    if (this.currentUser.permissions != UserPermissions.DO) {
+      this.form.disable();
+    }
   }
 
   ngOnInit(): void {
@@ -635,6 +861,8 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
           process.processState = this.translate.instant('searches.cancelled');
         } else if (process.processState === 'ContractAcceptance') {
           process.processState = this.translate.instant('searches.contractAcceptance')
+        } else if (process.processState === 'AwaitingCompletion') {
+          process.processState = this.translate.instant('searches.awaitingCompletion')
         } else if (process.processState === 'StandardIndustryClassificationChoice') {
           process.processState = this.translate.instant('searches.MCCTreatment');
         } else if (process.processState === 'RiskAssessment') {
@@ -780,10 +1008,129 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
   }
 
   nextPage() {
+    var context = this;
+    if (this.queueName == "eligibility") {
+      var observation = this.form.get('observation').value;
+      var merchantAccepted = this.form.get("merchantEligibility").value; //this.merchant.id
+      var stakeholders = this.form.get("stakeholdersEligibility") as FormGroup;
+      var stakes = [];
+      for (const cont in stakeholders.controls) {
+        const control = this.form.get("stakeholdersEligibility").get(cont);
+        stakes.push({
+          stakeholderId: cont,
+          accepted: control.value
+        })
+      }
+
+      this.processNrService.changeObservation(observation);
+      this.processNrService.changeMerchant(merchantAccepted);
+      this.processNrService.changeList(stakes);
+
+
+    } else if (this.queueName == "risk") {
+      var observation = this.form.get('observation').value;
+      var merchantAccepted = this.form.get("merchantEligibility").value; //this.merchant.id
+      var stakeholders = this.form.get("stakeholdersEligibility") as FormGroup;
+      var stakes = [];
+      for (const cont in stakeholders.controls) {
+        const control = this.form.get("stakeholdersEligibility").get(cont);
+        stakes.push({
+          stakeholderId: cont,
+          accepted: control.value
+        })
+      }
+
+      this.processNrService.changeObservation(observation);
+      this.processNrService.changeMerchant(merchantAccepted);
+      this.processNrService.changeList(stakes);
+
+    } else if (this.queueName == "compliance") {
+      var observation = this.form.get('observation').value;
+      this.processNrService.changeObservation(observation);
+    } else if (this.queueName == "DOValidation") {
+      var observation = this.form.get('observation').value;
+      this.processNrService.changeObservation(observation);
+    } else if (this.queueName == "validationSIBS") {
+      var observation = this.form.get('observation').value;
+      var merchantRegistrationId = this.form.get("enrollmentMerchantNumber").value;
+      let shops = [];
+      this.shopsList.forEach(shop => {
+        var equips = [];
+        this.equipmentList.forEach(equip => {
+          if (shop.id === equip["shopId"]) {
+            equips.push({
+              equipmentId: equip.shopEquipmentId,
+              equipmentRegistrationId: context.form.get("equipments")?.get(equip.shopEquipmentId)?.value
+            });
+          }
+        });
+        var model = {
+          shopId: shop.id,
+          shopRegistrationId: context.form.get("shops").get(shop.id).value,
+          equipments: equips
+        };
+        shops.push(model);
+      });
+
+      this.processNrService.changeObservation(observation);
+      this.processNrService.changeMerchant(merchantRegistrationId);
+      this.processNrService.changeList(shops);
+
+    } else if (this.queueName == "negotiationAproval") {
+      var observation = this.form.get('observation').value;
+      this.processNrService.changeObservation(observation);
+    }  else if (this.queueName == "multipleClients") {
+      var observation = this.form.get('observation').value;
+      var merchantChoice = {};
+      var found = context.multipleStakeList.find(value => value.id == this.merchant.id);
+      if (found != undefined) {
+        merchantChoice = {
+          id: found.id,
+          clientNumber: found["clientNumber"]
+        };
+      }
+      let stakeholdersChoice = [];
+      context.multipleStakeList.forEach(value => {
+        if (value["type"] == "Particular") {
+          stakeholdersChoice.push({
+            id: value.id,
+            clientNumber: value["clientNumber"]
+          });
+        }
+      });
+
+      this.processNrService.changeObservation(observation);
+      this.processNrService.changeMerchant(merchantChoice);
+      this.processNrService.changeList(stakeholdersChoice);
+
+    } else if (this.queueName == "MCCTreatment") {
+      let shopsClassification = [];
+      this.shopsList.forEach(shop => {
+        let schemaClassifications = [];
+        shop.industryClassifications.forEach(industry => {
+          var classification = "";
+          if (industry.industryClassificationCode == null || industry.industryClassificationCode == '' || industry.industryClassificationPotentialCodes?.length > 0) {
+            classification = context.form.get("shopsMCC").get(shop.id + industry.paymentSchemeAttributeId + industry.subPaymentSchemeAttributeId).value;
+            schemaClassifications.push({
+              paymentSchemeId: industry.paymentSchemeAttributeId,
+              subPaymentSchemaId: industry.subPaymentSchemeAttributeId,
+              classification: classification
+            });
+          }
+        });
+        shopsClassification.push({
+          shopId: shop.id,
+          schemaClassifications: schemaClassifications
+        });
+      });
+      this.processNrService.changeList(shopsClassification);
+    }
+
     localStorage.setItem('returned', 'consult');
     this.data.changeQueueName(this.queueName);
     localStorage.setItem("processNumber", this.process.processNumber);
     this.processNrService.changeProcessId(this.process.processId);
+    this.processNrService.changeQueueName(this.queueName);
     this.logger.info("Redirecting to Client By Id page");
     this.route.navigate(['/clientbyid']);
   }
@@ -1117,24 +1464,6 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
       queueModel.$type = StateResultDiscriminatorEnum.COMPLIANCE_EVALUATION;
       queueModel.userObservations = observation;
       this.documentType = "0060";
-    } else if (this.queueName === 'MCC') {
-      this.state = State.STANDARD_INDUSTRY_CLASSIFICATION_CHOICE;
-      queueModel = {} as StandardIndustryClassificationChoice;
-
-      var stakeholders = this.form.get("shopsMCC") as FormGroup;
-      queueModel.shopClassifications = {
-        shopId: null,
-        schemaClassification: []
-      }
-
-      for (const cont in stakeholders.controls) {
-        const control = this.form.get("shopsMCC").get(cont);
-
-        queueModel.shopClassifications.schemaClassification.push({
-          paymentSchemaId: null,
-          classification: control.value
-        });
-      }
     } else if (this.queueName === 'DOValidation') {
       this.state = State.OPERATIONS_EVALUATION;
       queueModel = {} as OperationsEvaluation;
@@ -1218,7 +1547,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit {
         shop.industryClassifications.forEach(industry => {
           var classification = "";
           if (industry.industryClassificationCode == null || industry.industryClassificationCode == '' || industry.industryClassificationPotentialCodes?.length > 0) {
-            classification = context.form.get("shopsMCC").get(shop.id + industry.paymentSchemeAttributeId).value;
+            classification = context.form.get("shopsMCC").get(shop.id + industry.paymentSchemeAttributeId + industry.subPaymentSchemeAttributeId).value;
             schemaClassifications.push({
               paymentSchemeId: industry.paymentSchemeAttributeId,
               subPaymentSchemaId: industry.subPaymentSchemeAttributeId,

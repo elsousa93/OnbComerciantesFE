@@ -285,4 +285,28 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     } as NavigationExtras;
     this.router.navigate(['info-declarativa-lojas'], navigationExtras);
   }
+
+  openCancelPopup() {
+    //this.cancelModalRef = this.modalService.show(this.cancelModal);
+    this.router.navigate(['/']);
+  }
+
+  closeCancelPopup() {
+    //this.cancelModalRef?.hide();
+  }
+
+  confirmCancel() {
+    //var context = this;
+    //var processNumber = "";
+    //this.processNrService.processNumber.subscribe(res => processNumber = res);
+    //var encodedCode = encodeURIComponent(processNumber);
+    //var baseUrl = this.configuration.getConfig().acquiringAPIUrl;
+    //var url = baseUrl + 'process?number=' + encodedCode;
+    //this.processService.advancedSearch(url, 0, 1).subscribe(result => {
+    //  context.queueService.markToCancel(result.items[0].processId, context.authService.GetCurrentUser().userName).then(res => {
+    //    context.closeCancelPopup();
+    //    context.route.navigate(['/']);
+    //  });
+    //});
+  }
 }

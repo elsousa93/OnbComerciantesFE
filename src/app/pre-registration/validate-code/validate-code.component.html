@@ -15,7 +15,7 @@
         </div>
         <div>
           <p class="titulo-form-simples" for="code">{{'registration.password'|translate}}: *</p>
-          <input type="text" formControlName="code" name="code" id="code"
+          <input type="number" formControlName="code" name="code" id="code"
                  class="form-control campo_form" />
         </div>
         <div class="alert alert-danger"
@@ -26,6 +26,10 @@
         </div>
       </div>
     </div>
+    <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
+            type="button" (click)="goBack()">
+      &nbsp;{{'generalKeywords.back'|translate}}
+    </button>
     <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"
             type="submit" [disabled]="!form.valid">
       &nbsp;{{'auth.submit'|translate}}

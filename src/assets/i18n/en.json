@@ -44,7 +44,7 @@
       "backOffice": "Backoffice treatment processes",
       "returned": "Backoffice returned processes",
       "acceptance": "Processes in the acceptance phase",
-      "pendingSent": "Pending submission processes for physical file",
+      "pendingSent": "Processes pending completion by the Adherent",
       "pendingEligibility": "Eligibility opinion process under way",
       "multipleClients": "Processes in multiple clients",
       "DOValidation": "Processes in DO valid",
@@ -132,7 +132,8 @@
     "incorrectNIPCSize": "The NIPC must consist of 9 digits",
     "sameNIPC": "The NIPC cannot match the company's",
     "sameNIFMatch": "The NIF can't match the private's",
-    "returnSearchMsg": "Are you sure you want to change the company data?"
+    "returnSearchMsg": "Are you sure you want to change the company data?",
+    "cancelMsg": "Are you sure you want to cancel the process?"
   },
   "citizenCard": {
     "collectData": "Electronic collection of Citizen Card data?",
@@ -187,7 +188,8 @@
     "particular": "Private",
     "corporate": "Corporate",
     "signError": "There must be at least one stakeholder who signs the contract",
-    "stakeExistsError": "There must be at least one private stakeholder"
+    "stakeExistsError": "There must be at least one private stakeholder",
+    "differentNIFCC": "It's not possible to update the data, as the NIF of the CC does not match that of the current stakeholder"
   },
   "stores": {
     "title": "Stores",
@@ -220,7 +222,8 @@
     "presencialTransaction": "Presencial Transactions",
     "noPresencialTransaction": "No Presencial Transactions",
     "combinedOffer": "Combined Offer",
-    "subProduct": "Sub Product"
+    "subProduct": "Sub Product",
+    "updateStore": "This change will delete the Commercial Offer configuration. Do you wish to proceed?"
   },
   "supportingDocuments": {
     "title": "Supporting Documents",
@@ -258,7 +261,8 @@
       "selectedLegalNature": "For the selected Legal Nature",
       "mandatoryDocuments": "the mandatory documents"
     },
-    "documentsListEmpty": "There are no documents"
+    "documentsListEmpty": "There are no documents",
+    "stakeholder": "If the stakeholder doesn't sign, he only needs to place documentation if he has a share capital of more than 5%"
   },
   "commercialOffer": {
     "title": "Commercial Offer",
@@ -355,12 +359,13 @@
     "search": "Search",
     "processNumber": "Process Number",
     "state": "State",
-    "incompleted": "Incomplete",
-    "running": "Running",
-    "completed": "Completed",
+    "incompleted": "Pending Sent",
+    "running": "Backoffice Treatment",
+    "completed": "Finished",
     "returned": "Returned",
     "cancelled": "Cancelled",
     "contractAcceptance": "Contract Acceptance",
+    "awaitingCompletion": "Pending Completion by Adherent",
     "eligibility": "Eligibility Assessment",
     "multipleClients": "Multiple Clients",
     "DOValidation": "DO Validation",

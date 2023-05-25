@@ -5,7 +5,7 @@ import { docTypeListP } from './docType';
 import { docTypeListE } from './docType';
 import { NavigationExtras, Router } from '@angular/router';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { of, Subscription } from 'rxjs';
+import { distinctUntilChanged, of, Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from './stakeholder.service';
 import { ViewChild } from '@angular/core';
@@ -22,6 +22,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 import { ProcessService } from '../process/process.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { dataCC } from '../citizencard/dataCC.interface';
+import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
+import { PostDocument } from '../submission/document/ISubmission-document';
 
 /** Listagem Intervenientes / Intervenientes
  *
@@ -36,6 +39,7 @@ export class StakeholdersComponent implements OnInit {
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658";
   @ViewChild('newModal') newModal;
 
+  stakeholderList: StakeholdersCompleteInformation[] = [];
   insertStakeholderEvent: Observable<IStakeholders>;
   updatedStakeholderEvent: Observable<{ stake: IStakeholders, idx: number }>;
   previousStakeholderEvent: Observable<number>;
@@ -43,6 +47,10 @@ export class StakeholdersComponent implements OnInit {
   submissionClient: Client;
   existsStake: boolean = false;
   stakeholders: boolean;
+  incorrectNIF: boolean = false;
+  incorrectNIFSize: boolean = false;
+  incorrectNIPC: boolean = false;
+  incorrectNIPCSize: boolean = false;
 
   emitUpdatedStakeholder(info) {
     this.updatedStakeholderEvent = info;
@@ -68,6 +76,16 @@ export class StakeholdersComponent implements OnInit {
 
   checkVisitedStakes(visitedStakes) {
     this.visitedStakes = visitedStakes;
+  }
+
+  checkContractAssociation(contractAssociation) {
+    this.stakeholderList = contractAssociation;
+    //this.contractAssociated = contractAssociation;
+  }
+
+  emitCCInfo(CCInfo) {
+    this.dataCCcontents = CCInfo.dataCCContents;
+    this.prettyPDF = CCInfo.prettyPDF;
   }
 
   currentStakeholder: StakeholdersCompleteInformation = {};
@@ -132,6 +150,30 @@ export class StakeholdersComponent implements OnInit {
   title: string;
   processId: string;
   updateProcessId: string;
+  public prettyPDF: FileAndDetailsCC = null;
+  public dataCCcontents: dataCC = {
+    cardNumberCC: null,
+    nameCC: null,
+    sexCC: null,
+    heightCC: null,
+    nationalityCC: null,
+    birthdateCC: null,
+    expiricyDateCC: null,
+    localOfEmissionCC: null,
+    fathersNameCC: null,
+    mothersNameCC: null,
+    nifCC: null,
+    socialSecurityCC: null,
+    healthNumberCC: null,
+    signatureCC: null,
+    addressCC: null,
+    postalCodeCC: null,
+    localityCC: null,
+    countryCC: null,
+    documentType: null,
+    notes: null,
+    gender: null
+  };
 
   constructor(public modalService: BsModalService, private datePipe: DatePipe,
     private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService,
@@ -251,10 +293,22 @@ export class StakeholdersComponent implements OnInit {
   }
 
   setFormData() {
+    this.incorrectNIF = false;
+    this.incorrectNIFSize = false;
+    this.incorrectNIPC = false;
+    this.incorrectNIPCSize = false;
     var stakeForm = this.editStakes.get("stake");
     var proxy = this.currentStakeholder.stakeholderAcquiring.isProxy != null ? this.currentStakeholder.stakeholderAcquiring.isProxy + '' : 'false';
     stakeForm.get("proxy").setValue(proxy);
     stakeForm.get("contractAssociation").setValue(this.currentStakeholder.stakeholderAcquiring.signType === 'CitizenCard' || this.currentStakeholder?.stakeholderAcquiring?.signType === 'DigitalCitizenCard' ? 'true' : 'false');
+
+    stakeForm.get("NIF").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
+      if (this.currentStakeholder?.stakeholderAcquiring?.signType != null && this.currentStakeholder?.stakeholderAcquiring?.signType !== '') {
+        this.validateNIF(val);
+      } else {
+        this.validateNIPC(val);
+      }
+    });
 
     if (this.currentStakeholder.stakeholderAcquiring.identificationDocument?.number == null) { //stakeForm.get("documentType") == null
       stakeForm.get("flagRecolhaEletronica").setValue(false);
@@ -266,10 +320,10 @@ export class StakeholdersComponent implements OnInit {
         stakeForm.get("Country").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country ?? this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["country"]);
 
       if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode?.includes(" ")) {
-        var zipcode = this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode?.replace(/\s/g, "");
+        var zipcode = this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.postalCode?.replace(/\s/g, "");
         stakeForm.get("ZIPCode").setValue(zipcode);
       } else {
-        stakeForm.get("ZIPCode").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode ?? this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["postalCode"] ?? '');
+        stakeForm.get("ZIPCode").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalCode ?? this.currentStakeholder?.stakeholderAcquiring["headquartersAddress"]["postalCode"] ?? '');
       }
 
       stakeForm.get("Locality").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.postalArea ?? this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["postalArea"]);
@@ -286,6 +340,7 @@ export class StakeholdersComponent implements OnInit {
         stakeForm.get("identificationDocumentId").setValue(this.currentStakeholder.stakeholderAcquiring.identificationDocument.number);
       }
     }
+
     if (this.returned == 'consult') {
       this.editStakes.get("stake").disable();
     }
@@ -323,6 +378,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   submit(clickedTable: boolean = false) {
+    let updateAction = null;
     this.clickButton = null;
     var stakeForm = this.editStakes.controls["stake"];
     if (this.returned != 'consult') {
@@ -330,11 +386,13 @@ export class StakeholdersComponent implements OnInit {
         if (this.currentStakeholder?.stakeholderAcquiring?.signType != null && this.currentStakeholder?.stakeholderAcquiring?.signType !== '') {
           this.currentStakeholder.stakeholderAcquiring.isProxy = (stakeForm.get("proxy").value === 'true');
 
+          if (this.currentStakeholder.stakeholderAcquiring.fiscalId == null || this.currentStakeholder.stakeholderAcquiring.fiscalId == '')
+            this.currentStakeholder.stakeholderAcquiring.fiscalId = stakeForm.get("NIF").value;
+
           if (stakeForm.get("contractAssociation").value === 'true') {
             if (this.currentStakeholder?.stakeholderAcquiring?.signType !== 'DigitalCitizenCard') {
               this.currentStakeholder.stakeholderAcquiring.signType = 'CitizenCard';
             }
-            this.contractAssociated = true;
           } else {
             this.currentStakeholder.stakeholderAcquiring.signType = 'NotSign';
           }
@@ -342,7 +400,7 @@ export class StakeholdersComponent implements OnInit {
           if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress === null || this.currentStakeholder.stakeholderAcquiring.fiscalAddress === undefined)
             this.currentStakeholder.stakeholderAcquiring.fiscalAddress = {};
 
-          if (stakeForm.get("documentType") == null) {
+          if (stakeForm.get("ZIPCode").value != null && stakeForm.get("ZIPCode").value != "") { //stakeForm.get("documentType") == null
             this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address = stakeForm.get("Address").value;
             this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country = stakeForm.get("Country").value;
             if (stakeForm.get("ZIPCode").value?.includes(" ")) {
@@ -366,13 +424,57 @@ export class StakeholdersComponent implements OnInit {
             }
           }
 
-          if (stakeForm.get("Country") == null) {
+          if (stakeForm.get("identificationDocumentId")) { // stakeForm.get("Country") == null
             if (this.currentStakeholder.stakeholderAcquiring.identificationDocument === null || this.currentStakeholder.stakeholderAcquiring.identificationDocument === undefined)
               this.currentStakeholder.stakeholderAcquiring.identificationDocument = {};
-            this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = stakeForm.get("documentType").value;
-            this.currentStakeholder.stakeholderAcquiring.identificationDocument.number = stakeForm.get("identificationDocumentId").value;
-            this.currentStakeholder.stakeholderAcquiring.identificationDocument.country = stakeForm.get("identificationDocumentCountry").value;
-            this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate = stakeForm.get("documentCountry").value;
+            this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = (stakeForm.get("documentType").value == "" || stakeForm.get("documentType").value == null) ? null : stakeForm.get("documentType").value;
+            this.currentStakeholder.stakeholderAcquiring.identificationDocument.number = (stakeForm.get("identificationDocumentId").value == "" || stakeForm.get("identificationDocumentId").value == null) ? null : stakeForm.get("identificationDocumentId").value;
+            this.currentStakeholder.stakeholderAcquiring.identificationDocument.country = (stakeForm.get("identificationDocumentCountry").value == "" || stakeForm.get("identificationDocumentCountry").value == null) ? "PT" : stakeForm.get("identificationDocumentCountry").value;
+            this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate = (stakeForm.get("identificationDocumentValidUntil").value == "" || stakeForm.get("identificationDocumentValidUntil").value == null) ? null : stakeForm.get("identificationDocumentValidUntil").value;
+            if (this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate.includes("-")) {
+              var split = this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate.split("-");
+              this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate = this.datePipe.transform(split[1] + '-' + split[0] + '-' + split[2], 'yyyy-MM-dd');
+            }
+            //this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate = this.datePipe.transform(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate, 'yyyy-MM-dd');
+
+            //adicionar documento
+            if (this.prettyPDF != null) {
+              if (this.dataCCcontents?.notes != null || this.dataCCcontents?.notes != "") {
+                var assinatura = "Sabe assinar";
+                if (this.dataCCcontents?.notes?.toLowerCase().includes("não sabe assinar") || this.dataCCcontents?.notes?.toLowerCase().includes("não pode assinar")) {
+                  assinatura = "Não sabe assinar";
+                }
+              }
+              //Colocar comprovativo do CC na Submissao
+              var documentCC: PostDocument = {
+                documentType: '0001',
+                documentPurpose: 'Identification',
+                file: {
+                  binary: this.prettyPDF?.file,
+                  fileType: 'PDF',
+                },
+                validUntil: new Date(this.prettyPDF?.expirationDate).toISOString(),
+                data: {
+                  fullName: this.dataCCcontents?.nameCC,
+                  documentNumber: this.dataCCcontents?.cardNumberCC?.replace(/\s/g, ""),
+                  fiscalNumber: this.dataCCcontents?.nifCC,
+                  gender: this.dataCCcontents?.gender,
+                  birthDate: this.dataCCcontents?.birthdateCC,
+                  validUntil: this.dataCCcontents?.expiricyDateCC,
+                  canSign: assinatura == "Sabe assinar" ? true : false,
+                  country: this.dataCCcontents?.countryCC,
+                  address: this.dataCCcontents?.addressCC,
+                  postalArea: this.dataCCcontents?.localityCC,
+                  postalCode: this.dataCCcontents?.postalCodeCC
+                }
+              };
+              this.logger.info("Document to add: " + JSON.stringify(documentCC));
+              this.stakeholderService.AddNewDocumentStakeholder(this.submissionId, this.currentStakeholder.stakeholderAcquiring.id, documentCC).subscribe(res => {
+                this.logger.info("Added document to stakeholder " + JSON.stringify(res));
+                this.prettyPDF = null;
+                this.dataCCcontents = null;
+              });
+            }
           }
 
           if (!this.editStakes.controls["stake"].pristine) {
@@ -386,7 +488,8 @@ export class StakeholdersComponent implements OnInit {
                   if (this.visitedStakes.length < (this.stakesLength)) {
                     this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
                   } else {
-                    if (this.contractAssociated) {
+                    var contractAssociated = this.stakeholderList.find(value => value?.stakeholderAcquiring?.signType == "DigitalCitizenCard" || value?.stakeholderAcquiring?.signType == "CitizenCard")
+                    if (contractAssociated != undefined) {
                       this.data.changeStakeholders(true);
                       this.data.updateData(true, 2);
                       this.logger.info("Redirecting to Store Comp page");
@@ -403,15 +506,24 @@ export class StakeholdersComponent implements OnInit {
                 this.logger.error(error, "", "Error updating stakeholder");
               });
             } else {
-              this.processService.updateStakeholderProcess(this.processId, this.currentStakeholder.stakeholderAcquiring.id, this.currentStakeholder.stakeholderAcquiring).then(result => {
+              if (this.updateProcessId != null && this.updateProcessId != "") {
+                updateAction = this.currentStakeholder.stakeholderAcquiring["updateProcessAction"];
+                this.currentStakeholder.stakeholderAcquiring["updateProcessAction"] = null;
+              }
+              let o = Object.fromEntries(Object.entries(this.currentStakeholder.stakeholderAcquiring).filter(([_, v]) => v != null));
+              this.processService.updateStakeholderProcess(this.processId, this.currentStakeholder.stakeholderAcquiring.id, o).then(result => {
                 this.logger.info("Updated stakeholder result: " + JSON.stringify(result.result));
                 this.visitedStakes.push(result.result.id);
                 this.visitedStakes = Array.from(new Set(this.visitedStakes));
+                if (this.updateProcessId != null && this.updateProcessId != "") {
+                  this.currentStakeholder.stakeholderAcquiring["updateProcessAction"] = updateAction;
+                }
                 if (!clickedTable) {
                   if (this.visitedStakes.length < (this.stakesLength)) {
                     this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
                   } else {
-                    if (this.contractAssociated) {
+                    var contractAssociated = this.stakeholderList.find(value => value?.stakeholderAcquiring?.signType == "DigitalCitizenCard" || value?.stakeholderAcquiring?.signType == "CitizenCard")
+                    if (contractAssociated != undefined) {
                       this.data.changeStakeholders(true);
                       this.data.updateData(true, 2);
                       this.logger.info("Redirecting to Store Comp page");
@@ -435,7 +547,8 @@ export class StakeholdersComponent implements OnInit {
               if (this.visitedStakes.length < (this.stakesLength)) {
                 this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
               } else {
-                if (this.contractAssociated) {
+                var contractAssociated = this.stakeholderList.find(value => value?.stakeholderAcquiring?.signType == "DigitalCitizenCard" || value?.stakeholderAcquiring?.signType == "CitizenCard")
+                if (contractAssociated != undefined) {
                   this.data.changeStakeholders(true);
                   this.data.updateData(true, 2);
                   this.logger.info("Redirecting to Store Comp page");
@@ -478,7 +591,8 @@ export class StakeholdersComponent implements OnInit {
                   if (this.visitedStakes.length < (this.stakesLength)) {
                     this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
                   } else {
-                    if (this.contractAssociated) {
+                    var contractAssociated = this.stakeholderList.find(value => value?.stakeholderAcquiring?.signType == "DigitalCitizenCard" || value?.stakeholderAcquiring?.signType == "CitizenCard")
+                    if (contractAssociated != undefined) {
                       this.data.changeStakeholders(true);
                       this.data.updateData(true, 2);
                       this.logger.info("Redirecting to Store Comp page");
@@ -495,6 +609,7 @@ export class StakeholdersComponent implements OnInit {
                 this.logger.error(error, "", "Error updating stakeholder");
               });
             } else {
+
               this.processService.updateCorporateEntity(this.processId, this.currentStakeholder.stakeholderAcquiring.id, corporateEntity).then(result => {
                 this.logger.info("Updated stakeholder result: " + JSON.stringify(result.result));
                 this.visitedStakes.push(result.result.id);
@@ -503,7 +618,8 @@ export class StakeholdersComponent implements OnInit {
                   if (this.visitedStakes.length < (this.stakesLength)) {
                     this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
                   } else {
-                    if (this.contractAssociated) {
+                    var contractAssociated = this.stakeholderList.find(value => value?.stakeholderAcquiring?.signType == "DigitalCitizenCard" || value?.stakeholderAcquiring?.signType == "CitizenCard")
+                    if (contractAssociated != undefined) {
                       this.data.changeStakeholders(true);
                       this.data.updateData(true, 2);
                       this.logger.info("Redirecting to Store Comp page");
@@ -527,7 +643,8 @@ export class StakeholdersComponent implements OnInit {
               if (this.visitedStakes.length < (this.stakesLength)) {
                 this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
               } else {
-                if (this.contractAssociated) {
+                var contractAssociated = this.stakeholderList.find(value => value?.stakeholderAcquiring?.signType == "DigitalCitizenCard" || value?.stakeholderAcquiring?.signType == "CitizenCard")
+                if (contractAssociated != undefined) {
                   this.data.changeStakeholders(true);
                   this.data.updateData(true, 2);
                   this.logger.info("Redirecting to Store Comp page");
@@ -615,5 +732,80 @@ export class StakeholdersComponent implements OnInit {
   goToClientById() {
     this.logger.info("Redirecting to Client by id page");
     this.route.navigate(['/clientbyid/']);
+  }
+
+  openCancelPopup() {
+    //this.cancelModalRef = this.modalService.show(this.cancelModal);
+    this.route.navigate(['/']);
+  }
+
+  closeCancelPopup() {
+    //this.cancelModalRef?.hide();
+  }
+
+  confirmCancel() {
+    //var context = this;
+    //var processNumber = "";
+    //this.processNrService.processNumber.subscribe(res => processNumber = res);
+    //var encodedCode = encodeURIComponent(processNumber);
+    //var baseUrl = this.configuration.getConfig().acquiringAPIUrl;
+    //var url = baseUrl + 'process?number=' + encodedCode;
+    //this.processService.advancedSearch(url, 0, 1).subscribe(result => {
+    //  context.queueService.markToCancel(result.items[0].processId, context.authService.GetCurrentUser().userName).then(res => {
+    //    context.closeCancelPopup();
+    //    context.route.navigate(['/']);
+    //  });
+    //});
+  }
+
+  validateNIF(nif: string): boolean {
+    this.incorrectNIFSize = false;
+    this.incorrectNIF = false;
+    if (nif != '') {
+      if (nif.length != 9) {
+        this.incorrectNIFSize = true;
+        return false;
+      }
+      if (!['1', '2', '3'].includes(nif.substr(0, 1))) {
+        this.incorrectNIF = true;
+        return false;
+      }
+
+      const total = Number(nif[0]) * 9 + Number(nif[1]) * 8 + Number(nif[2]) * 7 + Number(nif[3]) * 6 + Number(nif[4]) * 5 + Number(nif[5]) * 4 + Number(nif[6]) * 3 + Number(nif[7]) * 2;
+      const modulo11 = total - Math.trunc(total / 11) * 11;
+      const comparador = modulo11 === 1 || modulo11 === 0 ? 0 : 11 - modulo11;
+
+      if (Number(nif[8]) !== comparador) {
+        this.incorrectNIF = true;
+        return false;
+      }
+      return Number(nif[8]) === comparador;
+    }
+  }
+
+  validateNIPC(nipc: string): boolean {
+    this.incorrectNIPCSize = false;
+    this.incorrectNIPC = false;
+    if (nipc != '') {
+      if (nipc.length != 9) {
+        this.incorrectNIPCSize = true;
+        return false;
+      }
+      if (!['5', '6', '8', '9'].includes(nipc.substr(0, 1))) {
+        this.incorrectNIPC = true;
+        return false;
+      }
+
+      const total = Number(nipc[0]) * 9 + Number(nipc[1]) * 8 + Number(nipc[2]) * 7 + Number(nipc[3]) * 6 + Number(nipc[4]) * 5 + Number(nipc[5]) * 4 + Number(nipc[6]) * 3 + Number(nipc[7]) * 2;
+      const modulo11 = total - Math.trunc(total / 11) * 11;
+      const comparador = modulo11 === 1 || modulo11 === 0 ? 0 : 11 - modulo11;
+
+      if (Number(nipc[8]) !== comparador) {
+        this.incorrectNIPC = true;
+        return false;
+      }
+
+      return Number(nipc[8]) === comparador;
+    }
   }
 }

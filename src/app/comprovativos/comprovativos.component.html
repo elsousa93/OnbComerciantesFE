@@ -60,7 +60,7 @@
                            <td class="text-primary text-center">{{comp.uploadDate}}</td>
                            <td class="text-primary text-center">{{comp.status}}</td>
                            <td></td>
-                           <td class="text-center text-primary" [ngStyle]="{'width': wnd.outerWidth <= 768 ? '15%' : null}">
+                           <td class="text-center text-primary" [ngStyle]="{'width': wnd.outerWidth <= 1024 ? '15%' : null}">
                               <span *ngIf="!(comp.documentType === '0001' || comp.documentType === '0018' || comp.documentType === '0034' || comp.documentType === '0071' || returned == 'consult')" class="delete-blue-comp icon-delete-blue" (click)="onDelete(comp.file, comp.id)">
                                  <!--<img src="assets/images/delete_blue.svg"
                                     (click)="onDelete(comp.file, comp.id)"
@@ -110,7 +110,7 @@
                    {{'supportingDocuments.observations'|translate|uppercase}}:
                  </p>
                  <textarea minlength="2" maxlength="100" formControlName="observations" name="observations"
-                           type="text" id="observations" class="form-control campo_form ms-2" rows="3"></textarea>
+                           type="text" id="observations" class="form-control campo_form ms-2" rows="3" [attr.disabled]="returned == 'consult' ? true : null"></textarea>
                </form>
             </div>
          </div>
@@ -272,6 +272,11 @@
                         style="height: 20px !important; vertical-align: sub;">-->
                  &nbsp;{{'supportingDocuments.checklistModal.toStakes'|translate}}
                   </p>
+                  <div class="bg-white align-self-center col-10 mt-3 ps-0">
+                    <p class="mt-0 ps-3 caixa_azul" style="font-size: 16px;">
+                      {{'supportingDocuments.stakeholder'|translate}}
+                    </p>
+                  </div>
                   <div class="table-responsive me-2 ps-3">
                      <table class="table table-success align-middle">
                         <thead class="table-primary align-middle text-primary">
@@ -286,7 +291,7 @@
                            </tr>
                         </thead>
                         <tbody class="table-light text-primary">
-                          <ng-container *ngFor="let requiredStakeholderDocs of requiredDocuments?.requiredDocumentPurposesStakeholders">
+                          <ng-container *ngFor="let requiredStakeholderDocs of requiredDocuments?.requiredDocumentPurposesStakeholders; let index = index">
                             <tr class="table-white text-primary">
                               <td scope="row" class="text-center text-dark">
                                 {{requiredStakeholderDocs.entityName}}
@@ -307,6 +312,12 @@
                                        style="height: 20px !important; vertical-align: sub;">
                                 </td>
                               </ng-container>
+                              <ng-container *ngFor="let value of fakeArray; let length5 = index">
+                                <ng-container *ngIf="getPurposeType(requiredStakeholderDocs) > length5">
+                                  <td class="text-center text-dark">
+                                  </td>
+                                </ng-container>
+                              </ng-container>
                             </tr>
                           </ng-container>
                           <ng-container *ngFor="let requiredCorporateDocs of requiredDocuments?.requiredDocumentPurposesCorporateEntity">
@@ -314,10 +325,11 @@
                               <td scope="row" class="text-center text-dark">
                                 {{requiredCorporateDocs.entityName}}
                               </td>
-                              <ng-container *ngFor="let purpose of stakePurposeList">
-                                <td scope="row" class="text-center text-dark" *ngIf="purpose !== 'CorporateBody'">
-                                  
-                                </td>
+                              <ng-container *ngFor="let value of fakeArray; let length6 = index">
+                                <ng-container *ngIf="getPurposeType(requiredCorporateDocs) > length6">
+                                  <td class="text-center text-dark">
+                                  </td>
+                                </ng-container>
                               </ng-container>
                               <ng-container *ngFor="let corporatePurposes of requiredCorporateDocs?.documentPurposes; let length4 = index">
                                 <td class="text-center text-dark"
@@ -466,7 +478,7 @@
                         <span class="exit-to-app icon-exit-to-app"></span>
                         <!--<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">-->
                      </button>
-                     <button id="btn5a" *ngIf="returned != 'consult'"
+                     <button id="btn5a" *ngIf="returned != 'consult'" (click)="openCancelPopup()"
                         class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
                         wappler-command="editContent">
                         {{'generalButtons.cancel'|translate|uppercase}}&nbsp;
@@ -499,3 +511,53 @@
             </div>
          </div>
       </div>
+     </div>
+</div>
+<ng-template #cancelModal>
+  <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0">
+    <div class="container-fluid ms-0 me-0 ps-0 pe-0">
+      <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
+        <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
+          <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+            <span class="navbar-text ms-auto align-self-start">
+              <h2 class="text-light mt-0 mb-0 ms-0 pt-0 pb-0 ps-0 pe-4" (click)="closeCancelPopup()" style="cursor: pointer;">x</h2>
+            </span>
+          </nav>
+        </div>
+        <div class="row mb-5 ms-0 me-0 ps-0 pe-0">
+          <div class="mb-5 ps-0 pe-0 col-12">
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
+              <span class="navbar-text"></span>
+              <span class="material-symbols-rounded icon_alerta">
+                <img src="assets/images/warning.svg" class="img_warning">
+              </span>
+            </nav>
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
+              <span class="navbar-text">
+                <h5 class="fw-bold text-light mb-2">{{'client.cancelMsg'|translate|uppercase}}</h5>
+              </span>
+            </nav>
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
+              <span class="navbar-text"></span>
+              <span class="navbar-text pb-0 pt-sm-0">
+                <button id="btn5a"
+                        class="btn text-start bg-primary text-light btn-primary boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3"
+                        wappler-command="editContent"
+                        (click)="closeCancelPopup()">
+                  {{'generalKeywords.no'|translate|uppercase}}
+                </button>
+              </span>
+              <span class="navbar-text pt-0 pb-0">
+                <button id="btn5a1" (click)="confirmCancel()"
+                        class="btn text-start text-light btn-primary boto_alerta_modal bg-primary mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3 mb-sm-0"
+                        wappler-command="editContent">
+                  {{'generalKeywords.yes'|translate|uppercase}}
+                </button>
+              </span>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</ng-template>

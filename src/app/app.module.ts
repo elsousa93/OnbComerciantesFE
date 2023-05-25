@@ -83,6 +83,7 @@ import { ExpiredComponent } from './expired/expired.component';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { ResumeJourneyComponent } from './pre-registration/resume-journey/resume-journey.component';
 import { ValidateCodeComponent } from './pre-registration/validate-code/validate-code.component';
+import { HistoryComponent } from './history/history.component';
 registerLocaleData(localePT);
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -144,7 +145,8 @@ const appInitializerFn = (appConfig: AppConfigService) => {
     PreRegistrationComponent,
     ExpiredComponent,
     ResumeJourneyComponent,
-    ValidateCodeComponent
+    ValidateCodeComponent,
+    HistoryComponent
   ],
   imports: [
     ReactiveFormsModule,
@@ -221,7 +223,9 @@ const appInitializerFn = (appConfig: AppConfigService) => {
       { path: 'pre-registration', component: PreRegistrationComponent },
       { path: 'expired', component: ExpiredComponent },
       { path: 'resume-journey', component: ResumeJourneyComponent },
-      { path: 'validate-code', component: ValidateCodeComponent }
+      { path: 'validate-code', component: ValidateCodeComponent },
+      { path: 'app-history', component: HistoryComponent },
+      { path: 'app-history/:id', component: HistoryComponent }
     ], { onSameUrlNavigation: 'reload' }),
     TranslateModule.forRoot({
       loader: {

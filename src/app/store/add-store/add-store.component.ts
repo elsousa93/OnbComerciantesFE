@@ -124,9 +124,9 @@ export class AddStoreComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.returned = localStorage.getItem("returned");
     this.fetchStartingInfo();
     this.initializeForm();
-    this.returned = localStorage.getItem("returned");
 
     if (this.rootFormGroup.form != null) {
       this.rootFormGroup.form.setControl('infoStores', this.formStores);
@@ -149,17 +149,44 @@ export class AddStoreComponent implements OnInit {
   }
 
   fetchStartingInfo() {
-    if (this.submissionClient?.mainEconomicActivity != null && this.submissionClient?.mainEconomicActivity != "") {
-      var code = this.submissionClient?.mainEconomicActivity.split('-')[0];
-      this.clientHasCAE = true;
-      this.subs.push(this.tableInfo.FilterStoreByCAE(code).subscribe(result => {
-        this.logger.info("Filter store by CAE result: " + JSON.stringify(result));
-        this.activity = result;
-        this.activity = this.activity.sort((a, b) => a.activityDescription > b.activityDescription ? 1 : -1); //ordenar resposta
+    var context = this;
+    if (this.returned != 'consult') {
+      if (this.submissionClient?.mainEconomicActivity != null && this.submissionClient?.mainEconomicActivity != "") {
+        var code = this.submissionClient?.mainEconomicActivity.split('-')[0];
+        this.clientHasCAE = true;
+        this.subs.push(this.tableInfo.FilterStoreByCAE(code).subscribe(result => {
+          this.logger.info("Filter store by CAE result: " + JSON.stringify(result));
+          this.activity = result;
+          if (this.submissionClient?.otherEconomicActivities?.length > 0) {
+            let length = 0;
+            this.submissionClient?.otherEconomicActivities?.forEach(value => {
+              this.tableInfo.FilterStoreByCAE(value).subscribe(res => {
+                length++;
+                var act = this.activity.find(a => a?.activityCode == res?.find(b => b?.activityCode == a?.activityCode)?.activityCode);
 
-      }, error => {
-        this.logger.error(error, "", "Error fetching CAE by store");
-      }));
+                if (act == undefined)
+                  this.activity.push(...res);
+
+                if (length == context.submissionClient?.otherEconomicActivities?.length)
+                  this.activity = this.activity.sort((a, b) => a.activityDescription > b.activityDescription ? 1 : -1); //ordenar resposta
+              });
+            });
+          } else {
+            this.activity = this.activity.sort((a, b) => a.activityDescription > b.activityDescription ? 1 : -1); //ordenar resposta
+          }
+        }, error => {
+          this.logger.error(error, "", "Error fetching CAE by store");
+        }));
+      } else {
+        this.clientHasCAE = false;
+        this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {
+          this.logger.info("Get all shop activities result: " + JSON.stringify(result));
+          this.activities = result;
+          this.activities = this.activities.sort((a, b) => a.activityDescription > b.activityDescription ? 1 : -1); //ordenar resposta
+        }, error => {
+          this.logger.error(error, "", "Error fecthing all shop activities");
+        }));
+      }
     } else {
       this.clientHasCAE = false;
       this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {

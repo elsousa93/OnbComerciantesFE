@@ -13,6 +13,7 @@ export interface Configuration {
   tokenUrl: string,
   clientID: string,
   loginClientID: string,
-  clientSecret: string
+  clientSecret: string,
+  timeout: number
 }
 export const configurationToken = new InjectionToken('Configuration');

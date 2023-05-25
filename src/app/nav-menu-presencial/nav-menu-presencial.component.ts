@@ -1,6 +1,6 @@
 import { Component, HostBinding, OnInit } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
-import { NavigationExtras, Router } from '@angular/router';
+import { NavigationEnd, NavigationExtras, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { LoggerService } from 'src/app/logger.service';
 import { fromEvent, Subscription } from 'rxjs';
@@ -66,6 +66,7 @@ export class NavMenuPresencialComponent implements OnInit {
   bank: string;
   resizeObservable$;
   maxWidth: boolean;
+  currentRoute: string;
 
   constructor(private route: Router, private snackBar: MatSnackBar, private processNrService: ProcessNumberService, private processService: ProcessService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
     authService.currentUser.subscribe(user => this.currentUser = user);
@@ -74,6 +75,9 @@ export class NavMenuPresencialComponent implements OnInit {
     this.processNrService.changeProcessNumber(localStorage.getItem("processNumber"));
     this.translate.use(this.translate.getDefaultLang()); //definir a linguagem para que o select venha com um valor predefinido
     this.chooseLanguage(this.translate.getDefaultLang());
+    this.route.events.subscribe((event) => {
+      event instanceof NavigationEnd ? this.currentRoute = event.url : this.currentRoute == "";
+    });
   }
 
   ngOnInit(): void {
@@ -157,7 +161,7 @@ export class NavMenuPresencialComponent implements OnInit {
       return;
     } else {
       let progress = progressSteps[this.currentPage - 1][this.currentSubPage - 1];
-      if (window.outerWidth > 768) {
+      if (window.outerWidth > 1024) {
         this.maxWidth = true;
         this.progressImage = "assets/images/progress_bar/progress_bar_" + progress + ".svg"
       } else {
@@ -221,7 +225,6 @@ export class NavMenuPresencialComponent implements OnInit {
     this.logger.info("Redirecting to Dashboard page");
     this.route.navigate(['/']);
     let currentRoute = this.route.url;
-    let currentState = this.route.getCurrentNavigation()?.extras.state;
 
     if (currentRoute === '/') {
       this.route.navigate(["dashboard"], language);

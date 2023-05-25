@@ -67,7 +67,7 @@
 
 @media (prefers-reduced-motion: no-preference) {
   :root {
-    scroll-behavior: smooth
+    /*scroll-behavior: smooth*/
   }
 }
 
@@ -1012,7 +1012,7 @@ progress {
   vertical-align: sub;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
 
   #finalBtn {
     margin-left: 1.5% !important;

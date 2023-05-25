@@ -387,6 +387,8 @@ export class ConsultasComponent implements OnInit {
               process.state = this.translate.instant('searches.cancelled');
             } else if (process.state === 'ContractAcceptance') {
               process.state = this.translate.instant('searches.contractAcceptance')
+            } else if (process.state === 'AwaitingCompletion') {
+              process.state = this.translate.instant('searches.awaitingCompletion')
             } else if (process.state === 'StandardIndustryClassificationChoice') {
               process.state = this.translate.instant('searches.MCCTreatment')
             } else if (process.state === 'RiskAssessment') {
@@ -446,6 +448,8 @@ export class ConsultasComponent implements OnInit {
                 process.state = this.translate.instant('searches.cancelled');
               } else if (process.state === 'ContractAcceptance') {
                 process.state = this.translate.instant('searches.contractAcceptance')
+              } else if (process.state === 'AwaitingCompletion') {
+                process.state = this.translate.instant('searches.awaitingCompletion')
               } else if (process.state === 'StandardIndustryClassificationChoice') {
                 process.state = this.translate.instant('searches.MCCTreatment')
               } else if (process.state === 'RiskAssessment') {
@@ -553,6 +557,13 @@ export class ConsultasComponent implements OnInit {
         localStorage.setItem("returned", 'edit');
         this.logger.info("Redirecting to Client By Id page");
         this.route.navigate(['/clientbyid']);
+      } else if (process.state == "Ongoing" || process.state == "AwaitingCompletion") {
+        localStorage.setItem("processNumber", process.processNumber);
+        localStorage.setItem("returned", 'consult');
+        this.processNrService.changeProcessId(process.processId);
+        this.processNrService.changeQueueName("history");
+        this.logger.info("Redirecting to History page");
+        this.route.navigate(['/app-history', process.processId]);
       } else {
         localStorage.setItem("processNumber", process.processNumber);
         this.processNrService.changeProcessId(process.processId);

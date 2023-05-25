@@ -229,6 +229,8 @@ export class ConsultasFTComponent implements OnInit {
           process.state = this.translate.instant('searches.cancelled');
         } else if (process.state === 'ContractAcceptance') {
           process.state = this.translate.instant('searches.contractAcceptance')
+        } else if (process.state === 'AwaitingCompletion') {
+          process.state = this.translate.instant('searches.awaitingCompletion')
         } else if (process.state === 'StandardIndustryClassificationChoice') {
           process.state = this.translate.instant('searches.MCCTreatment')
         } else if (process.state === 'RiskAssessment') {

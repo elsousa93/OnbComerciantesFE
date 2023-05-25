@@ -1,35 +1,33 @@
-import { DatePipe } from '@angular/common';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, ChangeDetectionStrategy, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
-import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { AppComponent } from '../app.component';
-import { Client } from '../client/Client.interface';
-import { ClientService } from '../client/client.service';
-import { LoggerService } from '../logger.service';
 import { DataService } from '../nav-menu-interna/data.service';
-import { BusinessIssueViewModel, IssueViewModel, ProcessHistory, ProcessList, ProcessService, SearchProcessHistory } from '../process/process.service';
-import { ContractAcceptance, State } from '../queues-detail/IQueues.interface';
-import { QueuesService } from '../queues-detail/queues.service';
-import { AuthService } from '../services/auth.service';
-import { IStakeholders } from '../stakeholders/IStakeholders.interface';
+import { BusinessIssueViewModel, IssueTypeEnum, IssueViewModel, ProcessHistory, ProcessList, ProcessService, SearchProcessHistory } from '../process/process.service';
+import { LoggerService } from 'src/app/logger.service';
+import { ClientService } from '../client/client.service';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
-import { ShopDetailsAcquiring } from '../store/IStore.interface';
 import { StoreService } from '../store/store.service';
-import { DocumentSearchType } from '../table-info/ITable-info.interface';
+import { TranslateService } from '@ngx-translate/core';
+import { DatePipe } from '@angular/common';
+import { QueuesService } from '../queues-detail/queues.service';
+import { Client } from '../client/Client.interface';
+import { IStakeholders } from '../stakeholders/IStakeholders.interface';
+import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 import { TableInfoService } from '../table-info/table-info.service';
+import { DocumentSearchType } from '../table-info/ITable-info.interface';
+import { ShopDetailsAcquiring } from '../store/IStore.interface';
+import { MatTableDataSource } from '@angular/material/table';
+import { MatSort } from '@angular/material/sort';
+import { MatPaginator, MatPaginatorIntl } from '@angular/material/paginator';
 
 @Component({
-  selector: 'app-aceitacao',
-  templateUrl: './aceitacao.component.html',
-  styleUrls: ['../stakeholders/stakeholders-list/stakeholders-list.component.css']
+  selector: 'app-history',
+  templateUrl: './history.component.html',
+  styleUrls: ['./history.component.css']
 })
+export class HistoryComponent implements OnInit, AfterViewInit {
 
-export class AceitacaoComponent implements OnInit, AfterViewInit {
   form: FormGroup;
 
   public map = new Map();
@@ -38,16 +36,20 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
   public processId: string;
   public process: ProcessList;
   public processNumber: string;
-  public issues: BusinessIssueViewModel
+  public issues: BusinessIssueViewModel;
   public processHistoryItems: SearchProcessHistory;
   public selectedIssue: BusinessIssueViewModel;
   public selectedHistoryGuid: string;
+  public merchantFirstTime: boolean;
+  public shopFirstTime: boolean;
+  public stakeFirstTime: boolean;
+  public docFirstTime: boolean;
   public merchant: Client;
   public stakeholdersList: IStakeholders[] = [];
-  public stakeholdersNameList: IStakeholders[] = [];
   public ready: boolean = false;
-  public shopIssueList: ShopDetailsAcquiring[] = [];
+  public firstTime: boolean = true;
   docTypes: DocumentSearchType[] = [];
+  shopIssueList: ShopDetailsAcquiring[] = [];
 
   historyMat = new MatTableDataSource<ProcessHistory>();
   historyColumns: string[] = ['processNumber', 'processState', 'whenStarted', 'whoFinished', 'observations'];
@@ -86,8 +88,8 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
   constructor(private logger: LoggerService,
     private route: Router, private data: DataService,
     private router: ActivatedRoute, private processService: ProcessService, private clientService: ClientService,
-    private stakeholderService: StakeholderService, private storeService: StoreService, public translate: TranslateService, private datePipe: DatePipe, private queuesService: QueuesService, public appComponent: AppComponent, private queuesInfo: QueuesService, private tableInfo: TableInfoService, private authService: AuthService) {
-    this.appComponent.toggleSideNav(false);
+    private stakeholderService: StakeholderService, private storeService: StoreService, public translate: TranslateService, private datePipe: DatePipe, private queuesService: QueuesService, private processNrService: ProcessNumberService, private tableInfo: TableInfoService) {
+
   }
 
   ngOnInit(): void {
@@ -95,8 +97,12 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
     this.data.historyStream$.next(true);
     this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
+    this.processNrService.changeProcessId(this.processId);
     var context = this;
     this.getPageInfo();
+    if (localStorage.getItem("returned") != 'consult') {
+      localStorage.setItem('returned', 'edit');
+    }
   }
 
   async getNames(issues: BusinessIssueViewModel, isSelected: boolean) {
@@ -185,7 +191,7 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
         }
 
       });
-      
+
       issues.stakeholders.forEach(val => {
         var index1 = context.stakeholdersList.findIndex(stake => stake.id == val?.stakeholder?.id);
         if (index1 == -1) {
@@ -222,10 +228,7 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
             }
           }
         }
-
       });
-      
-
     }).finally(() => {
       if (isSelected) {
         this.loadSelectedReturnReasons(context.filterIssues);
@@ -326,23 +329,6 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
     });
   }
 
-  submit(state: string) {
-    var externalState;
-    var stateType;
-
-    externalState = {} as ContractAcceptance;
-    stateType = State.CONTRACT_ACCEPTANCE;
-    externalState.$type = stateType;
-    externalState.contractAcceptanceResult = state;
-
-    externalState.submissionUser = this.authService.GetCurrentUser().userName;
-
-    externalState.userObservations = "";
-    this.queuesInfo.postExternalState(this.processId, stateType, externalState).then(res => {
-      this.route.navigate(['/']);
-    });
-  }
-
   loadHistory(history: ProcessHistory[]) {
     this.historyMat.data = history;
     this.historyMat.sort = this.historySort;
@@ -365,12 +351,9 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
   }
 
   nextPage() {
-    let navigationExtras = {
-      state: {
-       state : this.process.state 
-      }
-    } as NavigationExtras;
-    this.route.navigate(['/app-pack-contratual/', this.processId], navigationExtras);
+    this.logger.info("Redirecting to Client by id page");
+    this.data.updateData(true, 0);
+    this.route.navigate(['/clientbyid']);
   }
 
   goToHistoryTab() {
@@ -378,4 +361,5 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
       this.getHistoryIssueDetails(this.processHistoryItems.items[this.processHistoryItems.items.length - 1].historyGuid);
     }
   }
+
 }

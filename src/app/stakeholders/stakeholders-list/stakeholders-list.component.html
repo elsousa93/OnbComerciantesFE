@@ -58,7 +58,7 @@
       (click)="emitSelectedStakeholder(stakeholder, idx, true)" #selectedBlueDiv id="selectedBlueDiv">
     </mat-row>
   </mat-table>
-  <mat-paginator #paginator [pageSizeOptions]="[3, 10, 20]" showFirstLastButtons>
+  <mat-paginator #paginator [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons>
   </mat-paginator>
 </div>
 <div class="table-responsive me-2 ps-3 pe-3" *ngIf="submissionStakeholders.length == 0">

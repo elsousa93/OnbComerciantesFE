@@ -886,7 +886,7 @@ span {}
   height: 30px !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
 
   .seta_direita {
     /*margin-top:38px;*/
@@ -1380,7 +1380,7 @@ mat-paginator {
   padding-top: 130px !important;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .conteudo {
     padding-top: 90px !important;
   }

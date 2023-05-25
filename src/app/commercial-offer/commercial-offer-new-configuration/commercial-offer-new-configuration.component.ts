@@ -223,8 +223,13 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       if (!this.isNewConfig) {
         this.chooseMensalidade(this.storeEquip.pricing.id);
       } else {
-        if (this.list != undefined && this.list != null)
-          this.groupsList.push(...this.list);
+        if (this.list != undefined && this.list != null) {
+          this.list.forEach(val => {
+            var found = this.groupsList.find(v => v.id == val.id);
+            if (found == undefined)
+              this.groupsList.push(val);
+          });
+        }
         this.calledMensalidades = true;
         //this.changedPackValue = false;
         this.productPackPricingFilter = {
@@ -270,8 +275,13 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       }
     } else {
       if (this.packId != "") { // antes tinha && this.changedPackValue
-        if (this.list != undefined && this.list != null)
-          this.groupsList.push(...this.list);
+        if (this.list != undefined && this.list != null) {
+          this.list.forEach(val => {
+            var found = this.groupsList.find(v => v.id == val.id);
+            if (found == undefined)
+              this.groupsList.push(val);
+          });
+        }
         this.calledMensalidades = true;
         //this.changedPackValue = false;
         this.productPackPricingFilter = {
@@ -369,17 +379,17 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     var valueGroup = new FormGroup({});
     if (this.isNewConfig) {
       this.pricingAttributeList.forEach(function (value, idx) {
-        valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl((value.value == null) ? 0 : value.value));
-        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl("0"));
-        valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl((value.value == null) ? 0 : value.value));
-        context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
+        valueGroup.setControl("formControlPricingOriginal" + value.id, new FormControl((value.value == null) ? 0 : value.value));
+        valueGroup.setControl("formControlPricingDiscount" + value.id, new FormControl("0"));
+        valueGroup.setControl("formControlPricingFinal" + value.id, new FormControl((value.value == null) ? 0 : value.value));
+        context.pricingForm.setControl("formGroupPricing" + value.id, valueGroup);
       });
     } else {
       this.pricingAttributeList.forEach(function (value, idx) {
-        valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl((value.originalValue == null) ? 0 : value.originalValue));
-        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.originalValue - value.finalValue + ""));
-        valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl((value.finalValue == null) ? 0 : value.finalValue));
-        context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
+        valueGroup.setControl("formControlPricingOriginal" + value.id, new FormControl((value.originalValue == null) ? 0 : value.originalValue));
+        valueGroup.setControl("formControlPricingDiscount" + value.id, new FormControl((value.originalValue - value.finalValue).toFixed(2) + ""));
+        valueGroup.setControl("formControlPricingFinal" + value.id, new FormControl((value.finalValue == null) ? 0 : value.finalValue));
+        context.pricingForm.setControl("formGroupPricing" + value.id, valueGroup);
       });
     }
   }
@@ -392,18 +402,18 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     if (this.isNewConfig) {
       this.pricingAttributeList.forEach(function (value, idx) {
         var valueGroup = new FormGroup({});
-        valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl(value.value));
-        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl("0"));
-        valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl(value.value));
-        context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
+        valueGroup.setControl("formControlPricingOriginal" + value.id, new FormControl(value.value));
+        valueGroup.setControl("formControlPricingDiscount" + value.id, new FormControl("0"));
+        valueGroup.setControl("formControlPricingFinal" + value.id, new FormControl(value.value));
+        context.pricingForm.setControl("formGroupPricing" + value.id, valueGroup);
       });
     } else {
       this.pricingAttributeList.forEach(function (value, idx) {
         var valueGroup = new FormGroup({});
-        valueGroup.addControl("formControlPricingOriginal" + value.id, new FormControl(value.originalValue));
-        valueGroup.addControl("formControlPricingDiscount" + value.id, new FormControl(value.value - value.finalValue + ""));
-        valueGroup.addControl("formControlPricingFinal" + value.id, new FormControl(value.finalValue));
-        context.pricingForm.addControl("formGroupPricing" + value.id, valueGroup);
+        valueGroup.setControl("formControlPricingOriginal" + value.id, new FormControl(value.originalValue));
+        valueGroup.setControl("formControlPricingDiscount" + value.id, new FormControl("0"));
+        valueGroup.setControl("formControlPricingFinal" + value.id, new FormControl(value.originalValue));
+        context.pricingForm.setControl("formGroupPricing" + value.id, valueGroup);
       });
     }
     

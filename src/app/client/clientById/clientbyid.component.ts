@@ -30,6 +30,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ProcessService } from '../../process/process.service';
 import { QueuesService } from '../../queues-detail/queues.service';
+import { AppConfigService } from '../../app-config.service';
 @Component({
   selector: 'app-client',
   templateUrl: './clientbyid.component.html',
@@ -47,6 +48,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   @ViewChild(RepresentationPowerComponent) representationPowerComponent: RepresentationPowerComponent;
   @ViewChild('returnModal') returnModal;
   returnModalRef: BsModalRef | undefined;
+  @ViewChild('cancelModal') cancelModal;
+  cancelModalRef: BsModalRef | undefined;
+
   /*Variable declaration*/
   form: FormGroup;
   myControl = new FormControl('');
@@ -147,7 +151,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   constructor(private logger: LoggerService, private datepipe: DatePipe, private formBuilder: FormBuilder,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService,
     private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
-    private stakeholderService: StakeholderService, private storeService: StoreService, private authService: AuthService, private translate: TranslateService, private modalService: BsModalService, private processService: ProcessService, private queueService: QueuesService) {
+    private stakeholderService: StakeholderService, private storeService: StoreService, private authService: AuthService, private translate: TranslateService, private modalService: BsModalService, private processService: ProcessService, private queueService: QueuesService, private configuration: AppConfigService) {
     //Gets Tipologia from the Client component 
     if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
@@ -165,6 +169,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.socialDenomination = localStorage.getItem("clientName");
       var nameArray = this.socialDenomination.split(" ").filter(element => element);
       this.shortName = nameArray?.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : this.socialDenomination;
+      this.shortName.slice(0, 40);
     }
 
     this.returned = localStorage.getItem("returned");
@@ -247,11 +252,12 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                     var docOutbound = {
                       documentType: doc.documentType,
                       uniqueReference: doc.id,
-                      validUntil: doc.validUntil,
+                      validUntil: context.datepipe.transform(doc.validUntil, "yyyy-MM-dd"),
                       purpose: doc.purposes[0],
                     } as OutboundDocument;
                     context.clientDocs.push(docOutbound);
                   });
+                  this.fetchDocumentDescriptions();
                   context.merchantInfo.documents = null;
                   context.merchantInfo.id = null;
                   context.merchantInfo.riskAssessment = null;
@@ -753,6 +759,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             this.clientContext.setNIFNIPC(this.NIFNIPC);
             this.clientContext.setClient(clientToInsert);
             this.createSubmission();
+            if (this.submissionExists) {
+              this.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(result => {
+                this.submissionDocs.push(...result.documents);
+              });
+            }
           }
         }
       } else {
@@ -767,6 +778,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           //dados necessários para a pesquisa feita anteriormente
           this.tipologia = result.merchantType;
           this.clientId = result.fiscalId;
+          this.submissionDocs.push(...result.documents);
           context.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(res => {
             context.logger.info("Get submission documents result: " + JSON.stringify(res));
             if (res.length > 0) {
@@ -900,6 +912,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       } else if (queueName == 'aceitacao') {
         this.logger.info("Redirecting to Aceitacao page");
         this.route.navigate(['/app-aceitacao/', this.processId]);
+      } else if (queueName == 'history') {
+        this.logger.info("Redirecting to History page");
+        this.route.navigate(['/app-history/', this.processId]);
       } else {
         let navigationExtras: NavigationExtras = {
           state: {
@@ -920,7 +935,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       newSubmission.startedAt = new Date().toISOString();
       newSubmission.merchant = this.clientContext.getClient();
       newSubmission.merchant.potentialClientIds = this.potentialClientIds;
-
+      newSubmission.merchant.commercialName = newSubmission.merchant?.commercialName?.slice(0, 40);
+      newSubmission.merchant.legalName = newSubmission.merchant?.legalName?.slice(0, 100);
+      newSubmission.merchant.shortName = newSubmission.merchant?.shortName?.slice(0, 40);
       var loginUser = this.authService.GetCurrentUser();
       var stakeholder: IStakeholders = {} as IStakeholders;
 
@@ -949,8 +966,8 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         stakeholder.clientId = client.clientId;
         stakeholder.fiscalId = client.fiscalId;
         stakeholder.fullName = client.legalName;
-        stakeholder.contactName = client.commercialName;
-        stakeholder.shortName = client.legalName;
+        stakeholder.contactName = client.commercialName?.slice(0, 100);
+        stakeholder.shortName = client.legalName.slice(0, 40);
         stakeholder.fiscalAddress = client.headquartersAddress;
         stakeholder.phone1 = {
           countryCode: client.contacts?.phone1?.countryCode,
@@ -1160,13 +1177,16 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             this.submissionDocs.forEach(val => {
               var found = documents.find(doc => doc.documentType === val.documentType);
               if (found == undefined) {
-
                 context.documentService.DeleteDocumentFromSubmission(submissionID, val.id).subscribe(result => {
                   context.logger.info("Deleted document result: " + JSON.stringify(result));
                 });
-
               } else {
-                documents = documents.filter(item => item.documentType !== found.documentType);
+                if (found.documentType !== '0034')
+                  documents = documents.filter(item => item.documentType !== found.documentType);
+                else
+                  context.documentService.DeleteDocumentFromSubmission(submissionID, val.id).subscribe(result => {
+                    context.logger.info("Deleted document result: " + JSON.stringify(result));
+                  });
               }
             });
 
@@ -1266,7 +1286,11 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
     for (const x of elements) {
       const count1 = a1.filter(e => e.documentType === x).length;
       const count2 = a2.filter(e => e.documentType === x).length;
-      if (count1 !== count2) return false;
+      if (count1 !== count2)
+        return false;
+      else
+        if (x === '0034')
+          return false;
     }
     return true;
   }
@@ -1368,5 +1392,29 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       this.logger.info("Get all documents description result: " + JSON.stringify(result));
       this.documents = result;
     }));
+  }
+
+  openCancelPopup() {
+    //this.cancelModalRef = this.modalService.show(this.cancelModal);
+    this.route.navigate(['/']);
+  }
+
+  closeCancelPopup() {
+    //this.cancelModalRef?.hide();
+  }
+
+  confirmCancel() {
+    //var context = this;
+    //var processNumber = "";
+    //this.processNrService.processNumber.subscribe(res => processNumber = res);
+    //var encodedCode = encodeURIComponent(processNumber);
+    //var baseUrl = this.configuration.getConfig().acquiringAPIUrl;
+    //var url = baseUrl + 'process?number=' + encodedCode;
+    //this.processService.advancedSearch(url, 0, 1).subscribe(result => {
+    //  context.queueService.markToCancel(result.items[0].processId, context.authService.GetCurrentUser().userName).then(res => {
+    //    context.closeCancelPopup();
+    //    context.route.navigate(['/']);
+    //  });
+    //});
   }
 }

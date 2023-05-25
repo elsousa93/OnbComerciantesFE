@@ -43,11 +43,15 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
     }
   }
 
+  checkContractAssociation() {
+    this.contractAssociationEmitter.emit(this.submissionStakeholders);
+  }
+
   checkVisitedStakes() {
     let currentPage = location.href.split("/")[5];
     this.submissionStakeholders.forEach(stake => {
       if (currentPage == 'stakeholders') {
-        if (stake.stakeholderAcquiring?.fiscalAddress?.address != null) {
+        if (stake.stakeholderAcquiring?.fiscalAddress?.address != null && stake.stakeholderAcquiring?.fiscalAddress?.address != "" && stake.stakeholderAcquiring?.fiscalAddress?.postalCode != null && stake.stakeholderAcquiring?.fiscalAddress?.postalCode != "" && stake.stakeholderAcquiring?.fiscalAddress?.postalArea != null && stake.stakeholderAcquiring?.fiscalAddress?.postalArea != "" && stake.stakeholderAcquiring?.fiscalAddress?.country != null && stake.stakeholderAcquiring?.fiscalAddress?.country != "" && stake.stakeholderAcquiring?.fiscalId != null && stake.stakeholderAcquiring?.fiscalId != "") {
           this.visitedStakes.push(stake.stakeholderAcquiring.id);
           this.visitedStakes = Array.from(new Set(this.visitedStakes));
         } else if (stake?.stakeholderAcquiring["headquartersAddress"]?.address != null) {
@@ -89,6 +93,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         this.submissionStakeholders.push(stakeToInsert);
         this.listLengthEmitter.emit(this.submissionStakeholders.length);
         this.stakeholderExists();
+        this.checkContractAssociation();
         this.loadStakeholders(this.submissionStakeholders);
       });
     }
@@ -209,6 +214,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   @Output() sameNIFEmitter = new EventEmitter<boolean>();
   @Output() stakeExistsEmitter?= new EventEmitter<boolean>();
   @Output() visitedStakesEmitter?= new EventEmitter<string[]>();
+  @Output() contractAssociationEmitter?= new EventEmitter<StakeholdersCompleteInformation[]>();
 
   submissionStakeholders: StakeholdersCompleteInformation[] = [];
   selectedStakeholder: StakeholdersCompleteInformation = {};
@@ -273,6 +279,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       }).then(stakeholderInfo => {
         this.loadStakeholders(context.submissionStakeholders);
         this.stakeholderExists();
+        this.checkContractAssociation();
         this.listLengthEmitter.emit(context.submissionStakeholders.length);
         this.checkVisitedStakes();
         //this.emitSelectedStakeholder(context.submissionStakeholders[0], 0, false);
@@ -310,6 +317,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         }).then(stakeholderInfo => {
           this.loadStakeholders(context.submissionStakeholders);
           this.stakeholderExists();
+          this.checkContractAssociation();
           this.listLengthEmitter.emit(context.submissionStakeholders.length);
           this.checkVisitedStakes();
           //this.emitSelectedStakeholder(context.submissionStakeholders[0], 0, false);
@@ -329,6 +337,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       });
       this.loadStakeholders(context.submissionStakeholders);
       this.stakeholderExists();
+      this.checkContractAssociation();
       this.listLengthEmitter.emit(context.submissionStakeholders.length);
       this.checkVisitedStakes();
       //this.emitSelectedStakeholder(context.submissionStakeholders[0], 0, false);
@@ -369,6 +378,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         context.logger.error(error, "", "Error fetching all stakeholders from submission");
       }).then(success => {
         context.stakeholderExists();
+        context.checkContractAssociation();
         context.listLengthEmitter.emit(context.submissionStakeholders.length);
         context.loadStakeholders(context.submissionStakeholders);
         context.selectedStakeholder = context.submissionStakeholders[0];
@@ -441,7 +451,10 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
                   stakeholderToInsert.stakeholderAcquiring.birthDate = stakeholderToInsert.stakeholderOutbound.birthDate;
                   stakeholderToInsert.stakeholderAcquiring.contactName = stakeholderToInsert.stakeholderOutbound.shortName;
                   stakeholderToInsert.stakeholderAcquiring.email = stakeholderToInsert.stakeholderOutbound.contacts.email;
+
+                  stakeholderToInsert?.stakeholderOutbound?.address?.postalCode?.replace(/\s/g, "");
                   stakeholderToInsert.stakeholderAcquiring.fiscalAddress = stakeholderToInsert.stakeholderOutbound.address;
+
                   stakeholderToInsert.stakeholderAcquiring.fullName = stakeholderToInsert.stakeholderOutbound.fullName;
                   stakeholderToInsert.stakeholderAcquiring.identificationDocument = stakeholderToInsert.stakeholderOutbound.identificationDocument;
                   stakeholderToInsert.stakeholderAcquiring.pep = stakeholderToInsert.stakeholderOutbound.pep;
@@ -475,7 +488,10 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
                     stakeholderToInsert.stakeholderAcquiring.birthDate = stakeholderToInsert.stakeholderOutbound.birthDate;
                     stakeholderToInsert.stakeholderAcquiring.contactName = stakeholderToInsert.stakeholderOutbound.shortName;
                     stakeholderToInsert.stakeholderAcquiring.email = stakeholderToInsert.stakeholderOutbound.contacts.email;
+
+                    stakeholderToInsert?.stakeholderOutbound?.address?.postalCode?.replace(/\s/g, "");
                     stakeholderToInsert.stakeholderAcquiring.fiscalAddress = stakeholderToInsert.stakeholderOutbound.address;
+
                     stakeholderToInsert.stakeholderAcquiring.fullName = stakeholderToInsert.stakeholderOutbound.fullName;
                     stakeholderToInsert.stakeholderAcquiring.identificationDocument = stakeholderToInsert.stakeholderOutbound.identificationDocument;
                     stakeholderToInsert.stakeholderAcquiring.pep = stakeholderToInsert.stakeholderOutbound.pep;
@@ -560,6 +576,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         this.dataService.changeCurrentFirstTimeStake(false);
         this.loadStakeholders(context.submissionStakeholders);
         this.stakeholderExists();
+        this.checkContractAssociation();
         this.listLengthEmitter.emit(context.submissionStakeholders.length);
         this.checkVisitedStakes();
         //this.emitSelectedStakeholder(context.submissionStakeholders[0], 0, false);
@@ -596,6 +613,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
           this.dataService.changeCurrentFirstTimeStake(false);
           this.loadStakeholders(context.submissionStakeholders);
           this.stakeholderExists();
+          this.checkContractAssociation();
           this.listLengthEmitter.emit(context.submissionStakeholders.length);
           this.checkVisitedStakes();
           //this.emitSelectedStakeholder(context.submissionStakeholders[0], 0, false);
@@ -607,6 +625,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
           stake.documents = null;
           stake.representationPower = null;
           stake.riskAssessment = null;
+          stake.eligibilityAssessment = null;
           if (stake.phone1 != null) {
             stake.phone1.phoneIndicative = null;
           }
@@ -626,6 +645,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       this.dataService.changeCurrentFirstTimeStake(false);
       this.loadStakeholders(context.submissionStakeholders);
       this.stakeholderExists();
+      this.checkContractAssociation();
       this.listLengthEmitter.emit(context.submissionStakeholders.length);
       this.checkVisitedStakes();
       //this.emitSelectedStakeholder(context.submissionStakeholders[0], 0, false);
@@ -671,6 +691,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
             this.submissionStakeholders.splice(index, 1);
             this.loadStakeholders(this.submissionStakeholders);
             this.stakeholderExists();
+            this.checkContractAssociation();
             this.listLengthEmitter.emit(this.submissionStakeholders.length);
           }, error => {
             this.logger.error(error, "", "Error when deleting stakeholder");
@@ -682,6 +703,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
             this.submissionStakeholders.splice(index, 1);
             this.loadStakeholders(this.submissionStakeholders);
             this.stakeholderExists();
+            this.checkContractAssociation();
             this.listLengthEmitter.emit(this.submissionStakeholders.length);
           }, error => {
             this.logger.error(error, "", "Error when deleting stakeholder");
@@ -698,6 +720,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
             this.submissionStakeholders.splice(index, 1);
             this.loadStakeholders(this.submissionStakeholders);
             this.stakeholderExists();
+            this.checkContractAssociation();
             this.listLengthEmitter.emit(this.submissionStakeholders.length);
           }, error => {
             this.logger.error(error, "", "Error when deleting stakeholder");
@@ -709,6 +732,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
             this.submissionStakeholders.splice(index, 1);
             this.loadStakeholders(this.submissionStakeholders);
             this.stakeholderExists();
+            this.checkContractAssociation();
             this.listLengthEmitter.emit(this.submissionStakeholders.length);
           }, error => {
             this.logger.error(error, "", "Error when deleting stakeholder");

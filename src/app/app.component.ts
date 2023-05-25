@@ -29,7 +29,10 @@ export class AppComponent {
   wantsLogin: boolean = false;
   translationLanguages = translationLanguages;
   expired: boolean = false;
-
+  
+  isPreRegistration: boolean = false;
+  isResumeJourney: boolean = false;
+  isValidateCode: boolean = false;
 
   constructor(private logger: LoggerService, public translate: TranslateService, private cookie: CookieService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, crcService: CRCService, private authService: AuthService, private tableInfo: TableInfoService) {
@@ -57,6 +60,17 @@ export class AppComponent {
       this.expired = expired;
     });
 
+    authService.isPreRegistration.subscribe(value => {
+      this.isPreRegistration = value;
+    });
+
+    authService.isResumeJourney.subscribe(value => {
+      this.isResumeJourney = value;
+    });
+
+    authService.isValidateCode.subscribe(value => {
+      this.isValidateCode = value;
+    });
   }
 
   @Input() url: string;

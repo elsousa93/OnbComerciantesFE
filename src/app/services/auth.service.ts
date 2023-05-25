@@ -22,11 +22,18 @@ export class AuthService implements OnDestroy {
   private authenticated = new BehaviorSubject(true); //antes estava a false
   private wantsLogin = new BehaviorSubject(false);
   private expired = new BehaviorSubject(false);
+  private preRegistration = new BehaviorSubject(false);
+  private resumeJourney = new BehaviorSubject(false);
+  private validateCode = new BehaviorSubject(false);
 
   currentUser = this.dataSource.asObservable();
   hasAuthenticated = this.authenticated.asObservable();
   doLogin = this.wantsLogin.asObservable();
   hasExpired = this.expired.asObservable();
+
+  isPreRegistration = this.preRegistration.asObservable();
+  isResumeJourney = this.resumeJourney.asObservable();
+  isValidateCode = this.validateCode.asObservable();
 
   changeAuthenticated(bool: boolean) {
     this.authenticated.next(bool);
@@ -34,6 +41,18 @@ export class AuthService implements OnDestroy {
 
   changeExpired(bool: boolean) {
     this.expired.next(bool);
+  }
+
+  changePreRegistration(bool: boolean) {
+    this.preRegistration.next(bool);
+  }
+
+  changeResumeJourney(bool: boolean) {
+    this.resumeJourney.next(bool);
+  }
+
+  changeValidateCode(bool: boolean) {
+    this.validateCode.next(bool);
   }
 
   changeUser(user: User) {

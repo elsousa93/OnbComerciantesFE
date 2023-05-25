@@ -33,8 +33,8 @@ export class ClientService {
   ///////////////////
 
   SearchClientByQuery(searchID: string, searchType: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, countryID?: string, AcquiringPartnerID?: string, AcquiringBranchID?): any {
-
-    var URI = this.urlOutbound + "api/v1/merchant?searchId=" + searchID + "&searchType=" + searchType;
+    var id = encodeURIComponent(searchID);
+    var URI = this.urlOutbound + "api/v1/merchant?searchId=" + id + "&searchType=" + searchType;
 
     if (countryID === null)
       URI += "&countryId=" + countryID;

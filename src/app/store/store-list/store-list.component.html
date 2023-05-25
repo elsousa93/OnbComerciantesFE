@@ -7,20 +7,20 @@
           <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="70px" height="32px" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
                viewBox="0 0 324 148.998">
           <defs>
-            <style type="text/css">
-              .fil0 {
-                fill: rgb(var(--bs-primary-rgb))
-              }
+          <style type="text/css">
+            .fil0 {
+              fill: rgb(var(--bs-primary-rgb))
+            }
 
-              .fil1 {
-                fill: rgb(var(--bs-icon-secondary-rgb))
-              }
-            </style>
+            .fil1 {
+              fill: rgb(var(--bs-icon-secondary-rgb))
+            }
+</style>
           </defs>
           <g id="Layer_x0020_1">
-            <metadata id="CorelCorpID_0Corel-Layer" />
-            <rect class="fil0" x="-0.201492" y="-0.0493018" width="324.402" height="149.097" />
-            <path class="fil1" d="M94.1079 -0.0507874l32.7768 0 0 91.9654c0,23.4224 11.7732,34.0512 35.1177,34.0512 23.3421,0 35.1248,-10.6264 35.1248,-33.8362l0 -92.1791 32.7638 0.0023622 0 93.4819c0,28.024 -11.6657,46.7291 -33.2185,55.6146l-69.3484 0c-21.5539,-8.88543 -33.2161,-27.5906 -33.2161,-55.6146l0 -93.4854 0 0z" />
+          <metadata id="CorelCorpID_0Corel-Layer" />
+          <rect class="fil0" x="-0.201492" y="-0.0493018" width="324.402" height="149.097" />
+          <path class="fil1" d="M94.1079 -0.0507874l32.7768 0 0 91.9654c0,23.4224 11.7732,34.0512 35.1177,34.0512 23.3421,0 35.1248,-10.6264 35.1248,-33.8362l0 -92.1791 32.7638 0.0023622 0 93.4819c0,28.024 -11.6657,46.7291 -33.2185,55.6146l-69.3484 0c-21.5539,-8.88543 -33.2161,-27.5906 -33.2161,-55.6146l0 -93.4854 0 0z" />
           </g>
         </svg>
           <span class="navbar-text">
@@ -41,11 +41,11 @@
         </h2>
         <p>{{'stores.validateStores'|translate}}</p>
         <app-store-table [submissionId]="submissionId" [processNumber]="processNumber" [currentStore]="currentStore"
-          [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)"
-          [deleteStoreEvent]="removedStoreSubject.asObservable()"
-          [insertStoreEvent]="insertedStoreSubject.asObservable()" [updatedStoreEvent]="updatedStoreEvent"
-          (listLengthEmitter)="getStoresListLength($event)" [previousStoreEvent]="previousStoreEvent"
-          (fileEmitter)="getUploadedFiles($event)" (visitedStoresEmitter)="getVisitedStores($event)"></app-store-table>
+                         [currentIdx]="currentIdx" (selectedStoreEmitter)="selectStore($event)"
+                         [deleteStoreEvent]="removedStoreSubject.asObservable()"
+                         [insertStoreEvent]="insertedStoreSubject.asObservable()" [updatedStoreEvent]="updatedStoreEvent"
+                         (listLengthEmitter)="getStoresListLength($event)" [previousStoreEvent]="previousStoreEvent"
+                         (fileEmitter)="getUploadedFiles($event)" (visitedStoresEmitter)="getVisitedStores($event)" (processInfoEmitter)="getProcessInfo($event)"></app-store-table>
       </div>
       <div class="ms-0 me-0 ps-0 pe-5 col-10 offset-2">
         <p class="titulo-form-simples" wappler-empty="undefined" wappler-command="editContent"></p>
@@ -55,14 +55,14 @@
           <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-5">
             <span class="navbar-text align-self-center mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
               <button id="btn4a" [disabled]="currentStore == null || returned === 'consult'" (click)="delete()"
-                class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-2 pt-3 pb-3 ps-3"
-                wappler-command="editContent">
+                      class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-2 pt-3 pb-3 ps-3"
+                      wappler-command="editContent">
                 {{'stores.remove'|translate|uppercase}}&nbsp;
                 <img src="assets/images/store.svg" style="height: 25px !important; vertical-align: sub;">
               </button>
               <button id="btn5a" [disabled]="returned === 'consult'" (click)="addStore()"
-                class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-                wappler-command="editContent">
+                      class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                      wappler-command="editContent">
                 {{'stores.insert'|translate|uppercase}}&nbsp;
                 <img src="assets/images/add_business.svg" style="height: 25px !important; vertical-align: sub;">
               </button>
@@ -76,8 +76,8 @@
             <div class="accordion1-item">
               <h2 class="accordion1-header" id="flush-headingOne">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                  id="accordionButton1" data-bs-target="#flush-collapseOne" aria-expanded="false"
-                  aria-controls="flush-collapseOne">
+                        id="accordionButton1" data-bs-target="#flush-collapseOne" aria-expanded="false"
+                        aria-controls="flush-collapseOne">
                   <span class="material-symbols-outlined icon-accordion store-front icon-store-front">
                     <!--<img src="assets/images/storefront.svg" />-->
                   </span>
@@ -85,16 +85,16 @@
                 </button>
               </h2>
               <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
-                data-bs-parent="#accordionFlushExample">
+                   data-bs-parent="#accordionFlushExample">
                 <app-add-store [parentFormGroup]="editStores.get['infoStores']"
-                  [submissionClient]="submissionClient"></app-add-store>
+                               [submissionClient]="submissionClient"></app-add-store>
               </div>
             </div>
             <div class="accordion1-item">
               <h2 class="accordion-header" id="flush-headingTwo">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                  id="accordionButton2" data-bs-target="#flush-collapseTwo" aria-expanded="false"
-                  aria-controls="flush-collapseTwo">
+                        id="accordionButton2" data-bs-target="#flush-collapseTwo" aria-expanded="false"
+                        aria-controls="flush-collapseTwo">
                   <span class="material-symbols-outlined icon-accordion account-balance icon-account-balance">
                     <!--<img src="assets/images/account_balance.svg" />-->
                   </span>
@@ -102,38 +102,39 @@
                 </button>
               </h2>
               <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
-                data-bs-parent="#accordionFlushExample">
+                   data-bs-parent="#accordionFlushExample">
                 <app-store-iban [parentFormGroup]="editStores.get('bankStores')" [IBANToShow]="ibansToShow"
-                  (fileEmitter)="getFile($event)"></app-store-iban>
+                                (fileEmitter)="getFile($event)"></app-store-iban>
               </div>
             </div>
             <div class="accordion1-item">
               <h2 class="accordion-header" id="flush-headingThree">
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                  id="accordionButton3" data-bs-target="#flush-collapseThree" aria-expanded="false"
-                  aria-controls="flush-collapseThree">
+                        id="accordionButton3" data-bs-target="#flush-collapseThree" aria-expanded="false"
+                        aria-controls="flush-collapseThree">
                   <span class="material-symbols-outlined icon-accordion add-card icon-add-card">
                   </span>
                   &nbsp;&nbsp;{{'stores.productSelection'|translate|uppercase}}
                 </button>
               </h2>
               <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
-                data-bs-parent="#accordionFlushExample">
+                   data-bs-parent="#accordionFlushExample">
                 <app-product-selection [parentFormGroup]="editStores.get('productStores')" [currentStore]="currentStore"></app-product-selection>
               </div>
             </div>
           </div>
           <div style="margin-top: 30px;">
             <button id="btn5a" [disabled]="!editStores.valid || returned == 'consult'"
-              (click)="submit((currentIdx === -1 ) ? true : false, true)"
-              class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3"
-              wappler-command="editContent">
+                    (click)="submit((currentIdx === -1 ) ? true : false, true)"
+                    class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3"
+                    wappler-command="editContent">
               {{(currentIdx === -1 ? 'stores.add' : 'stores.edit')|translate|uppercase}}&nbsp;
               <img src="assets/images/add_business.svg" style="height: 25px !important; vertical-align: sub;">
             </button>
             <button id="btn5a6" [disabled]="returned == 'consult'"
-              class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-              wappler-command="editContent" (click)="close()">&nbsp;
+                    class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                    wappler-command="editContent" (click)="close()">
+              &nbsp;
               {{'generalButtons.cancel'|translate|uppercase}}&nbsp;<img src="assets/images/close.svg" class="img_btn">
             </button>
           </div>
@@ -145,29 +146,31 @@
           <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
             <span class="navbar-text me-2 align-self-center ms-0 me-0">
               <button [routerLink]="['/']" id="btn5a5"
-                class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
-                wappler-command="editContent">
+                      class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                      wappler-command="editContent">
                 {{'generalKeywords.exit'|translate|uppercase}}&nbsp;
                 <span class="exit-to-app icon-exit-to-app"></span>
                 <!--<img src="assets/images/exit_to_app.svg"
                   style="height: 25px !important; vertical-align: sub;">-->
               </button>
-              <button [routerLink]="['/']" id="btn5a5" *ngIf="returned != 'consult'"
-                class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
-                wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;
+              <button (click)="openCancelPopup()" id="btn5a5" *ngIf="returned != 'consult'"
+                      class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
+                      wappler-command="editContent">
+                {{'generalButtons.cancel'|translate|uppercase}}&nbsp;
                 <span class="exit-to-app icon-exit-to-app"></span>
                 <!--<img src="assets/images/exit_to_app.svg" style="height: 25px !important; vertical-align: sub;">-->
               </button>
               <button (click)="goToStakeholders()" id="btn5a5"
-                class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
-                wappler-command="editContent">
+                      class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
+                      wappler-command="editContent">
                 <img src="assets/images/arrow_back_ios_white.svg"
-                  style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;
+                     style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;
               </button>
               <button [disabled]="(storesLength == 0 || (!editStores.valid && currentStore != null) && returned != 'consult')"
-                (click)="submit(false)" id="btn5a5"
-                class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-                wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;
+                      (click)="submit(false)" id="btn5a5"
+                      class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                      wappler-command="editContent">
+                {{'generalKeywords.next'|translate|uppercase}}&nbsp;
                 <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
               </button>
             </span>
@@ -216,6 +219,108 @@
                         class="btn text-start text-light btn-primary boto_alerta_modal bg-primary mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3 mb-sm-0"
                         wappler-command="editContent">
                   {{'generalKeywords.confirmDeleteStore'|translate|uppercase}}
+                </button>
+              </span>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</ng-template>
+<ng-template #updateModal>
+  <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">
+    <div class="container-fluid ms-0 me-0 pt-2 pb-2 ps-2 pe-2">
+      <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
+        <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
+          <nav class="navbar navbar-expand navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+            <span class="navbar-text ms-auto align-self-start">
+              <h2 class="text-light mt-1 mb-0 ms-0 me-1 pt-0 pb-0 ps-0 pe-4" style="cursor: pointer;"
+                  (click)="cancelUpdate()">
+                x
+              </h2>
+            </span>
+          </nav>
+        </div>
+        <div class="row mb-5 ms-0 me-0 ps-0 pe-0">
+          <div class="mb-5 ps-0 pe-0 col-12">
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
+              <span class="navbar-text"></span>
+              <span class="material-symbols-rounded icon_alerta">
+                <img src="assets/images/warning.svg" class="img_warning">
+              </span>
+            </nav>
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
+              <span class="navbar-text">
+                <h5 class="text-light mb-2 pt-lg-4 pb-lg-5 ps-lg-4 pe-lg-4">
+                  {{'stores.updateStore'|translate}}
+                </h5>
+              </span>
+            </nav>
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
+              <span class="navbar-text"></span>
+              <span class="navbar-text pb-0 pt-sm-0">
+                <button id="btn5a"
+                        class="btn boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
+                        style="color: white;" wappler-command="editContent" (click)="confirmUpdate()"
+                        data-bs-dismiss="modal">
+                  {{'generalKeywords.yes'|translate|uppercase}}
+                </button>
+              </span>
+              <span class="navbar-text pt-0 pb-0">
+                <button id="btn5a1"
+                        class="btn boto_alerta_modal mb-sm-0 mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-4 pe-4 ps-lg-4 pe-lg-4"
+                        style="color: white;" wappler-command="editContent"
+                        (click)="cancelUpdate()">
+                  {{'generalKeywords.no'|translate|uppercase}}
+                </button>
+              </span>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</ng-template>
+<ng-template #cancelModal>
+  <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0">
+    <div class="container-fluid ms-0 me-0 ps-0 pe-0">
+      <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
+        <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
+          <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+            <span class="navbar-text ms-auto align-self-start">
+              <h2 class="text-light mt-0 mb-0 ms-0 pt-0 pb-0 ps-0 pe-4" (click)="closeCancelPopup()" style="cursor: pointer;">x</h2>
+            </span>
+          </nav>
+        </div>
+        <div class="row mb-5 ms-0 me-0 ps-0 pe-0">
+          <div class="mb-5 ps-0 pe-0 col-12">
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
+              <span class="navbar-text"></span>
+              <span class="material-symbols-rounded icon_alerta">
+                <img src="assets/images/warning.svg" class="img_warning">
+              </span>
+            </nav>
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
+              <span class="navbar-text">
+                <h5 class="fw-bold text-light mb-2">{{'client.cancelMsg'|translate|uppercase}}</h5>
+              </span>
+            </nav>
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
+              <span class="navbar-text"></span>
+              <span class="navbar-text pb-0 pt-sm-0">
+                <button id="btn5a"
+                        class="btn text-start bg-primary text-light btn-primary boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3"
+                        wappler-command="editContent"
+                        (click)="closeCancelPopup()">
+                  {{'generalKeywords.no'|translate|uppercase}}
+                </button>
+              </span>
+              <span class="navbar-text pt-0 pb-0">
+                <button id="btn5a1" (click)="confirmCancel()"
+                        class="btn text-start text-light btn-primary boto_alerta_modal bg-primary mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3 mb-sm-0"
+                        wappler-command="editContent">
+                  {{'generalKeywords.yes'|translate|uppercase}}
                 </button>
               </span>
             </nav>

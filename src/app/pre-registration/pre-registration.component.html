@@ -1,5 +1,5 @@
 <div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0">
-  <div class="row">
+  <div class="row" *ngIf="!validateCode">
     <div class="offset-1 col-10 bg-primary mt-5 pt-0 ps-0 pe-0">
       <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
         <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="70px" height="32px" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
@@ -80,7 +80,7 @@
                    class="form-control campo_form" />
             <div class="alert alert-danger"
                  *ngIf="emailValid.touched && !emailValid.valid">
-              {{'errorMessages.isRequired'|translate}}
+              {{'generalKeywords.mandatoryParameter'|translate}}
             </div>
             <div class="alert alert-danger" *ngIf="emailValid.errors?.['pattern']">
               {{'errorMessages.invalidEmail'|translate}}
@@ -120,11 +120,12 @@
         </button>
       </form>
     </div>
-    <div>
+    <!--<div>
       <p>{{"Time Remaining: " + timeRemaining}}</p>
       <p>{{"Time Used: " + timeUsed}}</p>
       <p>{{"Is Valid: " + isValid}}</p>
-    </div>
+    </div>-->
   </div>
+  <app-validate-code *ngIf="validateCode" [secret]="secret" [page]="'registration'" [name]="username" (goBackEmitter)="goBack($event)"></app-validate-code>
 </div>
 

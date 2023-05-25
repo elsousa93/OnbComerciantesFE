@@ -145,7 +145,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   ongoingProcessess: ProcessGet;
   returnedProcessess: ProcessGet;
   contractAcceptanceProcessess: ProcessGet;
-  pendingSentProcessess: ProcessGet;
+  pendingSentProcessess: ProcessGet; //arquivo fisico
   acceptanceProcessess: ProcessGet;
   pendingEligibilityProcessess: ProcessGet;
   multipleClientesProcessess: ProcessGet;
@@ -200,6 +200,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   workQueue: WorkQueue = null;
   existsUser: boolean;
   username: string = "";
+  interval: any;
 
   constructor(private logger: LoggerService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
@@ -245,6 +246,18 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     
     this.ngOnInit(); //para obter inicialmente as permissões
 
+    this.callCounter();
+
+    this.interval = setInterval(() => {
+      this.callCounter();
+    }, 10000);
+
+    if (this.router?.getCurrentNavigation()?.extras?.state) {
+      this.queueName = this.router.getCurrentNavigation().extras.state["queueName"];
+    }
+  }
+
+  callCounter() {
     //Pendentes de envio
     if (this.FTPermissions?.pending) {
       this.processService.searchProcessByState('Incomplete', 0, 1).subscribe(result => {
@@ -286,7 +299,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
     //Arquivo Fisico
     if (this.FTPermissions?.pendingSent) {
-      this.processService.searchProcessByState('Completed', 0, 1).subscribe(result => {
+      this.processService.searchProcessByState('AwaitingCompletion', 0, 1).subscribe(result => {
         this.logger.info('Completos ' + JSON.stringify(result));
         this.pendingSentCount = result.pagination.total;
       });
@@ -353,10 +366,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.logger.info('ComplianceEvaluation ' + JSON.stringify(result));
         this.complianceDoubtsCount = result.pagination.total;
       });
-    }
-
-    if (this.router?.getCurrentNavigation()?.extras?.state) {
-      this.queueName = this.router.getCurrentNavigation().extras.state["queueName"];
     }
   }
 
@@ -474,15 +483,15 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     if (this.pendingSentCount > 0 && !this.pendingSentOpened) {
       this.resetOpened();
       this.pendingSentOpened = true;
-      this.processService.searchProcessByState('Completed', 0, this.pendingSentCount).subscribe(resul => {
-        this.logger.info('Search completed processes ' + JSON.stringify(resul));
+      this.processService.searchProcessByState('AwaitingCompletion', 0, this.pendingSentCount).subscribe(resul => {
+        this.logger.info('Search awaiting completion processes ' + JSON.stringify(resul));
         this.pendingSentProcessess = resul;
         this.pendingSentProcessess.items.forEach(process => {
           process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
 
           // mapear os estados para aparecer em PT ou EN
-          if (process.state === 'Completed') {
-            process.state = this.translate.instant('searches.completed');
+          if (process.state === 'AwaitingCompletion') {
+            process.state = this.translate.instant('searches.awaitingCompletion');
           }
         });
         this.orderProcesses(this.dataSourcePendingSent, this.empTbSortPendingSent, this.pendingSentProcessess);
@@ -718,8 +727,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     localStorage.setItem("processNumber", process.processNumber);
     localStorage.setItem("returned", 'consult');
     this.processNrService.changeProcessId(process.processId);
-    this.logger.info("Redirecting to Client by id page");
-    this.router.navigate(['/clientbyid']);
+    this.processNrService.changeQueueName("history");
+    this.logger.info("Redirecting to History page");
+    this.router.navigate(['/app-history', process.processId]);
   }
 
   openProcessAceitacao(process) {
@@ -849,6 +859,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.processNrService.changeProcessNumber(null);
     this.processNrService.changeProcessId(null);
     this.processNrService.changeQueueName(null);
+    this.processNrService.changeObservation('');
+    this.processNrService.changeMerchant('');
+    this.processNrService.changeList([]);
     localStorage.removeItem("documents");
 
     this.dataSourcePendentes.filterPredicate = function (record, filterValue) {
@@ -952,6 +965,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   ngOnDestroy(): void {
     this.mobileQuery.removeListener(this._mobileQueryListener);
+    if (this.interval)
+      clearInterval(this.interval);
   }
 
   streamHistoryMenu(process) {

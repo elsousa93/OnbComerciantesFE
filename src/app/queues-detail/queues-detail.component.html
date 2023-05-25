@@ -67,10 +67,10 @@
                               <p class="mb-0 text-primary text-start">
                                 {{'homepage.' + queueName|translate}}
                               </p>
-                              <p class="mb-0 text-primary text-start">{{processHistoryItems?.items[0].whenStarted}}</p>
-                              <p class="mb-0 text-primary text-start">{{processHistoryItems?.items[0].whoFinished}}</p>
+                              <p class="mb-0 text-primary text-start">{{processHistoryItems?.items[processHistoryItems.items.length - 1].whenStarted}}</p>
+                              <p class="mb-0 text-primary text-start">{{processHistoryItems?.items[processHistoryItems.items.length - 1].whoFinished}}</p>
                               <p class="mb-0 text-primary text-start">
-                                {{(processHistoryItems?.items[0].observations == null || processHistoryItems?.items[0].observations == "") ? "-" : processHistoryItems?.items[0].observations}}
+                                {{(processHistoryItems?.items[processHistoryItems.items.length - 1].observations == null || processHistoryItems?.items[processHistoryItems.items.length - 1].observations == "") ? "-" : processHistoryItems?.items[processHistoryItems.items.length - 1].observations}}
                               </p>
                             </div>
                           </div>
@@ -523,7 +523,7 @@
                                   </select>
                                 </td>
                                 <td class="text-primary text-center" *ngIf="industry.industryClassificationCode == null || industry.industryClassificationCode == ''">
-                                  <select class="form-select campo-form-select" name="{{currentStore.id + industry.paymentSchemeAttributeId}}" formControlName="{{currentStore.id + industry.paymentSchemeAttributeId}}">
+                                  <select class="form-select campo-form-select" name="{{currentStore.id + industry.paymentSchemeAttributeId + industry.subPaymentSchemeAttributeId}}" formControlName="{{currentStore.id + industry.paymentSchemeAttributeId + industry.subPaymentSchemeAttributeId}}">
                                     <option *ngFor="let value of industry.industryClassificationPotentialCodes" value="{{value.code}}">{{value.description}}</option>
                                   </select>
                                 </td>
@@ -735,14 +735,17 @@
                     </div>
                     <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
                       <span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
-                        <label for="arquivo" id="btn5a5"
-                               class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3"
-                               wappler-command="editContent">
-                          {{'generalKeywords.attach'|translate}}&nbsp;
-                          <img src="assets/images/attach_file_white.svg"
-                               style="height: 25px !important; vertical-align: sub;">
-                        </label><input type="file" #fileUpload name="arquivo" id="arquivo" (change)="selectFile($event); fileUpload.value='';"
-                                       style="display: none" accept=".pdf" required>
+                        <ng-container>
+                          <input type="file" #fileUpload name="arquivo" id="arquivo" class="uploadInput" (change)="selectFile($event); fileUpload.value='';"
+                                 style="display: none" accept=".pdf" required [disabled]="(queueName == 'risk' && currentUser.permissions != UserPermissions.COMPLIANCEOFFICE) || (queueName == 'eligibility' && currentUser.permissions != UserPermissions.UNICRE && currentUser.permissions != UserPermissions.CALLCENTER && currentUser.permissions != UserPermissions.COMERCIAL) || ((queueName == 'DOValidation' || queueName == 'negotiationAproval') && currentUser.permissions != UserPermissions.DO) || (queueName == 'compliance' && currentUser.permissions != UserPermissions.COMPLIANCEOFFICE)">
+                          <label for="arquivo" id="btn5a5"
+                                 class="uploadLabel btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3"
+                                 wappler-command="editContent">
+                            {{'generalKeywords.attach'|translate}}&nbsp;
+                            <img src="assets/images/attach_file_white.svg"
+                                 style="height: 25px !important; vertical-align: sub;">
+                          </label>
+                        </ng-container>
                       </span>
                     </nav>
                   </div>
@@ -772,7 +775,7 @@
                           </button>
                           <button id="btn5a2"
                                   *ngIf="queueName==='compliance' || queueName==='risk' || queueName==='eligibility'"
-                                  [disabled]="!form.valid"
+                                  [disabled]="!form.valid || (queueName == 'risk' && currentUser.permissions != UserPermissions.COMPLIANCEOFFICE) || (queueName == 'eligibility' && (currentUser.permissions != UserPermissions.UNICRE && currentUser.permissions != UserPermissions.CALLCENTER && currentUser.permissions != UserPermissions.COMERCIAL) || (queueName == 'compliance' && currentUser.permissions != UserPermissions.COMPLIANCEOFFICE))"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                   (click)="concludeOpinion()" wappler-command="editContent">
                             {{'queues.completed'|translate|uppercase}}&nbsp;
@@ -781,7 +784,7 @@
                           </button>
 
                           <button id="btn5a2" *ngIf="queueName==='DOValidation'"
-                                  [disabled]="!form.valid"
+                                  [disabled]="!form.valid || (currentUser.permissions != UserPermissions.COMPLIANCEOFFICE && currentUser.permissions != UserPermissions.DO)"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                   wappler-command="editContent" (click)="concludeOpinion('ReturnToBackOffice')">
                             {{'queues.returnBackoffice'|translate|uppercase}}&nbsp;
@@ -790,7 +793,7 @@
                           </button>
 
                           <button id="btn5a2" *ngIf="queueName==='DOValidation'"
-                                  [disabled]="!form.valid"
+                                  [disabled]="!form.valid || (currentUser.permissions != UserPermissions.COMPLIANCEOFFICE && currentUser.permissions != UserPermissions.DO)"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                   wappler-command="editContent" (click)="concludeOpinion('ReturnToFrontOffice')">
                             {{'queues.returnComercial'|translate|uppercase}}&nbsp;
@@ -799,7 +802,7 @@
                           </button>
 
                           <button id="btn5a2" *ngIf="queueName==='DOValidation'"
-                                  [disabled]="!form.valid"
+                                  [disabled]="!form.valid || (currentUser.permissions != UserPermissions.COMPLIANCEOFFICE && currentUser.permissions != UserPermissions.DO)"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                   wappler-command="editContent" (click)="concludeOpinion('ReturnToComplianceEvaluation')">
                             {{'queues.returnCoff'|translate|uppercase}}&nbsp;
@@ -807,7 +810,7 @@
                                  style="height: 25px !important; vertical-align: sub;">
                           </button>
 
-                          <button id="btn5a2" *ngIf="queueName === 'multipleClients'" [disabled]="form.get('observation').value.length == 0" (click)="concludeOpinion('ReturnToFrontOffice')"
+                          <button id="btn5a2" *ngIf="queueName === 'multipleClients'" [disabled]="form.get('observation').value.length == 0 || currentUser.permissions != UserPermissions.DO" (click)="concludeOpinion('ReturnToFrontOffice')"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                   wappler-command="editContent">
                             {{'queues.returnComercial'|translate|uppercase}}&nbsp;
@@ -815,7 +818,7 @@
                                  style="height: 25px !important; vertical-align: sub;">
                           </button>
 
-                          <button id="btn5a2" *ngIf="queueName === 'multipleClients'" [disabled]="!allStakesSearched" (click)="concludeOpinion('Continue')"
+                          <button id="btn5a2" *ngIf="queueName === 'multipleClients'" [disabled]="!allStakesSearched || currentUser.permissions != UserPermissions.DO" (click)="concludeOpinion('Continue')"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                   wappler-command="editContent">
                             {{'queues.treated'|translate|uppercase}}&nbsp;
@@ -825,7 +828,7 @@
 
                           <button id="btn5a2" *ngIf="queueName === 'negotiationAproval'"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                                  wappler-command="editContent" (click)="concludeOpinion('Accepted')">
+                                  wappler-command="editContent" (click)="concludeOpinion('Accepted')" [disabled]="currentUser.permissions != UserPermissions.DO">
                             {{'queues.approve'|translate|uppercase}}&nbsp;
                             <img src="assets/images/queues/aprovar.svg"
                                  style="height: 25px !important; vertical-align: sub;">
@@ -833,7 +836,7 @@
 
                           <button id="btn5a2"
                                   *ngIf="queueName === 'negotiationAproval' || queueName === 'validationSIBS'"
-                                  [disabled]="form.get('observation').value.length == 0" (click)="concludeOpinion('ReturnToFrontOffice')"
+                                  [disabled]="form.get('observation').value.length == 0 || currentUser.permissions != UserPermissions.DO" (click)="concludeOpinion('ReturnToFrontOffice')"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                   wappler-command="editContent">
                             {{'queues.return'|translate|uppercase}}&nbsp;
@@ -842,7 +845,7 @@
                           </button>
 
                           <button id="btn5a2" *ngIf="queueName === 'validationSIBS'"
-                                  [disabled]="!form.valid" (click)="concludeOpinion('Continue')"
+                                  [disabled]="!form.valid || currentUser.permissions != UserPermissions.DO" (click)="concludeOpinion('Continue')"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                   wappler-command="editContent">
                             {{'queues.conclude'|translate|uppercase}}&nbsp;
@@ -852,7 +855,7 @@
 
                           <button id="btn5a2" *ngIf="queueName === 'MCCTreatment'" (click)="concludeOpinion()"
                                   class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                                  wappler-command="editContent" [disabled]="!form.valid">
+                                  wappler-command="editContent" [disabled]="!form.valid || currentUser.permissions != UserPermissions.DO">
                             {{'queues.concludeMCC'|translate|uppercase}}&nbsp;
                             <img src="assets/images/queues/concluir-mcc.svg"
                                  style="height: 25px !important; vertical-align: sub;">
@@ -1043,7 +1046,7 @@
                           {{'generalKeywords.exit'|translate|uppercase}}&nbsp;
                           <span class="exit-to-app icon-exit-to-app"></span>
                         </button>
-                        <button id="btn5a2" [routerLink]="['/app-pack-contratual']"
+                        <button id="btn5a2" (click)="nextPage()" *ngIf="queueName !== 'multipleClients'"
                                 class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
                                 wappler-command="editContent">
                           {{'generalKeywords.next'|translate|uppercase}}&nbsp;

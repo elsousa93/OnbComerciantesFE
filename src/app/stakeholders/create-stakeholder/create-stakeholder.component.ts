@@ -138,7 +138,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.dataCCcontents.nameCC = name;
     this.dataCCcontents.nationalityCC = nationality;
     this.dataCCcontents.birthdateCC = birthDate;
-    this.dataCCcontents.cardNumberCC = cardNumber; // Nº do CC
+    this.dataCCcontents.cardNumberCC = cardNumber.replace(/\s/g, ""); // Nº do CC
     this.dataCCcontents.expiricyDateCC = expiryDate;
     this.dataCCcontents.documentType = documentType;
     this.dataCCcontents.nifCC = nif;
@@ -825,10 +825,10 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         validUntil: new Date(this.prettyPDF?.expirationDate).toISOString(),
         data: {
           fullName: this.dataCCcontents?.nameCC,
-          documentNumber: this.dataCCcontents?.cardNumberCC,
+          documentNumber: this.dataCCcontents?.cardNumberCC?.replace(/\s/g, ""),
           fiscalNumber: this.dataCCcontents?.nifCC,
           gender: this.dataCCcontents?.gender,
-          birthday: this.dataCCcontents?.birthdateCC,
+          birthDate: this.dataCCcontents?.birthdateCC,
           validUntil: this.dataCCcontents?.expiricyDateCC,
           canSign: assinatura == "Sabe assinar" ? true : false,
           country: this.dataCCcontents?.countryCC,
@@ -875,7 +875,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
           if (stakeholderToInsert["identificationDocument"] != null) {
             stakeholderToInsert["identificationDocument"] = {
               type: stakeholderToInsert["identificationDocument"]["documentType"],
-              number: stakeholderToInsert["identificationDocument"]["documentId"],
+              number: stakeholderToInsert["identificationDocument"]["documentId"]?.replace(/\s/g, ""),
               country: stakeholderToInsert["identificationDocument"]["documentIssuer"],
               expirationDate: stakeholderToInsert["identificationDocument"]["validUntil"],
               checkDigit: stakeholderToInsert["identificationDocument"]["checkDigit"],
@@ -942,7 +942,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
             "contactName": shortName,
             "identificationDocument": {
               "type": '0001',
-              "number": this.dataCCcontents.cardNumberCC ?? this.stakeholderNumber,
+              "number": this.dataCCcontents?.cardNumberCC ?? this.stakeholderNumber?.replace(/\s/g, ""),
               "country": this.dataCCcontents.countryCC ?? 'PT',
               "expirationDate": new Date(formatedDate).toISOString(),
               "checkDigit": null     //FIXME
@@ -1009,7 +1009,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
           "contactName": shortName,
           "identificationDocument": {
             "type": '0001',
-            "number": this.dataCCcontents.cardNumberCC ?? this.stakeholderNumber,
+            "number": this.dataCCcontents?.cardNumberCC ?? this.stakeholderNumber?.replace(/\s/g, ""),
             "country": this.dataCCcontents.countryCC ?? 'PT',
             "expirationDate": new Date(formatedDate).toISOString(),
             "checkDigit": null     //FIXME
@@ -1076,7 +1076,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         "contactName": shortName,
         "identificationDocument": {
           "type": '0001',
-          "number": this.dataCCcontents.cardNumberCC ?? this.stakeholderNumber,
+          "number": this.dataCCcontents?.cardNumberCC ?? this.stakeholderNumber?.replace(/\s/g, ""),
           "country": this.dataCCcontents.countryCC ?? 'PT',
           "expirationDate": new Date(formatedDate).toISOString(),
           "checkDigit": null     //FIXME
@@ -1147,7 +1147,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   }
 
   numericOnly(event): boolean {
-    if (this.docType === '0501' || this.docType === '0502' || this.docType === '1010' || this.docType === '0101' || this.docType === '0302') {
+    if (this.docType === '0501' || this.docType === '0502' || this.docType === '0101') {
       var ASCIICode = (event.which) ? event.which : event.keyCode;
 
       if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57))
@@ -1324,7 +1324,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {
     const clipboardData = event.clipboardData;
     const pastedText = clipboardData.getData('text/plain');
-    if (this.docType === '0501' || this.docType === '0502' || this.docType === '1010' || this.docType === '0101' || this.docType === '0302') {
+    if (this.docType === '0501' || this.docType === '0502' || this.docType === '0101') {
       if (event.target["name"] != "name" && event.target["name"] != "socialDenomination") {
         if (!this.isNumeric(pastedText)) {
           event.preventDefault();

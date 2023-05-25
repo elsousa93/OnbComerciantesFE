@@ -2,6 +2,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
 import { authenticator, totp } from 'otplib';
+import { AppConfigService } from '../../app-config.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-resume-journey',
@@ -17,8 +19,13 @@ export class ResumeJourneyComponent implements OnInit, OnDestroy {
   timeUsed: number;
   isValid: boolean;
   timer = null;
+  step: number;
+  validateCode: boolean = false;
+  processNumber: string;
 
-  constructor(private route: Router) {
+  constructor(private route: Router, private configuration: AppConfigService, private authService: AuthService) {
+    this.authService.changeResumeJourney(true);
+    this.step = configuration.getConfig().timeout;
   }
 
   ngOnInit(): void {
@@ -41,45 +48,56 @@ export class ResumeJourneyComponent implements OnInit, OnDestroy {
   }
 
   submit() {
-    var processNumber = this.form.get("processNumber").value;
+    if (this.secret == "") {
+      var processNumber = this.form.get("processNumber").value;
+      this.processNumber = processNumber;
+      //chamar API da SIBS para procurar o processo e de seguida redirecionar para a página do 2FA independentemente do resultado retornado
 
-    //chamar API da SIBS para procurar o processo e de seguida redirecionar para a página do 2FA independentemente do resultado retornado
-
-    totp.options = {
-      digits: 6,
-      step: 30
-    }
-    this.secret = authenticator.generateSecret(20);
-    console.log("Secret ", this.secret);
-    this.token = totp.generate(this.secret);
-    console.log("Token ", this.token);
-    console.log("Valido ", totp.check(this.token, this.secret));
-    this.timeRemaining = totp.timeRemaining();
-    this.timeUsed = totp.timeUsed();
-    this.isValid = totp.check(this.token, this.secret);
-    this.stopTimer();
-    this.timer = setInterval(() => {
+      totp.options = {
+        digits: 6,
+        step: this.step
+      }
+      this.secret = authenticator.generateSecret(20);
+      console.log("Secret ", this.secret);
+      this.token = totp.generate(this.secret);
+      console.log("Token ", this.token);
+      console.log("Valido ", totp.check(this.token, this.secret));
       this.timeRemaining = totp.timeRemaining();
-      console.log("Time remaining ", this.timeRemaining);
-      if (totp.check(this.token, this.secret)) {
-        this.timeUsed = totp.timeUsed();
-        this.isValid = totp.check(this.token, this.secret);
-      } else {
-        this.token = totp.generate(this.secret);
-        console.log("Token depois expirado", this.token);
-        console.log("Valido depois expirado", totp.check(this.token, this.secret));
-      }
-    }, 1000);
+      this.timeUsed = totp.timeUsed();
+      this.isValid = totp.check(this.token, this.secret);
+      this.stopTimer();
+      this.timer = setInterval(() => {
+        this.timeRemaining = totp.timeRemaining();
+        console.log("Time remaining ", this.timeRemaining);
+        if (totp.check(this.token, this.secret)) {
+          this.timeUsed = totp.timeUsed();
+          this.isValid = totp.check(this.token, this.secret);
+        } else {
+          this.token = totp.generate(this.secret);
+          console.log("Token depois expirado", this.token);
+          console.log("Valido depois expirado", totp.check(this.token, this.secret));
+        }
+      }, 1000);
 
-    let navigationExtras = {
-      state: {
-        secret: this.secret,
-        page: "resume",
-        processNumber: processNumber
-      }
-    } as NavigationExtras;
-    this.route.navigate(['validate-code'], navigationExtras);
+      //let navigationExtras = {
+      //  state: {
+      //    secret: this.secret,
+      //    page: "resume",
+      //    processNumber: processNumber
+      //  }
+      //} as NavigationExtras;
+      //this.route.navigate(['validate-code'], navigationExtras);
 
+      this.validateCode = true;
+    } else {
+      this.validateCode = true;
+      var processNumber = this.form.get("processNumber").value;
+      this.processNumber = processNumber;
+    }
+  }
+
+  goBack(event) {
+    this.validateCode = false;
   }
 
 }

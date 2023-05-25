@@ -60,7 +60,7 @@ export class InfoDeclarativaComponent implements OnInit {
   setForm(client: Client) {
     this.newClient = client;
     this.listValue.get("comercialName").setValue(client?.commercialName);
-    this.listValue.get("phone1").get("countryCode").setValue(client?.contacts?.phone1?.countryCode)
+    this.listValue.get("phone1").get("countryCode").setValue((client?.contacts?.phone1?.countryCode != "" && client?.contacts?.phone1?.countryCode != null) ? client?.contacts?.phone1?.countryCode : 'PT')
     this.listValue.get("phone1").get("phoneNumber").setValue(client?.contacts?.phone1?.phoneNumber);
     this.listValue.get("phone2").get("countryCode").setValue(client?.contacts?.phone2?.countryCode);
     this.listValue.get("phone2").get("phoneNumber").setValue(client?.contacts?.phone2?.phoneNumber);
@@ -96,7 +96,7 @@ export class InfoDeclarativaComponent implements OnInit {
     this.listValue = this.formBuilder.group({
       comercialName: new FormControl(this.newClient?.commercialName, Validators.required),
       phone1: this.formBuilder.group({
-        countryCode: new FormControl(this.newClient?.contacts?.phone1?.countryCode),
+        countryCode: new FormControl((this.newClient?.contacts?.phone1?.countryCode != null && this.newClient?.contacts?.phone1?.countryCode != "") ? this.newClient?.contacts?.phone1?.countryCode : 'PT'),
         phoneNumber: new FormControl(this.newClient?.contacts?.phone1?.phoneNumber),
       }, { validators: [validPhoneNumber] }),
       phone2: this.formBuilder.group({
@@ -219,5 +219,29 @@ export class InfoDeclarativaComponent implements OnInit {
     if (!this.emailValid.errors?.['email']) {
       this.listValue.get('billingEmail').setValue(event.target.value);
     }
+  }
+
+  openCancelPopup() {
+    //this.cancelModalRef = this.modalService.show(this.cancelModal);
+    this.router.navigate(['/']);
+  }
+
+  closeCancelPopup() {
+    //this.cancelModalRef?.hide();
+  }
+
+  confirmCancel() {
+    //var context = this;
+    //var processNumber = "";
+    //this.processNrService.processNumber.subscribe(res => processNumber = res);
+    //var encodedCode = encodeURIComponent(processNumber);
+    //var baseUrl = this.configuration.getConfig().acquiringAPIUrl;
+    //var url = baseUrl + 'process?number=' + encodedCode;
+    //this.processService.advancedSearch(url, 0, 1).subscribe(result => {
+    //  context.queueService.markToCancel(result.items[0].processId, context.authService.GetCurrentUser().userName).then(res => {
+    //    context.closeCancelPopup();
+    //    context.route.navigate(['/']);
+    //  });
+    //});
   }
 }

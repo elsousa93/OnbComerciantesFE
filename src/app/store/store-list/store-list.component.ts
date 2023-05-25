@@ -2,7 +2,7 @@ import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { Istore, ShopAddressAcquiring, ShopBank, ShopBankingInformation, ShopDetailsAcquiring } from '../IStore.interface';
 import { NavigationExtras, Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { Observable, of, Subject, Subscription } from 'rxjs';
+import { distinctUntilChanged, Observable, of, Subject, Subscription } from 'rxjs';
 import { MatTableDataSource } from '@angular/material/table';
 import { StoreService } from '../store.service';
 import { ClientService } from '../../client/client.service';
@@ -71,6 +71,9 @@ export class StoreComponent implements AfterViewInit {
   shops: boolean;
   public visitedStores: string[] = [];
   updateProcessId: string;
+  subActivityChanged: boolean = false;
+  activityChanged: boolean = false;
+  bankChanged: boolean = false;
 
   ngAfterViewInit() {
 
@@ -94,6 +97,10 @@ export class StoreComponent implements AfterViewInit {
   processId: string;
   deleteModalRef: BsModalRef | undefined;
   @ViewChild('deleteModal') deleteModal;
+
+  updateModalRef: BsModalRef | undefined;
+  @ViewChild('updateModal') updateModal;
+  processInfo: any;
 
   emitRemovedStore(store) {
     this.removedStoreSubject.next(store);
@@ -305,6 +312,31 @@ export class StoreComponent implements AfterViewInit {
         this.productSelectionComponent.chooseSubSolutionAPI(this.currentStore.subProductCode);
         productStores.get("url")?.setValue(this.currentStore.website);
       }, 500);
+
+      infoStores.get("activityStores").valueChanges.pipe(distinctUntilChanged()).subscribe(activity => {
+        if (activity != this.currentStore.activity) {
+          if (this.currentStore.pack != null)
+            this.activityChanged = true;
+        } else {
+          this.activityChanged = false;
+        }
+      });
+      infoStores.get("subactivityStore").valueChanges.pipe(distinctUntilChanged()).subscribe(subActivity => {
+        if (subActivity != this.currentStore.subActivity) {
+          if (this.currentStore.pack != null)
+            this.subActivityChanged = true;
+        } else {
+          this.subActivityChanged = false;
+        }
+      });
+      bankStores.get("supportBank").valueChanges.pipe(distinctUntilChanged()).subscribe(bank => {
+        if (bank != this.currentStore.bank?.bank?.bank) {
+          if (this.currentStore.pack != null)
+            this.bankChanged = true;
+        } else {
+          this.bankChanged = false;
+        }
+      });
     }
   }
 
@@ -444,34 +476,39 @@ export class StoreComponent implements AfterViewInit {
         } else {
           if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
             if (!this.editStores.pristine) {
-              this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
-                this.visitedStores.push(this.currentStore.id);
-                this.visitedStores = Array.from(new Set(this.visitedStores));
-                this.logger.info("Updated shop result: " + JSON.stringify(result));
-                if (!clickedTable) {
-                  if (isEditButton) {
-                    this.addDocumentToShop(this.currentStore.id, this.currentStore);
-                    this.resetForm();
-                    this.currentStore = null;
-                    this.currentIdx = -2;
-                  } else {
-                    if (this.visitedStores.length < this.storesLength) {
-                      this.addDocumentToShop(this.currentStore.id, this.currentStore);
-                      this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-                      this.resetForm();
-                    } else {
+              if (!this.activityChanged && !this.subActivityChanged && !this.bankChanged) {
+                this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
+                  this.visitedStores.push(this.currentStore.id);
+                  this.visitedStores = Array.from(new Set(this.visitedStores));
+                  this.logger.info("Updated shop result: " + JSON.stringify(result));
+                  if (!clickedTable) {
+                    if (isEditButton) {
                       this.addDocumentToShop(this.currentStore.id, this.currentStore);
                       this.resetForm();
                       this.currentStore = null;
                       this.currentIdx = -2;
-                      this.data.changeShops(true);
-                      this.logger.info("Redirecting to Comprovativos page");
-                      this.data.updateData(true, 3);
-                      this.route.navigate(['comprovativos']);
+                    } else {
+                      if (this.visitedStores.length < this.storesLength) {
+                        this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                        this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                        this.resetForm();
+                      } else {
+                        this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                        this.resetForm();
+                        this.currentStore = null;
+                        this.currentIdx = -2;
+                        this.data.changeShops(true);
+                        this.logger.info("Redirecting to Comprovativos page");
+                        this.data.updateData(true, 3);
+                        this.route.navigate(['comprovativos']);
+                      }
                     }
                   }
-                }
-              });
+                });
+              } else {
+                //mostrar popup
+                this.updateModalRef = this.modalService.show(this.updateModal, { class: 'modal-lg' });
+              }
             } else {
               this.visitedStores.push(this.currentStore.id);
               this.visitedStores = Array.from(new Set(this.visitedStores));
@@ -492,33 +529,38 @@ export class StoreComponent implements AfterViewInit {
             }
           } else {
             if (!this.editStores.pristine) {
-              this.processService.updateShopProcess(this.processId, this.currentStore.id, this.currentStore).then(result => {
-                this.visitedStores.push(this.currentStore.id);
-                this.visitedStores = Array.from(new Set(this.visitedStores));
-                if (!clickedTable) {
-                  if (isEditButton) {
-                    this.addDocumentToShop(this.currentStore.id, this.currentStore);
-                    this.resetForm();
-                    this.currentStore = null;
-                    this.currentIdx = -2;
-                  } else {
-                    if (this.visitedStores.length < this.storesLength) {
-                      this.addDocumentToShop(this.currentStore.id, this.currentStore);
-                      this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-                      this.resetForm();
-                    } else {
+              if (!this.activityChanged && !this.subActivityChanged && !this.bankChanged) {
+                this.processService.updateShopProcess(this.processId, this.currentStore.id, this.currentStore).then(result => {
+                  this.visitedStores.push(this.currentStore.id);
+                  this.visitedStores = Array.from(new Set(this.visitedStores));
+                  if (!clickedTable) {
+                    if (isEditButton) {
                       this.addDocumentToShop(this.currentStore.id, this.currentStore);
                       this.resetForm();
                       this.currentStore = null;
                       this.currentIdx = -2;
-                      this.data.changeShops(true);
-                      this.logger.info("Redirecting to Comprovativos page");
-                      this.data.updateData(true, 3);
-                      this.route.navigate(['comprovativos']);
+                    } else {
+                      if (this.visitedStores.length < this.storesLength) {
+                        this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                        this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                        this.resetForm();
+                      } else {
+                        this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                        this.resetForm();
+                        this.currentStore = null;
+                        this.currentIdx = -2;
+                        this.data.changeShops(true);
+                        this.logger.info("Redirecting to Comprovativos page");
+                        this.data.updateData(true, 3);
+                        this.route.navigate(['comprovativos']);
+                      }
                     }
                   }
-                }
-              });
+                });
+              } else {
+                //mostrar popup
+                this.updateModalRef = this.modalService.show(this.updateModal, { class: 'modal-lg' });
+              }
             } else {
               this.visitedStores.push(this.currentStore.id);
               this.visitedStores = Array.from(new Set(this.visitedStores));
@@ -683,5 +725,145 @@ export class StoreComponent implements AfterViewInit {
         })
       }
     }
+  }
+
+  confirmUpdate() {
+    var context = this;
+    this.currentStore.pack = null;
+    this.activityChanged = false;
+    this.subActivityChanged = false;
+    this.bankChanged = false;
+    if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+      let promise = new Promise((resolve, reject) => {
+        this.storeService.getShopEquipmentConfigurationsFromSubmission(this.submissionId, this.currentStore.id).then(result => {
+          let length = 0;
+          var equips = result.result;
+          if (equips.length > 0) {
+            equips.forEach(e => {
+              context.storeService.deleteShopEquipmentConfigurationFromSubmission(context.submissionId, context.currentStore.id, e.id).subscribe(res => {
+                length++;
+                context.logger.info("Deleted equipment " + e.id + " from shop " + context.currentStore.id);
+                if (length == equips.length)
+                  resolve(length);
+              });
+            });
+          } else {
+            resolve(null);
+          }
+        });
+      }).finally(() => {
+        this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
+          this.visitedStores.push(this.currentStore.id);
+          this.visitedStores = Array.from(new Set(this.visitedStores));
+          if (this.visitedStores.length < this.storesLength) {
+            this.addDocumentToShop(this.currentStore.id, this.currentStore);
+            this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+            this.resetForm();
+            this.updateModalRef?.hide();
+          } else {
+            this.addDocumentToShop(this.currentStore.id, this.currentStore);
+            this.resetForm();
+            this.currentStore = null;
+            this.currentIdx = -2;
+            this.updateModalRef?.hide();
+            this.data.changeShops(true);
+            this.logger.info("Redirecting to Comprovativos page");
+            this.data.updateData(true, 3);
+            this.route.navigate(['comprovativos']);
+          }
+        });
+      });
+    } else {
+      let promise = new Promise((resolve, reject) => {
+        if (this.updateProcessId == "" || this.updateProcessId == null) {
+          this.storeService.getShopEquipmentConfigurationsFromProcess(this.processId, this.currentStore.id).subscribe(result => {
+            let length = 0;
+            var equips = result;
+            if (equips.length > 0) {
+              equips.forEach(e => {
+                context.processService.deleteShopEquipmentFromProcess(context.processId, context.currentStore.id, e.id).then(res => {
+                  length++;
+                  context.logger.info("Deleted equipment " + e.id + " from shop " + context.currentStore.id);
+                  if (length == equips.length)
+                    resolve(length);
+                });
+              });
+            } else {
+              resolve(null);
+            }
+          });
+        } else {
+          let length = 0;
+          var shop = this.processInfo.shops.find(shop => shop.id == context.currentStore.id);
+          shop.equipments = shop.equipments.filter(val => val["updateProcessAction"] != "Delete");
+          if (shop.equipments.length > 0) {
+            shop.equipments.forEach(equip => {
+              if (equip["updateProcessAction"] != "Delete") {
+                context.processService.deleteShopEquipmentFromProcess(context.processId, context.currentStore.id, equip.id).then(res => {
+                  length++;
+                  if (length == shop.equipments.length)
+                    resolve(length);
+                });
+              }
+            });
+          } else {
+            resolve(null);
+          }
+        }
+      }).finally(() => {
+        this.processService.updateShopProcess(this.processId, this.currentStore.id, this.currentStore).then(result => {
+          this.visitedStores.push(this.currentStore.id);
+          this.visitedStores = Array.from(new Set(this.visitedStores));
+          if (this.visitedStores.length < this.storesLength) {
+            this.addDocumentToShop(this.currentStore.id, this.currentStore);
+            this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+            this.resetForm();
+            this.updateModalRef?.hide();
+          } else {
+            this.addDocumentToShop(this.currentStore.id, this.currentStore);
+            this.resetForm();
+            this.currentStore = null;
+            this.currentIdx = -2;
+            this.updateModalRef?.hide();
+            this.data.changeShops(true);
+            this.logger.info("Redirecting to Comprovativos page");
+            this.data.updateData(true, 3);
+            this.route.navigate(['comprovativos']);
+          }
+        });
+      });
+    }
+  }
+
+  cancelUpdate() {
+    this.updateModalRef?.hide();
+  }
+
+  getProcessInfo(event) {
+    this.processInfo = event;
+  }
+
+  openCancelPopup() {
+    //this.cancelModalRef = this.modalService.show(this.cancelModal);
+    this.route.navigate(['/']);
+  }
+
+  closeCancelPopup() {
+    //this.cancelModalRef?.hide();
+  }
+
+  confirmCancel() {
+    //var context = this;
+    //var processNumber = "";
+    //this.processNrService.processNumber.subscribe(res => processNumber = res);
+    //var encodedCode = encodeURIComponent(processNumber);
+    //var baseUrl = this.configuration.getConfig().acquiringAPIUrl;
+    //var url = baseUrl + 'process?number=' + encodedCode;
+    //this.processService.advancedSearch(url, 0, 1).subscribe(result => {
+    //  context.queueService.markToCancel(result.items[0].processId, context.authService.GetCurrentUser().userName).then(res => {
+    //    context.closeCancelPopup();
+    //    context.route.navigate(['/']);
+    //  });
+    //});
   }
 }

@@ -121,7 +121,7 @@ export class ClientCharacterizationComponent implements OnInit {
 
     this.changeFormStructure(new FormGroup({
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
-      socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo?.commercialName : localStorage.getItem("clientName") ?? this.client?.commercialName, Validators.required), //sim,
+      socialDenomination: new FormControl((this.returned != null && this.returned != undefined) ? this.merchantInfo?.commercialName?.slice(0, 100) : localStorage.getItem("clientName")?.slice(0, 100) ?? this.client?.commercialName?.slice(0, 100), Validators.required), //sim,
       commercialSociety: new FormControl(false, [Validators.required]), //sim
       collectCRC: new FormControl(this.hasCRC ? true : collectCRC)
     }));
@@ -172,7 +172,7 @@ export class ClientCharacterizationComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       natJuridicaN1: new FormControl((this.returned != null) ? this.merchantInfo?.legalNature : this.client.legalNature, Validators.required), //sim
       natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo?.legalNature2 : this.client.legalNature2), //sim
-      socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo?.legalName : localStorage.getItem("clientName") ?? this.client.commercialName ?? this.client.legalName, disabled: ((localStorage.getItem("clientName") != null && localStorage.getItem("clientName") != '') || (this.client.commercialName != null && this.client.commercialName != '') || (this.client.legalName != null && this.client.legalName != '')) }, Validators.required), //sim
+      socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo?.legalName?.slice(0, 100) : localStorage.getItem("clientName")?.slice(0, 100) ?? this.client?.commercialName?.slice(0, 100) ?? this.client?.legalName?.slice(0, 100), disabled: ((localStorage.getItem("clientName") != null && localStorage.getItem("clientName") != '') || (this.client.commercialName != null && this.client.commercialName != '') || (this.client.legalName != null && this.client.legalName != '')) }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(false)
     }));
@@ -202,8 +202,8 @@ export class ClientCharacterizationComponent implements OnInit {
     this.logger.info("Initialized CRC Form");
     this.crcCode = this.form.get("crcCode").value;
     this.logger.info("Date from CRC capital stock: " + this.processClient.capitalStock.date);
-    var b = this.datepipe.transform(this.processClient.capitalStock.date, 'MM-dd-yyyy').toString();
-    var formatedDate = formatDate(b, 'yyyy-MM-dd', 'pt_PT');
+    //var b = this.datepipe.transform(this.processClient.capitalStock.date, 'dd-MM-yyyy').toString(); //'MM-dd-yyyy'
+    var formatedDate = formatDate(this.processClient.capitalStock.date, 'dd-MM-yyyy', 'pt_PT'); // yyyy-MM-dd
     var branch1 = '';
 
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
@@ -213,7 +213,7 @@ export class ClientCharacterizationComponent implements OnInit {
       natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: (this.processClient.legalNature == "" || this.processClient.legalNature == null) ? false : true/*, disabled: this.clientExists */ }, [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
       natJuridicaN2: new FormControl(''), //sim
-      socialDenomination: new FormControl(this.processClient.companyName, Validators.required), //sim
+      socialDenomination: new FormControl(this.processClient?.companyName?.slice(0, 100), Validators.required), //sim
       CAE1: new FormControl(this.processClient.mainEconomicActivity, Validators.required), //sim
       CAE1Branch: new FormControl(branch1), //talvez
       CAESecondary1: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[0] : ''), //sim
@@ -572,7 +572,7 @@ export class ClientCharacterizationComponent implements OnInit {
         if (this.form.value["constitutionDate"] == "" || this.form.value["constitutionDate"] == null) {
           this.client.incorporationDate = null;
         } else {
-          this.client.incorporationDate = this.form.value["constitutionDate"];
+          this.client.incorporationDate = this.processClient.capitalStock.date;
         }
         this.client.incorporationStatement = {
           code: this.form.value["crcCode"],
@@ -580,9 +580,9 @@ export class ClientCharacterizationComponent implements OnInit {
         }
         this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
         this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
-        this.client.commercialName = this.form.value["socialDenomination"];
+        this.client.commercialName = this.form.value["socialDenomination"].slice(0, 40); 
         this.client.legalName = this.form.value["socialDenomination"];
-        this.client.shortName = this.form.value["socialDenomination"];
+        this.client.shortName = this.form.value["socialDenomination"].slice(0, 40);
         this.client.shareCapital = {
           capital: this.processClient.capitalStock.capital,
           date: this.processClient.capitalStock.date
@@ -617,7 +617,7 @@ export class ClientCharacterizationComponent implements OnInit {
     }
     if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
       this.client.legalName = this.form.value["socialDenomination"];
-      this.client.commercialName = this.form.value["socialDenomination"];
+      this.client.commercialName = this.form.value["socialDenomination"].slice(0, 40);
       this.client.merchantType = 'Entrepeneur';
       if (this.dataCC !== undefined && this.dataCC !== null) {
         this.client.shortName = this.dataCC.nameCC;
@@ -661,11 +661,11 @@ export class ClientCharacterizationComponent implements OnInit {
 
         var stakeholderToInsert = {
           "fiscalId": (fiscalID != null && fiscalID != undefined) ? fiscalID : '',
-          "shortName": value.name,
+          "shortName": value.name?.slice(0, 40),
           "fullName": value.name,
           "contactName": value.name,
           "fiscalAddress": {
-            "postalCode": value["address"] != null ? value["address"]["postalCode"] : null,
+            "postalCode": value["address"] != null ? value["address"]["postalCode"]?.replace(/\s/g, "") : null,
             "postalArea": value["address"] != null ? value["address"]["postalArea"] : null,
             "country": value["address"] != null ? value["address"]["country"] : null,
             "address": value["address"] != null ? value["address"]["fullAddress"] : null
@@ -777,8 +777,10 @@ export class ClientCharacterizationComponent implements OnInit {
     this.crcMatchNIF = false;
     if (value == false) {
       this.crcFound = false;
-      this.processClient.stakeholders = [];
-      this.clientContext.setStakeholdersToInsert([]);
+      if ((this.returned == 'edit' || this.returned == null) && (this.processId == '' || this.processId == null)) { 
+        this.processClient.stakeholders = [];
+        this.clientContext.setStakeholdersToInsert([]);
+      }
       this.initializeFormControlOther();
     }
     else

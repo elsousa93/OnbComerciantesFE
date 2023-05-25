@@ -215,8 +215,8 @@ export enum MerchantContextEnum {
 }
 
 export enum TerminalSupportEntityEnum {
-  OTHER = "other",
-  ACQUIRER = "acquirer"
+  OTHER = "Other",
+  ACQUIRER = "Acquirer"
 }
 
 export enum ProductPackKindEnum {

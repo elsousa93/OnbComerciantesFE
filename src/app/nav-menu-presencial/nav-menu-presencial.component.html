@@ -60,7 +60,7 @@
           </span>
           <div id="navbar1_collapse">
             <mat-select #langSelect (selectionChange)="changeLanguage(langSelect.value)"
-              class="navbar-text bg-transparent mt-0 mb-0 ms-0 pt-0 pb-0 d-flex" [value]="translate.currentLang">
+              class="navbar-text bg-transparent mt-0 mb-0 ms-0 pt-0 pb-0 d-flex" [value]="translate.currentLang" [disabled]="currentRoute != '/'">
               <mat-select-trigger>
                 <p class="botao_linguas form-select form-select-lg mt-0 mb-0 pt-0 pb-0">{{currentLanguage.name}}</p>
               </mat-select-trigger>

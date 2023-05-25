@@ -102,8 +102,8 @@ export class ClientComponent implements OnInit {
     nss, sns, address, postalCode, notes, emissonDate, emissonLocal, country, countryIssuer) {
 
     this.dataCCcontents = {}
-    this.dataCCcontents.nameCC = name;
-    localStorage.setItem("clientName", name);
+    this.dataCCcontents.nameCC = name?.slice(0, 40);
+    localStorage.setItem("clientName", this.dataCCcontents.nameCC);
     this.dataCCcontents.nationalityCC = nationality;
     this.dataCCcontents.birthdateCC = birthDate;
     this.dataCCcontents.cardNumberCC = cardNumber; // Nº do CC
@@ -314,9 +314,13 @@ export class ClientComponent implements OnInit {
         } else {
           if (readable) {
             this.setOkCC();
+            this.changeDataReadable(true);
+            this.callreadCC();
+          } else {
+            this.changeDataReadable(false);
+            this.searchClient();
           }
-          this.changeDataReadable(readable);
-          this.searchClient();
+
         }
       }
     }
@@ -374,7 +378,7 @@ export class ClientComponent implements OnInit {
         addresssCC: this.addressCC,
         postalCodeCC: this.postalCodeCC
       };
-      return this.dataCCcontents.nifCC;
+      return this.dataCCcontents?.nifCC;
     }
     if ((this.newClientForm?.get("nif")?.value != '' && this.newClientForm?.get("nif")?.value != null) || (this.newClientForm?.get("nipc")?.value != '' && this.newClientForm?.get("nipc")?.value != null)) {
       return this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value;
@@ -768,7 +772,7 @@ export class ClientComponent implements OnInit {
   }
 
   numericOnly(event): boolean {
-    if (this.docType === '0501' || this.docType === '0502' || this.docType === '1010' || this.docType === '0101' || this.docType === '0302') {
+    if (this.docType === '0501' || this.docType === '0502' || this.docType === '0101') {
       var ASCIICode = (event.which) ? event.which : event.keyCode;
 
       if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) || ASCIICode == 86)
@@ -927,7 +931,7 @@ export class ClientComponent implements OnInit {
   @HostListener('paste', ['$event']) onPaste(event: ClipboardEvent) {
     const clipboardData = event.clipboardData;
     const pastedText = clipboardData.getData('text/plain');
-    if (this.docType === '0501' || this.docType === '0502' || this.docType === '1010' || this.docType === '0101' || this.docType === '0302') {
+    if (this.docType === '0501' || this.docType === '0502' || this.docType === '0101') {
       if (event.target["name"] != "nome" && event.target["name"] != "denominacaoSocial") {
         if (!this.isNumeric(pastedText)) {
           event.preventDefault();

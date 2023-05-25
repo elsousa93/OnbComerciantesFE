@@ -12,7 +12,7 @@ import { PostDocument } from '../submission/document/ISubmission-document';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
 import { SubmissionGetTemplate, SubmissionPutTemplate } from '../submission/ISubmission.interface';
 import { SubmissionService } from '../submission/service/submission-service.service';
-import { ComprovativosTemplate, DocumentPurpose, IComprovativos, PurposeDocument, RequiredDocuments } from './IComprovativos.interface';
+import { ComprovativosTemplate, DocumentPurpose, IComprovativos, PurposeDocument, RequiredDocumentPurpose, RequiredDocuments } from './IComprovativos.interface';
 import { ComprovativosService } from './services/comprovativos.services';
 import { LoggerService } from 'src/app/logger.service';
 import { TableInfoService } from '../table-info/table-info.service';
@@ -42,7 +42,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   public id: number = 0;
   public clientNr: number = 0;
   submissionId: string;
-
+  fakeArray = new Array(9);
   crcCode: string = "";
 
   public subscription: Subscription;
@@ -466,7 +466,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
             }
           });
 
-          context.comprovativoService.getProcessRequiredDocuments(context.processId).then(result => {
+
+          context.comprovativoService.getUpdateProcessRequiredDocuments(context.processId, context.updateProcessId).then(result => {
             context.logger.info("Get the submission's required documents: " + JSON.stringify(result));
             context.requiredDocuments = result.result;
             context.requiredDocuments.requiredDocumentPurposesStakeholders.forEach(value => {
@@ -517,6 +518,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
               });
             });
           })
+
 
         });
       }
@@ -1280,6 +1282,49 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
     const blob = new Blob(byteArrays, { type: contentType });
     return blob;
+  }
+
+  getPurposeType(stakeholderPurpose: RequiredDocumentPurpose) {
+    //descobrir todos os purposes do stakeholder em questão, de seguida comparar a lista que obtemos com a lista de purposes total e depois contar quantos purposes não existem e utilizar este valor para mostrar a quantidade de <td> que queremos
+    var list = [];
+    let length = 0;
+    stakeholderPurpose.documentPurposes.forEach(value => {
+      var found = list.find(v => value.purpose == v);
+      if (found == undefined)
+        list.push(value.purpose);
+    });
+
+    this.stakePurposeList.forEach(value => {
+      var found1 = list.find(v => v == value);
+      if (found1 == undefined)
+        length++;
+    });
+
+    return length;
+  }
+
+  openCancelPopup() {
+    //this.cancelModalRef = this.modalService.show(this.cancelModal);
+    this.route.navigate(['/']);
+  }
+
+  closeCancelPopup() {
+    //this.cancelModalRef?.hide();
+  }
+
+  confirmCancel() {
+    //var context = this;
+    //var processNumber = "";
+    //this.processNrService.processNumber.subscribe(res => processNumber = res);
+    //var encodedCode = encodeURIComponent(processNumber);
+    //var baseUrl = this.configuration.getConfig().acquiringAPIUrl;
+    //var url = baseUrl + 'process?number=' + encodedCode;
+    //this.processService.advancedSearch(url, 0, 1).subscribe(result => {
+    //  context.queueService.markToCancel(result.items[0].processId, context.authService.GetCurrentUser().userName).then(res => {
+    //    context.closeCancelPopup();
+    //    context.route.navigate(['/']);
+    //  });
+    //});
   }
 }
 

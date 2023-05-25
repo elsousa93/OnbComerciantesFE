@@ -3,8 +3,10 @@ import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/fo
 import { NavigationExtras, Router } from '@angular/router';
 import { authenticator, totp } from 'otplib';
 import { Subscription } from 'rxjs';
+import { AppConfigService } from '../app-config.service';
 import { validPhoneNumber } from '../client/info-declarativa/info-declarativa.model';
 import { LoggerService } from '../logger.service';
+import { AuthService } from '../services/auth.service';
 import { CountryInformation } from '../table-info/ITable-info.interface';
 import { TableInfoService } from '../table-info/table-info.service';
 
@@ -31,8 +33,13 @@ export class PreRegistrationComponent implements OnInit, OnDestroy {
   timeUsed: number;
   isValid: boolean;
   timer = null;
+  step: number;
+  validateCode: boolean = false;
+  username: string;
 
-  constructor(private tableInfo: TableInfoService, private logger: LoggerService, private route: Router) {
+  constructor(private tableInfo: TableInfoService, private logger: LoggerService, private route: Router, private configuration: AppConfigService, private authService: AuthService) {
+    this.authService.changePreRegistration(true);
+    this.step = configuration.getConfig().timeout;
     this.subs.push(this.tableInfo.GetAllCountries().subscribe(result => {
       this.logger.info("Fetch all countries " + JSON.stringify(result));
       this.internationalCallingCodes = result;
@@ -58,7 +65,7 @@ export class PreRegistrationComponent implements OnInit, OnDestroy {
       email: new FormControl('', [Validators.required, Validators.pattern(this.emailRegex)]),
       contact: new FormGroup({
         countryCode: new FormControl(''),
-        phoneNumber: new FormControl('')
+        phoneNumber: new FormControl('', Validators.required)
       }, [Validators.required, validPhoneNumber])
     });
     this.phone1 = this.registrationForm.get("contact");
@@ -149,15 +156,15 @@ export class PreRegistrationComponent implements OnInit, OnDestroy {
     if (this.secret == "") {
       totp.options = {
         digits: 6,
-        step: 30
+        step: this.step
       }
       var username = this.registrationForm.get("username").value;
+      this.username = username;
       var nif = this.registrationForm.get("nif").value;
       var email = this.registrationForm.get("email").value;
       var countryCode = this.registrationForm.get("contact").get("countryCode").value;
       var phoneNumber = this.registrationForm.get("contact").get("phoneNumber").value;
       //enviar dados do form para API SIBS
-
 
       //gerar código e redirecionar para outra página
       this.secret = authenticator.generateSecret(20);
@@ -179,18 +186,32 @@ export class PreRegistrationComponent implements OnInit, OnDestroy {
           this.token = totp.generate(this.secret);
           console.log("Token depois expirado", this.token);
           console.log("Valido depois expirado", totp.check(this.token, this.secret));
-        }
-      }, 1000);
-
-      let navigationExtras = {
-        state: {
-          secret: this.secret,
-          page: "registration",
-          name: username
-        }
-      } as NavigationExtras;
-      this.route.navigate(['validate-code'], navigationExtras);
+          }
+        }, 1000);
+      
+      //let navigationExtras = {
+      //  state: {
+      //    secret: this.secret,
+      //    page: "registration",
+      //    name: username
+      //  }
+      //} as NavigationExtras;
+      //this.authService.changeValidateCode(true);
+      //this.route.navigate(['validate-code'], navigationExtras);
+      this.validateCode = true;
+    } else {
+      this.validateCode = true;
+      var username = this.registrationForm.get("username").value;
+      this.username = username;
+      var nif = this.registrationForm.get("nif").value;
+      var email = this.registrationForm.get("email").value;
+      var countryCode = this.registrationForm.get("contact").get("countryCode").value;
+      var phoneNumber = this.registrationForm.get("contact").get("phoneNumber").value;
+      //enviar dados do form para API SIBS
     }
   }
 
+  goBack(event) {
+    this.validateCode = false;
+  }
 }

@@ -83,8 +83,7 @@
                 </div>
               </div>
 
-              <div class="accordion1-item"
-                *ngIf="clientContext?.isClient || (clientDocs != null && clientDocs.length > 0)">
+              <div class="accordion1-item"> <!--*ngIf="clientContext?.isClient || (clientDocs != null && clientDocs.length > 0)"-->
                 <h2 class="accordion-header" id="flush-headingFour">
                   <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                     (click)="onActivate()" data-bs-target="#flush-collapseFour" aria-expanded="false"
@@ -171,7 +170,7 @@
                       <!--<img src="assets/images/exit_to_app.svg" style="height: 25px !important;">-->
                     </span>
                   </button>
-                  <button *ngIf="returned != 'consult'" id="btn5a3" [routerLink]="['/']"
+                  <button *ngIf="returned != 'consult'" id="btn5a3" (click)="openCancelPopup()"
                     class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
                     wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;
                   <span class="cancel icon-cancel"></span>
@@ -237,6 +236,54 @@
               </span>
               <span class="navbar-text pt-0 pb-0">
                 <button id="btn5a1" (click)="redirectBeginningClient()"
+                        class="btn text-start text-light btn-primary boto_alerta_modal bg-primary mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3 mb-sm-0"
+                        wappler-command="editContent">
+                  {{'generalKeywords.yes'|translate|uppercase}}
+                </button>
+              </span>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</ng-template>
+<ng-template #cancelModal>
+  <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0">
+    <div class="container-fluid ms-0 me-0 ps-0 pe-0">
+      <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
+        <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
+          <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+            <span class="navbar-text ms-auto align-self-start">
+              <h2 class="text-light mt-0 mb-0 ms-0 pt-0 pb-0 ps-0 pe-4" (click)="closeCancelPopup()" style="cursor: pointer;">x</h2>
+            </span>
+          </nav>
+        </div>
+        <div class="row mb-5 ms-0 me-0 ps-0 pe-0">
+          <div class="mb-5 ps-0 pe-0 col-12">
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
+              <span class="navbar-text"></span>
+              <span class="material-symbols-rounded icon_alerta">
+                <img src="assets/images/warning.svg" class="img_warning">
+              </span>
+            </nav>
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
+              <span class="navbar-text">
+                <h5 class="fw-bold text-light mb-2">{{'client.cancelMsg'|translate|uppercase}}</h5>
+              </span>
+            </nav>
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
+              <span class="navbar-text"></span>
+              <span class="navbar-text pb-0 pt-sm-0">
+                <button id="btn5a"
+                        class="btn text-start bg-primary text-light btn-primary boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3"
+                        wappler-command="editContent"
+                        (click)="closeCancelPopup()">
+                  {{'generalKeywords.no'|translate|uppercase}}
+                </button>
+              </span>
+              <span class="navbar-text pt-0 pb-0">
+                <button id="btn5a1" (click)="confirmCancel()"
                         class="btn text-start text-light btn-primary boto_alerta_modal bg-primary mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3 mb-sm-0"
                         wappler-command="editContent">
                   {{'generalKeywords.yes'|translate|uppercase}}

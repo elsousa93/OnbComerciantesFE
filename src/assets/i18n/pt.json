@@ -44,7 +44,7 @@
       "backOffice": "Processos em tratamento backoffice",
       "returned": "Processos devolvidos backoffice",
       "acceptance": "Processos em fase de aceitação",
-      "pendingSent": "Processos pendentes de envio para arquivo físico",
+      "pendingSent": "Processos pendentes de Conclusão pelo Aderente",
       "pendingEligibility": "Processo em fase de pareceres de elegibilidade",
       "multipleClients": "Processos em múltiplos clientes",
       "DOValidation": "Processos em valida DO",
@@ -132,7 +132,8 @@
     "incorrectNIPCSize": "O NIPC tem de ser constituído por 9 dígitos",
     "sameNIPC": "O NIPC não pode coincidir com o da empresa",
     "sameNIFMatch": "O NIF não pode coincidir com o do particular",
-    "returnSearchMsg": "Tem a certeza que pretende alterar os dados do cliente empresa?"
+    "returnSearchMsg": "Tem a certeza que pretende alterar os dados do cliente empresa?",
+    "cancelMsg": "Tem a certeza que pretende cancelar o processo?"
   },
   "citizenCard": {
     "collectData": "Recolha eletrónica dos dados do Cartão de Cidadão?",
@@ -187,12 +188,13 @@
     "particular": "Particular",
     "corporate": "Empresa",
     "signError": "É necessário existir pelo menos um interveniente que assine o contrato",
-    "stakeExistsError": "É necessário adicionar pelo menos um interveniente particular"
+    "stakeExistsError": "É necessário adicionar pelo menos um interveniente particular",
+    "differentNIFCC": "Não é possível efetuar a atualização dos dados, pois o NIF do CC não coincide com o do interveniente atual"
   },
   "stores": {
     "title": "Lojas",
     "titleOffer": "Loja(s)",
-    "requestNumber":"Nº do Pedido",
+    "requestNumber": "Nº do Pedido",
     "identification": "Identificação da(s) Loja(s)",
     "remove": "Remover Loja",
     "insert": "Inserir Loja",
@@ -217,11 +219,12 @@
     "bankAccount": "Identificação da conta bancária associada à loja",
     "productSelection": "Selecção de Produtos",
     "solutionType": "Tipo de Solução",
-    "selectSolutionType":"Selecione tipo de solução UNICRE",
+    "selectSolutionType": "Selecione tipo de solução UNICRE",
     "presencialTransaction": "Transações Presenciais",
     "noPresencialTransaction": "Transações não Presenciais",
     "combinedOffer": "Oferta Combinada",
-    "subProduct": "Sub Produto"
+    "subProduct": "Sub Produto",
+    "updateStore": "Esta alteração irá eliminar a configuração da Oferta Comercial. Deseja prosseguir?"
   },
   "supportingDocuments": {
     "title": "Comprovativos",
@@ -259,7 +262,8 @@
       "selectedLegalNature": "Para a natureza jurídica selecionada",
       "mandatoryDocuments": "os documentos obrigatórios"
     },
-    "documentsListEmpty": "Não existem documentos"
+    "documentsListEmpty": "Não existem documentos",
+    "stakeholder": "Caso o interveniente não assine, só necessita de colocar documentação se tiver capital social superior a 5%"
   },
   "commercialOffer": {
     "title": "Oferta Comercial",
@@ -356,12 +360,13 @@
     "search": "Pesquisa",
     "processNumber": "Nº de Processo",
     "state": "Estado",
-    "incompleted": "Incompleto",
-    "running": "A decorrer",
-    "completed": "Completado",
+    "incompleted": "Pendente de Envio",
+    "running": "Tratamento em Backoffice",
+    "completed": "Concluído",
     "returned": "Devolvido",
     "cancelled": "Cancelado",
     "contractAcceptance": "Aceitação",
+    "awaitingCompletion": "Pendente Conclusão pelo Aderente",
     "eligibility": "Pareceres de Elegibilidade",
     "multipleClients": "Múltiplos Clientes",
     "DOValidation": "Valida DO",
@@ -614,6 +619,6 @@
     "resumeJourney": "Retoma da Jornada",
     "validation": "Validação palavra-passe de uso único",
     "password": "Código",
-    "expired": "O Código inserido encontra-se expirado"
+    "expired": "O código inserido encontra-se expirado"
   }
 }

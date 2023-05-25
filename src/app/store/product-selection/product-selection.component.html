@@ -5,7 +5,7 @@
         <h2 class="text-primary mt-5 ps-0 "><img src="assets/images/add_card.svg"
             class="img_add">&nbsp;{{'stores.productSelection'|translate|uppercase}}</h2>
       </div>
-      <div class="ms-0 me-0 ps-5 pe-0" [ngClass]="{'col-5' : window.outerWidth > 768}">
+      <div class="ms-0 me-0 ps-5 pe-0" [ngClass]="{'col-5' : window.outerWidth > 1024}">
         <h5 class="titulo-form-simples mb-0 ms-0 ps-0" wappler-command="editContent">
           {{'stores.solutionType'|translate}}*
         </h5>
@@ -62,7 +62,7 @@
             {{'generalKeywords.mandatoryParameter'|translate}}
           </div>
         </div>
-        <div [ngClass]="{'col-5' : window.outerWidth <= 768}">
+        <div [ngClass]="{'col-5' : window.outerWidth <= 1024}">
           <p class="titulo-form-simples" wappler-command="editContent">URL</p><input formControlName="url"
                                                                                      (change)="URLFilled(true)" id="url" name="url" type="text" class="form-control campo_form"
                                                                                      [pattern]="urlRegex" #url>

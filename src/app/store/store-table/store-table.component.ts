@@ -59,6 +59,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
   @Output() listLengthEmitter = new EventEmitter<number>();
   @Output() visitedStoresEmitter?= new EventEmitter<string[]>();
   @Output() storeListEmitter?= new EventEmitter<ShopDetailsAcquiring[]>();
+  @Output() processInfoEmitter?= new EventEmitter<any>();
 
   public subs: Subscription[] = [];
   activities: ShopActivities[];
@@ -220,6 +221,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
         });
       } else {
         this.processService.getUpdateProcessInfo(this.processId, this.updateProcessId).then(result => {
+          this.processInfoEmitter.emit(result.result);
           var shops = result.result.shops;
           if (shops.length > 0) {
             shops.forEach(val => {
