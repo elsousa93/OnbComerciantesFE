@@ -142,21 +142,4 @@ export class QueuesService {
       })
     });
   }
-
-  getAssessmentRisk(fiscalId: string, clientType: string, assessmentPost: Hits[]) {
-    var url = this.outboundUrl + 'api/v1/assessment/' + fiscalId + '/risk' + '&clientType=' + clientType;
-    return this.APIService.callAPIOutbound(HttpMethod.POST, url, "por mudar", "por mudar", "por mudar", "por mudar", assessmentPost);
-  }
-
-  getAssessmentSendRisk(processRefId: string, clientId: string, risk: PostRisk) {
-    var id = encodeURIComponent(processRefId);
-    var idClient = encodeURIComponent(clientId);
-    var url = this.acquiringUrl + 'api/v1/process/' + id + '/assessment/' + idClient + '/send-risk';
-    return this.APIService.callAPIOutbound(HttpMethod.POST, url, "por mudar", "por mudar", "por mudar", "por mudar", risk);
-  }
-
-  getAssessmentEligibility(fiscalId: string, clientType: string, assessmentPost: Hits[]) {
-    var url = this.acquiringUrl + 'api/v1/assessment/' + fiscalId + '/eligibility' + '&clientType=' + clientType;
-    return this.APIService.callAPIOutbound(HttpMethod.POST, url, "por mudar", "por mudar", "por mudar", "por mudar", assessmentPost);
-  }
 }

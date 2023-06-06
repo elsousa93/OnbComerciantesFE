@@ -206,6 +206,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   riskFinished: boolean = false;
   currentUser: User = {};
   readonly UserPermissions = UserPermissions;
+  observationLength: number;
 
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, private http: HttpClient,
     private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService,
@@ -636,6 +637,61 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       this.queuesInfo.getProcessShopDetails(processId, shopId).then(result => {
         this.logger.info("Get shop from process result: " + JSON.stringify(result));
         var shop = result.result;
+        if (this.queueName == 'negotiationAproval') {
+          if (shop.pack != null && shop.pack.commission != null && shop.pack.commission.attributes.length > 0) {
+            shop.pack.commission.attributes.forEach(value => {
+              var originalVal = (value.percentageValue.originalValue * 100).toFixed(3);
+              if (originalVal.includes(".")) {
+                var split = originalVal.split(".");
+                if (split[1].length < 3) {
+                  var decimal = split[1].length == 0 ? "000" : split[1].length == 1 ? "00" + split[1] : "0" + split[1];
+                } else {
+                  var decimal = split[1].substring(0, 3);
+                }
+                originalVal = split[0] + "." + decimal;
+              }
+              if (originalVal.includes(",")) {
+                var split = originalVal.split(",");
+                if (split[1].length < 3) {
+                  var decimal = split[1].length == 0 ? "000" : split[1].length == 1 ? "00" + split[1] : "0" + split[1];
+                } else {
+                  var decimal = split[1].substring(0, 3);
+                }
+                originalVal = split[0] + "," + decimal;
+              }
+              if (!originalVal.includes(".") && !originalVal.includes(",")) {
+                originalVal = originalVal + "." + "000";
+              }
+
+              value.percentageValue.originalValue = Number(originalVal);
+
+              var finalVal = (value.percentageValue.finalValue * 100).toFixed(3);
+              if (finalVal.includes(".")) {
+                var split = finalVal.split(".");
+                if (split[1].length < 3) {
+                  var decimal = split[1].length == 0 ? "000" : split[1].length == 1 ? "00" + split[1] : "0" + split[1];
+                } else {
+                  var decimal = split[1].substring(0, 3);
+                }
+                finalVal = split[0] + "." + decimal;
+              }
+              if (finalVal.includes(",")) {
+                var split = finalVal.split(",");
+                if (split[1].length < 3) {
+                  var decimal = split[1].length == 0 ? "000" : split[1].length == 1 ? "00" + split[1] : "0" + split[1];
+                } else {
+                  var decimal = split[1].substring(0, 3);
+                }
+                finalVal = split[0] + "," + decimal;
+              }
+              if (!finalVal.includes(".") && !finalVal.includes(",")) {
+                finalVal = finalVal + "." + "000";
+              }
+
+              value.percentageValue.finalValue = Number(finalVal);
+            });
+          }
+        }
         this.shopsList.push(shop);
         context.shopIssuesList.push(shop);
         context.loadStores(context.shopsList);
@@ -846,6 +902,11 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     this.processService.getProcessHistory(this.processId).then(result => {
       this.logger.info("Get process history result: " + JSON.stringify(result));
       this.processHistoryItems = result.result;
+      if (this.processHistoryItems.items.length > 2) {
+        this.observationLength = this.processHistoryItems.items.length - 2;
+      } else {
+        this.observationLength = 0;
+      }
       this.processHistoryItems.items.sort((b, a) => new Date(b.whenStarted).getTime() - new Date(a.whenStarted).getTime());
       this.processHistoryItems.items.forEach(process => {
         process.whenStarted = this.datePipe.transform(process.whenStarted, 'yyyy-MM-dd HH:mm').toString();
@@ -1567,7 +1628,6 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     if (this.files.length > 0) {
       let length = 0;
       this.files.forEach(function (value, idx) {
-        length++;
         context.documentService.readBase64(value).then(data => {
           var document: PostDocument = {
             documentType: context.documentType,
@@ -1579,6 +1639,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
             data: {}
           }
           context.queuesInfo.postProcessDocuments(document, context.processId, context.state).then(res => {
+            length++;
             if (context.files.length == length) {
               context.queuesInfo.postExternalState(context.processId, context.state, queueModel).then(result => {
                 context.logger.info("Queue post external state result: " + JSON.stringify(queueModel));

@@ -178,8 +178,10 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
             var shop = res.result;
             this.storesList.push(shop);
             length++;
-            if (length === totalLength)
+            if (length === totalLength) {
+              this.storesList = this.storesList.sort((a, b) => a.id > b.id ? 1 : -1);
               resolve(null);
+            }
           });
         });
       })
@@ -200,8 +202,10 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
             var shop = res.result;
             this.storesList.push(shop);
             length++;
-            if (length === totalLength)
+            if (length === totalLength) {
+              this.storesList = this.storesList.sort((a, b) => a.id > b.id ? 1 : -1);
               resolve(null);
+            }
           });
         });
       })
@@ -236,6 +240,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
                 this.storesList.push(o);
               }
             });
+            this.storesList = this.storesList.sort((a, b) => a.id > b.id ? 1 : -1);
             this.loadStores(this.storesList);
             this.storeListEmitter.emit(this.storesList);
             this.listLengthEmitter.emit(this.storesList.length);

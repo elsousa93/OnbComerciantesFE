@@ -31,6 +31,7 @@ import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { ProcessService } from '../../process/process.service';
 import { QueuesService } from '../../queues-detail/queues.service';
 import { AppConfigService } from '../../app-config.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-client',
   templateUrl: './clientbyid.component.html',
@@ -151,7 +152,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   constructor(private logger: LoggerService, private datepipe: DatePipe, private formBuilder: FormBuilder,
     private route: Router, private clientService: ClientService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private data: DataService, private crcService: CRCService,
     private documentService: SubmissionDocumentService, private processNrService: ProcessNumberService,
-    private stakeholderService: StakeholderService, private storeService: StoreService, private authService: AuthService, private translate: TranslateService, private modalService: BsModalService, private processService: ProcessService, private queueService: QueuesService, private configuration: AppConfigService) {
+    private stakeholderService: StakeholderService, private storeService: StoreService, private authService: AuthService, private translate: TranslateService, private modalService: BsModalService, private processService: ProcessService, private queueService: QueuesService, private configuration: AppConfigService, private snackBar: MatSnackBar) {
     //Gets Tipologia from the Client component 
     if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.tipologia = this.route.getCurrentNavigation().extras.state["tipologia"];
@@ -225,6 +226,17 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           context.processService.getMerchantFromProcess(context.processId).subscribe(res => {
             context.logger.info("Get process client by id result: " + JSON.stringify(res));
             context.merchantInfo = res;
+            context.clientDocs = [];
+            context.merchantInfo.documents.forEach(doc => {
+              var docOutbound = {
+                documentType: doc.documentType,
+                uniqueReference: doc.id,
+                validUntil: context.datepipe.transform(doc.validUntil, "yyyy-MM-dd"),
+                purpose: doc.purposes[0],
+              } as OutboundDocument;
+              context.clientDocs.push(docOutbound);
+            });
+            this.fetchDocumentDescriptions();
             resolve(res);
             return res;
           });
@@ -315,6 +327,17 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             context.clientService.GetClientByIdAcquiring(resul?.result[0]?.submissionId).then(function (res) {
               context.logger.info("Get client by id result: " + JSON.stringify(res));
               context.merchantInfo = res;
+              context.clientDocs = [];
+              context.merchantInfo.documents.forEach(doc => {
+                var docOutbound = {
+                  documentType: doc.documentType,
+                  uniqueReference: doc.id,
+                  validUntil: context.datepipe.transform(doc.validUntil, "yyyy-MM-dd"),
+                  purpose: doc.purposes[0],
+                } as OutboundDocument;
+                context.clientDocs.push(docOutbound);
+              });
+              context.fetchDocumentDescriptions();
               return context.merchantInfo;
             }).then(function (r) {
               resolve(r);
@@ -494,6 +517,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 client.clientId = result.result.merchantId;
                 client.merchantRegistrationId = result.result.merchantRegistrationId;
                 if ((this.dataCC.addressCC != " " && this.dataCC.addressCC != null) || (this.dataCC.countryCC != " " && this.dataCC.countryCC != null) || (this.dataCC.localityCC != " " && this.dataCC.localityCC != null) || (this.dataCC.postalCodeCC != " " && this.dataCC.postalCodeCC != null)) {
+                  client.headquartersAddress = {};
                   client.headquartersAddress.address = this.dataCC.addressCC;
                   client.headquartersAddress.country = this.dataCC.countryCC;
                   client.headquartersAddress.postalArea = this.dataCC.localityCC;
@@ -539,7 +563,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                   },
                 }
 
-                clientToInsert.businessGroup = {
+                client.businessGroup = {
                   type: result.result.context,
                   branch: result.result.contextId
                 }
@@ -818,8 +842,12 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           this.createSubmission();
         });
       }
-    } else {
+    } else { 
       this.clientContext.isClient = this.isClient;
+      if (this.returned == 'consult') {
+        this.clientContext.isClient = false;
+        this.isClient = false;
+      }
       if (this.clientContext.isClient) {
         this.formCountryIsValid = true;
         this.countriesListValid = true;
@@ -846,18 +874,34 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
   submit() {
     if (this.returned != 'consult') {
-      this.clientCharacterizationComponent.submit();
-      if (this.clientContext.isClient == false) // !
-        this.countriesComponent.submit();
-      if (this.submissionType === 'DigitalComplete')
-        this.representationPowerComponent.submit();
-      this.updateSubmission();
+      if (this.formClientIsValid && this.formCountryIsValid && this.countriesListValid) {
+        this.clientCharacterizationComponent.submit();
+        if (this.clientContext.isClient == false) // !
+          this.countriesComponent.submit();
+        if (this.submissionType === 'DigitalComplete')
+          this.representationPowerComponent.submit();
+        this.updateSubmission();
+      } else {
+        this.openAccordeons();
+        this.form.markAllAsTouched();
+        this.snackBar.open(this.translate.instant('generalKeywords.formInvalid'), '', {
+          duration: 15000,
+          panelClass: ['snack-bar']
+        });
+      }
     } else {
       this.logger.info("Redirecting to Stakeholders page");
       this.data.changeMerchant(true);
       this.data.updateData(true, 1);
       this.route.navigateByUrl('/stakeholders');
     }
+  }
+
+  openAccordeons() {
+    document.getElementById("flush-collapseOne").className = "accordion-collapse collapse show";
+    document.getElementById("accordionButton1").className = "accordion1-button";
+    document.getElementById("flush-collapseTwo").className = "accordion-collapse collapse show";
+    document.getElementById("accordionButton2").className = "accordion1-button";
   }
 
   openReturnPopup() {
@@ -935,9 +979,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       newSubmission.startedAt = new Date().toISOString();
       newSubmission.merchant = this.clientContext.getClient();
       newSubmission.merchant.potentialClientIds = this.potentialClientIds;
-      newSubmission.merchant.commercialName = newSubmission.merchant?.commercialName?.slice(0, 40);
+      newSubmission.merchant.commercialName = newSubmission.merchant?.commercialName;
       newSubmission.merchant.legalName = newSubmission.merchant?.legalName?.slice(0, 100);
-      newSubmission.merchant.shortName = newSubmission.merchant?.shortName?.slice(0, 40);
+      newSubmission.merchant.shortName = newSubmission.merchant?.shortName;
       var loginUser = this.authService.GetCurrentUser();
       var stakeholder: IStakeholders = {} as IStakeholders;
 
@@ -967,7 +1011,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         stakeholder.fiscalId = client.fiscalId;
         stakeholder.fullName = client.legalName;
         stakeholder.contactName = client.commercialName?.slice(0, 100);
-        stakeholder.shortName = client.legalName.slice(0, 40);
+        stakeholder.shortName = client.legalName?.slice(0, 40);
         stakeholder.fiscalAddress = client.headquartersAddress;
         stakeholder.phone1 = {
           countryCode: client.contacts?.phone1?.countryCode,
@@ -1079,20 +1123,10 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           this.clientContext.setStakeholdersToInsert([]);
           this.processClient.stakeholders = [];
         } else {
-          this.submissionStakeholders.forEach(stake => {
-            var found = stakeholders.find(val => val.fiscalId === stake.fiscalId);
-            if (found == undefined) {
-              if (context.returned == null) {
-                context.stakeholderService.DeleteStakeholder(submissionID, stake.id).subscribe(result => {
-                  context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
-                });
-              } else {
-                context.processService.deleteStakeholderProcess(context.processId, stake.id).then(result => {
-                  context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
-                });
-              }
-            } else {
-              if (found.clientId != null && found.clientId != "" && stake.clientId != null && stake.clientId != "" && found.clientId != stake.clientId) {
+          if ((client?.incorporationStatement != null && client?.incorporationStatement?.code != this.form?.get("clientCharacterizationForm")?.get("crcCode")?.value) || !this.submissionExists) {
+            this.submissionStakeholders.forEach(stake => {
+              var found = stakeholders.find(val => val.fiscalId === stake.fiscalId);
+              if (found == undefined) {
                 if (context.returned == null) {
                   context.stakeholderService.DeleteStakeholder(submissionID, stake.id).subscribe(result => {
                     context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
@@ -1102,15 +1136,76 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                     context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
                   });
                 }
-
               } else {
-                stakeholders = stakeholders.filter(item => item.fiscalId !== found.fiscalId);
+                if (found.clientId != null && found.clientId != "" && stake.clientId != null && stake.clientId != "" && found.clientId != stake.clientId) {
+                  if (context.returned == null) {
+                    context.stakeholderService.DeleteStakeholder(submissionID, stake.id).subscribe(result => {
+                      context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
+                    });
+                  } else {
+                    context.processService.deleteStakeholderProcess(context.processId, stake.id).then(result => {
+                      context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
+                    });
+                  }
+
+                } else {
+                  stakeholders = stakeholders.filter(item => item.fiscalId !== found.fiscalId);
+                }
               }
-            }
-          });
-          stakeholders.forEach(function (value, idx) {
-            if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
-              if (value.fiscalId !== client.fiscalId) {
+            });
+
+            stakeholders.forEach(function (value, idx) {
+              if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
+                if (value.fiscalId !== client.fiscalId) {
+                  if (context.returned == null) {
+                    context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+                      context.logger.info("Created stakeholder result: " + JSON.stringify(result));
+                    });
+                  } else {
+                    context.processService.addStakeholderToProcess(context.processId, value).then(result => {
+                      context.logger.info("Created stakeholder result: " + JSON.stringify(result));
+                    });
+                  }
+                } else {
+                  if (localStorage.getItem("documentType") == "0501") {
+                    value.signType = "CitizenCard";
+                  }
+                  if (localStorage.getItem("documentType") == "1001") {
+                    value.signType = "DigitalCitizenCard";
+                  }
+                  if (localStorage.getItem("documentType") == "0101") {
+                    value.signType = "CitizenCard";
+                  }
+                  if (localStorage.getItem("documentType") == "0302") {
+                    value.signType = "CitizenCard";
+                  }
+
+                  if (context.returned == null) {
+                    context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+                      context.logger.info("Created stakeholder result: " + JSON.stringify(result));
+                      value.id = result.id;
+                      var found = newSubmission.documents.find(doc => doc.documentType == '0018');
+                      if (found != undefined) {
+                        context.stakeholderService.AddNewDocumentStakeholder(submissionID, value.id, found).subscribe(res => {
+
+                        });
+                      }
+
+                    });
+                  } else {
+                    context.processService.addStakeholderToProcess(context.processId, value).then(result => {
+                      context.logger.info("Created stakeholder result: " + JSON.stringify(result));
+                      value.id = result.result.id;
+                      var found = newSubmission.documents.find(doc => doc.documentType == '0018');
+                      if (found != undefined) {
+                        context.processService.addDocumentToStakeholderProcess(context.processId, value.id, found).then(res => {
+
+                        });
+                      }
+                    });
+                  }
+                }
+              } else {
                 if (context.returned == null) {
                   context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
                     context.logger.info("Created stakeholder result: " + JSON.stringify(result));
@@ -1120,44 +1215,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                     context.logger.info("Created stakeholder result: " + JSON.stringify(result));
                   });
                 }
-              } else {
-                if (localStorage.getItem("documentType") == "0501") {
-                  value.signType = "CitizenCard";
-                }
-                if (localStorage.getItem("documentType") == "1001") {
-                  value.signType = "DigitalCitizenCard";
-                }
-                if (localStorage.getItem("documentType") == "0101") {
-                  value.signType = "CitizenCard";
-                }
-                if (localStorage.getItem("documentType") == "0302") {
-                  value.signType = "CitizenCard";
-                }
-
-                if (context.returned == null) {
-                  context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
-                    context.logger.info("Created stakeholder result: " + JSON.stringify(result));
-                    value.id = result.id;
-                  });
-                } else {
-                  context.processService.addStakeholderToProcess(context.processId, value).then(result => {
-                    context.logger.info("Created stakeholder result: " + JSON.stringify(result));
-                    value.id = result.result.id;
-                  });
-                }
               }
-            } else {
-              if (context.returned == null) {
-                context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
-                  context.logger.info("Created stakeholder result: " + JSON.stringify(result));
-                });
-              } else {
-                context.processService.addStakeholderToProcess(context.processId, value).then(result => {
-                  context.logger.info("Created stakeholder result: " + JSON.stringify(result));
-                });
-              }
-            }
-          });
+            });
+          }
         }
       }
 
@@ -1288,9 +1348,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       const count2 = a2.filter(e => e.documentType === x).length;
       if (count1 !== count2)
         return false;
-      else
-        if (x === '0034')
-          return false;
+      //else
+      //  if (x === '0034')
+      //    return false;
     }
     return true;
   }
@@ -1327,12 +1387,32 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
       });
     } else {
       if (this.returned == null || this.returned == 'edit' && (this.processId == '' || this.processId == null)) {
-        this.documentService.GetDocumentImage(localStorage.getItem("submissionId"), uniqueReference).subscribe(result => {
-          this.logger.info("Get document image result: " + JSON.stringify(result));
+        this.documentService.GetDocumentImage(localStorage.getItem("submissionId"), uniqueReference).then(async result => {
+          this.logger.info("Get document image outbound: " + JSON.stringify(result));
+          result.blob().then(data => {
+            var blob = new Blob([data], { type: 'application/pdf' });
+            let url = window.URL.createObjectURL(blob);
+            window.open(url, '_blank',
+              `margin: auto;
+              width: 50%;
+              padding: 10px;
+              text-align: center;
+              border: 3px solid green;`);
+            });
         });
       } else {
-        this.processService.getDocumentImageFromProcess(this.processId, uniqueReference).subscribe(result => {
+        this.processService.getDocumentImageFromProcess(this.processId, uniqueReference).then(async result => {
           this.logger.info("Get document image result: " + JSON.stringify(result));
+          result.blob().then(data => {
+            var blob = new Blob([data], { type: 'application/pdf' });
+            let url = window.URL.createObjectURL(blob);
+            window.open(url, '_blank',
+              `margin: auto;
+              width: 50%;
+              padding: 10px;
+              text-align: center;
+              border: 3px solid green;`);
+          });
         });
       }
 

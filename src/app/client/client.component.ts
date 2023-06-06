@@ -167,6 +167,8 @@ export class ClientComponent implements OnInit {
         this.prettyPDF = resolve;
       });
     }
+    this.newClient.clientId = nif;
+    this.searchClient();
   }
 
   UibModal: BsModalRef | undefined;
@@ -263,6 +265,7 @@ export class ClientComponent implements OnInit {
   queueName: string = "";
   title: string;
   merchant: boolean;
+  createFormFirstTime: boolean = true;
 
   constructor(private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder, private translate: TranslateService,
     private route: Router, private data: DataService, private clientService: ClientService,
@@ -386,7 +389,7 @@ export class ClientComponent implements OnInit {
     return '';
   }
 
-  searchClient() {
+  searchClient() { 
     this.logger.info("Searching for client with ID: " + this.newClient.clientId);
     this.showSeguinte = false;
     var context = this;
@@ -397,7 +400,14 @@ export class ClientComponent implements OnInit {
 
     if (this.canSearch) {
       this.canSearch = false;
-      this.clientService.SearchClientByQuery(this.newClient.clientId, this.searchType, "por mudar", "por mudar").subscribe(o => {
+      var searchType = "";
+
+      if (this.dataCCcontents?.nifCC != null)
+        searchType = "0501";
+      else
+        searchType = this.searchType;
+
+      this.clientService.SearchClientByQuery(this.newClient.clientId, searchType, "por mudar", "por mudar").subscribe(o => {
         this.logger.info("Search client by ID result: " + JSON.stringify(o));
         this.showFoundClient = true;
         var clients = o;
@@ -446,20 +456,28 @@ export class ClientComponent implements OnInit {
             });
           });
         } else {
+          if (this.docType == '1001' && this.isNoDataReadable) {
+            this.showFoundClient = false;
+          } else {
+            this.showFoundClient = false;
+            this.notFound = true;
+            this.searchDone = true;
+            this.canSearch = true;
+            this.createAdditionalInfoForm();
+            this.resetLocalStorage();
+          }
+        }
+      }, error => {
+        if (this.docType == '1001' && this.isNoDataReadable) {
           this.showFoundClient = false;
+        } else {
+          context.showFoundClient = false;
           this.notFound = true;
           this.searchDone = true;
           this.canSearch = true;
           this.createAdditionalInfoForm();
           this.resetLocalStorage();
         }
-      }, error => {
-        context.showFoundClient = false;
-        this.notFound = true;
-        this.searchDone = true;
-        this.canSearch = true;
-        this.createAdditionalInfoForm();
-        this.resetLocalStorage();
       });
     }
   }
@@ -497,12 +515,18 @@ export class ClientComponent implements OnInit {
           nipc: new FormControl({ value: (NIFNIPC != null && NIFNIPC != '') ? NIFNIPC : localStorage.getItem("nif"), disabled: NIFNIPC }, Validators.required),
           denominacaoSocial: new FormControl(localStorage.getItem("submissionId") != null ? localStorage.getItem("clientName") ?? '' : '', Validators.required)
         });
+        if (!this.createFormFirstTime)
+          this.newClientForm.get("denominacaoSocial").setValue("");
+        this.createFormFirstTime = false;
         break;
       case "ENI" || "Entrepeneur" || "02":
         this.newClientForm = this.formBuilder.group({
           nif: new FormControl({ value: (NIFNIPC != null && NIFNIPC != '') ? NIFNIPC : localStorage.getItem("nif"), disabled: NIFNIPC }, Validators.required),
           nome: new FormControl(localStorage.getItem("submissionId") != null ? localStorage.getItem("clientName") ?? '' : '', Validators.required)
         });
+        if (!this.createFormFirstTime)
+          this.newClientForm.get("nome").setValue("");
+        this.createFormFirstTime = false;
         break;
     }
   }
@@ -561,6 +585,7 @@ export class ClientComponent implements OnInit {
     this.okCC = false;
     this.notFound = false;
     this.showSeguinte = false;
+    this.canSearch = true;
   }
 
   obterSelecionado() {
@@ -575,7 +600,7 @@ export class ClientComponent implements OnInit {
       this.dataCC = {
         nameCC: this.nameCC,
         cardNumberCC: this.cardNumberCC,
-        nifCC: this.nifCC + "",
+        nifCC: this.nifCC,
         addresssCC: this.addressCC,
         postalCodeCC: this.postalCodeCC,
       };
@@ -632,6 +657,7 @@ export class ClientComponent implements OnInit {
     this.showFoundClient = false;
     this.ccInfo = null;
     this.showButtons = true;
+    this.canSearch = true;
     this.isCC = false;
     this.notFound = false;
     this.clientNr = false;

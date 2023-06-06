@@ -123,6 +123,8 @@ export class ConsultasFTComponent implements OnInit {
       case "validationSIBS":
         this.state = "MerchantRegistration"
         break;
+      case "multipleClients":
+        this.state = "ClientChoice"
     }
   }
 
@@ -198,6 +200,7 @@ export class ConsultasFTComponent implements OnInit {
         duration: 4000,
         panelClass: ['snack-bar']
       });
+      return;
     }
 
     if (processDocType != '' && processDocNumber == '' || processDocType == '' && processDocNumber != '') {
@@ -284,10 +287,41 @@ export class ConsultasFTComponent implements OnInit {
     this.username = this.authService.GetCurrentUser().userName;
     this.queueService.getActiveWorkQueue(this.processToAssign).then(result => {
       this.workQueue = result.result;
-      if (result.result.lockedBy == "" || result.result.lockedBy == null) {
-        this.existsUser = false;
+      if (result.result.lockedBy != null && result.result.lockedBy != "") {
+        if (result.result.status != "InProgress") {
+          if (result.result.lockedBy.trim() != this.authService.GetCurrentUser().userName.trim()) {
+            this.existsUser = true;
+            this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
+          } else {
+            let navigationExtras: NavigationExtras = {
+              state: {
+                queueName: this.queueName,
+                processId: this.processToAssign
+              }
+            };
+            this.logger.info('Redirecting to Queues Detail page');
+            this.route.navigate(["/queues-detail"], navigationExtras);
+          }
+        } else {
+          if (result.result.lockedBy.trim() == this.authService.GetCurrentUser().userName.trim()) {
+            let navigationExtras: NavigationExtras = {
+              state: {
+                queueName: this.queueName,
+                processId: this.processToAssign
+              }
+            };
+            this.logger.info('Redirecting to Queues Detail page');
+            this.route.navigate(["/queues-detail"], navigationExtras);
+          } else {
+            this.snackBar.open(this.translate.instant('searches.processInProgress'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
+          }
+        }
       } else {
-        this.existsUser = true;
+        this.existsUser = false;
+        this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
       }
       this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
     }, error => {

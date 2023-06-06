@@ -263,4 +263,8 @@ export class PepComponent implements OnInit {
     this.isVisiblePepRelations = undefined;
     this.isVisiblePepPoliticalPublicJobs = undefined;
   }
+
+  disableDate() {
+    return false;
+  }
 }

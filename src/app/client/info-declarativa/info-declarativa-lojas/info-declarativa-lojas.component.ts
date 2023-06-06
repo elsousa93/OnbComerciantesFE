@@ -17,6 +17,7 @@ import { distinctUntilChanged, Observable, of, Subscription } from 'rxjs';
 import { TranslateService } from '@ngx-translate/core';
 import { ProcessService } from '../../../process/process.service';
 import { ProcessNumberService } from '../../../nav-menu-presencial/process-number.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-info-declarativa-lojas',
@@ -67,7 +68,7 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   processId: string;
   updateProcessId: string;
 
-  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService, private translate: TranslateService, private processService: ProcessService, private processNrService: ProcessNumberService) {
+  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService, private translate: TranslateService, private processService: ProcessService, private processNrService: ProcessNumberService, private snackBar: MatSnackBar) {
     if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.returnedFrontOffice = this.route.getCurrentNavigation().extras.state["returnedFrontOffice"];
     }
@@ -247,6 +248,12 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
             }
           }
         }
+      } else {
+        this.listValue.markAllAsTouched();
+        this.snackBar.open(this.translate.instant('generalKeywords.formInvalid'), '', {
+          duration: 15000,
+          panelClass: ['snack-bar']
+        });
       }
     } else {
       if (!clickedTable) {
@@ -268,10 +275,10 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
     this.listValue.get("cellphone").get("phoneNumber").setValue(this.selectedStore?.phone1 != null ? this.selectedStore?.phone1?.phoneNumber : this.client?.contacts?.phone1?.phoneNumber);
     this.listValue.get("telephone").get("countryCode").setValue(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.countryCode : this.client?.contacts?.phone2?.countryCode);
     this.listValue.get("telephone").get("phoneNumber").setValue(this.selectedStore?.phone2 != null ? this.selectedStore?.phone2?.phoneNumber : this.client?.contacts?.phone2?.phoneNumber);
-      this.listValue.get("email").setValue(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email);
-      if (this.selectedStore.phone1 == null || this.selectedStore.phone2 == null) {
-          this.listValue.markAsDirty();
-      }
+    this.listValue.get("email").setValue(this.selectedStore?.email != null ? this.selectedStore?.email : this.client?.contacts?.email);
+    if (this.selectedStore.phone1 == null && this.selectedStore.phone2 == null) {
+        this.listValue.markAsDirty();
+    }
     if (this.returned == 'consult')
       this.listValue.disable();
   }

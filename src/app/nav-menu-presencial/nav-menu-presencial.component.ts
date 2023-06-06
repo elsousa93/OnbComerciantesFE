@@ -67,6 +67,7 @@ export class NavMenuPresencialComponent implements OnInit {
   resizeObservable$;
   maxWidth: boolean;
   currentRoute: string;
+  localStorage = localStorage;
 
   constructor(private route: Router, private snackBar: MatSnackBar, private processNrService: ProcessNumberService, private processService: ProcessService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
     authService.currentUser.subscribe(user => this.currentUser = user);
@@ -190,19 +191,69 @@ export class NavMenuPresencialComponent implements OnInit {
   }
 
   searchProcess(process) {
+    this.processNumberToSearch = "";
     this.processService.searchProcessByNumber(this.encodedCode, 0, 1).subscribe(resul => {
       this.logger.info("Search process result:" + JSON.stringify(resul));
       if (resul.items.length != 0) {
-        if (resul.items[0].state == "Incomplete") {
-          localStorage.setItem("processNumber", process);
-          localStorage.setItem("returned", 'edit');
+        if (resul.items[0].state === 'StandardIndustryClassificationChoice' || resul.items[0].state === 'RiskAssessment' || resul.items[0].state === 'EligibilityAssessment' || resul.items[0].state === 'ClientChoice' || resul.items[0].state === 'NegotiationApproval' || resul.items[0].state === 'MerchantRegistration' || resul.items[0].state === 'OperationsEvaluation' || resul.items[0].state === 'ComplianceEvaluation') {
+          let navigationExtras: NavigationExtras = {
+            state: {
+              queueName: "",
+              processId: resul.items[0].processId
+            }
+          };
+          if (resul.items[0].state === 'StandardIndustryClassificationChoice') {
+            navigationExtras.state["queueName"] = "MCCTreatment";
+          } else if (resul.items[0].state === 'RiskAssessment') {
+            navigationExtras.state["queueName"] = "risk";
+          } else if (resul.items[0].state === 'EligibilityAssessment') {
+            navigationExtras.state["queueName"] = "eligibility";
+          } else if (resul.items[0].state === 'ClientChoice') {
+            navigationExtras.state["queueName"] = "multipleClients";
+          } else if (resul.items[0].state === 'NegotiationApproval') {
+            navigationExtras.state["queueName"] = "negotiationAproval";
+          } else if (resul.items[0].state === 'MerchantRegistration') {
+            navigationExtras.state["queueName"] = "validationSIBS";
+          } else if (resul.items[0].state === 'OperationsEvaluation') {
+            navigationExtras.state["queueName"] = "DOValidation";
+          } else if (resul.items[0].state === 'ComplianceEvaluation') {
+            navigationExtras.state["queueName"] = "compliance";
+          }
+          this.logger.info('Redirecting to Queues Detail page');
+          this.route.navigate(["/queues-detail"], navigationExtras);
         } else {
-          localStorage.setItem("processNumber", process);
-          this.processNrService.changeProcessId(resul.items[0].processId);
-          localStorage.setItem("returned", 'consult');
+          if (resul.items[0].state == "Returned") {
+            this.dataService.historyStream$.next(true);
+            this.processNrService.changeProcessId(resul.items[0].processId);
+            this.processNrService.changeQueueName("devolucao");
+            this.logger.info('Redirecting to Devolucao page');
+            this.route.navigate(['/app-devolucao/', resul.items[0].processId]);
+          } else if (resul.items[0].state == "ContractAcceptance" || resul.items[0].state == "ContractDigitalAcceptance" || resul.items[0].state == "DigitalIdentification") {
+            localStorage.setItem("processNumber", resul.items[0].processNumber);
+            this.processNrService.changeProcessId(resul.items[0].processId);
+            this.processNrService.changeQueueName("aceitacao");
+            this.logger.info("Redirecting to Aceitacao page");
+            this.route.navigate(['/app-aceitacao/', resul.items[0].processId]);
+          } else if (resul.items[0].state == "Incomplete") {
+            localStorage.setItem("processNumber", resul.items[0].processNumber);
+            localStorage.setItem("returned", 'edit');
+            this.logger.info("Redirecting to Client By Id page");
+            this.route.navigate(['/clientbyid']);
+          } else if (resul.items[0].state == "Ongoing" || resul.items[0].state == "AwaitingCompletion") {
+            localStorage.setItem("processNumber", resul.items[0].processNumber);
+            localStorage.setItem("returned", 'consult');
+            this.processNrService.changeProcessId(resul.items[0].processId);
+            this.processNrService.changeQueueName("history");
+            this.logger.info("Redirecting to History page");
+            this.route.navigate(['/app-history', resul.items[0].processId]);
+          } else {
+            localStorage.setItem("processNumber", resul.items[0].processNumber);
+            this.processNrService.changeProcessId(resul.items[0].processId);
+            localStorage.setItem("returned", 'consult');
+            this.logger.info("Redirecting to Client By Id page");
+            this.route.navigate(['/clientbyid']);
+          }
         }
-        this.logger.info("Redirecting to Client by id page");
-        this.route.navigate(['/clientbyid', this.encodedCode]);
       } else {
         let navigationExtras: NavigationExtras = {
           state: {

@@ -70,7 +70,7 @@
                   <div class="accordion1 accordion-flush" id="accordionFlushExample">
                     <div class="accordion1-item">
                       <h2 class="accordion1-header" id="flush-headingOne">
-                        <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                        <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" id="accordionButton1"
                           data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                           <span class="material-symbols-outlined icon-accordion add-call-info-stakeholder icon-add-call">
                             <!--<img src="assets/images/add_call.svg" />-->
@@ -85,7 +85,7 @@
                     </div>
                     <div class="accordion1-item">
                       <h2 class="accordion1-header" id="flush-headingTwo">
-                        <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                        <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse" id="accordionButton2"
                           data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
                           <span class="material-symbols-outlined icon-accordion frame-person icon-frame-person">
                             <!--<img src="assets/images/frame_person.svg" />-->
@@ -128,12 +128,12 @@
                         <img src="assets/images/arrow_back_ios_white.svg"
                           style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;
                       </button>
-                      <button id="btn5a2" [disabled]="!infoStakeholders.valid && returned != 'consult'" (click)="submit()"
+                      <button id="btn5a2" (click)="submit()"
                         class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
                         wappler-command="editContent">
                         {{'generalKeywords.next'|translate|uppercase}}&nbsp;<img
                           src="assets/images/arrow_forward_ios.svg"
-                          style="height: 25px !important; vertical-align: sub;">
+                          style="height: 25px !important; vertical-align: sub;"><!-- [disabled]="!infoStakeholders.valid && returned != 'consult'"-->
                       </button>
                     </span>
                   </nav>

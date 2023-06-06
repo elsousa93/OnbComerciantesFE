@@ -25,6 +25,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { dataCC } from '../citizencard/dataCC.interface';
 import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
 import { PostDocument } from '../submission/document/ISubmission-document';
+import { SubmissionDocumentService } from '../submission/document/submission-document.service';
 
 /** Listagem Intervenientes / Intervenientes
  *
@@ -177,7 +178,7 @@ export class StakeholdersComponent implements OnInit {
 
   constructor(public modalService: BsModalService, private datePipe: DatePipe,
     private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService,
-    private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private clientService: ClientService, private logger: LoggerService, private translate: TranslateService, private processNrService: ProcessNumberService, private processService: ProcessService, private snackBar: MatSnackBar) {
+    private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private clientService: ClientService, private logger: LoggerService, private translate: TranslateService, private processNrService: ProcessNumberService, private processService: ProcessService, private snackBar: MatSnackBar, private documentService: SubmissionDocumentService) {
     this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
     this.subscription = this.processNrService.updateProcessId.subscribe(id => this.updateProcessId = id);
     if (this.route.getCurrentNavigation().extras.state) {
@@ -264,6 +265,7 @@ export class StakeholdersComponent implements OnInit {
     }
     this.submissionId = localStorage.getItem('submissionId');
     this.processNumber = localStorage.getItem("processNumber");
+    this.getDocumentDescription([]);
     this.clickButton = true;
   }
 
@@ -314,7 +316,7 @@ export class StakeholdersComponent implements OnInit {
       stakeForm.get("flagRecolhaEletronica").setValue(false);
       stakeForm.get("NIF").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalId);
 
-      if (this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country == null || this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country == "")
+      if ((this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country == null || this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country == "") && this.currentStakeholder?.stakeholderAcquiring["headquartersAddress"] == null)
         stakeForm.get("Country").setValue("PT");
       else
         stakeForm.get("Country").setValue(this.currentStakeholder.stakeholderAcquiring.fiscalAddress?.country ?? this.currentStakeholder.stakeholderAcquiring["headquartersAddress"]["country"]);
@@ -347,14 +349,24 @@ export class StakeholdersComponent implements OnInit {
   }
 
   selectStake(info) {
+    var context = this;
     if (info.stakeholder != null) {
       if (info.clickedTable) {
         this.submit(true);
       }
+      context.selectedStakeholderComprovativos = [];
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
       this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
       this.logger.info("Selected stakeholder index: " + this.currentIdx);
+      if (this.currentStakeholder?.stakeholderAcquiring?.documents?.length > 0) {
+        this.currentStakeholder.stakeholderAcquiring.documents.forEach(doc => {
+          doc["uniqueReference"] = doc.id;
+          doc["archiveSource"] = null;
+          context.selectedStakeholderComprovativos.push(doc);
+        });
+        this.getDocumentDescription(this.selectedStakeholderComprovativos);
+      }
       if (this.currentStakeholder.stakeholderOutbound != undefined) {
         this.selectedStakeholderComprovativos = this.currentStakeholder.stakeholderOutbound.supportingDocuments;
         this.getDocumentDescription(this.selectedStakeholderComprovativos);
@@ -368,11 +380,14 @@ export class StakeholdersComponent implements OnInit {
       this.subs.push(this.tableInfo.GetDocumentsDescription().subscribe(result => {
         this.logger.info("Get documents description result: " + JSON.stringify(result));
         this.documents = result;
-        this.documents.forEach(doc => {
-          if (docs[0]?.documentType === doc.code) {
-            docs[0].documentType = doc.description;
-          }
-        });
+        if (docs.length > 0) {
+          this.documents.forEach(doc => {
+            docs.forEach(d => {
+              if (doc.code == d.documentType)
+                d.documentType = doc.description;
+            });
+          });
+        }
       }));
     }
   }
@@ -382,7 +397,7 @@ export class StakeholdersComponent implements OnInit {
     this.clickButton = null;
     var stakeForm = this.editStakes.controls["stake"];
     if (this.returned != 'consult') {
-      if (this.editStakes.controls["stake"].valid) {
+      if (this.editStakes.controls["stake"].valid && this.stakesLength > 0 && !this.incorrectNIF && !this.incorrectNIFSize && !this.incorrectNIPC && !this.incorrectNIPCSize) {
         if (this.currentStakeholder?.stakeholderAcquiring?.signType != null && this.currentStakeholder?.stakeholderAcquiring?.signType !== '') {
           this.currentStakeholder.stakeholderAcquiring.isProxy = (stakeForm.get("proxy").value === 'true');
 
@@ -427,16 +442,17 @@ export class StakeholdersComponent implements OnInit {
           if (stakeForm.get("identificationDocumentId")) { // stakeForm.get("Country") == null
             if (this.currentStakeholder.stakeholderAcquiring.identificationDocument === null || this.currentStakeholder.stakeholderAcquiring.identificationDocument === undefined)
               this.currentStakeholder.stakeholderAcquiring.identificationDocument = {};
-            this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = (stakeForm.get("documentType").value == "" || stakeForm.get("documentType").value == null) ? null : stakeForm.get("documentType").value;
+            this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = (stakeForm.get("documentType").value == "" || stakeForm.get("documentType").value == null) ? null : stakeForm.get("documentType").value; 
+            if (this.currentStakeholder.stakeholderAcquiring.identificationDocument.type != '0018' && this.currentStakeholder.stakeholderAcquiring.identificationDocument.type != '0001') {
+              this.currentStakeholder.stakeholderAcquiring.identificationDocument.type = this.documents.find(doc => doc.description == this.currentStakeholder.stakeholderAcquiring.identificationDocument.type).code;
+            }
             this.currentStakeholder.stakeholderAcquiring.identificationDocument.number = (stakeForm.get("identificationDocumentId").value == "" || stakeForm.get("identificationDocumentId").value == null) ? null : stakeForm.get("identificationDocumentId").value;
             this.currentStakeholder.stakeholderAcquiring.identificationDocument.country = (stakeForm.get("identificationDocumentCountry").value == "" || stakeForm.get("identificationDocumentCountry").value == null) ? "PT" : stakeForm.get("identificationDocumentCountry").value;
             this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate = (stakeForm.get("identificationDocumentValidUntil").value == "" || stakeForm.get("identificationDocumentValidUntil").value == null) ? null : stakeForm.get("identificationDocumentValidUntil").value;
-            if (this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate.includes("-")) {
+            if (this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate?.includes("-") && this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate?.split("-")[0].length == 2) {
               var split = this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate.split("-");
               this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate = this.datePipe.transform(split[1] + '-' + split[0] + '-' + split[2], 'yyyy-MM-dd');
             }
-            //this.currentStakeholder.stakeholderAcquiring.identificationDocument.expirationDate = this.datePipe.transform(this.currentStakeholder?.stakeholderAcquiring?.identificationDocument?.expirationDate, 'yyyy-MM-dd');
-
             //adicionar documento
             if (this.prettyPDF != null) {
               if (this.dataCCcontents?.notes != null || this.dataCCcontents?.notes != "") {
@@ -659,7 +675,13 @@ export class StakeholdersComponent implements OnInit {
             }
           }
         }
-       
+      } else {
+        this.openAccordeons();
+        this.editStakes.markAllAsTouched();
+        this.snackBar.open(this.translate.instant('generalKeywords.formInvalid'), '', {
+          duration: 15000,
+          panelClass: ['snack-bar']
+        });
       }
     } else {
       if (!clickedTable) {
@@ -670,6 +692,11 @@ export class StakeholdersComponent implements OnInit {
       }
     }
     this.editStakes.controls["stake"].markAsPristine();
+  }
+
+  openAccordeons() {
+    document.getElementById("flush-collapseTwo").className = "accordion-collapse collapse show";
+    document.getElementById("accordionButton2").className = "accordion1-button";
   }
 
   getStakesListLength(value) {
@@ -713,8 +740,43 @@ export class StakeholdersComponent implements OnInit {
       border: 3px solid green;` );
   }
 
-  loadStakeholderDocument(documentReference) {
-    this.comprovativoService.viewDocument(documentReference);
+  loadStakeholderDocument(documentReference, archiveSource) {
+    if (archiveSource != null) {
+      this.documentService.GetDocumentImageOutbound(documentReference, "por mudar", "por mudar", 'pdf').subscribe(result => {
+        this.logger.info("Get document image outbound result: " + JSON.stringify(result));
+        this.b64toBlob(result.binary, 'application/pdf', 512);
+      });
+    } else {
+      if (this.returned == null || this.returned == 'edit' && (this.processId == '' || this.processId == null)) {
+        this.documentService.GetDocumentImage(localStorage.getItem("submissionId"), documentReference).then(async result => {
+          this.logger.info("Get document image outbound: " + JSON.stringify(result));
+          result.blob().then(data => {
+            var blob = new Blob([data], { type: 'application/pdf' });
+            let url = window.URL.createObjectURL(blob);
+            window.open(url, '_blank',
+              `margin: auto;
+              width: 50%;
+              padding: 10px;
+              text-align: center;
+              border: 3px solid green;`);
+          });
+        });
+      } else {
+        this.processService.getDocumentImageFromProcess(this.processId, documentReference).then(async result => {
+          this.logger.info("Get document image result: " + JSON.stringify(result));
+          result.blob().then(data => {
+            var blob = new Blob([data], { type: 'application/pdf' });
+            let url = window.URL.createObjectURL(blob);
+            window.open(url, '_blank',
+              `margin: auto;
+              width: 50%;
+              padding: 10px;
+              text-align: center;
+              border: 3px solid green;`);
+          });
+        });
+      }
+    }
   }
 
   emitCanceledSearch(info) {

@@ -81,7 +81,8 @@
             <div class="row" *ngIf="clientHasCAE">
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">{{'stores.activity'|translate}}*</p>
-                <select class="form-select campo-form-select" id="activityStores" name="activityStores" formControlName="activityStores">
+                <select class="form-select campo-form-select" id="activityStores" formControlName="activityStores">
+                  <option value="" hidden></option>
                   <option *ngFor="let activity of activity" value={{activity.activityCode}}>
                     {{activity.activityDescription}}
                   </option>
@@ -95,7 +96,7 @@
               </div>
               <div class="col-5">
                 <p class="titulo-form-simples" wappler-command="editContent">{{'stores.subActivity'|translate}}*</p>
-                <select class="form-select campo-form-select" id="subactivityStore" name="subactivityStore" formControlName="subactivityStore">
+                <select class="form-select campo-form-select" id="subactivityStore" formControlName="subactivityStore">
                   <option value="" hidden></option>
                   <option *ngFor="let subActivity of subActivity" value={{subActivity.subActivityCode}}>
                     {{subActivity.subActivityDescription}}

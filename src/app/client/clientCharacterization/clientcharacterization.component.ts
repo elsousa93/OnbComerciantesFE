@@ -125,6 +125,11 @@ export class ClientCharacterizationComponent implements OnInit {
       commercialSociety: new FormControl(false, [Validators.required]), //sim
       collectCRC: new FormControl(this.hasCRC ? true : collectCRC)
     }));
+    if (this.form.get("socialDenomination").value.length > 40) {
+      this.form.get("socialDenomination").enable();
+    } else {
+      this.form.get("socialDenomination").disable();
+    }
     this.formClientCharacterizationReady.emit(this.form);
   }
 
@@ -172,7 +177,7 @@ export class ClientCharacterizationComponent implements OnInit {
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, Validators.required),
       natJuridicaN1: new FormControl((this.returned != null) ? this.merchantInfo?.legalNature : this.client.legalNature, Validators.required), //sim
       natJuridicaN2: new FormControl((this.returned != null) ? this.merchantInfo?.legalNature2 : this.client.legalNature2), //sim
-      socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo?.legalName?.slice(0, 100) : localStorage.getItem("clientName")?.slice(0, 100) ?? this.client?.commercialName?.slice(0, 100) ?? this.client?.legalName?.slice(0, 100), disabled: ((localStorage.getItem("clientName") != null && localStorage.getItem("clientName") != '') || (this.client.commercialName != null && this.client.commercialName != '') || (this.client.legalName != null && this.client.legalName != '')) }, Validators.required), //sim
+      socialDenomination: new FormControl({ value: (this.returned != null) ? this.merchantInfo?.legalName?.slice(0, 100) : localStorage.getItem("clientName")?.slice(0, 100) ?? this.client?.commercialName?.slice(0, 100) ?? this.client?.legalName?.slice(0, 100), disabled: ((localStorage?.getItem("clientName")?.length <= 40 && localStorage?.getItem("clientName")?.length <= 40) || (this.client?.commercialName?.length <= 40 && this.client?.commercialName?.length <= 40) || (this.client?.legalName?.length <= 40 && this.client?.legalName?.length <= 40)) }, Validators.required), //sim
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(false)
     }));
@@ -230,6 +235,12 @@ export class ClientCharacterizationComponent implements OnInit {
       commercialSociety: new FormControl(this.isCommercialSociety, [Validators.required]), //sim
       collectCRC: new FormControl(true, [Validators.required])
     }));
+
+    if (this.form.get("socialDenomination").value.length > 40) {
+      this.form.get("socialDenomination").enable();
+    } else {
+      this.form.get("socialDenomination").disable();
+    }
 
     this.form.get("CAE1").valueChanges.subscribe(data => {
       if (data !== '') {
@@ -406,7 +417,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.crcIncorrect = false;
     this.crcNotExists = false;
     this.crcMatchNIF = false;
-
+    var context = this;
     this.form.get('collectCRC').setValue(undefined);
     if (id == true) {
       this.initializeBasicCRCFormControl();
@@ -414,8 +425,13 @@ export class ClientCharacterizationComponent implements OnInit {
       this.form.get("commercialSociety").setValue(true);
     } else {
       if (this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
-        this.processClient.stakeholders = [];
-        this.clientContext.setStakeholdersToInsert([]);
+        var stakeholdersToInsert = this.clientContext.getStakeholdersToInsert();
+        stakeholdersToInsert.forEach(stake => {
+          var index = context.processClient.stakeholders.findIndex(s => s.name == stake["fullName"]);
+          if (index != -1)
+            stakeholdersToInsert.splice(index, 1);
+        });
+        this.clientContext.setStakeholdersToInsert(stakeholdersToInsert);
         this.initializeFormControlOther();
       }
       else
@@ -453,12 +469,23 @@ export class ClientCharacterizationComponent implements OnInit {
 
   }
 
-  searchByCRC() {
+  searchByCRC(event?) {
+    const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
     this.crcIncorrect = false;
     this.crcNotExists = false;
     this.crcMatchNIF = false;
-
     var crcInserted = this.form.get('crcCode').value;
+
+    if (allowedKeys.indexOf(event.key) === -1) {
+      if (crcInserted.length <= 14) {
+        crcInserted = crcInserted.replace(/\D/g, '');
+        crcInserted = crcInserted.replace(/(\d{4})/g, '$1-');
+      }
+      if (crcInserted.length > 14)
+        crcInserted = crcInserted.substring(0, 14);
+
+      this.form.get('crcCode').setValue(crcInserted);
+    }
     var crcFormat = /(\b\d{4})-(\b\d{4})-(\b\d{4})/i;
     if (!crcFormat.test(crcInserted)) {
       this.form.get("crcCode").setErrors({ 'incorrect': true });
@@ -467,73 +494,102 @@ export class ClientCharacterizationComponent implements OnInit {
       return;
     }
     this.crcIncorrect = false;
-    this.crcService.getCRC(crcInserted, '001').subscribe({
-      next: clientByCRC => {
-        if (clientByCRC === undefined || clientByCRC === null) {
-          this.form.get("crcCode").setErrors({ 'incorrect': true });
-          this.crcNotExists = true;
-          this.crcFound = false;
-          return;
-        }
-        this.crcNotExists = false;
 
-        var nif = this.form.get("natJuridicaNIFNIPC").value;
-        if (clientByCRC.fiscalId !== nif) {
-          this.form.get("crcCode").setErrors({ 'incorrect': true });
-          this.crcMatchNIF = true;
-          this.crcFound = false;
-          return;
-        }
-        this.crcMatchNIF = false;
+    if (this.client.incorporationStatement == null || this.client.incorporationStatement?.code == null || this.client.incorporationStatement?.code == "" || this.client.incorporationStatement?.code != crcInserted) {
+      this.crcService.getCRC(crcInserted, '001').subscribe({
+        next: clientByCRC => {
+          if (clientByCRC === undefined || clientByCRC === null) {
+            this.form.get("crcCode").setErrors({ 'incorrect': true });
+            this.crcNotExists = true;
+            this.crcFound = false;
+            return;
+          }
+          this.crcNotExists = false;
 
-        if (this.form.get("crcCode").hasError("incorrect")) {
-          this.form.get("crcCode").setErrors(null);
-        }
+          var nif = this.form.get("natJuridicaNIFNIPC").value;
+          if (clientByCRC.fiscalId !== nif) {
+            this.form.get("crcCode").setErrors({ 'incorrect': true });
+            this.crcMatchNIF = true;
+            this.crcFound = false;
+            return;
+          }
+          this.crcMatchNIF = false;
 
-        var economicActivity = clientByCRC.economicActivity.main.split('-')[0];
+          if (this.form.get("crcCode").hasError("incorrect")) {
+            this.form.get("crcCode").setErrors(null);
+          }
 
-        this.crcFound = true;
-        this.errorMsg = '';
-        let legalNatureCode = this.legalNatureList?.find(nature => nature.description.toLowerCase() == clientByCRC.legalNature.toLowerCase())?.code;
-        if (legalNatureCode == undefined) {
-          if (clientByCRC.legalNature.toLowerCase().includes("quotas")) {
-            legalNatureCode = this.legalNatureList?.find(nature => nature.description.includes("quotas"))?.code;
-            if (legalNatureCode == undefined) {
-              legalNatureCode = "";
+          var economicActivity = clientByCRC.economicActivity.main.split('-')[0];
+
+          this.crcFound = true;
+          this.errorMsg = '';
+          let legalNatureCode = this.legalNatureList?.find(nature => nature.description.toLowerCase() == clientByCRC.legalNature.toLowerCase())?.code;
+          if (legalNatureCode == undefined) {
+            if (clientByCRC.legalNature.toLowerCase().includes("quotas")) {
+              legalNatureCode = this.legalNatureList?.find(nature => nature.description.includes("quotas"))?.code;
+              if (legalNatureCode == undefined) {
+                legalNatureCode = "";
+              }
             }
           }
+
+          this.processClient.legalNature = legalNatureCode;
+
+          this.processClient.mainEconomicActivity = economicActivity;
+          //this.processClient.secondaryEconomicActivity[0] = clientByCRC.economicActivity?.secondary[0]?.split('-')[0];
+          //this.processClient.secondaryEconomicActivity[1] = clientByCRC.economicActivity?.secondary[1]?.split('-')[0];
+          //this.processClient.secondaryEconomicActivity[2] = clientByCRC.economicActivity?.secondary[2]?.split('-')[0];
+          this.processClient.secondaryEconomicActivity = [];
+          clientByCRC.economicActivity?.secondary.forEach(value => {
+            this.processClient.secondaryEconomicActivity.push(value.split('-')[0]);
+          });
+          this.processClient.fiscalId = clientByCRC.fiscalId;
+          this.processClient.companyName = clientByCRC.companyName; //
+          this.processClient.capitalStock.date = clientByCRC.capitalStock.date; //
+          this.processClient.capitalStock.capital = clientByCRC.capitalStock.amount; //
+          this.processClient.headquartersAddress.address = clientByCRC.headquartersAddress.fullAddress;
+          this.processClient.headquartersAddress.postalCode = clientByCRC.headquartersAddress.postalCode;
+          this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.postalArea;
+          this.processClient.headquartersAddress.country = clientByCRC.headquartersAddress.country;
+          this.processClient.expirationDate = clientByCRC.expirationDate; //
+          this.processClient.byLaws = clientByCRC.obligeWay;
+          this.processClient.hasOutstandingFacts = clientByCRC.hasOutstandingFacts;
+          this.processClient.stakeholders = clientByCRC.stakeholders;
+          this.clientContext.setStakeholdersToInsert(clientByCRC.stakeholders);
+          this.processClient.pdf = clientByCRC.pdf;
+          this.processClient.code = crcInserted;
+          this.processClient.requestId = clientByCRC.requestId;
+          this.processClient.creationDate = clientByCRC.creationDate;
+          this.initializeFormControlCRC();
+        }, error: (error) => {
+          this.crcNotExists = true;
+          this.crcFound = false;
+          this.form.get("crcCode").setErrors({ 'incorrect': true });
         }
-
-        this.processClient.legalNature = legalNatureCode;
-
-        this.processClient.mainEconomicActivity = economicActivity;
-        this.processClient.secondaryEconomicActivity[0] = clientByCRC.economicActivity?.secondary[0]?.split('-')[0];
-        this.processClient.secondaryEconomicActivity[1] = clientByCRC.economicActivity?.secondary[1]?.split('-')[0];
-        this.processClient.secondaryEconomicActivity[2] = clientByCRC.economicActivity?.secondary[2]?.split('-')[0];
-        this.processClient.fiscalId = clientByCRC.fiscalId;
-        this.processClient.companyName = clientByCRC.companyName; //
-        this.processClient.capitalStock.date = clientByCRC.capitalStock.date; //
-        this.processClient.capitalStock.capital = clientByCRC.capitalStock.amount; //
-        this.processClient.headquartersAddress.address = clientByCRC.headquartersAddress.fullAddress;
-        this.processClient.headquartersAddress.postalCode = clientByCRC.headquartersAddress.postalCode;
-        this.processClient.headquartersAddress.postalArea = clientByCRC.headquartersAddress.postalArea;
-        this.processClient.headquartersAddress.country = clientByCRC.headquartersAddress.country;
-        this.processClient.expirationDate = clientByCRC.expirationDate; //
-        this.processClient.byLaws = clientByCRC.obligeWay;
-        this.processClient.hasOutstandingFacts = clientByCRC.hasOutstandingFacts;
-        this.processClient.stakeholders = clientByCRC.stakeholders;
-        this.clientContext.setStakeholdersToInsert(clientByCRC.stakeholders);
-        this.processClient.pdf = clientByCRC.pdf;
-        this.processClient.code = crcInserted;
-        this.processClient.requestId = clientByCRC.requestId;
-        this.processClient.creationDate = clientByCRC.creationDate;
-        this.initializeFormControlCRC();
-      }, error: (error) => {
-        this.crcNotExists = true;
-        this.crcFound = false;
-        this.form.get("crcCode").setErrors({ 'incorrect': true });
-      }
-    });
+      });
+    } else {
+      this.processClient.legalNature = this.client?.legalNature;
+      this.processClient.mainEconomicActivity = this.client?.mainEconomicActivity;
+      this.processClient.secondaryEconomicActivity = [];
+      this.client?.otherEconomicActivities?.forEach(value => {
+        this.processClient.secondaryEconomicActivity.push(value);
+      });
+      this.processClient.fiscalId = this.client?.fiscalId;
+      this.processClient.companyName = this.client?.legalName; //
+      this.processClient.capitalStock.date = this.client?.shareCapital?.date; //
+      this.processClient.capitalStock.capital = this.client?.shareCapital?.capital; //
+      this.processClient.headquartersAddress.address = this.client?.headquartersAddress?.address;
+      this.processClient.headquartersAddress.postalCode = this.client?.headquartersAddress?.postalCode;
+      this.processClient.headquartersAddress.postalArea = this.client?.headquartersAddress?.postalArea;
+      this.processClient.headquartersAddress.country = this.client?.headquartersAddress?.country;
+      this.processClient.expirationDate = this.client?.incorporationStatement?.validUntil; //
+      this.processClient.byLaws = this.client?.byLaws;
+      this.processClient.stakeholders = [];
+      this.clientContext.setStakeholdersToInsert(this.processClient?.stakeholders);
+      this.processClient.code = this.client?.incorporationStatement?.code;
+      this.crcFound = true;
+      this.initializeFormControlCRC();
+    }
   }
 
   submit() {
@@ -557,16 +613,18 @@ export class ClientCharacterizationComponent implements OnInit {
         this.client.mainEconomicActivity = this.form.value["CAE1"];
         this.client.otherEconomicActivities = [];
 
-        var CAESecondary1 = (this.form.value["CAESecondary1"]);
-        var CAESecondary2 = (this.form.value["CAESecondary2"]);
-        var CAESecondary3 = (this.form.value["CAESecondary3"]);
+        //var CAESecondary1 = (this.form.value["CAESecondary1"]);
+        //var CAESecondary2 = (this.form.value["CAESecondary2"]);
+        //var CAESecondary3 = (this.form.value["CAESecondary3"]);
 
-        if (CAESecondary1 !== null)
-          this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"]);
-        if (CAESecondary2 !== null)
-          this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"]);
-        if (CAESecondary3 !== null)
-          this.client.otherEconomicActivities.push(this.form.value["CAESecondary3"]);
+        //if (CAESecondary1 !== null)
+        //  this.client.otherEconomicActivities.push(this.form.value["CAESecondary1"]);
+        //if (CAESecondary2 !== null)
+        //  this.client.otherEconomicActivities.push(this.form.value["CAESecondary2"]);
+        //if (CAESecondary3 !== null)
+        //  this.client.otherEconomicActivities.push(this.form.value["CAESecondary3"]);
+
+        this.client.otherEconomicActivities = this.processClient.secondaryEconomicActivity;
         //Paises destino
 
         if (this.form.value["constitutionDate"] == "" || this.form.value["constitutionDate"] == null) {
@@ -580,9 +638,9 @@ export class ClientCharacterizationComponent implements OnInit {
         }
         this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
         this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
-        this.client.commercialName = this.form.value["socialDenomination"].slice(0, 40); 
-        this.client.legalName = this.form.value["socialDenomination"];
-        this.client.shortName = this.form.value["socialDenomination"].slice(0, 40);
+        this.client.commercialName = this.form.get("socialDenomination").value.slice(0, 40); 
+        this.client.legalName = this.form.get("socialDenomination").value;
+        this.client.shortName = this.form.get("socialDenomination").value.slice(0, 40);
         this.client.shareCapital = {
           capital: this.processClient.capitalStock.capital,
           date: this.processClient.capitalStock.date
@@ -602,6 +660,9 @@ export class ClientCharacterizationComponent implements OnInit {
       this.client.incorporationStatement = null;
       this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
       this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
+      this.client.commercialName = this.form.get("socialDenomination")?.value?.slice(0, 40);
+      this.client.legalName = this.form.get("socialDenomination")?.value;
+      this.client.shortName = this.form.get("socialDenomination")?.value?.slice(0, 40);
 
       if (this.tipologia === 'corporation' || this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
         this.client.legalNature = this.form.value["natJuridicaN1"];
@@ -616,8 +677,8 @@ export class ClientCharacterizationComponent implements OnInit {
       //this.client.commercialName = this.form.value["socialDenomination"];
     }
     if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
-      this.client.legalName = this.form.value["socialDenomination"];
-      this.client.commercialName = this.form.value["socialDenomination"].slice(0, 40);
+      this.client.legalName = this.form.get("socialDenomination").value;
+      this.client.commercialName = this.form.get("socialDenomination").value.slice(0, 40);
       this.client.merchantType = 'Entrepeneur';
       if (this.dataCC !== undefined && this.dataCC !== null) {
         this.client.shortName = this.dataCC.nameCC;
@@ -670,7 +731,7 @@ export class ClientCharacterizationComponent implements OnInit {
             "country": value["address"] != null ? value["address"]["country"] : null,
             "address": value["address"] != null ? value["address"]["fullAddress"] : null
           },
-          "capitalHeldPercentage": value.capitalHeldPercentage,
+          "directCapitalHeld": value.capitalHeldPercentage,
           "isBeneficiary": value.isBeneficiary,
           "role": value.role,
           "isProxy": false,
@@ -775,11 +836,18 @@ export class ClientCharacterizationComponent implements OnInit {
     this.crcIncorrect = false;
     this.crcNotExists = false;
     this.crcMatchNIF = false;
+    var context = this;
     if (value == false) {
       this.crcFound = false;
       if ((this.returned == 'edit' || this.returned == null) && (this.processId == '' || this.processId == null)) { 
+        var stakeholdersToInsert = this.clientContext.getStakeholdersToInsert();
+        stakeholdersToInsert.forEach(stake => {
+          var index = context.processClient.stakeholders.findIndex(s => s.name == stake["fullName"]);
+          if (index != -1)
+            stakeholdersToInsert.splice(index, 1);
+        });
+        this.clientContext.setStakeholdersToInsert(stakeholdersToInsert);
         this.processClient.stakeholders = [];
-        this.clientContext.setStakeholdersToInsert([]);
       }
       this.initializeFormControlOther();
     }

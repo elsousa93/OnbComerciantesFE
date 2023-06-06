@@ -40,7 +40,7 @@
             <div class="accordion1 accordion-flush mb-3" id="accordionFlushExample">
               <div class="accordion1-item">
                 <h2 class="accordion1-header" id="flush-headingOne">
-                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                  <button id="accordionButton1" class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
                     <span class="material-symbols-outlined icon-accordion filter icon-filter">
                       <!--<img src="assets/images/filter.svg" class="img_add" style="height: 33px;">-->
@@ -62,7 +62,7 @@
               </div>
               <div class="accordion1-item" *ngIf="clientContext?.isClient == false"> <!-- adicionar um ! -->
                 <h2 class="accordion-header" id="flush-headingTwo">
-                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                  <button id="accordionButton2" class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                     (click)="onActivate()" data-bs-target="#flush-collapseTwo" aria-expanded="false"
                     aria-controls="flush-collapseTwo">
                     <span class="material-symbols-outlined icon-accordion manage-accounts icon-manage-accounts">
@@ -85,7 +85,7 @@
 
               <div class="accordion1-item"> <!--*ngIf="clientContext?.isClient || (clientDocs != null && clientDocs.length > 0)"-->
                 <h2 class="accordion-header" id="flush-headingFour">
-                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                  <button id="accordionButton4" class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                     (click)="onActivate()" data-bs-target="#flush-collapseFour" aria-expanded="false"
                     aria-controls="flush-collapseFour">
                     <span class="material-symbols-outlined icon-accordion contact-page icon-contact-page">
@@ -137,7 +137,7 @@
 
               <div class="accordion1-item" *ngIf="submissionType === 'DigitalComplete'">
                 <h2 class="accordion-header" id="flush-headingThree">
-                  <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                  <button id="accordionButton3" class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
                     data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
                     <span class="material-symbols-outlined icon-accordion supervisor-account icon-supervisor-account">
                       <!--<img src="assets/images/supervisor_account.svg" />-->
@@ -185,9 +185,9 @@
                   </span>{{'generalKeywords.back'|translate|uppercase}}&nbsp;
                 </button>
                 <button id="btn5a2"
-                  class="btn botao_azul_pesquisa center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 btn-lg"
-                  wappler-command="editContent" (click)="submit()"
-                  [disabled]="!formClientIsValid || !formCountryIsValid || !countriesListValid">
+                        class="btn botao_azul_pesquisa center-align center-align text-start vertical-align: baseline; mt-3 mb-0 ms-1 me-1 pt-3 pb-3 btn-lg"
+                        wappler-command="editContent" (click)="submit()">
+                  <!--[disabled]="!formClientIsValid || !formCountryIsValid || !countriesListValid"-->
                   {{'generalKeywords.next'|translate|uppercase}}&nbsp;<span class="material-symbols-rounded m-align">
                     <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important;">
                   </span>

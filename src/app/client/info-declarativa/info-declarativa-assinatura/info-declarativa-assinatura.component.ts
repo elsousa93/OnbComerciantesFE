@@ -231,7 +231,8 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
               bank: this.submissionAnswer.bank,
               state: "Ready",
               startedAt: new Date().toISOString(),
-              contractPackLanguage: this.form.get("language").value
+              contractPackLanguage: this.form.get("language").value,
+              observation: this.submissionAnswer.observation
             }
             this.logger.info("Updated submission data: " + JSON.stringify(submissionToSend));
             this.submissionService.EditSubmission(this.submissionId, submissionToSend).subscribe(result => {
@@ -268,6 +269,12 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
             });
           });
         }
+      } else {
+        this.form.markAllAsTouched();
+        this.snackBar.open(this.translate.instant('generalKeywords.formInvalid'), '', {
+          duration: 15000,
+          panelClass: ['snack-bar']
+        });
       }
     } else {
       this.router.navigate(["/"]);
@@ -276,8 +283,6 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   }
 
   goBack() {
-
-
     let navigationExtras = {
       state: {
         returnedFrontOffice: this.returnedFrontOffice

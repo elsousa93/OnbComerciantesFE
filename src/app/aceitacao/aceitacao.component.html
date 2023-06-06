@@ -1,6 +1,7 @@
-<div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0 bg-light">
+<app-nav-menu-interna></app-nav-menu-interna>
+<div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0 bg-light">
   <div class="row align-items-center">
-    <div class="offset-1 col-10 bg-primary mt-5 me-0 pt-0 ps-0 pe-0">
+    <div class="offset-1 col-10 bg-primary me-0 pt-0 ps-0 pe-0">
       <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
         <svg xmlns="http://www.w3.org/2000/svg" xml:space="preserve" width="70px" height="32px" style="shape-rendering:geometricPrecision; text-rendering:geometricPrecision; image-rendering:optimizeQuality; fill-rule:evenodd; clip-rule:evenodd"
              viewBox="0 0 324 148.998">
@@ -76,10 +77,10 @@
                           <div class="col bg-white bg-opacity-75 ms-3 me-0 pt-3 pb-3 pe-2" *ngIf="ready">
                             <p class="mb-0 text-primary text-start">{{(processNumber == null) ? '-' : process.processNumber}}</p>
                             <p class="mb-0 text-primary text-start">{{processHistoryItems.items[processHistoryItems.items.length - 1].processState}}</p>
-                            <p class="mb-0 text-primary text-start">{{processHistoryItems.items[processHistoryItems.items.length - 1].whenStarted}}</p>
-                            <p class="mb-0 text-primary text-start">{{processHistoryItems.items[processHistoryItems.items.length - 1].whoFinished}}</p>
+                            <p class="mb-0 text-primary text-start">{{(processHistoryItems.items[processHistoryItems.items.length - 1].whenStarted == null || processHistoryItems.items[processHistoryItems.items.length - 1].whenStarted == "") ? "-" : processHistoryItems.items[processHistoryItems.items.length - 1].whenStarted}}</p>
+                            <p class="mb-0 text-primary text-start">{{(processHistoryItems.items[processHistoryItems.items.length - 1].whoFinished == null || processHistoryItems.items[processHistoryItems.items.length - 1].whoFinished == "") ? "-" : processHistoryItems.items[processHistoryItems.items.length - 1].whoFinished}}</p>
                             <p class="mb-0 text-primary text-start">
-                              {{(processHistoryItems.items[processHistoryItems.items.length - 1].observations == null || processHistoryItems.items[processHistoryItems.items.length - 1].observations == "") ? "-" : processHistoryItems.items[processHistoryItems.items.length - 1].observations}}
+                              {{(processHistoryItems?.items[observationLength]?.observations == null || processHistoryItems?.items[observationLength]?.observations == "") ? "-" : processHistoryItems?.items[observationLength]?.observations}}
                             </p>
                           </div>
                         </div>

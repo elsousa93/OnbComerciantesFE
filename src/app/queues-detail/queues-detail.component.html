@@ -67,10 +67,10 @@
                               <p class="mb-0 text-primary text-start">
                                 {{'homepage.' + queueName|translate}}
                               </p>
-                              <p class="mb-0 text-primary text-start">{{processHistoryItems?.items[processHistoryItems.items.length - 1].whenStarted}}</p>
-                              <p class="mb-0 text-primary text-start">{{processHistoryItems?.items[processHistoryItems.items.length - 1].whoFinished}}</p>
+                              <p class="mb-0 text-primary text-start">{{(processHistoryItems.items[processHistoryItems.items.length - 1].whenStarted == null || processHistoryItems.items[processHistoryItems.items.length - 1].whenStarted == "") ? "-" : processHistoryItems.items[processHistoryItems.items.length - 1].whenStarted}}</p>
+                              <p class="mb-0 text-primary text-start">{{(processHistoryItems.items[processHistoryItems.items.length - 1].whoFinished == null || processHistoryItems.items[processHistoryItems.items.length - 1].whoFinished == "") ? "-" : processHistoryItems.items[processHistoryItems.items.length - 1].whoFinished}}</p>
                               <p class="mb-0 text-primary text-start">
-                                {{(processHistoryItems?.items[processHistoryItems.items.length - 1].observations == null || processHistoryItems?.items[processHistoryItems.items.length - 1].observations == "") ? "-" : processHistoryItems?.items[processHistoryItems.items.length - 1].observations}}
+                                {{(processHistoryItems?.items[observationLength]?.observations == null || processHistoryItems?.items[observationLength]?.observations == "") ? "-" : processHistoryItems?.items[observationLength]?.observations}}
                               </p>
                             </div>
                           </div>
@@ -718,13 +718,13 @@
                           </tr>
                         </thead>
                         <tbody *ngIf="attach !== undefined">
-                          <tr>
+                          <tr *ngFor="let file of files">
                             <td class="text-primary text-center">{{attach.tipo|translate}}</td>
                             <td class="text-primary text-center">{{attach.dataDocumento}}</td>
                             <td>
-                              <span class="search-blue icon-search-blue" (click)="openFile(files[0])">
+                              <span class="search-blue icon-search-blue" (click)="openFile(file)">
                               </span>
-                              <span class="delete-blue-comp icon-delete-blue" (click)="deleteFile(files[0])">
+                              <span class="delete-blue-comp icon-delete-blue" (click)="deleteFile(file)">
                               </span>
                             </td>
                           </tr>
@@ -736,7 +736,7 @@
                     <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
                       <span class="navbar-text align-self-center mt-0 ms-0 me-0 pt-0">
                         <ng-container>
-                          <input type="file" #fileUpload name="arquivo" id="arquivo" class="uploadInput" (change)="selectFile($event); fileUpload.value='';"
+                          <input type="file" multiple #fileUpload name="arquivo" id="arquivo" class="uploadInput" (change)="selectFile($event); fileUpload.value='';"
                                  style="display: none" accept=".pdf" required [disabled]="(queueName == 'risk' && currentUser.permissions != UserPermissions.COMPLIANCEOFFICE) || (queueName == 'eligibility' && currentUser.permissions != UserPermissions.UNICRE && currentUser.permissions != UserPermissions.CALLCENTER && currentUser.permissions != UserPermissions.COMERCIAL) || ((queueName == 'DOValidation' || queueName == 'negotiationAproval') && currentUser.permissions != UserPermissions.DO) || (queueName == 'compliance' && currentUser.permissions != UserPermissions.COMPLIANCEOFFICE)">
                           <label for="arquivo" id="btn5a5"
                                  class="uploadLabel btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3"

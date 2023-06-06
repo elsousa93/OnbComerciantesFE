@@ -64,11 +64,11 @@
                           </div>
                           <div class="col bg-white bg-opacity-75 ms-3 me-0 pt-3 pb-3 pe-2" *ngIf="ready">
                             <p class="mb-0 text-primary text-start">{{(processNumber == null) ? '-' : process.processNumber}}</p>
-                            <p class="mb-0 text-primary text-start">{{processHistoryItems.items[processHistoryItems.items.length - 1].processState}}</p>
-                            <p class="mb-0 text-primary text-start">{{processHistoryItems.items[processHistoryItems.items.length - 1].whenStarted}}</p>
-                            <p class="mb-0 text-primary text-start">{{processHistoryItems.items[processHistoryItems.items.length - 1].whoFinished}}</p>
+                            <p class="mb-0 text-primary text-start">{{processState}}</p>
+                            <p class="mb-0 text-primary text-start">{{(processHistoryItems.items[processHistoryItems.items.length - 1].whenStarted == null || processHistoryItems.items[processHistoryItems.items.length - 1].whenStarted == "") ? "-" : processHistoryItems.items[processHistoryItems.items.length - 1].whenStarted}}</p>
+                            <p class="mb-0 text-primary text-start">{{(processHistoryItems.items[processHistoryItems.items.length - 1].whoFinished == null || processHistoryItems.items[processHistoryItems.items.length - 1].whoFinished == "") ? "-" : processHistoryItems.items[processHistoryItems.items.length - 1].whoFinished}}</p>
                             <p class="mb-0 text-primary text-start">
-                              {{(processHistoryItems.items[processHistoryItems.items.length - 1].observations == null || processHistoryItems.items[processHistoryItems.items.length - 1].observations == "") ? "-" : processHistoryItems.items[processHistoryItems.items.length - 1].observations}}
+                              {{(processHistoryItems?.items[observationLength]?.observations == null || processHistoryItems?.items[observationLength]?.observations == "") ? "-" : processHistoryItems?.items[observationLength]?.observations}}
                             </p>
                           </div>
                         </div>

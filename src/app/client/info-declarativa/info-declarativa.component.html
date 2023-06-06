@@ -96,7 +96,7 @@
                         <div class="col">
                           <p class="titulo-form-simples mt-0">{{'declarativeInformation.cellPhone'|translate|uppercase}}
                             1:</p>
-                          <input (keypress)="numericOnly($event)" #phone1PhoneNumber name="phone1PhoneNumber"
+                          <input (keypress)="numericOnly($event)" #phone1PhoneNumber name="phoneNumber"
                             type="text" id="phone1PhoneNumber" class="form-control" formControlName="phoneNumber"
                             [readonly]="returned === 'consult'">
                           <div class="alert alert-danger"
@@ -125,16 +125,16 @@
                         <div class="col">
                           <p class="titulo-form-simples mt-0">{{'declarativeInformation.phone'|translate|uppercase}}:
                           </p>
-                          <input (keypress)="numericOnly($event)" #phone2PhoneNumber name="mobilePhoneClient"
+                          <input (keypress)="numericOnly($event)" #phone2PhoneNumber name="phoneNumber"
                             type="text" id="phone2PhoneNumber" class="form-control" formControlName="phoneNumber"
                             [readonly]="returned === 'consult'">
                           <div class="alert alert-danger"
-                            *ngIf="(phone2.touched || phone2.dirty) && !phone2.valid && phone2.errors.hasOwnProperty('invalidNumber')">
+                            *ngIf="(phone2?.touched || phone2?.dirty) && !phone2?.valid && phone2?.errors?.hasOwnProperty('invalidNumber')">
                             {{'errorMessages.invalidPhone'|translate}}
                           </div>
                         </div>
                         <div class="alert alert-danger"
-                          *ngIf="(phone2.touched || phone2.dirty) && !phone2.valid && phone2.errors.hasOwnProperty('missingValue')">
+                          *ngIf="(phone2?.touched || phone2?.dirty) && !phone2?.valid && phone2?.errors?.hasOwnProperty('missingValue')">
                           {{'errorMessages.bothFieldsPhone'|translate}}
                         </div>
                       </div>
@@ -194,10 +194,9 @@
                           style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
                       <button id="btn5a2" (click)="submit()"
                         class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-                        [disabled]="!listValue.valid && returned != 'consult'"
                         wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img
                           src="assets/images/arrow_forward_ios.svg"
-                          style="height: 25px !important; vertical-align: sub;"></button>
+                          style="height: 25px !important; vertical-align: sub;"></button><!--[disabled]="!listValue.valid && returned != 'consult'"-->
                     </span>
                   </nav>
                 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -17,6 +17,8 @@ import { ComprovativosService } from '../../comprovativos/services/comprovativos
 import { PostDocument } from '../../submission/document/ISubmission-document';
 import { ProcessList, ProcessService } from '../../process/process.service';
 import { AuthService } from '../../services/auth.service';
+import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
+import { DataService } from '../../nav-menu-interna/data.service';
 
 @Component({
   selector: 'app-pack-contratual',
@@ -24,7 +26,7 @@ import { AuthService } from '../../services/auth.service';
   providers: [DatePipe]
 })
 
-export class PackContratualComponent implements OnInit {
+export class PackContratualComponent implements OnInit, OnDestroy {
   form: FormGroup;
   public map = new Map();
   public currentPage: number;
@@ -69,7 +71,7 @@ export class PackContratualComponent implements OnInit {
   constructor(private logger: LoggerService,
     private modalService: BsModalService, private translate: TranslateService, private snackBar: MatSnackBar,
     private tableInfoService: TableInfoService, private router: ActivatedRoute, private queuesInfo: QueuesService, private datepipe: DatePipe,
-    private route: Router, private documentService: ComprovativosService, private processService: ProcessService, private authService: AuthService) {
+    private route: Router, private documentService: ComprovativosService, private processService: ProcessService, private authService: AuthService, private processNrService: ProcessNumberService, private data: DataService) {
     if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.state = this.route.getCurrentNavigation().extras.state["state"];
     }
@@ -83,14 +85,26 @@ export class PackContratualComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    var observation = this.form.get('observations').value;
+    this.processNrService.changeObservation(observation);
+  }
+
   ngOnInit(): void {
     var context = this;
+    this.data.historyStream$.next(true);
     this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
     this.fetchStartingInfo();
     this.getDocuments();
     this.form = new FormGroup({
       observations: new FormControl('')
     })
+    var observation = "";
+    this.processNrService.observation.subscribe(obs => observation = obs);
+    if (observation != null && observation != "") {
+      this.form.get("observations").setValue(observation);
+      this.form.updateValueAndValidity();
+    }
     if (this.state == 'ContractAcceptance') {
       this.manualSignature = true;
     }
@@ -172,9 +186,9 @@ export class PackContratualComponent implements OnInit {
     this.processService.getDocumentFromProcess(this.processId).subscribe(result => {
       if (result.length > 0) {
         result.forEach(doc => {
-          if (doc.type == "1101") {
+          //if (doc.type == "1101") {
             this.manualSignatureFileId = doc.id;
-          }
+          //}
         });
       }
     });
@@ -357,6 +371,16 @@ export class PackContratualComponent implements OnInit {
         context.route.navigate(['/']);
       });
     }
+  }
+
+  nextPage() {
+    localStorage.setItem('returned', 'consult');
+    this.data.changeQueueName("aceitacao");
+    localStorage.setItem("processNumber", this.process.processNumber);
+    this.processNrService.changeProcessId(this.process.processId);
+    this.processNrService.changeQueueName("aceitacao");
+    this.logger.info("Redirecting to Client By Id page");
+    this.route.navigate(['/clientbyid']);
   }
 
   b64toBlob(b64Data: any, contentType: string, sliceSize: number) {

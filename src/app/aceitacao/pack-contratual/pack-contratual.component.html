@@ -1,4 +1,5 @@
-<div class="container-fluid mt-0 ms-0 me-0 pt-0 ps-0 pe-0 bg-light">
+<app-nav-menu-interna></app-nav-menu-interna>
+<div class="container-fluid conteudo mt-0 ms-0 me-0 pt-0 ps-0 pe-0 bg-light">
   <div class="row align-items-center">
     <div class="offset-1 col-10 bg-primary mt-5 me-0 pt-0 ps-0 pe-0">
       <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 pt-0 pb-0">
@@ -400,7 +401,7 @@
                     </button>
                     <button id="btn5a4"
                             class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                            wappler-command="editContent" (click)="submit('ReturnToBackOffice')">
+                            wappler-command="editContent" (click)="submit('ReturnToBackOffice')" [disabled]="manualSignature && form.get('observations').value.length == 0">
                       {{'generalButtons.returnBackoffice'|translate|uppercase}}&nbsp;
                       <img src="assets/images/assignment_return_white.svg" style="height: 30px; vertical-align: bottom;">
                     </button>
@@ -414,6 +415,13 @@
                             class="btn botao_azul center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"
                             wappler-command="editContent">
                       {{'generalButtons.submit'|translate|uppercase}}&nbsp;
+                      <img src="assets/images/arrow_forward_ios.svg"
+                           style="height: 25px !important; vertical-align: sub;">
+                    </button>
+                    <button id="btn5a2" (click)="nextPage()"
+                            class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
+                            wappler-command="editContent">
+                      {{'generalKeywords.next'|translate|uppercase}}&nbsp;
                       <img src="assets/images/arrow_forward_ios.svg"
                            style="height: 25px !important; vertical-align: sub;">
                     </button>

@@ -233,7 +233,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         this.calledMensalidades = true;
         //this.changedPackValue = false;
         this.productPackPricingFilter = {
-          processorId: this.packs[0].processors[0],
+          processorId: this.packs?.find(pack => pack.id == this.packId)?.processors[0],
           productCode: this.currentStore.productCode,
           subproductCode: this.currentStore.subProductCode,
           merchant: this.merchantCatalog,
@@ -249,29 +249,37 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
             quantity: this.formConfig.get('terminalAmount').value
           }
         }
-        this.logger.info("Filter to get commercial pack pricing list" + JSON.stringify(this.productPackPricingFilter));
-        this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
-          this.logger.info("Get commercial pack pricing list result: " + JSON.stringify(result));
-          this.pricingOptions = [];
-          if (this.storeEquip?.pricing == null) {
-            if (result.result.length == 1) {
-              this.pricingOptions.push(result.result[0]);
-              this.chooseMensalidade(result.result[0].id);
+        if (this.formConfig.valid) {
+          this.logger.info("Filter to get commercial pack pricing list" + JSON.stringify(this.productPackPricingFilter));
+          this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
+            this.logger.info("Get commercial pack pricing list result: " + JSON.stringify(result));
+            this.pricingOptions = [];
+            if (this.storeEquip?.pricing == null) {
+              if (result.result.length == 1) {
+                this.pricingOptions.push(result.result[0]);
+                this.chooseMensalidade(result.result[0].id);
+              } else {
+                result.result.forEach(options => {
+                  this.pricingOptions.push(options);
+                });
+              }
             } else {
               result.result.forEach(options => {
                 this.pricingOptions.push(options);
               });
+              if (this.firstTimeEdit) {
+                this.firstTimeEdit = false;
+                this.chooseMensalidade(this.storeEquip.pricing.id);
+              }
             }
-          } else {
-            result.result.forEach(options => {
-              this.pricingOptions.push(options);
-            });
-            if (this.firstTimeEdit) {
-              this.firstTimeEdit = false;
-              this.chooseMensalidade(this.storeEquip.pricing.id);
-            }
-          }
-        });
+          });
+        } else {
+          this.formConfig.markAllAsTouched();
+          this.snackBar.open(this.translate.instant('generalKeywords.formInvalid'), '', {
+            duration: 15000,
+            panelClass: ['snack-bar']
+          });
+        }
       }
     } else {
       if (this.packId != "") { // antes tinha && this.changedPackValue
@@ -285,7 +293,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         this.calledMensalidades = true;
         //this.changedPackValue = false;
         this.productPackPricingFilter = {
-          processorId: this.packs[0].processors[0],
+          processorId: this.packs?.find(pack => pack.id == this.packId)?.processors[0],
           productCode: this.currentStore.productCode,
           subproductCode: this.currentStore.subProductCode,
           merchant: this.merchantCatalog,
@@ -301,29 +309,37 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
             quantity: this.formConfig.get('terminalAmount').value
           }
         }
-        this.logger.info("Filter to get commercial pack pricing list" + JSON.stringify(this.productPackPricingFilter));
-        this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
-          this.logger.info("Get commercial pack pricing list result: " + JSON.stringify(result));
-          this.pricingOptions = [];
-          if (this.storeEquip?.pricing == null) {
-            if (result.result.length == 1) {
-              this.pricingOptions.push(result.result[0]);
-              this.chooseMensalidade(result.result[0].id);
+        if (this.formConfig.valid) {
+          this.logger.info("Filter to get commercial pack pricing list" + JSON.stringify(this.productPackPricingFilter));
+          this.COService.ListProductCommercialPackPricing(this.packId, this.productPackPricingFilter).then(result => {
+            this.logger.info("Get commercial pack pricing list result: " + JSON.stringify(result));
+            this.pricingOptions = [];
+            if (this.storeEquip?.pricing == null) {
+              if (result.result.length == 1) {
+                this.pricingOptions.push(result.result[0]);
+                this.chooseMensalidade(result.result[0].id);
+              } else {
+                result.result.forEach(options => {
+                  this.pricingOptions.push(options);
+                });
+              }
             } else {
               result.result.forEach(options => {
                 this.pricingOptions.push(options);
               });
+              if (this.firstTimeEdit) {
+                this.firstTimeEdit = false;
+                this.chooseMensalidade(this.storeEquip.pricing.id);
+              }
             }
-          } else {
-            result.result.forEach(options => {
-              this.pricingOptions.push(options);
-            });
-            if (this.firstTimeEdit) {
-              this.firstTimeEdit = false;
-              this.chooseMensalidade(this.storeEquip.pricing.id);
-            }
-          }
-        });
+          });
+        } else {
+          this.formConfig.markAllAsTouched();
+          this.snackBar.open(this.translate.instant('generalKeywords.formInvalid'), '', {
+            duration: 15000,
+            panelClass: ['snack-bar']
+          });
+        }
       } else {
         document.getElementById("flush-collapseThree").className = "accordion-collapse collapse";
         document.getElementById("accordionButton3").className = "accordion1-button collapsed";
@@ -428,7 +444,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
   }
 
   submit() {
-    if (this.formConfig.valid) {
+    if (this.formConfig.valid && !this.isInvalidNumber) {
 
       if (this.isNewConfig == true) {
         this.storeEquip = {};
@@ -491,6 +507,19 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         }
       }
       this.el?.nativeElement?.focus();
+    } else {
+      if (this.isInvalidNumber) {
+        this.snackBar.open(this.translate.instant('generalKeywords.invalidNumber'), '', {
+          duration: 15000,
+          panelClass: ['snack-bar']
+        });
+      } else {
+        this.formConfig.markAllAsTouched();
+        this.snackBar.open(this.translate.instant('generalKeywords.formInvalid'), '', {
+          duration: 15000,
+          panelClass: ['snack-bar']
+        });
+      }
     }
   }
 
@@ -545,6 +574,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
                 if (value.aggregatorId != null && value.aggregatorId != "") {
                   if (value.id == "AV_000099") {
                     value["condition"] = true;
+                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValue("AV_000097");
                     //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).disable();
                   } else {
                     context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValidators([Validators.required]);
@@ -553,6 +583,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
                 } else {
                   if (value.id == "AV_000099") {
                     value["condition"] = true;
+                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValue(true);
                     //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).disable();
                   } else {
                     if ((attrId == 'AV_000097' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == true) || (attrId == 'AV_000098' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == true)) {
@@ -603,6 +634,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
                 if (value.aggregatorId != null && value.aggregatorId != "") {
                   if (value.id == "AV_000099") {
                     value["condition"] = true;
+                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValue("AV_000097");
                     //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).disable();
                   } else {
                     context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValidators([Validators.required]);
@@ -611,6 +643,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
                 } else {
                   if (value.id == "AV_000099") {
                     value["condition"] = true;
+                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValue(true);
                     //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).disable();
                   } else {
                     if ((attrId == 'AV_000097' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == true) || (attrId == 'AV_000098' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == true)) {
@@ -666,7 +699,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
               var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
               var attr = findGroupAttr.attributes.find(att => att.id == "AV_000099");
               if (attr.aggregatorId != null && attr.aggregatorId != "") {
-                this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr.aggregatorId).setValue("AV_000099"); // Tipo de Comunicações com o valor IP/ADSL
+                this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr.aggregatorId).setValue("AV_000099"); // Tipo de Comunicações com o valor IP/ADSL 
                 this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr.aggregatorId).disable();
               } else {
                 this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(true); // Tipo de Comunicações com o valor IP/ADSL

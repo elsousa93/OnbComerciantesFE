@@ -50,6 +50,8 @@ export class HistoryComponent implements OnInit, AfterViewInit {
   public firstTime: boolean = true;
   docTypes: DocumentSearchType[] = [];
   shopIssueList: ShopDetailsAcquiring[] = [];
+  processState: string;
+  observationLength: number;
 
   historyMat = new MatTableDataSource<ProcessHistory>();
   historyColumns: string[] = ['processNumber', 'processState', 'whenStarted', 'whoFinished', 'observations'];
@@ -248,6 +250,11 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.logger.info("Get process by id result: " + JSON.stringify(result));
       this.process = result;
+      if (this.process.state == "Ongoing") {
+        this.processState = this.translate.instant('searches.running');
+      } else if (this.process.state == "AwaitingCompletion") {
+        this.processState = this.translate.instant('searches.awaitingCompletion');
+      }
       this.processNumber = result.processNumber;
       localStorage.setItem('processNumber', this.processNumber);
       this.data.updateData(true, 0);
@@ -261,6 +268,11 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     this.processService.getProcessHistory(this.processId).then(result => {
       this.logger.info("Get process history result: " + JSON.stringify(result));
       this.processHistoryItems = result.result;
+      if (this.processHistoryItems.items.length > 2) {
+        this.observationLength = this.processHistoryItems.items.length - 2;
+      } else {
+        this.observationLength = 0;
+      }
       this.processHistoryItems.items.sort((b, a) => new Date(b.whenStarted).getTime() - new Date(a.whenStarted).getTime());
       this.processHistoryItems.items.forEach(process => {
         process.whenStarted = this.datePipe.transform(process.whenStarted, 'yyyy-MM-dd HH:mm').toString();

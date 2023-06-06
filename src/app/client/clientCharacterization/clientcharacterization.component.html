@@ -63,7 +63,7 @@
               </span>
             </p>
             <input *ngIf="collectCRC == true" maxlength="14" formControlName="crcCode" name="crcCode" type="text"
-                   id="crcCode" class="form-control campo_form" (keyup)="searchByCRC()"
+                   id="crcCode" class="form-control campo_form" (keyup)="searchByCRC($event)"
                    [attr.disabled]="returned === 'consult' ? true : null" />
             <div class="alert alert-danger"
                  *ngIf="this.form?.get('crcCode')?.touched && !this.form?.get('crcCode')?.valid">
@@ -76,13 +76,13 @@
                 {{'client.socialDenomination'|translate}}:*
               </p>
               <input formControlName="socialDenomination" name="socialDenomination" type="text" id="socialDenomination"
-                     class="form-control campo_form" readonly>
-              <div class="alert alert-danger"
+                     class="form-control campo_form">
+              <!--<div class="alert alert-danger"
                    *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
-                <div *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
+                <div *ngIf="this.form.get('socialDenomination').errors">
                   {{'generalKeywords.mandatoryParameter'|translate}}
                 </div>
-              </div>
+              </div>-->
               <div class="row">
                 <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 1024 }">
                   <p class="titulo-form-simples">
@@ -377,13 +377,13 @@
               </p>
               <input formControlName="socialDenomination" name="socialDenomination" type="text" id="socialDenomination"
                 class="form-control campo_form">
-              <div class="alert alert-danger"
+              <!--<div class="alert alert-danger"
                 *ngIf="this.form.get('socialDenomination').touched && !this.form.get('socialDenomination').valid">
                 <div
-                  *ngIf="this.form.get('socialDenomination').errors && this.form.get('socialDenomination').errors?.['required']">
+                  *ngIf="this.form.get('socialDenomination').errors">
                   {{'generalKeywords.mandatoryParameter'|translate}}
                 </div>
-              </div>
+              </div>-->
             </div>
           </div>
         </div>

@@ -142,11 +142,11 @@
 </form>
 <form [formGroup]="pricingForm" name="pricingForm" id="pricingForm">
   <div class="col mt-0 mb-0 pt-5 pb-4 ps-1">
-    <button id="btn5a2" [disabled]="!formConfig.valid" (click)="loadMensalidades()"
+    <button id="btn5a2" (click)="loadMensalidades()"
       class="btn botao_azul btn-lg mt-2 ms-1 me-1" wappler-command="editContent">
       {{'commercialOffer.uploadMensal'|translate|uppercase}}&nbsp;&nbsp;<img src="assets/images/move_up_white.svg"
         style="height: 25px !important; vertical-align: sub;">
-    </button>
+    </button><!--[disabled]="!formConfig.valid" -->
   </div>
   <div class="col mt-0 mb-0 pt-5 pb-4 ps-1" *ngIf="pricingOptions.length > 1 && pricingAttributeList.length == 0">
     <h5 class="text-primary m-align mt-5 pb-0 ps-3 pe-2">
@@ -238,10 +238,10 @@
       {{'commercialOffer.cancelConfiguration'|translate|uppercase}}&nbsp;<img src="assets/images/close.svg"
         style="height: 25px !important; vertical-align: sub;">
     </button>
-    <button *ngIf="pricingAttributeList.length > 0" id="btn5a4" [disabled]="isInvalidNumber || !formConfig.valid" (click)="submit()"
+    <button *ngIf="pricingAttributeList.length > 0" id="btn5a4" (click)="submit()"
       class="btn botao_azul btn-lg mt-2 ms-1 me-1 ps-5 pe-5" wappler-command="editContent">
       {{'generalKeywords.save'|translate|uppercase}}&nbsp;&nbsp;<img src="assets/images/save.svg"
         style="height: 25px !important; vertical-align: sub;">
-    </button>
+    </button><!--[disabled]="isInvalidNumber || !formConfig.valid"-->
   </div>
 </form>

@@ -4,7 +4,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { of, Subject, Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
-import { CorporateEntity, IStakeholders, PostCorporateEntity } from '../IStakeholders.interface';
+import { CorporateEntity, IStakeholders, PostCorporateEntity, StakeholdersCompleteInformation } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
 import { stakeTypeList } from '../stakeholderType';
 import { TemplateRef, ViewChild } from '@angular/core';
@@ -55,6 +55,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   @Input() parentFormGroup: FormGroup;
   @Input() sameNIFStake: boolean;
   @Input() submissionClient: Client;
+  @Input() stakeholderList: StakeholdersCompleteInformation[] = [];
 
   modalRef: BsModalRef;
   showSameNIFError: boolean = false;
@@ -144,7 +145,26 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.dataCCcontents.nifCC = nif;
     this.dataCCcontents.localityCC = postalCode.split(" ").pop();
     this.dataCCcontents.gender = gender;
-    this.emitSameNIF(of(this.dataCCcontents.nifCC));
+
+    //this.emitSameNIF(of(this.dataCCcontents.nifCC));
+    var found = this.stakeholderList.find(value => value.stakeholderAcquiring.fiscalId == this.dataCCcontents.nifCC);
+    if (found != undefined) {
+      this.showSameNIFError = true;
+      this.showSameNIFErrorForm = false;
+      this.isShown = false;
+      this.foundStakeholders = null;
+      this.showSameNIFError = true;
+      this.isCC = false;
+      this.okCC = false;
+      this.isNoDataReadable = true;
+      this.selected = false;
+      //mostrar erros
+      return;
+    } else {
+      this.showSameNIFError = false;
+      this.showSameNIFErrorForm = false;
+    }
+
     this.dataCCcontents.countryCC = countryIssuer;
     this.countryCC = countryIssuer; //HTML
 
@@ -507,7 +527,24 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
 
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
 
-    this.emitSameNIF(of(this.stakeholderNumber)); //evento que serve para comparar o NIF inserido com os stakeholders já existentes
+    //this.emitSameNIF(of(this.stakeholderNumber)); //evento que serve para comparar o NIF inserido com os stakeholders já existentes
+    var found = this.stakeholderList.find(value => value.stakeholderAcquiring.fiscalId == this.stakeholderNumber);
+    if (found != undefined) {
+      this.showSameNIFError = true;
+      this.showSameNIFErrorForm = false;
+      this.isShown = false;
+      this.foundStakeholders = null;
+      this.showSameNIFError = true;
+      this.isCC = false;
+      this.okCC = false;
+      this.isNoDataReadable = true;
+      this.selected = false;
+      //mostrar erros
+      return;
+    } else {
+      this.showSameNIFError = false;
+      this.showSameNIFErrorForm = false;
+    }
 
     if (this.submissionClient.fiscalId === this.stakeholderNumber) {
       if (this.docType === '0501') {
@@ -1199,7 +1236,21 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         return false;
       }
 
-      this.emitSameNIF(of(nif));
+      //this.emitSameNIF(of(nif));
+      var found = this.stakeholderList.find(value => value.stakeholderAcquiring.fiscalId == nif);
+      if (found != undefined) {
+        this.showSameNIFError = true;
+        this.showSameNIFErrorForm = false;
+        this.isShown = false;
+        this.foundStakeholders = null;
+        this.showSameNIFError = true;
+        this.isCC = false;
+        this.okCC = false;
+        this.isNoDataReadable = true;
+        this.selected = false;
+        //mostrar erros
+        return false;
+      }
 
       return Number(nif[8]) === comparador;
     }

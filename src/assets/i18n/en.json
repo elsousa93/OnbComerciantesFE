@@ -25,6 +25,7 @@
     "compliance": "Compliance Doubts",
     "DOValidation": "Valida DO",
     "MCCTreatment": "MCC Treatment",
+    "aceitacao": "Acceptance",
     "assignUserNotExists": "Do you wish to assign the process to",
     "assignUserExists": "The process is already assigned to",
     "assignUserExistsMore": "By continuing you will remove this assignment and assign it to",
@@ -515,7 +516,8 @@
     "enrollmentStoreNumber": "Store's Enrollment Number",
     "enrollmentTerminalNumber": "Terminal's Enrollment Number",
     "conclude": "Conclude",
-    "hits": "Hits"
+    "hits": "Hits",
+    "processInProgress": "This process is already in progress"
   },
   "generalKeywords": {
     "yes": "Yes",
@@ -548,7 +550,12 @@
     "deleteStore": "Do you want to delete this store?",
     "maintainStore": "Keep Store",
     "confirmDeleteStore": "Delete Store",
-    "clean": "Clean"
+    "clean": "Clean",
+    "formInvalid": "Required fields missing",
+    "requiredStore": "It is required to add at least one store",
+    "requiredPricing": "It is required to fill in the tab Store Price",
+    "requiredTerminal": "It is required to have at least one terminal associated with the store",
+    "invalidNumber": "The discount value can't be greater than the original value"
   },
   "generalButtons": {
     "continue": "Continue",

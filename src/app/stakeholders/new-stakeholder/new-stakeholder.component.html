@@ -157,7 +157,7 @@
                   {{'client.incorrectNIPC'|translate}}
                 </span>
               </p>
-              <input #NIF id="fiscalId" class="form-control" type="text" (keyup)="validate(NIF.value)" (keypress)="numericOnlyNIF($event)" formControlName="NIF" [readonly]="currentStakeholder?.stakeholderAcquiring?.fiscalId != null && currentStakeholder?.stakeholderAcquiring?.fiscalId != ''">
+              <input tabindex="1" #NIF id="fiscalId" class="form-control" type="text" (keyup)="validate(NIF.value)" (keypress)="numericOnlyNIF($event)" formControlName="NIF" [readonly]="currentStakeholder?.stakeholderAcquiring?.fiscalId != null && currentStakeholder?.stakeholderAcquiring?.fiscalId != ''">
             </div>
           </div>
         </div>
@@ -165,7 +165,7 @@
           <div class="col-6">
             <div class="row">
               <p class="titulo-form-simples">{{'stakeholder.country'|translate|uppercase}} *</p>
-              <select class="form-select campo-form-select" formControlName="Country"
+              <select tabindex="2" class="form-select campo-form-select" formControlName="Country"
                       (click)="clean()" [attr.disabled]="(returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001')) ) ? true : null">
                 <option *ngFor="let country of countries" value="{{country.code}}">
                   {{country.description}}
@@ -180,7 +180,7 @@
             </div>
             <div class="row">
               <p class="titulo-form-simples">{{'stakeholder.address'|translate|uppercase}} *</p>
-              <input class="form-control" type="text" formControlName="Address" autocomplete="true"
+              <input tabindex="4" class="form-control" type="text" formControlName="Address" autocomplete="true"
                      [attr.disabled]="(returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001')) ) ? true : null">
               <div class="alert alert-danger"
                    *ngIf="formNewStakeholder.get('Address').touched && !formNewStakeholder.get('Address').valid">
@@ -193,7 +193,7 @@
           <div class="col-6">
             <div class="row ms-0">
               <p class="titulo-form-simples">{{'stakeholder.postalCode'|translate|uppercase}} *</p>
-              <input class="form-control" type="text" formControlName="ZIPCode" (focusout)="onFocusOut()"
+              <input tabindex="3" class="form-control" type="text" formControlName="ZIPCode" (focusout)="onFocusOut()"
                      (keyup)="GetCountryByZipCode($event)" (keypress)="numericOnly($event)" maxlength="8" autocomplete="true"
                      [attr.disabled]="(returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001')) ) ? true : null">
               <div class="alert alert-danger"
@@ -205,7 +205,7 @@
             </div>
             <div class="row ms-0">
               <p class="titulo-form-simples">{{'stakeholder.locale'|translate|uppercase}} *</p>
-              <input class="form-control" type="text" formControlName="Locality" autocomplete="true"
+              <input tabindex="5" class="form-control" type="text" formControlName="Locality" autocomplete="true"
                      [readonly]="canEditLocality() === false || returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001'))">
               <div class="alert alert-danger"
                    *ngIf="formNewStakeholder.get('Locality').touched && !formNewStakeholder.get('Locality').valid">

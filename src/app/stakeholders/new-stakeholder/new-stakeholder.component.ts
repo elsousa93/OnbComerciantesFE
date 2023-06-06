@@ -12,7 +12,7 @@ import { SubmissionService } from '../../submission/service/submission-service.s
 import { DatePipe } from '@angular/common';
 import { docTypeENI } from '../../client/docType';
 import { LoggerService } from 'src/app/logger.service';
-import { Subscription } from 'rxjs';
+import { distinctUntilChanged, Subscription } from 'rxjs';
 import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { dataCC } from '../../citizencard/dataCC.interface';
@@ -350,6 +350,18 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     this.isCC = false;
     this.okCC = false;
     this.validate(this.currentStakeholder?.stakeholderAcquiring?.fiscalId);
+    this.formNewStakeholder.get("Country").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
+      if (val == "PT") {
+        this.formNewStakeholder.get('ZIPCode').setValidators([Validators.required, Validators.minLength(8), Validators.maxLength(8)]);
+        this.formNewStakeholder.get('Address').setValidators(Validators.required);
+        this.formNewStakeholder.get('Locality').setValidators(Validators.required);
+      } else {
+        this.formNewStakeholder.get('Address').setValidators(null);
+        this.formNewStakeholder.get('ZIPCode').setValidators(null);
+        this.formNewStakeholder.get('Locality').setValidators(null);
+      }
+      this.formNewStakeholder.updateValueAndValidity();
+    });
   }
 
   ngOnInit(): void {
@@ -382,10 +394,10 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       contractAssociation: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.signType === 'CitizenCard' || this.currentStakeholder?.stakeholderAcquiring?.signType === 'DigitalCitizenCard' ? 'true' : 'false', Validators.required),
       proxy: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.isProxy != null ? this.currentStakeholder?.stakeholderAcquiring?.isProxy + '' : 'false', Validators.required),
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined) ? this.currentStakeholder?.stakeholderAcquiring.fiscalId : '', Validators.required),
-      Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.country : 'PT', Validators.required), // tirei do if (this.returned != null)
-      ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? zipcode : '', [Validators.required, Validators.maxLength(8), Validators.minLength(8)]), //
-      Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea : '', Validators.required), //
-      Address: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address : '', Validators.required) //
+      Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.country : 'PT', Validators.required), // tirei do if (this.returned != null)
+      ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? zipcode : ''), //
+      Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea : ''), //
+      Address: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address : '') //
     });
     this.rootFormGroup.form.setControl('stake', this.formNewStakeholder);
     this.showYesCC = true;
@@ -400,6 +412,18 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     this.changeValueCC();
     this.validate(this.currentStakeholder?.stakeholderAcquiring?.fiscalId);
     //this.GetCountryByZipCode();
+    //this.formNewStakeholder.get("Country").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
+    //  if (val == "PT") {
+    //    this.formNewStakeholder.get('ZIPCode').setValidators([Validators.required, Validators.minLength(8), Validators.maxLength(8)]);
+    //    this.formNewStakeholder.get('Address').setValidators(Validators.required);
+    //    this.formNewStakeholder.get('Locality').setValidators(Validators.required);
+    //  } else {
+    //    this.formNewStakeholder.get('Address').setValidators(null);
+    //    this.formNewStakeholder.get('ZIPCode').setValidators(null);
+    //    this.formNewStakeholder.get('Locality').setValidators(null);
+    //  }
+    //  this.formNewStakeholder.updateValueAndValidity();
+    //});
   }
 
   changeValueCC(){
@@ -605,10 +629,11 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       if (!result && allowedKeys.indexOf(event.key) === -1)
         return false;
     }
-    if (this.sameZIPCode && this.formNewStakeholder?.value['ZIPCode']?.length == 8)
+    var currentCountry = this.formNewStakeholder.get('Country').value;
+
+    if (this.sameZIPCode && this.formNewStakeholder?.value['ZIPCode']?.length == 8 && currentCountry == "PT")
       return false;
 
-    var currentCountry = this.formNewStakeholder.get('Country').value;
     var zipcode = this.formNewStakeholder.value['ZIPCode'];
     this.formNewStakeholder.get('Address').setValue('');
     this.formNewStakeholder.get('Locality').setValue('');
@@ -714,9 +739,10 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   }
 
   onFocusOut() {
+    var currentCountry = this.formNewStakeholder.get('Country').value;
     var zipcode = this.formNewStakeholder.value['ZIPCode'];
     var regex = /^(\d{4}[\-]{1}\d{3})$/gm;
-    if (!regex.test(zipcode))
+    if (!regex.test(zipcode) && currentCountry == "PT")
       this.snackBar.open(this.translate.instant('errorMessages.404.postalCode'), '', { duration: 4000, panelClass: ['snack-bar'] });
   }
 }

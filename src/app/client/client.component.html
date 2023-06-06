@@ -382,7 +382,7 @@
               </tbody>
             </table>
             <span class="navbar-text me-2">
-              <button id="btn5a2" (click)="createNewClient()" class="btn botao_branco" wappler-command="editContent">
+              <button id="btn5a2" *ngIf="!showFoundClient" (click)="createNewClient()" class="btn botao_branco" wappler-command="editContent">
                 {{'client.add'|translate|uppercase}}&nbsp;
                 <span class="person-add-blue icon-person-add-blue"></span>
                 <!--<img src="assets/images/person_add_blue.svg" class="img_btn">-->

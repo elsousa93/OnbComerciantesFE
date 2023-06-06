@@ -277,9 +277,12 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   selectStore(info) {
+    this.closeAccordion();
     if (info.clickedTable) {
       this.submit(true);
     }
+    this.replicate = false;
+    this.showMore = false;
     this.storeEquipList = [];
     this.loadStoreEquips(this.storeEquipList);
     this.packId = "";
@@ -298,10 +301,11 @@ export class CommercialOfferListComponent implements OnInit {
     this.logger.info("Selected store: " + JSON.stringify(this.currentStore));
     this.logger.info("Selected store index: " + this.currentIdx);
 
+
     //setTimeout(() => this.setFormData(), 100);
     this.setFormData();
     if (this.form.get("replicateProducts").value)
-      this.loadStoresWithSameBank(this.currentStore.bank.bank.bank);
+      this.loadStoresWithSameBank(this.currentStore.bank.bank.bank); 
 
     this.getStoreEquipsFromSubmission();
 
@@ -321,7 +325,29 @@ export class CommercialOfferListComponent implements OnInit {
       context.form.get("commission" + value.id).get("commissionMin" + value.id).setValue(value.minValue.originalValue + "");
       context.form.get("commission" + value.id).get("commissionMax" + value.id).setValue(value.maxValue.originalValue + "");
       context.form.get("commission" + value.id).get("commissionFixed" + value.id).setValue(value.fixedValue.originalValue + "");
-      context.form.get("commission" + value.id).get("commissionPercentage" + value.id).setValue((value.percentageValue.originalValue * 100).toFixed(2));
+      var val = (value.percentageValue.originalValue * 100).toFixed(3);
+      if (val.includes(".")) {
+        var split = val.split(".");
+        if (split[1].length < 3) {
+          var decimal = split[1].length == 0 ? "000" : split[1].length == 1 ? "00" + split[1] : "0" + split[1];
+        } else {
+          var decimal = split[1].substring(0, 3);
+        }
+        val = split[0] + "." + decimal;
+      }
+      if (val.includes(",")) {
+        var split = val.split(",");
+        if (split[1].length < 3) {
+          var decimal = split[1].length == 0 ? "000" : split[1].length == 1 ? "00" + split[1] : "0" + split[1];
+        } else {
+          var decimal = split[1].substring(0, 3);
+        }
+        val = split[0] + "," + decimal;
+      }
+      if (!val.includes(".") && !val.includes(",")) {
+        val = val + "." + "000";
+      }
+      context.form.get("commission" + value.id).get("commissionPercentage" + value.id).setValue(val);
     });
     //if (this.commissionId != "") {
     //  this.chooseCommission(this.commissionId);
@@ -415,12 +441,34 @@ export class CommercialOfferListComponent implements OnInit {
       context.form.removeControl('comission' + value.id);
     });
 
-    if (this.currentStore.pack == null) {
+    if (this.currentStore.pack == null || this.currentStore?.pack?.commission?.commissionId == "" || this.currentStore?.pack?.commission?.attributes?.length == 0) {
       this.commissionAttributeList.forEach(function (value, idx) {
         valueGroup.setControl("commissionMin" + value.id, new FormControl(value.minValue.originalValue + "", Validators.required));
         valueGroup.setControl("commissionMax" + value.id, new FormControl(value.maxValue.originalValue + "", Validators.required));
         valueGroup.setControl("commissionFixed" + value.id, new FormControl(value.fixedValue.originalValue + "", Validators.required));
-        valueGroup.setControl("commissionPercentage" + value.id, new FormControl((value.percentageValue.originalValue * 100).toFixed(2), Validators.required));
+        var val = (value.percentageValue.originalValue * 100).toFixed(3);
+        if (val.includes(".")) {
+          var split = val.split(".");
+          if (split[1].length < 3) {
+            var decimal = split[1].length == 0 ? "000" : split[1].length == 1 ? "00" + split[1] : "0" + split[1];
+          } else {
+            var decimal = split[1].substring(0, 3);
+          }
+          val = split[0] + "." + decimal;
+        }
+        if (val.includes(",")) {
+          var split = val.split(",");
+          if (split[1].length < 3) {
+            var decimal = split[1].length == 0 ? "000" : split[1].length == 1 ? "00" + split[1] : "0" + split[1];
+          } else {
+            var decimal = split[1].substring(0, 3);
+          }
+          val = split[0] + "," + decimal;
+        }
+        if (!val.includes(".") && !val.includes(",")) {
+          val = val + "." + "000";
+        }
+        valueGroup.setControl("commissionPercentage" + value.id, new FormControl(val, Validators.required));
         context.form.setControl("commission" + value.id, valueGroup);
       });
     } else {
@@ -428,7 +476,29 @@ export class CommercialOfferListComponent implements OnInit {
         valueGroup.setControl("commissionMin" + value.id, new FormControl(value.minValue.finalValue + "", Validators.required));
         valueGroup.setControl("commissionMax" + value.id, new FormControl(value.maxValue.finalValue + "", Validators.required));
         valueGroup.setControl("commissionFixed" + value.id, new FormControl(value.fixedValue.finalValue + "", Validators.required));
-        valueGroup.setControl("commissionPercentage" + value.id, new FormControl(Number(value.percentageValue.finalValue * 100).toFixed(2), Validators.required));
+        var val = (value.percentageValue.finalValue * 100).toFixed(3);
+        if (val.includes(".")) {
+          var split = val.split(".");
+          if (split[1].length < 3) {
+            var decimal = split[1].length == 0 ? "000" : split[1].length == 1 ? "00" : "0";
+          } else {
+            var decimal = split[1].substring(0, 3);
+          }
+          val = split[0] + "." + decimal;
+        }
+        if (val.includes(",")) {
+          var split = val.split(",");
+          if (split[1].length < 3) {
+            var decimal = split[1].length == 0 ? "000" : split[1].length == 1 ? "00" : "0";
+          } else {
+            var decimal = split[1].substring(0, 3);
+          }
+          val = split[0] + "," + decimal;
+        }
+        if (!val.includes(".") && !val.includes(",")) {
+          val = val + "." + "000";
+        }
+        valueGroup.setControl("commissionPercentage" + value.id, new FormControl(val, Validators.required));
         context.form.setControl("commission" + value.id, valueGroup);
       });
     }
@@ -460,6 +530,7 @@ export class CommercialOfferListComponent implements OnInit {
           this.logger.info("Get packs: " + JSON.stringify(result));
           this.packs = result.result;
           if (this.packs.length === 1) {
+            this.form.get("productPackKind").markAsDirty();
             this.selectCommercialPack(this.packs[0].id);
           } else if (this.currentStore.pack != null) {
             this.selectCommercialPack(this.currentStore.pack.packId);
@@ -499,6 +570,7 @@ export class CommercialOfferListComponent implements OnInit {
           this.logger.info("Get packs: " + JSON.stringify(result));
           this.packs = result.result;
           if (this.packs.length === 1) {
+            this.form.get("productPackKind").markAsDirty();
             this.selectCommercialPack(this.packs[0].id);
           } else if (this.currentStore.pack != null) {
             this.selectCommercialPack(this.currentStore.pack.packId);
@@ -810,9 +882,8 @@ export class CommercialOfferListComponent implements OnInit {
         });
       
       } else {
-        if (!this.changedPackReturned) {
+        if (!this.changedPackReturned && this.currentStore.pack != null) {
           this.chooseCommission(this.currentStore.pack.commission.commissionId); 
-
         } else {
           if (this.changedPackValue) {
             this.commissionFilter = {
@@ -854,7 +925,7 @@ export class CommercialOfferListComponent implements OnInit {
         
       }
     } else {
-      if (this.packId != "") {
+      if (this.packId != "" && this.returned != "consult") {
         if (this.changedPackValue) {
           //this.changedPackValue = false;
           this.commissionFilter = {
@@ -964,7 +1035,7 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   configurationTerminal() {
-    if (this.packId == "") {
+    if (this.packId == "" && this.returned != 'consult') {
       document.getElementById("flush-collapseThree").className = "accordion-collapse collapse";
       document.getElementById("accordionButton3").className = "accordion1-button collapsed";
       this.snackBar.open(this.translate.instant('commercialOffer.openError'), '', {
@@ -1039,21 +1110,23 @@ export class CommercialOfferListComponent implements OnInit {
       commission.minValue.finalValue = Number(currentValue.get("commissionMin" + commission.id).value.replace(/,/g, '.'));
       commission.maxValue.finalValue = Number(currentValue.get("commissionMax" + commission.id).value.replace(/,/g, '.'));
       commission.fixedValue.finalValue = Number(currentValue.get("commissionFixed" + commission.id).value.replace(/,/g, '.'));
-      commission.percentageValue.finalValue = Number((Number(currentValue.get("commissionPercentage" + commission.id).value.replace(/,/g, '.')) / 100).toFixed(3));
+      commission.percentageValue.finalValue = Math.trunc((Number(currentValue.get("commissionPercentage" + commission.id).value.replace(/,/g, '.')) / 100) * 100000) / 100000; //Number((Number(currentValue.get("commissionPercentage" + commission.id).value.replace(/,/g, '.')) / 100).toFixed(3));
     });
 
     //estava aqui antes os valores do changedValue()
-    var index = this.list.findIndex(group => group.id == this.paymentSchemes.id);
-    if(index > -1)
-      this.list.splice(index, 1);
-    
+    if (this.paymentSchemes != null) {
+      var index = this.list.findIndex(group => group.id == this.paymentSchemes?.id);
+      if (index > -1)
+        this.list.splice(index, 1);
+    }
+
     if (this.returned != 'consult') {
-      if (this.form.valid) {
+      if (this.form.valid && !(this.storeEquipList.length == 0 && !this.userBanca && this.isUnicre) && this.commissionId !== '') {
         this.currentStore.equipments = this.storeEquipList;
         this.currentStore.pack = {
           packId: this.packId,
-          processorId: this.packs.find(pack => pack.id == this.packId).processors[0],
-          packDescription: this.packs.find(pack => pack.id == this.packId).description,
+          processorId: this.packs?.find(pack => pack.id == this.packId)?.processors[0],
+          packDescription: this.packs?.find(pack => pack.id == this.packId)?.description,
           commission: {
             commissionId: this.commissionId,
             attributes: this.commissionAttributeList
@@ -1131,6 +1204,42 @@ export class CommercialOfferListComponent implements OnInit {
             }
           }
         }
+      } else {
+        if (!clickedTable) {
+          if (this.storeEquipList.length == 0 && !this.userBanca && this.isUnicre) {
+            this.snackBar.open(this.translate.instant('generalKeywords.requiredTerminal'), '', {
+              duration: 15000,
+              panelClass: ['snack-bar']
+            });
+          } else if (this.commissionId == "" || this.commissionId == null) {
+            this.snackBar.open(this.translate.instant('generalKeywords.requiredPricing'), '', {
+              duration: 15000,
+              panelClass: ['snack-bar']
+            });
+          } else {
+            this.openAccordeons();
+            this.form.markAllAsTouched();
+            this.snackBar.open(this.translate.instant('generalKeywords.formInvalid'), '', {
+              duration: 15000,
+              panelClass: ['snack-bar']
+            });
+          }
+        } else {
+          this.currentStore.equipments = this.storeEquipList;
+          this.currentStore.pack = {
+            packId: this.packId,
+            processorId: this.packs?.find(pack => pack.id == this.packId)?.processors[0],
+            packDescription: this.packs?.find(pack => pack.id == this.packId)?.description,
+            commission: {
+              commissionId: this.commissionId,
+              attributes: this.commissionAttributeList
+            },
+            paymentSchemes: this.paymentList,
+            otherPackDetails: this.list
+          }
+          this.currentStore.supportEntity = this.form.get("isUnicre").value ? "Acquirer" : "Other";
+          this.currentStore.registrationId = this.form.get("terminalRegistrationNumber")?.value?.toString();
+        }
       }
     } else {
       this.data.changeEquips(true);
@@ -1150,6 +1259,17 @@ export class CommercialOfferListComponent implements OnInit {
     document.getElementById("accordionButton3").className = "accordion1-button collapsed";
     document.getElementById("flush-collapseFour").className = "accordion-collapse collapse";
     document.getElementById("accordionButton4").className = "accordion1-button collapsed";
+  }
+
+  openAccordeons() {
+    document.getElementById("flush-collapseOne").className = "accordion-collapse collapse show";
+    document.getElementById("accordionButton1").className = "accordion1-button";
+    document.getElementById("flush-collapseTwo").className = "accordion-collapse collapse show";
+    document.getElementById("accordionButton2").className = "accordion1-button";
+    document.getElementById("flush-collapseThree").className = "accordion-collapse collapse show";
+    document.getElementById("accordionButton3").className = "accordion1-button";
+    document.getElementById("flush-collapseFour").className = "accordion-collapse collapse show";
+    document.getElementById("accordionButton4").className = "accordion1-button";
   }
 
   emitUpdatedStore(info) {
@@ -1359,7 +1479,7 @@ export class CommercialOfferListComponent implements OnInit {
 
   onKeyDown(event: any) {
     const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
-    const regex = /^[0-9]+([,.][0-9]+)?$/;
+    const regex = /^[0-9]+([,.][0-9]{1,3})?$/;
     let currentValue = this.form.get("commission" + event.target.id).get(event.target.name).value as string;
     currentValue = currentValue + event.key;
     if (currentValue.endsWith(",") || currentValue.endsWith(".")) {

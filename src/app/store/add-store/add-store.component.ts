@@ -5,7 +5,7 @@ import { AppComponent } from '../../app.component';
 import { CountryInformation, ShoppingCenter, SubActivity } from '../../table-info/ITable-info.interface';
 import { Product, Subproduct } from '../../commercial-offer/ICommercialOffer.interface';
 import { TableInfoService } from '../../table-info/table-info.service';
-import { Subscription } from 'rxjs';
+import { distinctUntilChanged, Subscription } from 'rxjs';
 import { DataService } from 'src/app/nav-menu-interna/data.service';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { SubmissionGetTemplate } from '../../submission/ISubmission.interface';
@@ -164,8 +164,21 @@ export class AddStoreComponent implements OnInit {
                 length++;
                 var act = this.activity.find(a => a?.activityCode == res?.find(b => b?.activityCode == a?.activityCode)?.activityCode);
 
-                if (act == undefined)
+                if (act == undefined) {
                   this.activity.push(...res);
+                } else {
+                  this.activity.forEach(activity => {
+                    var find = res.find(val => val?.activityCode == activity?.activityCode);
+                    if (find != undefined) {
+                      find?.subActivities?.forEach(v => {
+                        var f = activity?.subActivities?.find(ac => ac?.subActivityCode == v?.subActivityCode);
+                        if (f == undefined) {
+                          activity.subActivities.push(v);
+                        }
+                      });
+                    }
+                  });
+                }
 
                 if (length == context.submissionClient?.otherEconomicActivities?.length)
                   this.activity = this.activity.sort((a, b) => a.activityDescription > b.activityDescription ? 1 : -1); //ordenar resposta
@@ -367,9 +380,9 @@ export class AddStoreComponent implements OnInit {
       replicate: new FormControl(true, Validators.required),
       commercialCenter: new FormControl(this.isComercialCentreStore, Validators.required) 
     })
-    this.formStores.get("activityStores").valueChanges.subscribe(v => {
+    this.formStores.get("activityStores").valueChanges.pipe(distinctUntilChanged()).subscribe(v => {
       this.onActivitiesSelected();
-      if (this.subActivities.length > 0)
+      if (this.subActivities.length > 0 || this.subActivity.length > 0)
         this.formStores.controls["subactivityStore"].setValidators([Validators.required]);
       else
         this.formStores.controls["subactivityStore"].clearValidators();
@@ -378,6 +391,8 @@ export class AddStoreComponent implements OnInit {
   }
 
   comercialCentre(isCentre: boolean) {
+    this.showError = false;
+    this.foundComercialCentre = false;
     this.isComercialCentreStore = isCentre;
     if (isCentre) {
       this.formStores.get('subZoneStore').setValidators([Validators.required]);
@@ -386,11 +401,18 @@ export class AddStoreComponent implements OnInit {
         //chamar a API que vai buscar o centro comercial por codigo postal caso seja replicada a morada do cliente empresa
         this.subs.push(this.tableInfo.GetShoppingByZipCode(this.formStores.value['zipCodeStore'].split("-", 1)).subscribe(result => {
           this.logger.info("Get shopping center by zip code result: " + JSON.stringify(result));
-          this.foundComercialCentre = true;
-          this.subzonesShopping = result;
-          this.subzonesShopping = this.subzonesShopping.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+          if (result.length > 0) {
+            this.foundComercialCentre = true;
+            this.subzonesShopping = result;
+            this.subzonesShopping = this.subzonesShopping.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+          } else {
+            this.foundComercialCentre = false;
+            this.showError = true;
+          }
         }, error => {
           this.logger.error(error, "", "Error getting shopping center by zip code");
+          this.foundComercialCentre = false;
+          this.showError = true;
         }));
       } else {
         this.formStores.get('replicate').setValue(true);
@@ -398,11 +420,18 @@ export class AddStoreComponent implements OnInit {
           var postalCode = this.submissionClient?.headquartersAddress?.postalCode.split("-", 1)[0];
           this.subs.push(this.tableInfo.GetShoppingByZipCode(Number(postalCode)).subscribe(res => {
             this.logger.info("Get shopping center by zip code result: " + JSON.stringify(res));
-            this.foundComercialCentre = true;
-            this.subzonesShopping = res;
-            this.subzonesShopping = this.subzonesShopping.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+            if (res.length > 0) {
+              this.foundComercialCentre = true;
+              this.subzonesShopping = res;
+              this.subzonesShopping = this.subzonesShopping.sort((a, b) => a.description > b.description ? 1 : -1); //ordenar resposta
+            } else {
+              this.foundComercialCentre = false;
+              this.showError = true;
+            }
           }, error => {
             this.logger.error(error, "", "Error getting shopping center by zip code");
+            this.foundComercialCentre = false;
+            this.showError = true;
           }));
         } else if (this.formStores.get("subZoneStore").value == '' || this.formStores.get("subZoneStore").value == null) {
           this.noAddress = true;

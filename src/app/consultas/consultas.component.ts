@@ -10,12 +10,15 @@ import { ProcessService } from '../process/process.service';
 import { LoggerService } from 'src/app/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { TableInfoService } from '../table-info/table-info.service';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { AppComponent } from '../app.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AppConfigService } from '../app-config.service';
 import { DatePipe } from '@angular/common';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
+import { ReassingWorkQueue, WorkQueue } from '../queues-detail/IQueues.interface';
+import { QueuesService } from '../queues-detail/queues.service';
+import { AuthService } from '../services/auth.service';
 
 interface Process {
   processNumber: string;
@@ -53,8 +56,16 @@ export class ConsultasComponent implements OnInit {
   incorrectNIPCSize: boolean = false;
   incorrectNIF: boolean = false;
   incorrectNIFSize: boolean = false;
+  userModalRef: BsModalRef | undefined;
+  @ViewChild('userModal') userModal;
+  existsUser: boolean;
+  queueName: string;
+  processId: string;
+  jobId: number = 0;
+  workQueue: WorkQueue = null;
+  username: string = "";
 
-  constructor(private logger: LoggerService, private datePipe: DatePipe, private snackBar: MatSnackBar, private route: Router, public modalService: BsModalService, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService, private translate: TranslateService, public appComponent: AppComponent, private configuration: AppConfigService, private processNrService: ProcessNumberService) {
+  constructor(private logger: LoggerService, private datePipe: DatePipe, private snackBar: MatSnackBar, private route: Router, public modalService: BsModalService, private data: DataService, private processService: ProcessService, private tableInfo: TableInfoService, private translate: TranslateService, public appComponent: AppComponent, private configuration: AppConfigService, private processNrService: ProcessNumberService, private queueService: QueuesService, private authService: AuthService) {
     this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.appComponent.toggleSideNav(false);
     this.date = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
@@ -160,6 +171,7 @@ export class ConsultasComponent implements OnInit {
         duration: 4000,
         panelClass: ['snack-bar']
       });
+      return;
     }
 
     if (processDocType != '' && processDocNumber == '' || processDocType == '' && processDocNumber != '') {
@@ -512,33 +524,97 @@ export class ConsultasComponent implements OnInit {
     }
   }
 
-  openProcess(process) {
-    if (process.state === 'StandardIndustryClassificationChoice' || process.state === 'RiskAssessment' || process.state === 'EligibilityAssessment' || process.state === 'ClientChoice' || process.state === 'NegotiationApproval' || process.state === 'MerchantRegistration' || process.state === 'OperationsEvaluation' || process.state === 'ComplianceEvaluation') {
-      let navigationExtras: NavigationExtras = {
-        state: {
-          queueName: "",
-          processId: process.processId
+  workQueuePopup(process, queue) {
+    this.processId = process.processId;
+    this.username = this.authService.GetCurrentUser().userName;
+    this.queueService.getActiveWorkQueue(process.processId).then(result => {
+      this.workQueue = result.result;
+      if (result.result.lockedBy != null && result.result.lockedBy != "") {
+        if (result.result.status != "InProgress") {
+          if (result.result.lockedBy.trim() != this.authService.GetCurrentUser().userName.trim()) {
+            this.existsUser = true;
+            this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
+          } else {
+            let navigationExtras: NavigationExtras = {
+              state: {
+                queueName: queue,
+                processId: this.processId
+              }
+            };
+            this.logger.info('Redirecting to Queues Detail page');
+            this.route.navigate(["/queues-detail"], navigationExtras);
+          }
+        } else {
+          if (result.result.lockedBy.trim() == this.authService.GetCurrentUser().userName.trim()) {
+            let navigationExtras: NavigationExtras = {
+              state: {
+                queueName: queue,
+                processId: this.processId
+              }
+            };
+            this.logger.info('Redirecting to Queues Detail page');
+            this.route.navigate(["/queues-detail"], navigationExtras);
+          } else {
+            this.snackBar.open(this.translate.instant('searches.processInProgress'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
+          }
         }
-      };
-      if (process.state === 'StandardIndustryClassificationChoice') {
-        navigationExtras.state["queueName"] = "MCCTreatment";
-      } else if (process.state === 'RiskAssessment') {
-        navigationExtras.state["queueName"] = "risk";
-      } else if (process.state === 'EligibilityAssessment') {
-        navigationExtras.state["queueName"] = "eligibility";
-      } else if (process.state === 'ClientChoice') {
-        navigationExtras.state["queueName"] = "multipleClients";
-      } else if (process.state === 'NegotiationApproval') {
-        navigationExtras.state["queueName"] = "negotiationAproval";
-      } else if (process.state === 'MerchantRegistration') {
-        navigationExtras.state["queueName"] = "validationSIBS";
-      } else if (process.state === 'OperationsEvaluation') {
-        navigationExtras.state["queueName"] = "DOValidation";
-      } else if (process.state === 'ComplianceEvaluation') {
-        navigationExtras.state["queueName"] = "compliance";
+      } else {
+        this.existsUser = false;
+        this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
       }
+    }, error => {
+      this.logger.error(error, "Error while searching for active work queue");
+    });
+  }
+
+  assign() {
+    let navigationExtras: NavigationExtras = {
+      state: {
+        queueName: this.queueName,
+        processId: this.processId
+      }
+    };
+    var reassignWorkQueue: ReassingWorkQueue = {};
+    reassignWorkQueue.forceReassign = true;
+    reassignWorkQueue.jobId = this.workQueue.id;
+    reassignWorkQueue.username = this.username;
+    this.queueService.postReassignWorkQueue(this.processId, reassignWorkQueue).then(res => {
+      this.processNrService.changeProcessId(this.processId);
+      this.processNrService.changeQueueName(this.queueName);
+      this.processId = "";
+      this.jobId = 0;
+      this.queueName = "";
+      this.userModalRef?.hide();
       this.logger.info('Redirecting to Queues Detail page');
       this.route.navigate(["/queues-detail"], navigationExtras);
+    });
+  }
+
+  openProcess(process) {
+    this.processNrService.changeProcessNumber(process.processNumber);
+    if (process.state === 'StandardIndustryClassificationChoice' || process.state === 'RiskAssessment' || process.state === 'EligibilityAssessment' || process.state === 'ClientChoice' || process.state === 'NegotiationApproval' || process.state === 'MerchantRegistration' || process.state === 'OperationsEvaluation' || process.state === 'ComplianceEvaluation') {
+      if (process.state === 'StandardIndustryClassificationChoice') {
+        this.queueName = "MCCTreatment";
+      } else if (process.state === 'RiskAssessment') {
+        this.queueName = "risk";
+      } else if (process.state === 'EligibilityAssessment') {
+        this.queueName = "eligibility";
+      } else if (process.state === 'ClientChoice') {
+        this.queueName = "multipleClients";
+      } else if (process.state === 'NegotiationApproval') {
+        this.queueName = "negotiationAproval";
+      } else if (process.state === 'MerchantRegistration') {
+        this.queueName = "validationSIBS";
+      } else if (process.state === 'OperationsEvaluation') {
+        this.queueName = "DOValidation";
+      } else if (process.state === 'ComplianceEvaluation') {
+        this.queueName = "compliance";
+      }
+      this.workQueuePopup(process, this.queueName);
+
     } else {
       if (process.state == "Returned") {
         this.data.historyStream$.next(true);
@@ -652,5 +728,9 @@ export class ConsultasComponent implements OnInit {
     this.incorrectNIFSize = false;
     this.incorrectNIPC = false;
     this.incorrectNIPCSize = false;
+  }
+
+  closeUserModal() {
+    this.userModalRef?.hide();
   }
 }

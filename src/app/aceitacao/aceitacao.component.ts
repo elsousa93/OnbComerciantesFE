@@ -12,6 +12,7 @@ import { Client } from '../client/Client.interface';
 import { ClientService } from '../client/client.service';
 import { LoggerService } from '../logger.service';
 import { DataService } from '../nav-menu-interna/data.service';
+import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 import { BusinessIssueViewModel, IssueViewModel, ProcessHistory, ProcessList, ProcessService, SearchProcessHistory } from '../process/process.service';
 import { ContractAcceptance, State } from '../queues-detail/IQueues.interface';
 import { QueuesService } from '../queues-detail/queues.service';
@@ -48,6 +49,7 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
   public ready: boolean = false;
   public shopIssueList: ShopDetailsAcquiring[] = [];
   docTypes: DocumentSearchType[] = [];
+  observationLength: number;
 
   historyMat = new MatTableDataSource<ProcessHistory>();
   historyColumns: string[] = ['processNumber', 'processState', 'whenStarted', 'whoFinished', 'observations'];
@@ -86,7 +88,7 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
   constructor(private logger: LoggerService,
     private route: Router, private data: DataService,
     private router: ActivatedRoute, private processService: ProcessService, private clientService: ClientService,
-    private stakeholderService: StakeholderService, private storeService: StoreService, public translate: TranslateService, private datePipe: DatePipe, private queuesService: QueuesService, public appComponent: AppComponent, private queuesInfo: QueuesService, private tableInfo: TableInfoService, private authService: AuthService) {
+    private stakeholderService: StakeholderService, private storeService: StoreService, public translate: TranslateService, private datePipe: DatePipe, private queuesService: QueuesService, public appComponent: AppComponent, private queuesInfo: QueuesService, private tableInfo: TableInfoService, private authService: AuthService, private processNrService: ProcessNumberService) {
     this.appComponent.toggleSideNav(false);
   }
 
@@ -247,6 +249,7 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
       this.process = result;
       this.processNumber = result.processNumber;
       localStorage.setItem('processNumber', this.processNumber);
+      this.processNrService.changeProcessNumber(this.processNumber);
       this.data.updateData(true, 0);
       this.processService.getProcessIssuesById(this.processId).subscribe(res => {
         this.logger.info("Get process issues result: " + JSON.stringify(result));
@@ -258,6 +261,11 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
     this.processService.getProcessHistory(this.processId).then(result => {
       this.logger.info("Get process history result: " + JSON.stringify(result));
       this.processHistoryItems = result.result;
+      if (this.processHistoryItems.items.length > 2) {
+        this.observationLength = this.processHistoryItems.items.length - 2;
+      } else {
+        this.observationLength = 0;
+      }
       this.processHistoryItems.items.sort((b, a) => new Date(b.whenStarted).getTime() - new Date(a.whenStarted).getTime());
       this.processHistoryItems.items.forEach(process => {
         process.whenStarted = this.datePipe.transform(process.whenStarted, 'yyyy-MM-dd HH:mm').toString();

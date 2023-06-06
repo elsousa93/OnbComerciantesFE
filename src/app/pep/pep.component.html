@@ -33,7 +33,7 @@
                 <p class="form-check-label titulo-form-simples" >
                   {{'declarativeInformation.stakeholder.pep.since'|translate}}:</p>
                 <input (change)="checkSelectedPEP()" formControlName="pepSinceWhen" name="pepSinceWhen"
-                  id="pepSinceWhen" type="date" [max]="date" class="form-control campo_form" value="">
+                  (keydown)="disableDate()" id="pepSinceWhen" type="date" [max]="date" placeholder="dd/mm/yyyy" class="form-control campo_form" value="">
               </div>
               <div class="col-6 ms-0 me-0 ps-0 pe-5">
                 <p class="form-check-label titulo-form-simples mt-0 text-start" >

@@ -124,13 +124,13 @@
             </div>
           </div>
           <div style="margin-top: 30px;">
-            <button id="btn5a" [disabled]="!editStores.valid || returned == 'consult'"
+            <button id="btn5a" [disabled]="returned == 'consult'"
                     (click)="submit((currentIdx === -1 ) ? true : false, true)"
                     class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-0 me-0 pt-3 pb-3 ps-3"
                     wappler-command="editContent">
               {{(currentIdx === -1 ? 'stores.add' : 'stores.edit')|translate|uppercase}}&nbsp;
               <img src="assets/images/add_business.svg" style="height: 25px !important; vertical-align: sub;">
-            </button>
+            </button> <!--[disabled]="!editStores.valid || returned == 'consult'"-->
             <button id="btn5a6" [disabled]="returned == 'consult'"
                     class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-0 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
                     wappler-command="editContent" (click)="close()">
@@ -166,10 +166,10 @@
                 <img src="assets/images/arrow_back_ios_white.svg"
                      style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;
               </button>
-              <button [disabled]="(storesLength == 0 || (!editStores.valid && currentStore != null) && returned != 'consult')"
-                      (click)="submit(false)" id="btn5a5"
+              <button (click)="submit(false)" id="btn5a5"
                       class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
                       wappler-command="editContent">
+                <!--[disabled]="(storesLength == 0 || (!editStores.valid && currentStore != null) && returned != 'consult')"-->
                 {{'generalKeywords.next'|translate|uppercase}}&nbsp;
                 <img src="assets/images/arrow_forward_ios.svg" style="height: 25px !important; vertical-align: sub;">
               </button>

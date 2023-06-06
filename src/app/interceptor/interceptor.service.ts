@@ -91,7 +91,7 @@ export class Interceptor implements HttpInterceptor {
         for (let key of Object.keys(errors)) {
           let errorList = '';
           let detail = errors[key];
-          detail.forEach(err => {
+          detail?.forEach(err => {
             errorList = errorList + err + ",\r\n";
           });
           errorMsg = errorMsg + " " + key + ": " + errorList;
@@ -107,18 +107,33 @@ export class Interceptor implements HttpInterceptor {
     }
     this.data["404"][entity][currentPage].forEach(value => {
       var splitAPI = value.api.split("/"); //api process - merchant -
-      var splitUrl = url.split("/"); //[4] se fizermos o split por "/" o 4º index terá sempre o valor 'api'
-      for (var i = 0; i < splitAPI.length; i++) {
-        if (splitAPI[i] !== splitUrl[4 + i]) {
-          if (splitAPI[i] !== "-") {
-            return;
+      var splitUrl = url.split("/"); //[4] se fizermos o split por "/" o 4º index terá sempre o valor 'api' em QA tem de ser o 5º
+      if (splitUrl[4] != "api") {
+        for (var i = 0; i < splitAPI.length; i++) {
+          if (splitAPI[i] !== splitUrl[5 + i]) {
+            if (splitAPI[i] !== "-") {
+              return;
+            }
+          }
+          if (i == splitAPI.length - 1) {
+            errorMsg = errorMsg + this.translate.instant('errorMessages.404.' + value.error);
+            this.snackBar.open(errorMsg, '', { duration: 4000, panelClass: ['snack-bar'] });
           }
         }
-        if (i == splitAPI.length - 1) {
-          errorMsg = errorMsg + this.translate.instant('errorMessages.404.' + value.error);
-          this.snackBar.open(errorMsg, '', { duration: 4000, panelClass: ['snack-bar'] });
+      } else {
+        for (var i = 0; i < splitAPI.length; i++) {
+          if (splitAPI[i] !== splitUrl[4 + i]) {
+            if (splitAPI[i] !== "-") {
+              return;
+            }
+          }
+          if (i == splitAPI.length - 1) {
+            errorMsg = errorMsg + this.translate.instant('errorMessages.404.' + value.error);
+            this.snackBar.open(errorMsg, '', { duration: 4000, panelClass: ['snack-bar'] });
+          }
         }
       }
+
     });
   }
 

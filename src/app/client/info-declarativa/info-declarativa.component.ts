@@ -5,7 +5,7 @@ import { FormBuilder } from '@angular/forms';
 import { EventEmitter, Output } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { DataService } from '../../nav-menu-interna/data.service';
-import { Subscription } from 'rxjs';
+import { distinctUntilChanged, Subscription } from 'rxjs';
 import { TableInfoService } from '../../table-info/table-info.service';
 import { CountryInformation } from '../../table-info/ITable-info.interface';
 import { SubmissionService } from '../../submission/service/submission-service.service';
@@ -15,6 +15,7 @@ import { LoggerService } from 'src/app/logger.service';
 import { TranslateService } from '@ngx-translate/core';
 import { ProcessService } from '../../process/process.service';
 import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-info-declarativa',
@@ -74,7 +75,7 @@ export class InfoDeclarativaComponent implements OnInit {
 
   public subs: Subscription[] = [];
 
-  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService, private translate: TranslateService, private processService: ProcessService, private processNrService: ProcessNumberService) {
+  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService, private translate: TranslateService, private processService: ProcessService, private processNrService: ProcessNumberService, private snackBar: MatSnackBar) {
 
     if (this.router?.getCurrentNavigation()?.extras?.state) {
       this.returnedFrontOffice = this.router.getCurrentNavigation().extras.state["returnedFrontOffice"];
@@ -97,11 +98,11 @@ export class InfoDeclarativaComponent implements OnInit {
       comercialName: new FormControl(this.newClient?.commercialName, Validators.required),
       phone1: this.formBuilder.group({
         countryCode: new FormControl((this.newClient?.contacts?.phone1?.countryCode != null && this.newClient?.contacts?.phone1?.countryCode != "") ? this.newClient?.contacts?.phone1?.countryCode : 'PT'),
-        phoneNumber: new FormControl(this.newClient?.contacts?.phone1?.phoneNumber),
+        phoneNumber: new FormControl(this.newClient?.contacts?.phone1?.phoneNumber, Validators.required),
       }, { validators: [validPhoneNumber] }),
       phone2: this.formBuilder.group({
         countryCode: new FormControl(this.newClient?.contacts?.phone2?.countryCode),
-        phoneNumber: new FormControl(this.newClient?.contacts?.phone2?.phoneNumber),
+        phoneNumber: new FormControl(this.newClient?.contacts?.phone2?.phoneNumber, Validators.required),
       }, { validators: [validPhoneAndMobileNumber] }),
       email: new FormControl(this.newClient?.contacts?.email, [Validators.required, Validators.pattern(this.emailRegex)]),
       billingEmail: new FormControl((this.newClient?.billingEmail != null || this.newClient?.billingEmail != "") ? this.newClient?.billingEmail : this.newClient?.contacts?.email, [Validators.pattern(this.emailRegex)])
@@ -109,6 +110,24 @@ export class InfoDeclarativaComponent implements OnInit {
 
     this.phone1 = this.listValue.get("phone1");
     this.phone2 = this.listValue.get("phone2");
+
+    this.listValue.get("phone1").get("phoneNumber").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
+      if (val != null && val != "") {
+        this.listValue.get("phone2").get("phoneNumber").setValidators(null);
+      } else {
+        this.listValue.get("phone2").get("phoneNumber").setValidators(Validators.required);
+      }
+      this.listValue.get("phone2").get("phoneNumber").updateValueAndValidity();
+    });
+
+    this.listValue.get("phone2").get("phoneNumber").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
+      if (val != null && val != "") {
+        this.listValue.get("phone1").get("phoneNumber").setValidators(null);
+      } else {
+        this.listValue.get("phone1").get("phoneNumber").setValidators(Validators.required);
+      }
+      this.listValue.get("phone1").get("phoneNumber").updateValueAndValidity();
+    });
 
     if (!this.newClient) {
       if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
@@ -187,24 +206,52 @@ export class InfoDeclarativaComponent implements OnInit {
       let storedForm: infoDeclarativaForm = JSON.parse(localStorage.getItem("info-declarativa")) ?? new infoDeclarativaForm();
       storedForm.client = this.newClient;
       localStorage.setItem("info-declarativa", JSON.stringify(storedForm));
-      this.logger.info("Merchant data to send " + JSON.stringify(this.newClient));
-      if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
-        this.clientService.EditClient(localStorage.getItem("submissionId"), this.newClient).subscribe(result => {
-          this.logger.info("Updated Merchant " + JSON.stringify(result));
-        });
+      if (this.listValue.valid) {
+        if (!this.listValue.pristine) {
+          this.logger.info("Merchant data to send " + JSON.stringify(this.newClient));
+          if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+            this.clientService.EditClient(localStorage.getItem("submissionId"), this.newClient).subscribe(result => {
+              this.logger.info("Updated Merchant " + JSON.stringify(result));
+              this.logger.info("Redirecting to Info Declarativa Stakeholder page");
+              let navigationExtras = {
+                state: {
+                  returnedFrontOffice: true
+                }
+              } as NavigationExtras;
+              this.router.navigate(['/info-declarativa-stakeholder'], navigationExtras);
+            });
+          } else {
+            this.processService.updateMerchantProcess(this.processId, this.newClient).then(result => {
+              this.logger.info("Updated Merchant " + JSON.stringify(result.result));
+              this.logger.info("Redirecting to Info Declarativa Stakeholder page");
+              let navigationExtras = {
+                state: {
+                  returnedFrontOffice: true
+                }
+              } as NavigationExtras;
+              this.router.navigate(['/info-declarativa-stakeholder'], navigationExtras);
+            });
+          }
+        } else {
+          this.router.navigate(['/info-declarativa-stakeholder']);
+        }
       } else {
-        this.processService.updateMerchantProcess(this.processId, this.newClient).then(result => {
-          this.logger.info("Updated Merchant " + JSON.stringify(result.result));
+        this.listValue.markAllAsTouched();
+        this.snackBar.open(this.translate.instant('generalKeywords.formInvalid'), '', {
+          duration: 15000,
+          panelClass: ['snack-bar']
         });
       }
+    } else {
+      this.logger.info("Redirecting to Info Declarativa Stakeholder page");
+      let navigationExtras = {
+        state: {
+          returnedFrontOffice: true
+        }
+      } as NavigationExtras;
+      this.router.navigate(['/info-declarativa-stakeholder'], navigationExtras);
     }
-    this.logger.info("Redirecting to Info Declarativa Stakeholder page");
-    let navigationExtras = {
-      state: {
-        returnedFrontOffice: true
-      }
-    } as NavigationExtras;
-    this.router.navigate(['/info-declarativa-stakeholder'], navigationExtras);
+
   }
 
   numericOnly(event): boolean {

@@ -83,6 +83,7 @@ export interface SubmissionGetTemplate {
   isClientAwaiting?: boolean
   submissionUser?: SubmissionUser
   isComplete?: boolean
+  observation?: string
 }
 export interface SimplifiedReference {
   id?: string

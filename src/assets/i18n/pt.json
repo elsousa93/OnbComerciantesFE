@@ -25,6 +25,7 @@
     "compliance": "Dúvidas Compliance",
     "DOValidation": "Valida DO",
     "MCCTreatment": "Tratamento MCC",
+    "aceitacao": "Aceitação",
     "assignUserNotExists": "Deseja atribuir o processo ao utilizador",
     "assignUserExists": "O processo já se encontra atribuído ao utilizador",
     "assignUserExistsMore": "Ao continuar irá retirar esta atribuição e atribuí-la ao utilizador",
@@ -516,7 +517,8 @@
     "enrollmentStoreNumber": "Nº Matrícula de Loja",
     "enrollmentTerminalNumber": "Nº de Matricula do terminal",
     "conclude": "Concluir",
-    "hits": "Hits"
+    "hits": "Hits",
+    "processInProgress": "Este processo já se encontra em curso"
   },
   "generalKeywords": {
     "yes": "Sim",
@@ -549,7 +551,12 @@
     "deleteStore": "Quer apagar esta loja?",
     "maintainStore": "Manter Loja",
     "confirmDeleteStore": "Apagar Loja",
-    "clean": "Limpar"
+    "clean": "Limpar",
+    "formInvalid": "Faltam preencher campos obrigatórios",
+    "requiredStore": "É obrigatório adicionar pelo menos uma loja",
+    "requiredPricing": "É obrigatório preencher o tabulador Precário Loja",
+    "requiredTerminal": "É obrigatório existir pelo menos um terminal associado à loja",
+    "invalidNumber": "O valor do desconto não pode ser superior ao valor original"
   },
   "generalButtons": {
     "continue": "Continuar",

@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
-import { authenticator, totp } from 'otplib';
+import { totp } from 'otplib';
 import { LoggerService } from '../../logger.service';
 import { AuthService } from '../../services/auth.service';
 

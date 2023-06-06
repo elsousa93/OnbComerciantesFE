@@ -175,8 +175,8 @@
                       {{paymentSchemes.description}}
                     </p>
                     <ng-container *ngFor="let attribute of paymentSchemes.attributes" formGroupName="{{'formGroupPayment' + paymentSchemes.id}}">
-                      <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
-                        <ng-container *ngIf="attribute.isVisible">
+                      <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngIf="attribute.isVisible">
+                        <ng-container>
                           <span class="navbar-text text-start align-self-start">
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" id="{{'formControlPayment' + attribute.id}}"
@@ -200,8 +200,8 @@
                           {{group.description}}
                         </p>
                         <ng-container *ngFor="let attribute of group.attributes">
-                          <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column text-start mb-1 pb-0">
-                            <ng-container *ngIf="attribute.isVisible">
+                          <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column text-start mb-1 pb-0" *ngIf="attribute.isVisible">
+                            <ng-container>
                               <span class="navbar-text text-start align-self-start">
                                 <div class="form-check">
                                   <input *ngIf="attribute.aggregatorId!==null && attribute.aggregatorId!==''" class="form-check-input" type="radio"
@@ -268,8 +268,8 @@
                       {{paymentSchemes.description}}
                     </p>
                     <ng-container *ngFor="let attribute of paymentSchemes.attributes" formGroupName="{{'formGroupPayment' + paymentSchemes.id}}">
-                      <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
-                        <ng-container *ngIf="attribute.isVisible">
+                      <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngIf="attribute.isVisible">
+                        <ng-container>
                           <span class="navbar-text text-start align-self-start">
                             <div class="form-check">
                               <input class="form-check-input" type="checkbox" id="{{'formControlPayment' + attribute.id}}"
@@ -291,8 +291,8 @@
                             {{group.description}}
                           </p>
                           <ng-container *ngFor="let attribute of group.attributes">
-                            <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0">
-                              <ng-container *ngIf="attribute.isVisible">
+                            <nav class="navbar navbar-expand-lg navbar-light bg-light flex-column justify-content-start text-start mb-1 pb-0" *ngIf="attribute.isVisible">
+                              <ng-container>
                                 <span class="navbar-text text-start align-self-start">
                                   <div class="form-check">
                                     <input *ngIf="attribute.aggregatorId!==null && attribute.aggregatorId!==''" class="form-check-input" type="radio"
@@ -532,25 +532,28 @@
           <nav class="navbar navbar-expand-lg navbar-light bg-light justify-content-start align-items-center mb-4">
             <span class="navbar-text me-2 align-self-center ms-0 me-0">
               <button [routerLink]="['/']" id="btn5a1"
-                class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
-                wappler-command="editContent">{{'generalKeywords.exit'|translate|uppercase}}&nbsp;
+                      class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-0 me-2 pt-3 pb-3 ps-3 pe-3"
+                      wappler-command="editContent">
+                {{'generalKeywords.exit'|translate|uppercase}}&nbsp;
                 <span class="exit-to-app icon-exit-to-app"></span>
               </button><button id="btn5a1" *ngIf="returned != 'consult'" (click)="openCancelPopup()"
-                class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
-                wappler-command="editContent">{{'generalButtons.cancel'|translate|uppercase}}&nbsp;
+                               class="btn botao_branco center-align text-start vertical-align baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3 pe-3"
+                               wappler-command="editContent">
+                {{'generalButtons.cancel'|translate|uppercase}}&nbsp;
                 <span class="cancel icon-cancel"></span>
-                </button><button (click)="goToComprovativos()"
-                id="btn5a1"
-                class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
-                wappler-command="editContent"><img src="assets/images/arrow_back_ios_white.svg"
-                  style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;</button>
-              <button
-                [disabled]="(!form.valid || (storeEquipList.length == 0  && !userBanca && isUnicre) || this.commissionId === '') && returned != 'consult'"
-                (click)="submit()" id="btn5a1"
-                class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
-                wappler-command="editContent">{{'generalKeywords.next'|translate|uppercase}}&nbsp;<img
-                  src="assets/images/arrow_forward_ios.svg"
-                  style="height: 25px !important; vertical-align: sub;"></button>
+              </button><button (click)="goToComprovativos()"
+                               id="btn5a1"
+                               class="btn botao_azul center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-2 pt-3 pb-3 ps-3"
+                               wappler-command="editContent">
+                <img src="assets/images/arrow_back_ios_white.svg"
+                     style="height: 25px !important; vertical-align: sub;">{{'generalKeywords.back'|translate|uppercase}}&nbsp;
+              </button>
+              <button (click)="submit()" id="btn5a1"
+                      class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3"
+                      wappler-command="editContent">
+                {{'generalKeywords.next'|translate|uppercase}}&nbsp;<img src="assets/images/arrow_forward_ios.svg"
+                                                                         style="height: 25px !important; vertical-align: sub;">
+              </button><!--[disabled]="(!form.valid || (storeEquipList.length == 0  && !userBanca && isUnicre) || this.commissionId === '') && returned != 'consult'"-->
             </span>
           </nav>
         </div>

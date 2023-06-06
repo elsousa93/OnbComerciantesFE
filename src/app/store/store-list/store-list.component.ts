@@ -6,7 +6,7 @@ import { distinctUntilChanged, Observable, of, Subject, Subscription } from 'rxj
 import { MatTableDataSource } from '@angular/material/table';
 import { StoreService } from '../store.service';
 import { ClientService } from '../../client/client.service';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Client } from '../../client/Client.interface';
 import { MatSort } from '@angular/material/sort';
 import { TerminalSupportEntityEnum } from '../../commercial-offer/ICommercialOffer.interface';
@@ -27,6 +27,7 @@ import { LoggerService } from '../../logger.service';
 import { ProcessService } from '../../process/process.service';
 import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-store-list',
@@ -58,7 +59,6 @@ export class StoreComponent implements AfterViewInit {
   public currentStore: ShopDetailsAcquiring = null;
   public currentIdx: number = 0;
 
-  formStores: FormGroup;
   editStores: FormGroup;
   
   submissionClient: Client;
@@ -110,7 +110,7 @@ export class StoreComponent implements AfterViewInit {
     this.insertedStoreSubject.next(store);
   }
 
-  constructor(private translate: TranslateService, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private authService: AuthService, private comprovativoService: ComprovativosService, private documentService: SubmissionDocumentService, private datePipe: DatePipe, private logger: LoggerService, private processService: ProcessService, private processNrService: ProcessNumberService, private modalService: BsModalService) {
+  constructor(private translate: TranslateService, private route: Router, private data: DataService, private storeService: StoreService, private clientService: ClientService, private formBuilder: FormBuilder, private authService: AuthService, private comprovativoService: ComprovativosService, private documentService: SubmissionDocumentService, private datePipe: DatePipe, private logger: LoggerService, private processService: ProcessService, private processNrService: ProcessNumberService, private modalService: BsModalService, private snackBar: MatSnackBar) {
     this.data.currentShops.subscribe(shops => this.shops = shops);
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.initializeForm();
@@ -126,7 +126,7 @@ export class StoreComponent implements AfterViewInit {
     this.editStores = this.formBuilder.group({
       infoStores: this.formBuilder.group({
         "storeName": [''],
-        "activityStores": [''],
+        "activityStores": [],
         "subZoneStore": [''],
         "contactPoint": [''],
         "subactivityStore": [''],
@@ -149,6 +149,8 @@ export class StoreComponent implements AfterViewInit {
         "subProductName": ['']
       })
     });
+    this.editStores.get("infoStores").get("storeName").setValidators(Validators.required);
+    this.editStores.get("infoStores").get("storeName").updateValueAndValidity();
   }
 
   ngOnInit(): void {
@@ -267,7 +269,7 @@ export class StoreComponent implements AfterViewInit {
       bankStores.get("bankInformation").setValue(this.currentStore.bank.useMerchantBank);
       this.storeIbanComponent.isIBAN(this.currentStore.bank.useMerchantBank);
       if (!this.currentStore.bank.useMerchantBank) {
-        bankStores.get("bankIban").setValue(this.currentStore.bank.bank.iban);
+        bankStores.get("bankIban").setValue((this.currentStore.bank.bank.iban != null && this.currentStore.bank.bank.iban != "") ? this.currentStore.bank.bank.iban : "value");
         if (this.returned == null || this.returned == 'edit' && (this.processId == '' || this.processId == null)) {
           if (context.currentStore.documents?.length > 0) {
             context.documentService.GetDocumentImage(context.submissionId, context.currentStore?.documents[0]?.id).then(async res => {
@@ -445,7 +447,6 @@ export class StoreComponent implements AfterViewInit {
         } else {
           this.currentStore.supportEntity = TerminalSupportEntityEnum.OTHER;
         }
-
         if (addStore) {
           this.logger.info("Shop to add: " + JSON.stringify(this.currentStore));
           if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
@@ -583,11 +584,27 @@ export class StoreComponent implements AfterViewInit {
         }
       } else {
         if (!clickedTable) {
-          if (this.currentStore == null) {
+          if (this.currentStore == null && this.storesLength > 0) {
             this.data.changeShops(true);
             this.logger.info("Redirecting to Comprovativos page");
             this.data.updateData(true, 3);
             this.route.navigate(['comprovativos']);
+          } else {
+            if (this.storesLength == 0 && this.currentStore == null) {
+              this.snackBar.open(this.translate.instant('generalKeywords.requiredStore'), '', {
+                duration: 15000,
+                panelClass: ['snack-bar']
+              });
+            } else {
+              if (!this.editStores.valid) {
+                this.openAccordeons();
+                this.editStores.markAllAsTouched();
+                this.snackBar.open(this.translate.instant('generalKeywords.formInvalid'), '', {
+                  duration: 15000,
+                  panelClass: ['snack-bar']
+                });
+              }
+            }
           }
         }
       }
@@ -600,6 +617,15 @@ export class StoreComponent implements AfterViewInit {
         this.route.navigate(['comprovativos']);
       }
     }
+  }
+
+  openAccordeons() {
+    document.getElementById("flush-collapseOne").className = "accordion-collapse collapse show";
+    document.getElementById("accordionButton1").className = "accordion1-button";
+    document.getElementById("flush-collapseTwo").className = "accordion-collapse collapse show";
+    document.getElementById("accordionButton2").className = "accordion1-button";
+    document.getElementById("flush-collapseThree").className = "accordion-collapse collapse show";
+    document.getElementById("accordionButton3").className = "accordion1-button";
   }
 
   resetForm() {

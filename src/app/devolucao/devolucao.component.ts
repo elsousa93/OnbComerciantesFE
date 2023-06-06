@@ -84,6 +84,8 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
     }
   }
   filterIssues: IssueViewModel[] = [];
+  processState: string;
+  observationLength: number;
 
   constructor(private logger: LoggerService,
     private route: Router, private data: DataService,
@@ -248,6 +250,7 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
     this.processService.getProcessById(this.processId).subscribe(result => {
       this.logger.info("Get process by id result: " + JSON.stringify(result));
       this.process = result;
+      this.processState = this.translate.instant('searches.returned');
       this.processNumber = result.processNumber;
       localStorage.setItem('processNumber', this.processNumber);
       this.data.updateData(true, 0);
@@ -261,6 +264,11 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
     this.processService.getProcessHistory(this.processId).then(result => {
       this.logger.info("Get process history result: " + JSON.stringify(result));
       this.processHistoryItems = result.result;
+      if (this.processHistoryItems.items.length > 2) {
+        this.observationLength = this.processHistoryItems.items.length - 2;
+      } else {
+        this.observationLength = 0;
+      }
       this.processHistoryItems.items.sort((b, a) => new Date(b.whenStarted).getTime() - new Date(a.whenStarted).getTime());
       this.processHistoryItems.items.forEach(process => {
         process.whenStarted = this.datePipe.transform(process.whenStarted, 'yyyy-MM-dd HH:mm').toString();

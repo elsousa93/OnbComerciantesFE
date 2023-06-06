@@ -43,8 +43,8 @@ export class CRCService {
     }
 
     var URI = this.DOCASUrl + "v1/company/registry/" + code + "?requestReason=" + requestReason + (requestedBy === null ? "&requestedBy=" + requestedBy : "");
-    var observable = this.http.get<any>(URI, HTTP_OPTIONS);
+    return this.http.get<any>(URI, HTTP_OPTIONS);
 
-    return observable;
+    //return observable;
   }
 }

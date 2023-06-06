@@ -1069,9 +1069,71 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
     if (!this.updatedComps) {
       this.firstSubmissionModalRef = this.modalService.show(this.firstSubmissionModal, { class: 'modal-lg' });
     } else {
-      this.logger.info("Redirecting to Commercial Offer List page");
-      this.data.updateData(true, 4);
-      this.route.navigate(['/commercial-offert-list']);
+      if (this.returned != 'consult') {
+        this.compsToShow.forEach(doc => {
+          if (doc.uploadDate == 'desconhecido') {
+            this.comprovativoService.readBase64(doc.file).then((data) => {
+              var docToSend: PostDocument = {
+                "documentType": "0000",
+                "file": {
+                  "fileType": "PDF",
+                  "binary": data.split(',')[1] //para retirar a parte inicial "data:application/pdf;base64"
+                },
+                "data": {}
+              }
+              this.logger.info("Sent document: " + JSON.stringify(docToSend));
+              if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+                this.documentService.SubmissionPostDocument(localStorage.getItem("submissionId"), docToSend).subscribe(result => {
+                  this.logger.info('Document submitted ' + JSON.stringify(result));
+                });
+              } else {
+                this.processService.addProcessDocument(this.processId, docToSend).then(result => {
+                  this.logger.info('Document submitted ' + JSON.stringify(result.result));
+                });
+              }
+            })
+          }
+        });
+        localStorage.removeItem("documents");
+        if (this.form.get("observations").value != null && this.form.get("observations").value != "" && this.submission.observation != this.form.get("observations").value) {
+          var loginUser = this.authService.GetCurrentUser();
+          this.submissionPut.submissionUser = {
+            user: loginUser.userName,
+            branch: loginUser.bankLocation,
+            partner: loginUser.bankName
+          }
+          this.submissionPut.observation = this.form.get("observations").value;
+          this.processPut.observation = this.form.get("observations").value;
+          this.submissionPut.processNumber = localStorage.getItem("processNumber");
+          this.processPut.submissionUser = loginUser.userName;
+          this.logger.info('Submission data:  ' + JSON.stringify(this.submissionPut));
+          if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+            this.submissionService.EditSubmission(localStorage.getItem("submissionId"), this.submissionPut).subscribe(result => {
+              this.logger.info('Updated submission ' + JSON.stringify(result));
+              this.data.updateData(true, 4);
+              this.data.changeUpdatedComprovativos(true);
+              this.logger.info("Redirecting to Commercial Offer List page");
+              this.route.navigate(['/commercial-offert-list']);
+            });
+          } else {
+            this.processService.updateProcess(this.processId, this.processPut).then(result => {
+              this.logger.info('Updated submission ' + JSON.stringify(result.result));
+              this.data.updateData(true, 4);
+              this.data.changeUpdatedComprovativos(true);
+              this.logger.info("Redirecting to Commercial Offer List page");
+              this.route.navigate(['/commercial-offert-list']);
+            });
+          }
+        } else {
+          this.logger.info("Redirecting to Commercial Offer List page");
+          this.data.updateData(true, 4);
+          this.route.navigate(['/commercial-offert-list']);
+        }
+      } else {
+        this.logger.info("Redirecting to Commercial Offer List page");
+        this.data.updateData(true, 4);
+        this.route.navigate(['/commercial-offert-list']);
+      }
     }
   }
 

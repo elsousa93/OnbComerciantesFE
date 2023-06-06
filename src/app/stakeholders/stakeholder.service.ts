@@ -135,8 +135,8 @@ export class StakeholderService {
   ///////////////////
 
   SearchStakeholderByQuery(searchID: string, searchType: string, requestID: string, AcquiringUserID: string, AcquiringProcessID?: string, countryID?: string, AcquiringPartnerID?: string, AcquiringBranchID?): any {
-
-    var url = this.urlOutbound + "api/v1/stakeholder?searchId=" + searchID + "&searchType=" + searchType;
+    var id = encodeURIComponent(searchID);
+    var url = this.urlOutbound + "api/v1/stakeholder?searchId=" + id + "&searchType=" + searchType;
 
     if (countryID === null)
       url += "&countryId=" + countryID;

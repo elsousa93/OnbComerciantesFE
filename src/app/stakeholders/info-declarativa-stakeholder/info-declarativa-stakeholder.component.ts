@@ -17,6 +17,7 @@ import { ProcessService } from '../../process/process.service';
 import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 import { Client } from '../../client/Client.interface';
 import { ClientService } from '../../client/client.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-info-declarativa-stakeholder',
@@ -71,7 +72,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   ngAfterViewInit() {
   }
 
-  constructor(private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService, private logger: LoggerService, private translate: TranslateService, private processService: ProcessService, private processNrService: ProcessNumberService, private clientService: ClientService) {
+  constructor(private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private stakeholderService: StakeholderService, private logger: LoggerService, private translate: TranslateService, private processService: ProcessService, private processNrService: ProcessNumberService, private clientService: ClientService, private snackBar: MatSnackBar) {
     if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.returnedFrontOffice = this.route.getCurrentNavigation().extras.state["returnedFrontOffice"];
     }
@@ -122,14 +123,25 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
             setTimeout(() => this.setFormData(), 500);
           });
         } else {
-          this.processService.getMerchantFromProcess(this.processId).subscribe(client => {
-            this.merchant = client;
-            this.currentStakeholder = info.stakeholder;
-            this.currentIdx = info.idx;
-            this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
-            this.logger.info("Selected stakeholder index: " + this.currentIdx);
-            setTimeout(() => this.setFormData(), 500);
-          });
+          if (this.returned == 'consult') {
+            this.processService.getMerchantFromProcess(this.processId).subscribe(client => {
+              this.merchant = client;
+              this.currentStakeholder = info.stakeholder;
+              this.currentIdx = info.idx;
+              this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
+              this.logger.info("Selected stakeholder index: " + this.currentIdx);
+              setTimeout(() => this.setFormData(), 500);
+            });
+          } else {
+            this.processService.getUpdateProcessInfo(this.processId, this.updateProcessId).then(result => {
+              this.merchant = result.result.merchant;
+              this.currentStakeholder = info.stakeholder;
+              this.currentIdx = info.idx;
+              this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
+              this.logger.info("Selected stakeholder index: " + this.currentIdx);
+              setTimeout(() => this.setFormData(), 500);
+            });
+          }
         }
       } else {
         this.currentStakeholder = info.stakeholder;
@@ -214,6 +226,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   }
 
   submit(clickedTable: boolean = false) {
+    this.closeAccordion();
     let updateAction = null;
     if (this.returned != 'consult') {
       if (this.infoStakeholders.valid) {
@@ -310,6 +323,13 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
             }
           }
         }
+      } else {
+        this.openAccordeons();
+        this.infoStakeholders.markAllAsTouched();
+        this.snackBar.open(this.translate.instant('generalKeywords.formInvalid'), '', {
+          duration: 15000,
+          panelClass: ['snack-bar']
+        });
       } 
     } else {
       if (!clickedTable) {
@@ -318,6 +338,13 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
         this.route.navigate(['info-declarativa-lojas']);
       }
     }
+  }
+
+  openAccordeons() {
+    document.getElementById("flush-collapseOne").className = "accordion-collapse collapse show";
+    document.getElementById("accordionButton1").className = "accordion1-button";
+    document.getElementById("flush-collapseTwo").className = "accordion-collapse collapse show";
+    document.getElementById("accordionButton2").className = "accordion1-button";
   }
 
   getStakesListLength(value) {
@@ -336,6 +363,13 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
       this.logger.info("Redirecting to Info Declarativa page");
       this.route.navigate(['/info-declarativa'], navigationExtras);
     }
+  }
+
+  closeAccordion() {
+    document.getElementById("flush-collapseOne").className = "accordion-collapse collapse show";
+    document.getElementById("accordionButton1").className = "accordion1-button";
+    document.getElementById("flush-collapseTwo").className = "accordion-collapse collapse";
+    document.getElementById("accordionButton2").className = "accordion1-button collapsed";
   }
 
   openCancelPopup() {

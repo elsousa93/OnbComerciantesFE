@@ -748,11 +748,11 @@ export class CountrysComponent implements OnInit {
       this.insertValues();
 
       if (this.client?.businessGroup?.type == "Holding") {
-        this.setAssociatedWith(true);
+        this.setAssociatedWith(false); //voltar a meter true após a publicação para produção
         this.form.get("NIPCGroup").setValue(this.client.businessGroup.branch);
       }
       if (this.client?.businessGroup?.type == "Franchising") {
-        this.setAssociatedWith(true);
+        this.setAssociatedWith(false);
         this.form.get("franchiseName").setValue(this.client.businessGroup.branch);
       }
 
