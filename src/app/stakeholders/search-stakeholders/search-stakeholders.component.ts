@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectionStrategy, ViewChild } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, ChangeDetectionStrategy, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { IStakeholders, StakeholderOutbound } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
@@ -14,7 +14,7 @@ import { ClientService } from '../../client/client.service';
   styleUrls: ['./search-stakeholders.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SearchStakeholdersComponent implements OnInit {
+export class SearchStakeholdersComponent implements OnInit, OnChanges {
 
   private eventsSubscription: Subscription;
 
@@ -50,6 +50,14 @@ export class SearchStakeholdersComponent implements OnInit {
   constructor(private stakeholderService: StakeholderService, private translate: TranslateService, private logger: LoggerService, private clientService: ClientService) {
   }
 
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes["clientID"]) {
+      this.clientID?.subscribe(result => {
+        this.searchStakeholders(result);
+      });
+    }
+  }
+
   stakesMat = new MatTableDataSource<any>();
   @ViewChild('paginator') set paginator(pager: MatPaginator) {
     if (pager) {
@@ -70,9 +78,9 @@ export class SearchStakeholdersComponent implements OnInit {
 
   ngOnInit() {
     var context = this;
-    this.eventsSubscription = this.clientID.subscribe(result => {
-      context.searchStakeholders(result);
-    });
+    //this.eventsSubscription = this.clientID.subscribe(result => {
+    //  context.searchStakeholders(result);
+    //});
   }
 
   searchStakeholders(clientID) {
@@ -212,6 +220,5 @@ export class SearchStakeholdersComponent implements OnInit {
       this.currentStakeholder.id = stake.stakeholderId;
     }
   }
-  ngOnChanges() {
-  }
+
 }

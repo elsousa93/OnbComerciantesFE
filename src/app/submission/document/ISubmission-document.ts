@@ -8,6 +8,7 @@ export interface ISubmissionDocument {
 
 export interface SimplifiedDocument {
   id?: string
+  isAnnulled?: boolean
   href?: string
   type?: string
 }

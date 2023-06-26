@@ -16,6 +16,7 @@ import { TableInfoService } from '../../../table-info/table-info.service';
 import { ContractPackLanguage } from '../../../table-info/ITable-info.interface';
 import { ProcessService } from '../../../process/process.service';
 import { AuthService } from '../../../services/auth.service';
+import { QueuesService } from '../../../queues-detail/queues.service';
 
 @Component({
   selector: 'app-info-declarativa-assinatura',
@@ -47,8 +48,10 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   processId: string;
   currentStakes: Map<string, string> = new Map<string, string>();
   updateProcessId: string;
+  @ViewChild('cancelModal') cancelModal;
+  cancelModalRef: BsModalRef | undefined;
 
-  constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService, private tableInfoService: TableInfoService, private processService: ProcessService, private authService: AuthService) {
+  constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService, private tableInfoService: TableInfoService, private processService: ProcessService, private authService: AuthService, private queueService: QueuesService) {
     if (this.router?.getCurrentNavigation()?.extras?.state) {
       this.returnedFrontOffice = this.router.getCurrentNavigation().extras.state["returnedFrontOffice"];
     }
@@ -292,26 +295,32 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   }
 
   openCancelPopup() {
-    //this.cancelModalRef = this.modalService.show(this.cancelModal);
-    this.router.navigate(['/']);
+    this.cancelModalRef = this.modalService.show(this.cancelModal);
   }
 
   closeCancelPopup() {
-    //this.cancelModalRef?.hide();
+    this.cancelModalRef?.hide();
   }
 
   confirmCancel() {
-    //var context = this;
-    //var processNumber = "";
-    //this.processNrService.processNumber.subscribe(res => processNumber = res);
-    //var encodedCode = encodeURIComponent(processNumber);
-    //var baseUrl = this.configuration.getConfig().acquiringAPIUrl;
-    //var url = baseUrl + 'process?number=' + encodedCode;
-    //this.processService.advancedSearch(url, 0, 1).subscribe(result => {
-    //  context.queueService.markToCancel(result.items[0].processId, context.authService.GetCurrentUser().userName).then(res => {
-    //    context.closeCancelPopup();
-    //    context.route.navigate(['/']);
-    //  });
-    //});
+    if (this.returned != 'consult') {
+      var context = this;
+      var processNumber = "";
+      this.processNrService.processNumber.subscribe(res => processNumber = res);
+      var encodedCode = encodeURIComponent(processNumber);
+      if (this.returned == null || (this.returned == 'edit' && (this.processId == '' || this.processId == null))) {
+        this.submissionService.GetSubmissionByProcessNumber(encodedCode).then(result => {
+          context.queueService.markToCancel(result.result[0].processId, context.authService.GetCurrentUser().userName).then(res => {
+            context.closeCancelPopup();
+            context.router.navigate(['/']);
+          });
+        });
+      } else {
+        context.queueService.markToCancel(context.processId, context.authService.GetCurrentUser().userName).then(res => {
+          context.closeCancelPopup();
+          context.router.navigate(['/']);
+        });
+      }
+    }
   }
 }

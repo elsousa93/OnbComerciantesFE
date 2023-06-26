@@ -289,18 +289,35 @@ export class ConsultasFTComponent implements OnInit {
       this.workQueue = result.result;
       if (result.result.lockedBy != null && result.result.lockedBy != "") {
         if (result.result.status != "InProgress") {
-          if (result.result.lockedBy.trim() != this.authService.GetCurrentUser().userName.trim()) {
-            this.existsUser = true;
-            this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
-          } else {
-            let navigationExtras: NavigationExtras = {
-              state: {
-                queueName: this.queueName,
-                processId: this.processToAssign
-              }
-            };
-            this.logger.info('Redirecting to Queues Detail page');
-            this.route.navigate(["/queues-detail"], navigationExtras);
+          if (result.result.status == "UnLocked" || result.result.status == "Locked") {
+            if (result.result.lockedBy.trim() != this.authService.GetCurrentUser().userName.trim()) {
+              this.existsUser = true;
+              this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
+            } else {
+              let navigationExtras: NavigationExtras = {
+                state: {
+                  queueName: this.queueName,
+                  processId: this.processToAssign
+                }
+              };
+              var reassignWorkQueue: ReassingWorkQueue = {};
+              reassignWorkQueue.jobId = this.workQueue.id;
+              reassignWorkQueue.username = this.username;
+              reassignWorkQueue.onHold = false;
+              if (result.result.status == "UnLocked")
+                reassignWorkQueue.forceReassign = false;
+              if (result.result.status == "Locked")
+                reassignWorkQueue.forceReassign = true;
+              this.queueService.postReassignWorkQueue(this.processToAssign, reassignWorkQueue).then(res => {
+                this.processNrService.changeProcessId(this.processToAssign);
+                this.processNrService.changeQueueName(this.queueName);
+                this.processToAssign = "";
+                this.jobId = 0;
+                this.queueName = "";
+                this.logger.info('Redirecting to Queues Detail page');
+                this.route.navigate(["/queues-detail"], navigationExtras);
+              });
+            }
           }
         } else {
           if (result.result.lockedBy.trim() == this.authService.GetCurrentUser().userName.trim()) {
@@ -313,7 +330,7 @@ export class ConsultasFTComponent implements OnInit {
             this.logger.info('Redirecting to Queues Detail page');
             this.route.navigate(["/queues-detail"], navigationExtras);
           } else {
-            this.snackBar.open(this.translate.instant('searches.processInProgress'), '', {
+            this.snackBar.open(this.translate.instant('queues.processInProgress') + ' ' + result.result.lockedBy.trim(), '', {
               duration: 4000,
               panelClass: ['snack-bar']
             });
@@ -337,9 +354,13 @@ export class ConsultasFTComponent implements OnInit {
       }
     };
     var reassignWorkQueue: ReassingWorkQueue = {};
-    reassignWorkQueue.forceReassign = true;
     reassignWorkQueue.jobId = this.workQueue.id;
     reassignWorkQueue.username = this.username;
+    reassignWorkQueue.onHold = false;
+    if (this.workQueue.status == "UnLocked")
+      reassignWorkQueue.forceReassign = false;
+    if (this.workQueue.status == "Locked")
+      reassignWorkQueue.forceReassign = true;
     this.queueService.postReassignWorkQueue(this.processToAssign, reassignWorkQueue).then(res => {
       this.processNrService.changeProcessId(this.processToAssign);
       this.processNrService.changeQueueName(this.queueName);

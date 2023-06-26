@@ -363,7 +363,7 @@
                           <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
                         </span>
                         <span class="navbar-text ms-0 me-0">
-                          <mat-paginator #paginatorPage [length]="10" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
+                          <mat-paginator #paginatorPage [length]="incompleteCount" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
                           </mat-paginator>
                         </span>
                       </nav>
@@ -452,7 +452,7 @@
                           <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
                         </span>
                         <span class="navbar-text ms-0 me-0">
-                          <mat-paginator #paginatorPageSize [length]="10" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
+                          <mat-paginator #paginatorPageSize [length]="ongoingCount" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
                           </mat-paginator>
                         </span>
                       </nav>
@@ -543,7 +543,7 @@
                           <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
                         </span>
                         <span class="navbar-text ms-0 me-0">
-                          <mat-paginator #paginatorPageDevolvidos [length]="10" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
+                          <mat-paginator #paginatorPageDevolvidos [length]="returnedCount" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
                           </mat-paginator>
                         </span>
                       </nav>
@@ -634,7 +634,7 @@
                           <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
                         </span>
                         <span class="navbar-text ms-0 me-0">
-                          <mat-paginator #paginatorPageAceitacao [length]="10" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
+                          <mat-paginator #paginatorPageAceitacao [length]="contractAcceptanceCount" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
                           </mat-paginator>
                         </span>
                       </nav>
@@ -723,7 +723,7 @@
                           <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
                         </span>
                         <span class="navbar-text ms-0 me-0">
-                          <mat-paginator #paginatorPagePendingSent [length]="10" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
+                          <mat-paginator #paginatorPagePendingSent [length]="pendingSentCount" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
                           </mat-paginator>
                         </span>
                       </nav>
@@ -819,7 +819,7 @@
                           <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
                         </span>
                         <span class="navbar-text ms-0 me-0">
-                          <mat-paginator #paginatorPagePendingEligibility [length]="10"
+                          <mat-paginator #paginatorPagePendingEligibility [length]="pendingEligibilityCount"
                                          [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
                           </mat-paginator>
                         </span>
@@ -916,7 +916,7 @@
                           <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
                         </span>
                         <span class="navbar-text ms-0 me-0">
-                          <mat-paginator #paginatorPageMultipleClients [length]="10" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
+                          <mat-paginator #paginatorPageMultipleClients [length]="multipleClientesCount" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
                           </mat-paginator>
                         </span>
                       </nav>
@@ -1012,7 +1012,7 @@
                           <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
                         </span>
                         <span class="navbar-text ms-0 me-0">
-                          <mat-paginator #paginatorPageDOValidation [length]="10" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
+                          <mat-paginator #paginatorPageDOValidation [length]="DOValidationCount" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
                           </mat-paginator>
                         </span>
                       </nav>
@@ -1108,7 +1108,7 @@
                           <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
                         </span>
                         <span class="navbar-text ms-0 me-0">
-                          <mat-paginator #paginatorPageNegotiationAproval [length]="10"
+                          <mat-paginator #paginatorPageNegotiationAproval [length]="negotiationAprovalCount"
                                          [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
                           </mat-paginator>
                         </span>
@@ -1205,7 +1205,7 @@
                           <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
                         </span>
                         <span class="navbar-text ms-0 me-0">
-                          <mat-paginator #paginatorPageMCCTreatment [length]="10" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
+                          <mat-paginator #paginatorPageMCCTreatment [length]="MCCTreatmentCount" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
                           </mat-paginator>
                         </span>
                       </nav>
@@ -1301,7 +1301,7 @@
                           <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
                         </span>
                         <span class="navbar-text ms-0 me-0">
-                          <mat-paginator #paginatorPageValidationSIBS [length]="10" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
+                          <mat-paginator #paginatorPageValidationSIBS [length]="validationSIBSCount" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
                           </mat-paginator>
                         </span>
                       </nav>
@@ -1398,7 +1398,7 @@
                           <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
                         </span>
                         <span class="navbar-text ms-0 me-0">
-                          <mat-paginator #paginatorPageRiskOpinion [length]="10" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
+                          <mat-paginator #paginatorPageRiskOpinion [length]="riskOpinionCount" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
                           </mat-paginator>
                         </span>
                       </nav>
@@ -1494,7 +1494,7 @@
                           <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
                         </span>
                         <span class="navbar-text ms-0 me-0">
-                          <mat-paginator #paginatorPageComplianceDoubts [length]="10" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
+                          <mat-paginator #paginatorPageComplianceDoubts [length]="complianceDoubtsCount" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
                           </mat-paginator>
                         </span>
                       </nav>

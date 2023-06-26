@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators, AbstractControl } from '@angular/forms';
 import { Client, Contacts, Phone } from '../Client.interface'
 import { FormBuilder } from '@angular/forms';
@@ -16,6 +16,9 @@ import { TranslateService } from '@ngx-translate/core';
 import { ProcessService } from '../../process/process.service';
 import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { QueuesService } from '../../queues-detail/queues.service';
+import { AuthService } from '../../services/auth.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-info-declarativa',
@@ -57,6 +60,8 @@ export class InfoDeclarativaComponent implements OnInit {
   title: string;
   processId: string;
   updateProcessId: string;
+  @ViewChild('cancelModal') cancelModal;
+  cancelModalRef: BsModalRef | undefined;
 
   setForm(client: Client) {
     this.newClient = client;
@@ -75,7 +80,7 @@ export class InfoDeclarativaComponent implements OnInit {
 
   public subs: Subscription[] = [];
 
-  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService, private translate: TranslateService, private processService: ProcessService, private processNrService: ProcessNumberService, private snackBar: MatSnackBar) {
+  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private router: Router, private data: DataService, private tableInfo: TableInfoService, private submissionService: SubmissionService, private clientService: ClientService, private translate: TranslateService, private processService: ProcessService, private processNrService: ProcessNumberService, private snackBar: MatSnackBar, private queueService: QueuesService, private authService: AuthService, private modalService: BsModalService) {
 
     if (this.router?.getCurrentNavigation()?.extras?.state) {
       this.returnedFrontOffice = this.router.getCurrentNavigation().extras.state["returnedFrontOffice"];
@@ -269,26 +274,32 @@ export class InfoDeclarativaComponent implements OnInit {
   }
 
   openCancelPopup() {
-    //this.cancelModalRef = this.modalService.show(this.cancelModal);
-    this.router.navigate(['/']);
+    this.cancelModalRef = this.modalService.show(this.cancelModal);
   }
 
   closeCancelPopup() {
-    //this.cancelModalRef?.hide();
+    this.cancelModalRef?.hide();
   }
 
   confirmCancel() {
-    //var context = this;
-    //var processNumber = "";
-    //this.processNrService.processNumber.subscribe(res => processNumber = res);
-    //var encodedCode = encodeURIComponent(processNumber);
-    //var baseUrl = this.configuration.getConfig().acquiringAPIUrl;
-    //var url = baseUrl + 'process?number=' + encodedCode;
-    //this.processService.advancedSearch(url, 0, 1).subscribe(result => {
-    //  context.queueService.markToCancel(result.items[0].processId, context.authService.GetCurrentUser().userName).then(res => {
-    //    context.closeCancelPopup();
-    //    context.route.navigate(['/']);
-    //  });
-    //});
+    if (this.returned != 'consult') {
+      var context = this;
+      var processNumber = "";
+      this.processNrService.processNumber.subscribe(res => processNumber = res);
+      var encodedCode = encodeURIComponent(processNumber);
+      if (this.returned == null || (this.returned == 'edit' && (this.processId == '' || this.processId == null))) {
+        this.submissionService.GetSubmissionByProcessNumber(encodedCode).then(result => {
+          context.queueService.markToCancel(result.result[0].processId, context.authService.GetCurrentUser().userName).then(res => {
+            context.closeCancelPopup();
+            context.router.navigate(['/']);
+          });
+        });
+      } else {
+        context.queueService.markToCancel(context.processId, context.authService.GetCurrentUser().userName).then(res => {
+          context.closeCancelPopup();
+          context.router.navigate(['/']);
+        });
+      }
+    }
   }
 }

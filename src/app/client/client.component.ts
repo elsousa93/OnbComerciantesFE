@@ -88,6 +88,7 @@ export class ClientComponent implements OnInit {
   }
   setOkCC() {
     this.okCC = true;
+    this.createFormFirstTime = false;
   }
   setAddressFalse() {
     this.addressReading = false;
@@ -557,7 +558,6 @@ export class ClientComponent implements OnInit {
   }
 
   changeListElementDocType(docType, e: any) {
-
     if ((localStorage.getItem("submissionId") == null && !this.defaultValue) || !this.firstTime || !this.defaultValue)
       this.activateButtons(!this.showENI);
       this.firstTime = false;
@@ -605,6 +605,8 @@ export class ClientComponent implements OnInit {
         postalCodeCC: this.postalCodeCC,
       };
       NIFNIPC = this.dataCCcontents.nifCC + "";
+    } else {
+      this.dataCCcontents = null;
     }
 
     let navigationExtras: NavigationExtras = {
@@ -612,14 +614,14 @@ export class ClientComponent implements OnInit {
         tipologia: this.tipologia,
         clientExists: true,
         clientId: this.clientId,
-        dataCC: this.dataCC,
+        dataCC: this.dataCCcontents, // this.dataCC
         isClient: this.isClient,
         isFromSearch: true,
         potentialClientIds: JSON.stringify(this.potentialClientIds)
       }
     };
 
-    this.data.changeCurrentDataCC(this.dataCC);
+    this.data.changeCurrentDataCC(this.dataCCcontents); // this.dataCC
     this.data.changeCurrentIsClient(this.isClient);
     this.data.changeCurrentTipologia(this.tipologia);
 
@@ -722,6 +724,9 @@ export class ClientComponent implements OnInit {
 
   createNewClient() {
     var NIFNIPC = this.getNIFNIPC();
+    if (this.newClient.documentationDeliveryMethod !== '1001') {
+      this.dataCCcontents = null;
+    }
     if (this.clientTypology === 'false' && !this.showFoundClient) {
       localStorage.setItem("nif", this.newClientForm?.get("nif")?.value ?? this.newClientForm?.get("nipc")?.value);
       localStorage.setItem("documentNumber", this.newClient.clientId);

@@ -224,7 +224,9 @@
     "noPresencialTransaction": "No Presencial Transactions",
     "combinedOffer": "Combined Offer",
     "subProduct": "Sub Product",
-    "updateStore": "This change will delete the Commercial Offer configuration. Do you wish to proceed?"
+    "updateStore": "This change will delete the Commercial Offer configuration. Do you wish to proceed?",
+    "proofIBAN": "IBAN proof is missing",
+    "addOrCancel": "You need to add or cancel the identified store"
   },
   "supportingDocuments": {
     "title": "Supporting Documents",
@@ -312,7 +314,8 @@
     "discount": "Discount",
     "finalValue": "Final Value",
     "cancelConfiguration": "Cancel Configuration",
-    "openError": "You must select a commercial pack to open this tab"
+    "openError": "You must select a commercial pack to open this tab",
+    "packRequired": "You must select a commercial pack"
   },
   "declarativeInformation": {
     "title": "Declarative Information",
@@ -478,7 +481,8 @@
       "DOValidation": "Evidence of Clarification of Doubt DO",
       "risk": "Evidence of Approval Risk",
       "negotiationApproval": "Evidence of Business Approval",
-      "success": "Successful attachment"
+      "success": "Successful attachment",
+      "pdfOnly": "Only PDF files can be uploaded"
     },
     "completed": "Complete opinion",
     "favorable": "Favorable",
@@ -517,7 +521,7 @@
     "enrollmentTerminalNumber": "Terminal's Enrollment Number",
     "conclude": "Conclude",
     "hits": "Hits",
-    "processInProgress": "This process is already in progress"
+    "processInProgress": "The process is already in progress with user"
   },
   "generalKeywords": {
     "yes": "Yes",
@@ -553,7 +557,7 @@
     "clean": "Clean",
     "formInvalid": "Required fields missing",
     "requiredStore": "It is required to add at least one store",
-    "requiredPricing": "It is required to fill in the tab Store Price",
+    "requiredPricing": "It is required to fill the Store Price",
     "requiredTerminal": "It is required to have at least one terminal associated with the store",
     "invalidNumber": "The discount value can't be greater than the original value"
   },

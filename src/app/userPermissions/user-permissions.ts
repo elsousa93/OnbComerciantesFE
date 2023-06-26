@@ -61,7 +61,7 @@ export function getMenuPermissions(user: any) {
       permissions = { HomePage: true, ProcessOpening: false, Consultation: true, ProcessHandling: { RiskOpinion: true, ComplianceDoubts: true } };
       return permissions;
     case UserPermissions.COMERCIAL:
-      permissions = { HomePage: true, Consultation: true, ProcessHandling: { EligibilityOpinions: true } };
+      permissions = { HomePage: true, ProcessOpening: true, Consultation: true, ProcessHandling: { EligibilityOpinions: true } };
       return permissions;
     case UserPermissions.ADMIN:
       permissions = {

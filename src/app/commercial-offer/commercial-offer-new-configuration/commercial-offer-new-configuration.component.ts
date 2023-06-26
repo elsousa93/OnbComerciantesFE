@@ -117,6 +117,7 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         this.calledMensalidades = false;
         this.pricingOptions = [];
         this.pricingAttributeList = [];
+
       }
     }
     if (changes["changedPackValue"]) {
@@ -125,7 +126,9 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     if (changes["equipmentSettings"]) {
       this.equipmentSettings = changes["equipmentSettings"].currentValue;
       if (changes["equipmentSettings"].previousValue != undefined) {
-        this.initializeForm();
+        //this.initializeForm();
+        this.storeEquipEvent.emit(null);
+        //ao inves de inicializarmos o form, é para assumir que começa de inicio
       }
     }
   }
@@ -173,6 +176,32 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     this.formConfig = new FormGroup({
       terminalAmount: new FormControl(this.isNewConfig == false ? this.storeEquip.quantity : '', Validators.required)
     });
+
+    this.formConfig.get("terminalAmount").valueChanges.pipe(distinctUntilChanged()).subscribe(val => {
+      if (val[0] == "0") {
+        this.formConfig.get("terminalAmount").setValue(val.replace("0", ''));
+      }
+    });
+
+    if (!this.isNewConfig) {
+      this.equipmentSettings.forEach(val => {
+        var group = context.storeEquip.equipmentSettings.find(grp => grp.id == val.id);
+        if (group != undefined) {
+          val.attributes.forEach(v => {
+            var attr = group.attributes.find(att => att.id == v.id);
+            if (attr != undefined) {
+              v.isSelected = attr.isSelected;
+            } else {
+              v.isSelected = false;
+            }
+          })
+        } else {
+          val.attributes.forEach(v => {
+            v.isSelected = false;
+          });
+        }
+      });
+    }
 
     this.equipmentSettings?.forEach(function (value, idx) {
       var group = new FormGroup({});
@@ -443,6 +472,23 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
     return true;
   }
 
+  onKeyDownTerminal(event: any) {
+    const value = event.target.value + event.key;
+    if (value.length > 0) {
+      if (Number(value) <= 0) {
+        event.preventDefault();
+        return false;
+      }
+    } else {
+      if (event.key == '0') {
+        event.preventDefault();
+        return false;
+      }
+      return true;
+    }
+    return true;
+  }
+
   submit() {
     if (this.formConfig.valid && !this.isInvalidNumber) {
 
@@ -541,297 +587,356 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       this.formConfig.get("terminalAmount").setValidators(Validators.required);
       this.formConfig.updateValueAndValidity();
       var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000016");
-      var attr = findGroupAttr.attributes.find(attr => attr.id == "AV_000091");
-      if (attr.aggregatorId != null && attr.aggregatorId != "") {
-        if (this.formConfig.get("formGroup" + "AK_000016").get("formControl" + attr.aggregatorId).value == "AV_000091") { //comunicações cliente selecionado
-          var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000017");
-          var attr = findGroupAttr.attributes.find(att => att.id == "AV_000085");
+      if (findGroupAttr != undefined) {
+        var attr = findGroupAttr.attributes.find(attr => attr.id == "AV_000091");
+        if (attr != undefined) {
           if (attr.aggregatorId != null && attr.aggregatorId != "") {
-            if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + attr.aggregatorId).value == "AV_000085") { //Tipo de Terminal ser fixo
-              var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
-              var attr = findGroupAttr.attributes.find(att => att.id == "AV_000099");
-              if (attr.aggregatorId != null && attr.aggregatorId != "") {
-                this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr.aggregatorId).setValue("AV_000099"); // Tipo de Comunicações com o valor IP/ADSL
-                this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr.aggregatorId).disable();
-              } else {
-                this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(true); // Tipo de Comunicações com o valor IP/ADSL
-                this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").disable();
+            if (this.formConfig.get("formGroup" + "AK_000016").get("formControl" + attr.aggregatorId).value == "AV_000091") { //comunicações cliente selecionado
+              var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000017");
+              if (findGroupAttr != undefined) {
+                var attr = findGroupAttr.attributes.find(att => att.id == "AV_000085");
+                if (attr != undefined) {
+                  if (attr.aggregatorId != null && attr.aggregatorId != "") {
+                    if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + attr.aggregatorId).value == "AV_000085") { //Tipo de Terminal ser fixo
+                      var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
+                      if (findGroupAttr != undefined) {
+                        var attr = findGroupAttr.attributes.find(att => att.id == "AV_000099");
+                        if (attr != undefined) {
+                          if (attr.aggregatorId != null && attr.aggregatorId != "") {
+                            this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr.aggregatorId).setValue("AV_000099"); // Tipo de Comunicações com o valor IP/ADSL
+                            this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr.aggregatorId).disable();
+                          } else {
+                            this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(true); // Tipo de Comunicações com o valor IP/ADSL
+                            this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").disable();
+                          }
+                        }
+                      }
+                    }
+                  } else {
+                    if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000085").value) { //Tipo de Terminal ser fixo
+                      this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(true); // Tipo de Comunicações com o valor IP/ADSL
+                      this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").disable();
+                    }
+                  }
+                }
               }
-            }
-          } else {
-            if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000085").value) { //Tipo de Terminal ser fixo
-              this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(true); // Tipo de Comunicações com o valor IP/ADSL
-              this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").disable();
-            }
-          }
 
-          var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000017");
-          var attr = findGroupAttr.attributes.find(att => att.id == "AV_000086");
-          if (attr.aggregatorId != null && attr.aggregatorId != "") {
-            if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + attr.aggregatorId).value == "AV_000086") { // Tipo de Terminal ser móvel
-              var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
-              findGroupAttr.attributes.forEach(value => {
-                if (value.aggregatorId != null && value.aggregatorId != "") {
-                  if (value.id == "AV_000099") {
-                    value["condition"] = true;
-                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValue("AV_000097");
-                    //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).disable();
-                  } else {
-                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValidators([Validators.required]);
-                    context.formConfig.updateValueAndValidity();
-                  }
-                } else {
-                  if (value.id == "AV_000099") {
-                    value["condition"] = true;
-                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValue(true);
-                    //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).disable();
-                  } else {
-                    if ((attrId == 'AV_000097' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == true) || (attrId == 'AV_000098' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == true)) {
+              var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000017");
+              if (findGroupAttr != undefined) {
+                var attr = findGroupAttr.attributes.find(att => att.id == "AV_000086");
+                if (attr != undefined) {
+                  if (attr.aggregatorId != null && attr.aggregatorId != "") {
+                    if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + attr.aggregatorId).value == "AV_000086") { // Tipo de Terminal ser móvel
+                      var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
+                      if (findGroupAttr != undefined) {
+                        findGroupAttr.attributes.forEach(value => {
+                          if (value.aggregatorId != null && value.aggregatorId != "") {
+                            if (value.id == "AV_000099") {
+                              value["condition"] = true;
+                              if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).value == "AV_000099") {
+                                context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValue("AV_000097");
+                              }
+                              //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).disable();
+                            } else {
+                              context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValidators([Validators.required]);
+                              context.formConfig.updateValueAndValidity();
+                            }
+                          } else {
+                            if (value.id == "AV_000099") {
+                              value["condition"] = true;
+                              if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").value == true) {
+                                context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValue(true);
+                              }
+                              //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).disable();
+                            } else {
+                              if ((attrId == 'AV_000097' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == true) || (attrId == 'AV_000098' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == true)) {
 
+                              } else {
+                                context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValidators([Validators.required]);
+                              }
+
+                              if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).value == null) {
+                                context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValue(null);
+                              } else {
+                                if (attrId == 'AV_000097') {
+                                  if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == null) {
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators([Validators.required]);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators(null);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setErrors(null);
+                                  } else {
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators(null);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setErrors(null);
+                                  }
+                                }
+                                if (attrId == "AV_000098") {
+                                  if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == null) {
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators([Validators.required]);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators(null);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setErrors(null);
+                                  } else {
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators(null);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setErrors(null);
+                                  }
+
+                                }
+                              }
+                              context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(null);
+                              context.formConfig.updateValueAndValidity();
+                            }
+                          }
+                        });
+                      }
                     } else {
-                      context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValidators([Validators.required]);
-                    }
-
-                    if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).value == null) {
-                      context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValue(null);
-                    } else {
-                      if (attrId == 'AV_000097') {
-                        if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == null) {
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators([Validators.required]);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators(null);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setErrors(null);
-                        } else {
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators(null);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setErrors(null);
+                      var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
+                      if (findGroupAttr != undefined) {
+                        var attr = findGroupAttr.attributes.find(att => att.id == "AV_000099");
+                        if (attr != undefined) {
+                          attr["condition"] = false;
                         }
                       }
-                      if (attrId == "AV_000098") {
-                        if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == null) {
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators([Validators.required]);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators(null);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setErrors(null);
-                        } else {
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators(null);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setErrors(null);
-                        }
-
-                      }
                     }
-                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(null);
-                    context.formConfig.updateValueAndValidity();
+                  } else {
+                    if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000086").value) {
+                      var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
+                      if (findGroupAttr != undefined) {
+                        findGroupAttr.attributes.forEach(value => {
+                          if (value.aggregatorId != null && value.aggregatorId != "") {
+                            if (value.id == "AV_000099") {
+                              value["condition"] = true;
+                              context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValue("AV_000097");
+                              //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).disable();
+                            } else {
+                              context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValidators([Validators.required]);
+                              context.formConfig.updateValueAndValidity();
+                            }
+                          } else {
+                            if (value.id == "AV_000099") {
+                              value["condition"] = true;
+                              context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValue(true);
+                              //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).disable();
+                            } else {
+                              if ((attrId == 'AV_000097' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == true) || (attrId == 'AV_000098' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == true)) {
+
+                              } else {
+                                context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValidators([Validators.required]);
+                              }
+
+                              if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).value == null) {
+                                context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValue(null);
+                              } else {
+                                if (attrId == 'AV_000097') {
+                                  if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == null) {
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators([Validators.required]);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators(null);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setErrors(null);
+                                  } else {
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators(null);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setErrors(null);
+                                  }
+                                }
+                                if (attrId == "AV_000098") {
+                                  if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == null) {
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators([Validators.required]);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators(null);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setErrors(null);
+                                  } else {
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators(null);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setErrors(null);
+                                  }
+
+                                }
+                              }
+                              context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(null);
+                              context.formConfig.updateValueAndValidity();
+                            }
+                          }
+                        });
+                      }
+                    } else {
+                      var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
+                      if (findGroupAttr != undefined) {
+                        var attr = findGroupAttr.attributes.find(att => att.id == "AV_000099");
+                        if (attr != undefined) {
+                          attr["condition"] = false;
+                        }
+                      }
+                      //remove validators e errors 
+                    }
                   }
                 }
-              });
-            } else {
-              var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
-              var attr = findGroupAttr.attributes.find(att => att.id == "AV_000099");
-              attr["condition"] = false;
-            }
-          } else {
-            if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000086").value) {
-              var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
-              findGroupAttr.attributes.forEach(value => {
-                if (value.aggregatorId != null && value.aggregatorId != "") {
-                  if (value.id == "AV_000099") {
-                    value["condition"] = true;
-                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValue("AV_000097");
-                    //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).disable();
-                  } else {
-                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValidators([Validators.required]);
-                    context.formConfig.updateValueAndValidity();
-                  }
-                } else {
-                  if (value.id == "AV_000099") {
-                    value["condition"] = true;
-                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValue(true);
-                    //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).disable();
-                  } else {
-                    if ((attrId == 'AV_000097' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == true) || (attrId == 'AV_000098' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == true)) {
-
-                    } else {
-                      context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValidators([Validators.required]);
-                    }
-
-                    if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).value == null) {
-                      context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValue(null);
-                    } else {
-                      if (attrId == 'AV_000097') {
-                        if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == null) {
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators([Validators.required]);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators(null);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setErrors(null);
-                        } else {
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators(null);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setErrors(null);
-                        }
-                      }
-                      if (attrId == "AV_000098") {
-                        if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == null) {
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators([Validators.required]);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators(null);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setErrors(null);
-                        } else {
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators(null);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setErrors(null);
-                        }
-
-                      }
-                    }
-                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(null);
-                    context.formConfig.updateValueAndValidity();
-                  }
-                }
-              });
-            } else {
-              var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
-              var attr = findGroupAttr.attributes.find(att => att.id == "AV_000099");
-              attr["condition"] = false;
-              //remove validators e errors 
-            }
-          }
-        }
-      } else {
-        if (this.formConfig.get("formGroup" + "AK_000016").get("formControl" + "AV_000091").value) { //comunicações cliente selecionado
-          var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000017");
-          var attr = findGroupAttr.attributes.find(att => att.id == "AV_000085");
-          if (attr.aggregatorId != null && attr.aggregatorId != "") {
-            if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + attr.aggregatorId).value == "AV_000085") { //Tipo de Terminal ser fixo
-              var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
-              var attr = findGroupAttr.attributes.find(att => att.id == "AV_000099");
-              if (attr.aggregatorId != null && attr.aggregatorId != "") {
-                this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr.aggregatorId).setValue("AV_000099"); // Tipo de Comunicações com o valor IP/ADSL 
-                this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr.aggregatorId).disable();
-              } else {
-                this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(true); // Tipo de Comunicações com o valor IP/ADSL
-                this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").disable();
               }
+
             }
           } else {
-            if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000085").value) { //Tipo de Terminal ser fixo
-              this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(true); // Tipo de Comunicações com o valor IP/ADSL
-              this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").disable();
-            }
-          }
+            if (this.formConfig.get("formGroup" + "AK_000016").get("formControl" + "AV_000091").value) { //comunicações cliente selecionado
+              var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000017");
+              if (findGroupAttr != undefined) {
+                var attr = findGroupAttr.attributes.find(att => att.id == "AV_000085");
+                if (attr != undefined) {
+                  if (attr.aggregatorId != null && attr.aggregatorId != "") {
+                    if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + attr.aggregatorId).value == "AV_000085") { //Tipo de Terminal ser fixo
+                      var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
+                      if (findGroupAttr != undefined) {
+                        var attr = findGroupAttr.attributes.find(att => att.id == "AV_000099");
+                        if (attr != undefined) {
+                          if (attr.aggregatorId != null && attr.aggregatorId != "") {
+                            this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr.aggregatorId).setValue("AV_000099"); // Tipo de Comunicações com o valor IP/ADSL 
+                            this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr.aggregatorId).disable();
+                          } else {
+                            this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(true); // Tipo de Comunicações com o valor IP/ADSL
+                            this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").disable();
+                          }
+                        }
+                      }
 
-
-          var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000017");
-          var attr = findGroupAttr.attributes.find(att => att.id == "AV_000086");
-          if (attr.aggregatorId != null && attr.aggregatorId != "") {
-            if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + attr.aggregatorId).value == "AV_000086") { // Tipo de Terminal ser móvel
-              var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
-              findGroupAttr.attributes.forEach(value => {
-                if (value.aggregatorId != null && value.aggregatorId != "") {
-                  if (value.id == "AV_000099") {
-                    value["condition"] = true;
-                    //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).disable();
+                    }
                   } else {
-                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValidators([Validators.required]);
-                    context.formConfig.updateValueAndValidity();
+                    if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000085").value) { //Tipo de Terminal ser fixo
+                      this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(true); // Tipo de Comunicações com o valor IP/ADSL
+                      this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").disable();
+                    }
                   }
-                } else {
-                  if (value.id == "AV_000099") {
-                    value["condition"] = true;
-                    //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).disable();
+
+                }
+              }
+
+
+              var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000017");
+              if (findGroupAttr != undefined) {
+                var attr = findGroupAttr.attributes.find(att => att.id == "AV_000086");
+                if (attr != undefined) {
+                  if (attr.aggregatorId != null && attr.aggregatorId != "") {
+                    if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + attr.aggregatorId).value == "AV_000086") { // Tipo de Terminal ser móvel
+                      var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
+                      if (findGroupAttr != undefined) {
+                        findGroupAttr.attributes.forEach(value => {
+                          if (value.aggregatorId != null && value.aggregatorId != "") {
+                            if (value.id == "AV_000099") {
+                              value["condition"] = true;
+                              //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).disable();
+                            } else {
+                              context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValidators([Validators.required]);
+                              context.formConfig.updateValueAndValidity();
+                            }
+                          } else {
+                            if (value.id == "AV_000099") {
+                              value["condition"] = true;
+                              //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).disable();
+                            } else {
+                              if ((attrId == 'AV_000097' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == true) || (attrId == 'AV_000098' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == true)) {
+
+                              } else {
+                                context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValidators([Validators.required]);
+                              }
+
+                              if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).value == null) {
+                                context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValue(null);
+                              } else {
+                                if (attrId == 'AV_000097') {
+                                  if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == null) {
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators([Validators.required]);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators(null);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setErrors(null);
+                                  } else {
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators(null);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setErrors(null);
+                                  }
+                                }
+                                if (attrId == "AV_000098") {
+                                  if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == null) {
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators([Validators.required]);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators(null);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setErrors(null);
+                                  } else {
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators(null);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setErrors(null);
+                                  }
+
+                                }
+                              }
+                              context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(null);
+                              context.formConfig.updateValueAndValidity();
+                            }
+                          }
+                        });
+                      }
+                    } else {
+                      var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
+                      if (findGroupAttr != undefined) {
+                        var attr = findGroupAttr.attributes.find(att => att.id == "AV_000099");
+                        if (attr != undefined) {
+                          attr["condition"] = false;
+                        }
+                      }
+                    }
                   } else {
-                    if ((attrId == 'AV_000097' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == true) || (attrId == 'AV_000098' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == true)) {
+                    if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000086").value) {
+                      var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
+                      if (findGroupAttr != undefined) {
+                        findGroupAttr.attributes.forEach(value => {
+                          if (value.aggregatorId != null && value.aggregatorId != "") {
+                            if (value.id == "AV_000099") {
+                              value["condition"] = true;
+                              //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).disable();
+                            } else {
+                              context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValidators([Validators.required]);
+                              context.formConfig.updateValueAndValidity();
+                            }
+                          } else {
+                            if (value.id == "AV_000099") {
+                              value["condition"] = true;
+                              //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).disable();
+                            } else {
+                              if ((attrId == 'AV_000097' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == true) || (attrId == 'AV_000098' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == true)) {
 
-                    } else {
-                      context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValidators([Validators.required]);
-                    }
+                              } else {
+                                context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValidators([Validators.required]);
+                              }
 
-                    if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).value == null) {
-                      context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValue(null);
+                              if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).value == null) {
+                                context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValue(null);
+                              } else {
+                                if (attrId == 'AV_000097') {
+                                  if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == null) {
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators([Validators.required]);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators(null);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setErrors(null);
+                                  } else {
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators(null);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setErrors(null);
+                                  }
+                                }
+                                if (attrId == "AV_000098") {
+                                  if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == null) {
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators([Validators.required]);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators(null);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setErrors(null);
+                                  } else {
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators(null);
+                                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setErrors(null);
+                                  }
+
+                                }
+                              }
+                              context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(null);
+                              context.formConfig.updateValueAndValidity();
+                            }
+                          }
+                        });
+                      }
                     } else {
-                      if (attrId == 'AV_000097') {
-                        if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == null) {
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators([Validators.required]);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators(null);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setErrors(null);
-                        } else {
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators(null);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setErrors(null);
+                      var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
+                      if (findGroupAttr != undefined) {
+                        var attr = findGroupAttr.attributes.find(att => att.id == "AV_000099");
+                        if (attr != undefined) {
+                          attr["condition"] = false;
                         }
                       }
-                      if (attrId == "AV_000098") {
-                        if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == null) {
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators([Validators.required]);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators(null);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setErrors(null);
-                        } else {
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators(null);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setErrors(null);
-                        }
-
-                      }
+                      //tirar validators
                     }
-                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(null);
-                    context.formConfig.updateValueAndValidity();
                   }
                 }
-              });
-            } else {
-              var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
-              var attr = findGroupAttr.attributes.find(att => att.id == "AV_000099");
-              attr["condition"] = false;
-            }
-          } else {
-            if (this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000086").value) {
-              var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
-              findGroupAttr.attributes.forEach(value => {
-                if (value.aggregatorId != null && value.aggregatorId != "") {
-                  if (value.id == "AV_000099") {
-                    value["condition"] = true;
-                    //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).disable();
-                  } else {
-                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.aggregatorId).setValidators([Validators.required]);
-                    context.formConfig.updateValueAndValidity();
-                  }
-                } else {
-                  if (value.id == "AV_000099") {
-                    value["condition"] = true;
-                    //context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).disable();
-                  } else {
-                    if ((attrId == 'AV_000097' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == true) || (attrId == 'AV_000098' && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").valid && context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == true)) {
-
-                    } else {
-                      context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValidators([Validators.required]);
-                    }
-
-                    if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).value == null) {
-                      context.formConfig.get("formGroup" + "AK_000011").get("formControl" + value.id).setValue(null);
-                    } else {
-                      if (attrId == 'AV_000097') {
-                        if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").value == null) {
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators([Validators.required]);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators(null);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setErrors(null);
-                        } else {
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators(null);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setErrors(null);
-                        }
-                      }
-                      if (attrId == "AV_000098") {
-                        if (context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == false || context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").value == null) {
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators([Validators.required]);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setValidators(null);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000098").setErrors(null);
-                        } else {
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValidators(null);
-                          context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setErrors(null);
-                        }
-
-                      }
-                    }
-                    context.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000099").setValue(null);
-                    context.formConfig.updateValueAndValidity();
-                  }
-                }
-              });
-            } else {
-              var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000011");
-              var attr = findGroupAttr.attributes.find(att => att.id == "AV_000099");
-              attr["condition"] = false;
-              //tirar validators
+              }
             }
           }
         }
@@ -843,28 +948,34 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         if (attrId == "AV_000090") { //AV_000090 - Comunicações Reduniq
 
           var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000017");
-          var findGroupAttr2 = this.equipmentSettings.find(group => group.id == "AK_000011");
-
-          var attr = findGroupAttr.attributes.find(attr => attr.id == "AV_000086");
-          var attr2 = findGroupAttr2.attributes.find(attr => attr.id == "AV_000097");
-
-          if (attr.aggregatorId != null && attr.aggregatorId != "") {
-            this.formConfig.get("formGroup" + "AK_000017").get("formControl" + attr.aggregatorId).setValue("AV_000086");
-            this.formConfig.get("formGroup" + "AK_000017").get("formControl" + attr.aggregatorId).disable();
-          } else {
-            if (this.formConfig.get("formGroup" + "AK_000016").get("formControl" + "AV_000090").value) {
-              this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000086").setValue(true); //Tipo de Terminal com o valor Móvel
-              this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000086").disable();
+          if (findGroupAttr != undefined) {
+            var attr = findGroupAttr.attributes.find(attr => attr.id == "AV_000086");
+            if (attr != undefined) {
+              if (attr.aggregatorId != null && attr.aggregatorId != "") {
+                this.formConfig.get("formGroup" + "AK_000017").get("formControl" + attr.aggregatorId).setValue("AV_000086");
+                this.formConfig.get("formGroup" + "AK_000017").get("formControl" + attr.aggregatorId).disable();
+              } else {
+                if (this.formConfig.get("formGroup" + "AK_000016").get("formControl" + "AV_000090").value) {
+                  this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000086").setValue(true); //Tipo de Terminal com o valor Móvel
+                  this.formConfig.get("formGroup" + "AK_000017").get("formControl" + "AV_000086").disable();
+                }
+              }
             }
           }
 
-          if (attr2.aggregatorId != null && attr2.aggregatorId != "") {
-            this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr2.aggregatorId).setValue("AV_000097");
-            this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr2.aggregatorId).disable();
-          } else {
-            if (this.formConfig.get("formGroup" + "AK_000016").get("formControl" + "AV_000090").value) {
-              this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValue(true); //Tipo de Comunicações com o valor GPRS
-              this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").disable();
+          var findGroupAttr2 = this.equipmentSettings.find(group => group.id == "AK_000011");
+          if (findGroupAttr2 != undefined) {
+            var attr2 = findGroupAttr2.attributes.find(attr => attr.id == "AV_000097");
+            if (attr2 != undefined) {
+              if (attr2.aggregatorId != null && attr2.aggregatorId != "") {
+                this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr2.aggregatorId).setValue("AV_000097");
+                this.formConfig.get("formGroup" + "AK_000011").get("formControl" + attr2.aggregatorId).disable();
+              } else {
+                if (this.formConfig.get("formGroup" + "AK_000016").get("formControl" + "AV_000090").value) {
+                  this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValue(true); //Tipo de Comunicações com o valor GPRS
+                  this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").disable();
+                }
+              }
             }
           }
 
@@ -874,14 +985,18 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
       if (equipmentId == "AK_000015") { // Propriedade Terminal
         if (attrId == "AV_000089") { // Terminal Cliente
           var findGroupAttr = this.equipmentSettings.find(group => group.id == "AK_000016");
-          var attr = findGroupAttr.attributes.find(att => att.id == "AV_000091");
-          if (attr.aggregatorId != null && attr.aggregatorId != "") {
-            this.formConfig.get("formGroup" + "AK_000016").get("formControl" + attr.aggregatorId).setValue("AV_000091");
-            this.formConfig.get("formGroup" + "AK_000016").get("formControl" + attr.aggregatorId).disable();
-          } else {
-            if (this.formConfig.get("formGroup" + "AK_000015").get("formControl" + "AV_000089").value) {
-              this.formConfig.get("formGroup" + "AK_000016").get("formControl" + "AV_000091").setValue(true);
-              this.formConfig.get("formGroup" + "AK_000016").get("formControl" + "AV_000091").disable();
+          if (findGroupAttr != undefined) {
+            var attr = findGroupAttr.attributes.find(att => att.id == "AV_000091");
+            if (attr != undefined) {
+              if (attr.aggregatorId != null && attr.aggregatorId != "") {
+                this.formConfig.get("formGroup" + "AK_000016").get("formControl" + attr.aggregatorId).setValue("AV_000091");
+                this.formConfig.get("formGroup" + "AK_000016").get("formControl" + attr.aggregatorId).disable();
+              } else {
+                if (this.formConfig.get("formGroup" + "AK_000015").get("formControl" + "AV_000089").value) {
+                  this.formConfig.get("formGroup" + "AK_000016").get("formControl" + "AV_000091").setValue(true);
+                  this.formConfig.get("formGroup" + "AK_000016").get("formControl" + "AV_000091").disable();
+                }
+              }
             }
           }
         }
@@ -895,7 +1010,85 @@ export class CommercialOfferNewConfigurationComponent implements OnInit, OnChang
         this.pricingOptions = [];
         this.pricingAttributeList = [];
       }
+    } else {
+      if (this.isNewConfig) {
+        var group = this.equipmentSettings.find(group => group.id == "AK_000016");
+        if (group != undefined) {
+          var attr = group.attributes.find(attr => attr.id == "AV_000090");
+          if (attr != undefined) {
+            if (attr.aggregatorId != null && attr.aggregatorId != "") {
+              if (attr.value == "AV_000090") {
+                var findGroup = this.equipmentSettings.find(group => group.id == "AK_000017");
+                if (findGroup != undefined) {
+                  var findAttr = findGroup.attributes.find(attr => attr.id == "AV_000086");
+                  if (findAttr != undefined) {
+                    //confirmar se tem aggregatorId
+                    if (findAttr.aggregatorId != null && attr.aggregatorId != "") {
+                      this.formConfig.get("formGroup" + "AK_000017")?.get("formControl" + findAttr.aggregatorId)?.setValue("AV_000086");
+                      this.formConfig.get("formGroup" + "AK_000017")?.get("formControl" + findAttr.aggregatorId)?.disable();
+                    } else {
+                      this.formConfig.get("formGroup" + "AK_000017")?.get("formControl" + "AV_000086")?.setValue(true); //Tipo de Terminal com o valor Móvel
+                      this.formConfig.get("formGroup" + "AK_000017")?.get("formControl" + "AV_000086")?.disable();
+                    }
+                  }
+                }
+              }
+            } else {
+              if (attr.value) {
+                if (this.formConfig.get("formGroup" + "AK_000016").get("formControl" + "AV_000090").value) {
+                  var findGroup = this.equipmentSettings.find(group => group.id == "AK_000017");
+                  if (findGroup != undefined) {
+                    var findAttr = findGroup.attributes.find(attr => attr.id == "AV_000086");
+                    if (findAttr != undefined) {
+                      //confirmar se tem aggregatorId
+                      if (findAttr.aggregatorId != null && attr.aggregatorId != "") {
+                        this.formConfig.get("formGroup" + "AK_000017")?.get("formControl" + findAttr.aggregatorId)?.setValue("AV_000086");
+                        this.formConfig.get("formGroup" + "AK_000017")?.get("formControl" + findAttr.aggregatorId)?.disable();
+                      } else {
+                        this.formConfig.get("formGroup" + "AK_000017")?.get("formControl" + "AV_000086")?.setValue(true); //Tipo de Terminal com o valor Móvel
+                        this.formConfig.get("formGroup" + "AK_000017")?.get("formControl" + "AV_000086")?.disable();
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        var group2 = this.equipmentSettings.find(group => group.id == "AK_000011");
+        if (group2 != undefined) {
+          var attr2 = group2.attributes.find(attr => attr.id == "AV_000097");
+          if (attr2 != undefined) {
+            if (attr2.aggregatorId != null && attr2.aggregatorId != "") {
+              if (attr.value == "AV_000090") {
+                var findGroup2 = this.equipmentSettings.find(group => group.id == "AK_000011");
+                if (findGroup2 != undefined) {
+                  var findAttr2 = findGroup2.attributes.find(attr => attr.id == "AV_000097");
+                  if (findAttr2 != undefined) {
+                    this.formConfig.get("formGroup" + "AK_000011").get("formControl" + findAttr2.aggregatorId).setValue("AV_000097");
+                    this.formConfig.get("formGroup" + "AK_000011").get("formControl" + findAttr2.aggregatorId).disable();
+                  }
+                }
+              }
+            } else {
+              if (attr.value) {
+                if (this.formConfig.get("formGroup" + "AK_000016").get("formControl" + "AV_000090").value) {
+                  this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").setValue(true); //Tipo de Comunicações com o valor GPRS
+                  this.formConfig.get("formGroup" + "AK_000011").get("formControl" + "AV_000097").disable();
+                }
+              }
+            }
+          }
+        }
+      }
     }
+
+    this.equipmentSettings.forEach(val => {
+      var found = this.groupsList.findIndex(group => group.id == val.id);
+      if (found != -1)
+        this.groupsList.splice(found, 1);
+    });
+
     this.firstTimeChanged = false;
     this.finalList = [];
     this.list = [];

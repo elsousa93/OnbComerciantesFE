@@ -476,7 +476,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.crcMatchNIF = false;
     var crcInserted = this.form.get('crcCode').value;
 
-    if (allowedKeys.indexOf(event.key) === -1) {
+    if (allowedKeys.indexOf(event?.key) === -1) {
       if (crcInserted.length <= 14) {
         crcInserted = crcInserted.replace(/\D/g, '');
         crcInserted = crcInserted.replace(/(\d{4})/g, '$1-');
@@ -722,9 +722,9 @@ export class ClientCharacterizationComponent implements OnInit {
 
         var stakeholderToInsert = {
           "fiscalId": (fiscalID != null && fiscalID != undefined) ? fiscalID : '',
-          "shortName": value.name?.slice(0, 40),
-          "fullName": value.name,
-          "contactName": value.name,
+          "shortName": value.name == null ? value["shortName"] : value.name?.slice(0, 40),
+          "fullName": value.name == null ? value["fullName"] : value.name,
+          "contactName": value.name == null ? value["contactName"] : value.name,
           "fiscalAddress": {
             "postalCode": value["address"] != null ? value["address"]["postalCode"]?.replace(/\s/g, "") : null,
             "postalArea": value["address"] != null ? value["address"]["postalArea"] : null,

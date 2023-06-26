@@ -230,6 +230,7 @@ export class ConsultasComponent implements OnInit {
               };
             });
             processes.push(...processesArray);
+            this.loadProcesses(processes);
           }, error => {
             this.logger.error(error, "", "Error when searching for processes");
             this.loadProcesses([]);
@@ -297,6 +298,7 @@ export class ConsultasComponent implements OnInit {
                 };
               });
               processes.push(...processesArray);
+              this.loadProcesses(processes);
             }, error => {
               this.logger.error(error, "", "Error when searching for processes");
               this.loadProcesses([]);
@@ -367,12 +369,16 @@ export class ConsultasComponent implements OnInit {
               })
               processes.push(...processesArray);
               this.loadProcesses(processes);
-              if (processes.length == 0) {
-                this.snackBar.open(this.translate.instant('searches.emptyList'), '', {
-                  duration: 4000,
-                  panelClass: ['snack-bar']
-                });
-              }
+              setTimeout(() => {
+                if (processes.length == 0 && this.processes?.data?.length == 0) {
+                  this.snackBar.open(this.translate.instant('searches.emptyList'), '', {
+                    duration: 4000,
+                    panelClass: ['snack-bar']
+                  });
+                }
+              }, 1000);
+
+
             }, error => {
               this.logger.error(error, "", "Error when searching for processes");
               this.loadProcesses([]);
@@ -531,18 +537,35 @@ export class ConsultasComponent implements OnInit {
       this.workQueue = result.result;
       if (result.result.lockedBy != null && result.result.lockedBy != "") {
         if (result.result.status != "InProgress") {
-          if (result.result.lockedBy.trim() != this.authService.GetCurrentUser().userName.trim()) {
-            this.existsUser = true;
-            this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
-          } else {
-            let navigationExtras: NavigationExtras = {
-              state: {
-                queueName: queue,
-                processId: this.processId
-              }
-            };
-            this.logger.info('Redirecting to Queues Detail page');
-            this.route.navigate(["/queues-detail"], navigationExtras);
+          if (result.result.status == "UnLocked" || result.result.status == "Locked") {
+            if (result.result.lockedBy.trim() != this.authService.GetCurrentUser().userName.trim()) {
+              this.existsUser = true;
+              this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
+            } else {
+              let navigationExtras: NavigationExtras = {
+                state: {
+                  queueName: queue,
+                  processId: this.processId
+                }
+              };
+              var reassignWorkQueue: ReassingWorkQueue = {};
+              reassignWorkQueue.jobId = this.workQueue.id;
+              reassignWorkQueue.username = this.username;
+              reassignWorkQueue.onHold = false;
+              if (result.result.status == "UnLocked")
+                reassignWorkQueue.forceReassign = false;
+              if (result.result.status == "Locked")
+                reassignWorkQueue.forceReassign = true;
+              this.queueService.postReassignWorkQueue(this.processId, reassignWorkQueue).then(res => {
+                this.processNrService.changeProcessId(this.processId);
+                this.processNrService.changeQueueName(this.queueName);
+                this.processId = "";
+                this.jobId = 0;
+                this.queueName = "";
+                this.logger.info('Redirecting to Queues Detail page');
+                this.route.navigate(["/queues-detail"], navigationExtras);
+              });
+            }
           }
         } else {
           if (result.result.lockedBy.trim() == this.authService.GetCurrentUser().userName.trim()) {
@@ -555,7 +578,7 @@ export class ConsultasComponent implements OnInit {
             this.logger.info('Redirecting to Queues Detail page');
             this.route.navigate(["/queues-detail"], navigationExtras);
           } else {
-            this.snackBar.open(this.translate.instant('searches.processInProgress'), '', {
+            this.snackBar.open(this.translate.instant('queues.processInProgress') + ' ' + result.result.lockedBy.trim(), '', {
               duration: 4000,
               panelClass: ['snack-bar']
             });
@@ -578,9 +601,13 @@ export class ConsultasComponent implements OnInit {
       }
     };
     var reassignWorkQueue: ReassingWorkQueue = {};
-    reassignWorkQueue.forceReassign = true;
     reassignWorkQueue.jobId = this.workQueue.id;
     reassignWorkQueue.username = this.username;
+    reassignWorkQueue.onHold = false;
+    if (this.workQueue.status == "UnLocked")
+      reassignWorkQueue.forceReassign = false;
+    if (this.workQueue.status == "Locked")
+      reassignWorkQueue.forceReassign = true;
     this.queueService.postReassignWorkQueue(this.processId, reassignWorkQueue).then(res => {
       this.processNrService.changeProcessId(this.processId);
       this.processNrService.changeQueueName(this.queueName);
@@ -633,7 +660,7 @@ export class ConsultasComponent implements OnInit {
         localStorage.setItem("returned", 'edit');
         this.logger.info("Redirecting to Client By Id page");
         this.route.navigate(['/clientbyid']);
-      } else if (process.state == "Ongoing" || process.state == "AwaitingCompletion") {
+      } else if (process.state == "Ongoing" || process.state == "AwaitingCompletion" || process.state == "Cancelled" || process.state == "Completed") {
         localStorage.setItem("processNumber", process.processNumber);
         localStorage.setItem("returned", 'consult');
         this.processNrService.changeProcessId(process.processId);

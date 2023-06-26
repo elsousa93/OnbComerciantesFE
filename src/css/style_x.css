@@ -1211,7 +1211,7 @@ mat-cell {
 @media only screen and (max-width: 1024px) {
   mat-cell {
     font-family: 'roboto';
-    font-size: 14px !important;
+    font-size: 11px !important; /* estava 14px */
     color: rgb(var(--bs-primary-rgb)) !important; /* --bs-primary-rgb */
     text-align: center !important;
   }

@@ -54,7 +54,7 @@ export class SubmissionService {
     return this.http.put<SubmissionPutTemplate>(this.baseUrl + 'submission/' + submissionID, submissionToEdit);
   }
 
-  GetSubmissionByProcessNumber(processNumber: string): any {
+  GetSubmissionByProcessNumber(processNumber: string) {
     var url = this.baseUrl + 'submission?ProcessNumber=' + processNumber;
     var HTTP_OPTIONS = {
       headers: new HttpHeaders({

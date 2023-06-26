@@ -8,6 +8,10 @@ import { AutoHideSidenavAdjustBarraTopo } from '../animation';
 import { LoggerService } from 'src/app/logger.service';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { IStakeholders } from '../stakeholders/IStakeholders.interface';
+import { StakeholderService } from '../stakeholders/stakeholder.service';
+import { ClientService } from '../client/client.service';
+import { Client } from '../client/Client.interface';
 
 @Component({
   selector: 'app-nav-menu-interna',
@@ -46,8 +50,10 @@ export class NavMenuInternaComponent implements OnInit {
   @ViewChild('returnModal') returnModal;
   returnModalRef: BsModalRef | undefined;
   returned: string;
+  submissionStakeholders: IStakeholders[] = [];
+  merchantInfo: Client;
 
-  constructor(private logger: LoggerService, private data: DataService, private route: Router, private processNrService: ProcessNumberService, private modalService: BsModalService) {
+  constructor(private logger: LoggerService, private data: DataService, private route: Router, private processNrService: ProcessNumberService, private modalService: BsModalService, private stakeholderService: StakeholderService, private clientService: ClientService, ) {
   }
 
   ngOnInit(): void {
@@ -291,6 +297,38 @@ export class NavMenuInternaComponent implements OnInit {
   goToCliente() {
     if (this.currentPage > 1 || this.map.get(1) != undefined) {
       this.returnModalRef?.hide();
+      var length = 0;
+      var context = this;
+      context.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(function (res) {
+        context.logger.info("Get client by id result: " + JSON.stringify(res));
+        context.merchantInfo = res;
+        context.stakeholderService.GetAllStakeholdersFromSubmission(localStorage.getItem("submissionId")).then(result => {
+          context.logger.info("Get all stakeholders from submission result: " + JSON.stringify(result));
+          var stakeholders = result.result;
+          stakeholders.forEach(function (value, index) {
+            context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).then(res => {
+              length++;
+              context.logger.info("Get stakeholder from submission result: " + JSON.stringify(res));
+              context.submissionStakeholders.push(res.result);
+              if (stakeholders.length == length) {
+                if (context.submissionStakeholders.length > 0) {
+                  context.submissionStakeholders.forEach(stake => {
+                    if (context.merchantInfo.fiscalId == stake.fiscalId) {
+                      context.stakeholderService.DeleteStakeholder(localStorage.getItem("submissionId"), stake.id).subscribe(result => {
+                        context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
+                      });
+                    }
+                  });
+                }
+              }
+            }, error => {
+              context.logger.error(error);
+            });
+          });
+        }, error => {
+          context.logger.error(error);
+        });
+      });
       this.data.changeData(new Map().set(0, undefined)
         .set(1, undefined)
         .set(2, undefined)

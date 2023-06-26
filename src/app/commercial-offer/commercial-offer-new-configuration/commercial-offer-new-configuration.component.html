@@ -8,7 +8,7 @@
          #focusContent>-->
       <p class="titulo-form-simples ps-4">{{'commercialOffer.totalTerminal'|translate|uppercase}}</p>
       <input id="text3" formControlName="terminalAmount" name="terminalAmount" type="text"
-             (keypress)="numericOnly($event)" class="form-control campo_form ms-4">
+             (keypress)="numericOnly($event)" (keydown)="onKeyDownTerminal($event)" class="form-control campo_form ms-4">
       <div class="alert alert-danger ms-4"
            *ngIf="this.formConfig.get('terminalAmount').touched && !this.formConfig.get('terminalAmount').valid">
         <div *ngIf="this.formConfig.get('terminalAmount').errors && this.formConfig.get('terminalAmount').errors?.['required']">

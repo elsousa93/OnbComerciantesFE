@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Input, Output, OnChanges, SimpleChanges, HostListener } from '@angular/core';
 import { FormControl, FormGroup, FormGroupDirective, Validators } from '@angular/forms';
 import { NavigationExtras, Router } from '@angular/router';
-import { of, Subject, Subscription } from 'rxjs';
+import { Observable, of, Subject, Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
 import { CorporateEntity, IStakeholders, PostCorporateEntity, StakeholdersCompleteInformation } from '../IStakeholders.interface';
@@ -269,8 +269,9 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   foundStakeholders: boolean = null;
   errorMsg: string = "";
   currentStakeholder: IStakeholders = {};
-  searchEvent: Subject<string> = new Subject<string>();
-  testEvent = this.searchEvent.asObservable();
+  searchEvent: Observable<string>;
+  //searchEvent: Subject<string> = new Subject<string>();
+  //testEvent = this.searchEvent.asObservable();
 
   public subs: Subscription[] = [];
   returned: string;
@@ -526,6 +527,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       return false;
 
     this.stakeholderNumber = this.formStakeholderSearch.get('documentNumber').value;
+    this.docType = this.formStakeholderSearch.get("documentType").value;
 
     //this.emitSameNIF(of(this.stakeholderNumber)); //evento que serve para comparar o NIF inserido com os stakeholders já existentes
     var found = this.stakeholderList.find(value => value.stakeholderAcquiring.fiscalId == this.stakeholderNumber);
@@ -556,11 +558,10 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       return false;
     }
 
-    this.isShown = true;
-    this.selected = false;
-
     setTimeout(() => {
-      this.searchEvent.next(this.stakeholderNumber);
+      this.searchEvent = of(this.stakeholderNumber);
+      this.isShown = true; //
+      this.selected = false;
       this.isSearch = true;
     });
   }

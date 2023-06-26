@@ -119,7 +119,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     if (changes["updatedStoreEvent"] && this.updatedStoreEvent != null) {
       this.updatedStoreEvent.subscribe(result => {
         var nextIdx = result.idx + 1;
-        this.checkVisitedStores();
+        this.checkVisitedStores(nextIdx);
         //this.emitSelectedStore(this.storesList[nextIdx], nextIdx, false);
       });
     }
@@ -273,7 +273,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
     this.storesMat.sort = this.sort;
   }
 
-  checkVisitedStores() {
+  checkVisitedStores(index: number = -1) {
     let currentPage = location.href.split("/")[5];
     this.storesList.forEach(shop => {
       if (currentPage == "store-comp") {
@@ -282,7 +282,7 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
           this.visitedStores = Array.from(new Set(this.visitedStores));
         }
       } else if (currentPage == "commercial-offert-list") {
-        if (shop.pack != null) {
+        if ((shop.pack != null && shop?.pack?.packId != "" && shop?.pack?.commission?.commissionId != "" && shop?.pack?.otherPackDetails?.length > 0 && shop?.pack?.commission?.attributes?.length > 0) && ((shop?.equipments?.length == 0 && shop.supportEntity == 'Other') || (shop?.equipments?.length > 0 && shop.supportEntity == 'Acquirer'))) {
           this.visitedStores.push(shop.id);
           this.visitedStores = Array.from(new Set(this.visitedStores));
         }
@@ -300,7 +300,15 @@ export class StoreTableComponent implements OnInit, AfterViewInit, OnChanges {
       else
         this.emitSelectedStore(this.storesList[0], 0, false);
     } else {
-      this.emitSelectedStore(this.storesList[0], 0, false);
+      if (this.returned != 'consult') {
+        this.emitSelectedStore(this.storesList[0], 0, false);
+      } else {
+        if (index == -1) {
+          this.emitSelectedStore(this.storesList[0], 0, false);
+        } else {
+          this.emitSelectedStore(this.storesList[index], index, false);
+        }
+      }
     }
     this.visitedStoresEmitter.emit(this.visitedStores);
   }

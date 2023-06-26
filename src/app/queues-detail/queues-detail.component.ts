@@ -9,7 +9,7 @@ import { LoggerService } from 'src/app/logger.service';
 import { QueuesService } from './queues.service';
 import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 import { ShopActivities, ShopDetailsAcquiring, ShopEquipment, ShopSubActivities } from '../store/IStore.interface';
-import { ClientChoice, ComplianceEvaluation, EligibilityAssessment, MerchantRegistration, NegotiationApproval, OperationsEvaluation, RiskAssessment, StandardIndustryClassificationChoice, State, StateResultDiscriminatorEnum } from './IQueues.interface';
+import { ClientChoice, ComplianceEvaluation, EligibilityAssessment, MerchantRegistration, NegotiationApproval, OperationsEvaluation, ReassingWorkQueue, RiskAssessment, StandardIndustryClassificationChoice, State, StateResultDiscriminatorEnum, WorkQueue } from './IQueues.interface';
 import { PostDocument } from '../submission/document/ISubmission-document';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -244,6 +244,24 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnDestroy(): void {
     var context = this;
+    if (this.route.routerState.snapshot.url == "/" || this.route.routerState.snapshot.url == "/app-consultas" || this.route.routerState.snapshot.url == "/app-consultas-ft") {
+      if (this.state == null) {
+        this.queuesService.getActiveWorkQueue(this.processId).then(result => {
+          var workQueue = result.result as WorkQueue;
+          if (workQueue.status == "InProgress") { // voltar a meter == 
+            var reassignWorkQueue: ReassingWorkQueue = {};
+            reassignWorkQueue.jobId = workQueue.id;
+            reassignWorkQueue.username = this.authService.GetCurrentUser().userName;
+            reassignWorkQueue.onHold = true;
+            reassignWorkQueue.forceReassign = false;
+            context.queuesService.postReassignWorkQueue(context.processId, reassignWorkQueue).then(res => {
+
+            });
+          }
+        });
+      }
+    }
+
     if (this.queueName == "eligibility") {
       var observation = this.form.get('observation').value;
       var merchantAccepted = this.form.get("merchantEligibility").value; //this.merchant.id
@@ -501,6 +519,15 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   updateShopValidationForm() {
     var context = this;
     var formGroupShop = new FormGroup({});
+    this.shopsList = this.shopsList.filter(shop => shop.supportEntity == 'Other');
+    this.equipmentList.forEach(equip => {
+      var found = context.shopsList.find(shop => shop.id == equip["shopId"]);
+      if (found == undefined) {
+        var index = context.equipmentList.indexOf(equip);
+        context.equipmentList.splice(index, 1);
+      }
+    });
+
     this.shopsList.forEach(function (value, idx) {
       formGroupShop.addControl(value.id, new FormControl(value.registrationId, Validators.required));
       var formGroupEquip = new FormGroup({});
@@ -638,7 +665,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
         this.logger.info("Get shop from process result: " + JSON.stringify(result));
         var shop = result.result;
         if (this.queueName == 'negotiationAproval') {
-          if (shop.pack != null && shop.pack.commission != null && shop.pack.commission.attributes.length > 0) {
+          if (shop?.pack != null && shop?.pack?.commission != null && shop?.pack?.commission?.attributes?.length > 0) {
             shop.pack.commission.attributes.forEach(value => {
               var originalVal = (value.percentageValue.originalValue * 100).toFixed(3);
               if (originalVal.includes(".")) {
@@ -750,19 +777,27 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     context.filterIssues = [];
 
     let promise = new Promise((resolve, reject) => {
+
+      if (issues.shops.length == 0) {
+        finishedStore = true;
+      }
+      if (issues.stakeholders.length == 0) {
+        finishedStake = true;
+      }
+
       issues.documents.forEach(val => {
         var found = context.docTypes.find(doc => doc.code == val.document.type);
         if (found != undefined)
           val.document.type = found.description;
       });
-      issues.documents.forEach(value => {
-        value.issues.forEach(val => {
-          if (val.issueDescription != null && val.issueDescription != "") {
-            val["name"] = value.document.type;
-            context.filterIssues.push(val);
-          }
-        });
-      });
+      //issues.documents.forEach(value => {
+      //  value.issues.forEach(val => {
+      //    if (val.issueDescription != null && val.issueDescription != "") {
+      //      val["name"] = value.document.type;
+      //      context.filterIssues.push(val);
+      //    }
+      //  });
+      //});
       issues.process.forEach(value => {
         if (value.issueDescription != null && value.issueDescription != "") {
           value["name"] = "Processo";
@@ -871,6 +906,29 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
     }).finally(() => {
+      issues.documents.forEach(value => {
+        value.issues.forEach(val => {
+          if (val.issueDescription != null && val.issueDescription != "") {
+            val["type"] = value.document.type;
+
+            var found = context.merchant.documents.find(doc => doc["id"] == value.document.id);
+            if (found != undefined)
+              val["name"] = context.merchant.legalName;
+
+            context.stakeholdersList.forEach(stake => {
+              var foundStake = stake.documents.find(doc => doc.id == value.document.id);
+              if (foundStake != undefined)
+                val["name"] = stake.shortName;
+            });
+            context.shopIssuesList.forEach(shop => {
+              var foundShop = shop.documents.find(doc => doc.id == value.document.id);
+              if (foundShop != undefined)
+                val["name"] = shop.name;
+            });
+            context.filterIssues.push(val);
+          }
+        });
+      });
       if (isSelected) {
         this.loadSelectedReturnReasons(context.filterIssues);
       } else {
@@ -1221,27 +1279,34 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     const files = <File[]>event.target.files;
     for (var i = 0; i < files.length; i++) {
       var file = files[i];
-      const sizeFile = file.size / (1024 * 1024);
-      var extensoesPermitidas = /(.pdf)$/i;
-      const limSize = 10;
-      this.result = this.http.put(this.baseUrl + 'ServicesComprovativos/', 1);
-      if (this.result != null) {
-        if ((sizeFile <= limSize)) {
-          if (event.target.files && files[i]) {
-            var reader = new FileReader();
-            reader.onload = (event: any) => {
-              this.localUrl = event.target.result;
+      if (file.type == "application/pdf") {
+        const sizeFile = file.size / (1024 * 1024);
+        var extensoesPermitidas = /(.pdf)$/i;
+        const limSize = 10;
+        this.result = this.http.put(this.baseUrl + 'ServicesComprovativos/', 1);
+        if (this.result != null) {
+          if ((sizeFile <= limSize)) {
+            if (event.target.files && files[i]) {
+              var reader = new FileReader();
+              reader.onload = (event: any) => {
+                this.localUrl = event.target.result;
+              }
+              reader.readAsDataURL(files[i]);
+              this.files.push(file);
+              this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
+                duration: 4000,
+                panelClass: ['snack-bar']
+              });
+            } else {
+              alert("Verifique o tipo / tamanho do ficheiro");
             }
-            reader.readAsDataURL(files[i]);
-            this.files.push(file);
-            this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
-              duration: 4000,
-              panelClass: ['snack-bar']
-            });
-          } else {
-            alert("Verifique o tipo / tamanho do ficheiro");
           }
         }
+      } else {
+        this.snackBar.open(this.translate.instant('queues.attach.pdfOnly'), '', {
+          duration: 4000,
+          panelClass: ['snack-bar']
+        });
       }
     }
     var fileBinaries = [];
@@ -1274,7 +1339,8 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     let index = this.files.findIndex(f => f.lastModified === fileToDelete.lastModified);
     if (index > -1)
       this.files.splice(index, 1);
-    this.attach = undefined;
+    if (this.files.length == 0)
+      this.attach = undefined;
   }
 
   check() {
@@ -1627,6 +1693,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
 
     if (this.files.length > 0) {
       let length = 0;
+      var documents = [];
       this.files.forEach(function (value, idx) {
         context.documentService.readBase64(value).then(data => {
           var document: PostDocument = {
@@ -1638,21 +1705,34 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
             validUntil: new Date().toISOString(),
             data: {}
           }
-          context.queuesInfo.postProcessDocuments(document, context.processId, context.state).then(res => {
-            length++;
-            if (context.files.length == length) {
-              context.queuesInfo.postExternalState(context.processId, context.state, queueModel).then(result => {
-                context.logger.info("Queue post external state result: " + JSON.stringify(queueModel));
-                let navigationExtras = {
-                  state: {
-                    queueName: context.queueName
-                  }
-                } as NavigationExtras;
-                localStorage.removeItem("documents");
-                context.route.navigate(['/'], navigationExtras);
+          documents.push(document);
+          length++;
+          if (context.files.length == length) {
+            queueModel.documents = documents;
+            context.queuesInfo.postExternalState(context.processId, context.state, queueModel).then(result => {
+              context.logger.info("Queue post external state result: " + JSON.stringify(queueModel));
+              let navigationExtras = {
+                state: {
+                  queueName: context.queueName
+                }
+              } as NavigationExtras;
+              localStorage.removeItem("documents");
+              context.queuesService.getActiveWorkQueue(context.processId).then(result => {
+                var workQueue = result.result as WorkQueue;
+                if (workQueue.status == "InProgress") {
+                  var reassignWorkQueue: ReassingWorkQueue = {};
+                  reassignWorkQueue.jobId = workQueue.id;
+                  reassignWorkQueue.username = context.authService.GetCurrentUser().userName;
+                  reassignWorkQueue.onHold = true;
+                  reassignWorkQueue.forceReassign = false;
+                  context.queuesService.postReassignWorkQueue(context.processId, reassignWorkQueue).then(res => {
+
+                  });
+                }
               });
-            }
-          });
+              context.route.navigate(['/'], navigationExtras);
+            });
+          }
         });
       });
     } else {
@@ -1664,6 +1744,19 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         } as NavigationExtras;
         localStorage.removeItem("documents");
+        context.queuesService.getActiveWorkQueue(context.processId).then(result => {
+          var workQueue = result.result as WorkQueue;
+          if (workQueue.status == "InProgress") {
+            var reassignWorkQueue: ReassingWorkQueue = {};
+            reassignWorkQueue.jobId = workQueue.id;
+            reassignWorkQueue.username = context.authService.GetCurrentUser().userName;
+            reassignWorkQueue.onHold = true;
+            reassignWorkQueue.forceReassign = false;
+            context.queuesService.postReassignWorkQueue(context.processId, reassignWorkQueue).then(res => {
+
+            });
+          }
+        });
         this.route.navigate(['/'], navigationExtras);
       });
     }

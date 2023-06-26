@@ -18,6 +18,10 @@ import { TranslateService } from '@ngx-translate/core';
 import { ProcessService } from '../../../process/process.service';
 import { ProcessNumberService } from '../../../nav-menu-presencial/process-number.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SubmissionService } from '../../../submission/service/submission-service.service';
+import { QueuesService } from '../../../queues-detail/queues.service';
+import { AuthService } from '../../../services/auth.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-info-declarativa-lojas',
@@ -67,8 +71,10 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   returnedFrontOffice: boolean = false;
   processId: string;
   updateProcessId: string;
+  @ViewChild('cancelModal') cancelModal;
+  cancelModalRef: BsModalRef | undefined;
 
-  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService, private translate: TranslateService, private processService: ProcessService, private processNrService: ProcessNumberService, private snackBar: MatSnackBar) {
+  constructor(private logger: LoggerService, private formBuilder: FormBuilder, private route: Router, private data: DataService, private tableInfo: TableInfoService, private storeService: StoreService, private clientService: ClientService, private translate: TranslateService, private processService: ProcessService, private processNrService: ProcessNumberService, private snackBar: MatSnackBar, private submissionService: SubmissionService, private queueService: QueuesService, private authService: AuthService, private modalService: BsModalService) {
     if (this.route?.getCurrentNavigation()?.extras?.state) {
       this.returnedFrontOffice = this.route.getCurrentNavigation().extras.state["returnedFrontOffice"];
     }
@@ -320,26 +326,32 @@ export class InfoDeclarativaLojasComponent implements OnInit, AfterViewInit {
   }
 
   openCancelPopup() {
-    //this.cancelModalRef = this.modalService.show(this.cancelModal);
-    this.route.navigate(['/']);
+    this.cancelModalRef = this.modalService.show(this.cancelModal);
   }
 
   closeCancelPopup() {
-    //this.cancelModalRef?.hide();
+    this.cancelModalRef?.hide();
   }
 
   confirmCancel() {
-    //var context = this;
-    //var processNumber = "";
-    //this.processNrService.processNumber.subscribe(res => processNumber = res);
-    //var encodedCode = encodeURIComponent(processNumber);
-    //var baseUrl = this.configuration.getConfig().acquiringAPIUrl;
-    //var url = baseUrl + 'process?number=' + encodedCode;
-    //this.processService.advancedSearch(url, 0, 1).subscribe(result => {
-    //  context.queueService.markToCancel(result.items[0].processId, context.authService.GetCurrentUser().userName).then(res => {
-    //    context.closeCancelPopup();
-    //    context.route.navigate(['/']);
-    //  });
-    //});
+    if (this.returned != 'consult') {
+      var context = this;
+      var processNumber = "";
+      this.processNrService.processNumber.subscribe(res => processNumber = res);
+      var encodedCode = encodeURIComponent(processNumber);
+      if (this.returned == null || (this.returned == 'edit' && (this.processId == '' || this.processId == null))) {
+        this.submissionService.GetSubmissionByProcessNumber(encodedCode).then(result => {
+          context.queueService.markToCancel(result.result[0].processId, context.authService.GetCurrentUser().userName).then(res => {
+            context.closeCancelPopup();
+            context.route.navigate(['/']);
+          });
+        });
+      } else {
+        context.queueService.markToCancel(context.processId, context.authService.GetCurrentUser().userName).then(res => {
+          context.closeCancelPopup();
+          context.route.navigate(['/']);
+        });
+      }
+    }
   }
 }

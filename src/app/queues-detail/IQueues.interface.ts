@@ -142,7 +142,8 @@ export interface ComplianceEvaluation {
 export interface ReassingWorkQueue {
   jobId?: number,
   forceReassign?: boolean,
-  username?: string
+  username?: string,
+  onHold?: boolean
 }
 
 export interface WorkQueue {

@@ -50,6 +50,7 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
   public shopIssueList: ShopDetailsAcquiring[] = [];
   docTypes: DocumentSearchType[] = [];
   observationLength: number;
+  observation: string;
 
   historyMat = new MatTableDataSource<ProcessHistory>();
   historyColumns: string[] = ['processNumber', 'processState', 'whenStarted', 'whoFinished', 'observations'];
@@ -95,6 +96,7 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.subscription = this.processNrService.observation.subscribe(obs => this.observation = obs);
     this.data.historyStream$.next(true);
     this.processId = decodeURIComponent(this.router.snapshot.paramMap.get('id'));
     var context = this;
@@ -110,19 +112,27 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
     context.filterIssues = [];
 
     let promise = new Promise((resolve, reject) => {
+
+      if (issues.shops.length == 0) {
+        finishedStore = true;
+      }
+      if (issues.stakeholders.length == 0) {
+        finishedStake = true;
+      }
+
       issues.documents.forEach(val => {
         var found = context.docTypes.find(doc => doc.code == val.document.type);
         if (found != undefined)
           val.document.type = found.description;
       });
-      issues.documents.forEach(value => {
-        value.issues.forEach(val => {
-          if (val.issueDescription != null && val.issueDescription != "") {
-            val["name"] = value.document.type;
-            context.filterIssues.push(val);
-          }
-        });
-      });
+      //issues.documents.forEach(value => {
+      //  value.issues.forEach(val => {
+      //    if (val.issueDescription != null && val.issueDescription != "") {
+      //      val["name"] = value.document.type;
+      //      context.filterIssues.push(val);
+      //    }
+      //  });
+      //});
       issues.process.forEach(value => {
         if (value.issueDescription != null && value.issueDescription != "") {
           value["name"] = "Processo";
@@ -229,6 +239,29 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
       
 
     }).finally(() => {
+      issues.documents.forEach(value => {
+        value.issues.forEach(val => {
+          if (val.issueDescription != null && val.issueDescription != "") {
+            val["type"] = value.document.type;
+
+            var found = context.merchant.documents.find(doc => doc["id"] == value.document.id);
+            if (found != undefined)
+              val["name"] = context.merchant.legalName;
+
+            context.stakeholdersList.forEach(stake => {
+              var foundStake = stake.documents.find(doc => doc.id == value.document.id);
+              if (foundStake != undefined)
+                val["name"] = stake.shortName;
+            });
+            context.shopIssueList.forEach(shop => {
+              var foundShop = shop.documents.find(doc => doc.id == value.document.id);
+              if (foundShop != undefined)
+                val["name"] = shop.name;
+            });
+            context.filterIssues.push(val);
+          }
+        });
+      });
       if (isSelected) {
         this.loadSelectedReturnReasons(context.filterIssues);
       } else {
@@ -345,7 +378,7 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
 
     externalState.submissionUser = this.authService.GetCurrentUser().userName;
 
-    externalState.userObservations = "";
+    externalState.userObservations = this.observation;
     this.queuesInfo.postExternalState(this.processId, stateType, externalState).then(res => {
       this.route.navigate(['/']);
     });

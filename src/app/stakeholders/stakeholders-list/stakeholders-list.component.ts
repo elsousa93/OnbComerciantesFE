@@ -91,6 +91,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         } as StakeholdersCompleteInformation;
 
         this.submissionStakeholders.push(stakeToInsert);
+        this.submissionStakeholders = this.submissionStakeholders.sort((a, b) => a.stakeholderAcquiring?.id > b.stakeholderAcquiring?.id ? 1 : -1);
         this.listLengthEmitter.emit(this.submissionStakeholders.length);
         this.stakeholderExists();
         this.checkContractAssociation();
@@ -277,6 +278,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       }, error => {
         context.logger.error(error, "", "Error when fetching stakeholders");
       }).then(stakeholderInfo => {
+        this.submissionStakeholders = this.submissionStakeholders.sort((a, b) => a.stakeholderAcquiring?.id > b.stakeholderAcquiring?.id ? 1 : -1);
         this.loadStakeholders(context.submissionStakeholders);
         this.stakeholderExists();
         this.checkContractAssociation();
@@ -315,6 +317,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         }, error => {
           context.logger.error(error, "", "Error when fetching stakeholders");
         }).then(stakeholderInfo => {
+          this.submissionStakeholders = this.submissionStakeholders.sort((a, b) => a.stakeholderAcquiring?.id > b.stakeholderAcquiring?.id ? 1 : -1);
           this.loadStakeholders(context.submissionStakeholders);
           this.stakeholderExists();
           this.checkContractAssociation();
@@ -335,6 +338,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
           context.submissionStakeholders.push(stakeholderToInsert);
         }
       });
+      this.submissionStakeholders = this.submissionStakeholders.sort((a, b) => a.stakeholderAcquiring?.id > b.stakeholderAcquiring?.id ? 1 : -1);
       this.loadStakeholders(context.submissionStakeholders);
       this.stakeholderExists();
       this.checkContractAssociation();
@@ -377,6 +381,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       }, error => {
         context.logger.error(error, "", "Error fetching all stakeholders from submission");
       }).then(success => {
+        context.submissionStakeholders = context.submissionStakeholders.sort((a, b) => a.stakeholderAcquiring?.id > b.stakeholderAcquiring?.id ? 1 : -1);
         context.stakeholderExists();
         context.checkContractAssociation();
         context.listLengthEmitter.emit(context.submissionStakeholders.length);
@@ -574,6 +579,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         context.logger.error(error, "", "Error when fetching stakeholders");
       }).then(stakeholderInfo => {
         this.dataService.changeCurrentFirstTimeStake(false);
+        this.submissionStakeholders = this.submissionStakeholders.sort((a, b) => a.stakeholderAcquiring?.id > b.stakeholderAcquiring?.id ? 1 : -1);
         this.loadStakeholders(context.submissionStakeholders);
         this.stakeholderExists();
         this.checkContractAssociation();
@@ -611,6 +617,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
           context.logger.error(error, "", "Error when fetching stakeholders");
         }).then(stakeholderInfo => {
           this.dataService.changeCurrentFirstTimeStake(false);
+          this.submissionStakeholders = this.submissionStakeholders.sort((a, b) => a.stakeholderAcquiring?.id > b.stakeholderAcquiring?.id ? 1 : -1);
           this.loadStakeholders(context.submissionStakeholders);
           this.stakeholderExists();
           this.checkContractAssociation();
@@ -643,6 +650,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         }
       });
       this.dataService.changeCurrentFirstTimeStake(false);
+      this.submissionStakeholders = this.submissionStakeholders.sort((a, b) => a.stakeholderAcquiring?.id > b.stakeholderAcquiring?.id ? 1 : -1);
       this.loadStakeholders(context.submissionStakeholders);
       this.stakeholderExists();
       this.checkContractAssociation();
@@ -689,6 +697,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
             this.logger.info("Deleted stakeholder result: " + JSON.stringify(result.result));
             const index = this.submissionStakeholders.findIndex(stake => stake.stakeholderAcquiring.id === stakeholder.stakeholderAcquiring.id);
             this.submissionStakeholders.splice(index, 1);
+            this.submissionStakeholders = this.submissionStakeholders.sort((a, b) => a.stakeholderAcquiring?.id > b.stakeholderAcquiring?.id ? 1 : -1);
             this.loadStakeholders(this.submissionStakeholders);
             this.stakeholderExists();
             this.checkContractAssociation();
@@ -701,6 +710,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
             this.logger.info("Deleted stakeholder result: " + JSON.stringify(result.result));
             const index = this.submissionStakeholders.findIndex(stake => stake.stakeholderAcquiring["id"] === stakeholder.stakeholderAcquiring["id"]);
             this.submissionStakeholders.splice(index, 1);
+            this.submissionStakeholders = this.submissionStakeholders.sort((a, b) => a.stakeholderAcquiring?.id > b.stakeholderAcquiring?.id ? 1 : -1);
             this.loadStakeholders(this.submissionStakeholders);
             this.stakeholderExists();
             this.checkContractAssociation();
@@ -718,6 +728,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
             this.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
             const index = this.submissionStakeholders.findIndex(stake => stake.stakeholderAcquiring.id === stakeholder.stakeholderAcquiring.id);
             this.submissionStakeholders.splice(index, 1);
+            this.submissionStakeholders = this.submissionStakeholders.sort((a, b) => a.stakeholderAcquiring?.id > b.stakeholderAcquiring?.id ? 1 : -1);
             this.loadStakeholders(this.submissionStakeholders);
             this.stakeholderExists();
             this.checkContractAssociation();
@@ -730,6 +741,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
             this.logger.info("Deleted stakeholder result: " + JSON.stringify(result.result));
             const index = this.submissionStakeholders.findIndex(stake => stake.stakeholderAcquiring["id"] === stakeholder.stakeholderAcquiring["id"]);
             this.submissionStakeholders.splice(index, 1);
+            this.submissionStakeholders = this.submissionStakeholders.sort((a, b) => a.stakeholderAcquiring?.id > b.stakeholderAcquiring?.id ? 1 : -1);
             this.loadStakeholders(this.submissionStakeholders);
             this.stakeholderExists();
             this.checkContractAssociation();

@@ -17,6 +17,7 @@ import { Location } from '@angular/common';
 import { ProcessService } from '../process/process.service';
 import { Bank } from '../store/IStore.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-nav-menu-presencial',
@@ -304,6 +305,9 @@ export class NavMenuPresencialComponent implements OnInit {
       duration: 4000,
       panelClass: ['snack-bar']
     });
+    if (environment.production != null) {
+      location.replace('https://www.reduniq.pt/');
+    }
   }
 
   login() {

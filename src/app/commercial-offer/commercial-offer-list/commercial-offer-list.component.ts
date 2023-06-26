@@ -23,6 +23,8 @@ import { ProcessNumberService } from '../../nav-menu-presencial/process-number.s
 import { ProcessService } from '../../process/process.service';
 import { QueuesService } from '../../queues-detail/queues.service';
 import { Client } from '../../client/Client.interface';
+import { SubmissionService } from '../../submission/service/submission-service.service';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'app-commercial-offer-list',
@@ -129,6 +131,8 @@ export class CommercialOfferListComponent implements OnInit {
   processInfo: any;
   changedPackReturned: boolean = false;
   merchant: Client;
+  @ViewChild('cancelModal') cancelModal;
+  cancelModalRef: BsModalRef | undefined;
 
   emitPreviousStore(idx) {
     this.previousStoreEvent = idx;
@@ -142,7 +146,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.storeEquipMat.sort = this.storeEquipSort;
   }
 
-  constructor(private translate: TranslateService, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private clientService: ClientService, private tableInfo: TableInfoService, private logger: LoggerService, private snackBar: MatSnackBar, private processNrService: ProcessNumberService, private processService: ProcessService, private queuesInfo: QueuesService) {
+  constructor(private translate: TranslateService, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private clientService: ClientService, private tableInfo: TableInfoService, private logger: LoggerService, private snackBar: MatSnackBar, private processNrService: ProcessNumberService, private processService: ProcessService, private queuesInfo: QueuesService, private submissionService: SubmissionService, private modalService: BsModalService) {
     this.ngOnInit();
     //this.loadReferenceData();
     authService.currentUser.subscribe(user => this.currentUser = user);
@@ -278,7 +282,7 @@ export class CommercialOfferListComponent implements OnInit {
 
   selectStore(info) {
     this.closeAccordion();
-    if (info.clickedTable) {
+    if (info.clickedTable && this.returned != 'consult') {
       this.submit(true);
     }
     this.replicate = false;
@@ -292,6 +296,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.commissionId = "";
     this.commissionOptions = [];
     this.commissionAttributeList = [];
+    this.equipmentSettings = [];
     this.currentStore = info.store;
     this.currentIdx = info.idx;
     this.changedPackReturned = false;
@@ -610,8 +615,22 @@ export class CommercialOfferListComponent implements OnInit {
           if (this.returned == 'consult')
             this.form.disable();
         } else {
-          context.updateCommercialPackInfo(res.result);
-          context.getCommissionsList();
+          if (this.currentStore.pack.packId == this.packId) {
+            context.updateCommercialPackInfo(res.result);
+            context.getCommissionsList();
+          } else {
+            context.paymentSchemes = res.result.paymentSchemes;
+            context.addPaymentFormGroups();
+            res.result.otherGroups.forEach(group => {
+              context.groupsList.push(group);
+            });
+            context.equipmentSettings = res.result.equipmentSettings;
+            context.joinSameIdGroups();
+            context.addFormGroups();
+            context.changedValue();
+            if (this.returned == 'consult')
+              this.form.disable();
+          }
         }
       });
     } else {
@@ -1047,11 +1066,12 @@ export class CommercialOfferListComponent implements OnInit {
 
   setFormData() {
     this.form.get("replicateProducts").setValue(false);
-    this.form.get("isUnicre").setValue(this.currentStore.supportEntity.toLowerCase() == 'acquirer' ? true : false);
-    this.form.get("terminalRegistrationNumber").setValue((this.currentStore.registrationId != '' && this.currentStore.registrationId != null) ? this.currentStore.registrationId : null);
 
-    if (this.form.get("replicateProducts").value)
-      this.form.get("store").setValue(null);
+    if (this.storesList.length == 1)
+      this.form.get("replicateProducts").disable();
+
+    this.form.get("terminalRegistrationNumber").setValue((this.currentStore.registrationId != '' && this.currentStore.registrationId != null) ? this.currentStore.registrationId : null);
+    this.form.get("store").setValue("");
 
     if (this.currentUser.permissions == UserPermissions.BANCA) {
       this.userBanca = true;
@@ -1059,11 +1079,14 @@ export class CommercialOfferListComponent implements OnInit {
       this.form.get("isUnicre").disable();
       this.changeUnicre(false);
     } else {
-      var value = this.currentStore.supportEntity.toLowerCase() == 'acquirer' ? true : false;
       this.userBanca = false;
-      this.form.get("isUnicre").setValue(value);
-      this.changeUnicre(value); 
+      this.form.get("isUnicre").setValue(true);
+      this.changeUnicre(true); 
     }
+    var value = this.currentStore.supportEntity.toLowerCase() == 'acquirer' ? true : false;
+    this.form.get("isUnicre").setValue(value);
+    this.form.get("isUnicre").updateValueAndValidity();
+    this.changeUnicre(value);
   }
 
   changeUnicre(bool: boolean) {
@@ -1110,7 +1133,22 @@ export class CommercialOfferListComponent implements OnInit {
       commission.minValue.finalValue = Number(currentValue.get("commissionMin" + commission.id).value.replace(/,/g, '.'));
       commission.maxValue.finalValue = Number(currentValue.get("commissionMax" + commission.id).value.replace(/,/g, '.'));
       commission.fixedValue.finalValue = Number(currentValue.get("commissionFixed" + commission.id).value.replace(/,/g, '.'));
-      commission.percentageValue.finalValue = Math.trunc((Number(currentValue.get("commissionPercentage" + commission.id).value.replace(/,/g, '.')) / 100) * 100000) / 100000; //Number((Number(currentValue.get("commissionPercentage" + commission.id).value.replace(/,/g, '.')) / 100).toFixed(3));
+      //commission.percentageValue.finalValue = Math.trunc((Number(currentValue.get("commissionPercentage" + commission.id).value.replace(/,/g, '.')) / 100) * 100000) / 100000; //Number((Number(currentValue.get("commissionPercentage" + commission.id).value.replace(/,/g, '.')) / 100).toFixed(3));
+
+      var finalValue = (Number(currentValue.get("commissionPercentage" + commission.id).value.replace(/,/g, '.')) / 100);
+      if (finalValue.toString().length <= currentValue.get("commissionPercentage" + commission.id).value.length + 2) {
+        commission.percentageValue.finalValue = finalValue;
+      } else {
+        var finalV = currentValue.get("commissionPercentage" + commission.id).value.replace(/,/g, '.').split('.');
+        if (finalV[1] == undefined)
+          finalV[1] = "";
+
+        if (finalV[0] == "0")
+          var value = Number(finalV[0] + ".00" + finalV[1]);
+        else
+          var value = Number("0.0" + finalV[0] + finalV[1]);
+        commission.percentageValue.finalValue = value; 
+      }
     });
 
     //estava aqui antes os valores do changedValue()
@@ -1206,7 +1244,12 @@ export class CommercialOfferListComponent implements OnInit {
         }
       } else {
         if (!clickedTable) {
-          if (this.storeEquipList.length == 0 && !this.userBanca && this.isUnicre) {
+          if (this.packId == "") {
+            this.snackBar.open(this.translate.instant('commercialOffer.packRequired'), '', {
+              duration: 15000,
+              panelClass: ['snack-bar']
+            });
+          }else if (this.storeEquipList.length == 0 && !this.userBanca && this.isUnicre) {
             this.snackBar.open(this.translate.instant('generalKeywords.requiredTerminal'), '', {
               duration: 15000,
               panelClass: ['snack-bar']
@@ -1242,10 +1285,15 @@ export class CommercialOfferListComponent implements OnInit {
         }
       }
     } else {
-      this.data.changeEquips(true);
-      this.data.updateData(true, 5);
-      this.logger.info("Redirecting to Info Declarativa page");
-      this.route.navigate(['info-declarativa']);
+      if (!clickedTable) {
+        this.data.changeEquips(true);
+        this.data.updateData(true, 5);
+        this.logger.info("Redirecting to Info Declarativa page");
+        this.route.navigate(['info-declarativa']);
+      } else {
+        this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+        this.closeAccordion();
+      }
     }
     this.onActivate();
   }
@@ -1417,9 +1465,14 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   storeEquipEvent(value) {
-    this.storeEquip = null;
-    this.getStoreEquipsFromSubmission();
-    this.loadStoreEquips(this.storeEquipList);
+    if (value == null) {
+      this.isNewConfig = null;
+      this.storeEquip = null;
+    } else {
+      this.storeEquip = null;
+      this.getStoreEquipsFromSubmission();
+      this.loadStoreEquips(this.storeEquipList);
+    }
   }
 
   addPaymentFormGroups() {
@@ -1481,6 +1534,17 @@ export class CommercialOfferListComponent implements OnInit {
     const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
     const regex = /^[0-9]+([,.][0-9]{1,3})?$/;
     let currentValue = this.form.get("commission" + event.target.id).get(event.target.name).value as string;
+    var start = document?.getElementsByName(event.target.name)[0]["selectionStart"];
+    var finish = document?.getElementsByName(event.target.name)[0]["selectionEnd"]
+    if (start != finish) {
+      if (start == 0 && finish == currentValue.length) {
+        currentValue = "";
+      } else {
+        var first = currentValue?.substring(0, start);
+        var second = currentValue?.substring(start + 1, finish);
+        currentValue = first + second + currentValue.substring(finish + 1);
+      }
+    }
     currentValue = currentValue + event.key;
     if (currentValue.endsWith(",") || currentValue.endsWith(".")) {
       currentValue = currentValue + "0";
@@ -1488,31 +1552,44 @@ export class CommercialOfferListComponent implements OnInit {
     if (allowedKeys.indexOf(event.key) !== -1 || regex.test(currentValue)) {
       return true;
     }
+
+
+
     event.preventDefault();
     return false;
   }
 
   openCancelPopup() {
-    //this.cancelModalRef = this.modalService.show(this.cancelModal);
-    this.route.navigate(['/']);
+    this.cancelModalRef = this.modalService.show(this.cancelModal);
   }
 
   closeCancelPopup() {
-    //this.cancelModalRef?.hide();
+    this.cancelModalRef?.hide();
   }
 
   confirmCancel() {
-    //var context = this;
-    //var processNumber = "";
-    //this.processNrService.processNumber.subscribe(res => processNumber = res);
-    //var encodedCode = encodeURIComponent(processNumber);
-    //var baseUrl = this.configuration.getConfig().acquiringAPIUrl;
-    //var url = baseUrl + 'process?number=' + encodedCode;
-    //this.processService.advancedSearch(url, 0, 1).subscribe(result => {
-    //  context.queueService.markToCancel(result.items[0].processId, context.authService.GetCurrentUser().userName).then(res => {
-    //    context.closeCancelPopup();
-    //    context.route.navigate(['/']);
-    //  });
-    //});
+    if (this.returned != 'consult') {
+      var context = this;
+      var processNumber = "";
+      this.processNrService.processNumber.subscribe(res => processNumber = res);
+      var encodedCode = encodeURIComponent(processNumber);
+      if (this.returned == null || (this.returned == 'edit' && (this.processId == '' || this.processId == null))) {
+        this.submissionService.GetSubmissionByProcessNumber(encodedCode).then(result => {
+          context.queuesInfo.markToCancel(result.result[0].processId, context.authService.GetCurrentUser().userName).then(res => {
+            context.closeCancelPopup();
+            context.route.navigate(['/']);
+          });
+        });
+      } else {
+        context.queuesInfo.markToCancel(context.processId, context.authService.GetCurrentUser().userName).then(res => {
+          context.closeCancelPopup();
+          context.route.navigate(['/']);
+        });
+      }
+    }
+  }
+
+  scroll(el: HTMLElement) {
+    el.scrollIntoView({ behavior: 'auto', block: 'center', inline: 'center' });
   }
 }

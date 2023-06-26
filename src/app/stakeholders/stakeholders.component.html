@@ -80,9 +80,9 @@
               </div>-->
 
             <div class="accordion1-item">
-              <h2 class="accordion1-header" id="flush-headingTwo">
+              <h2 class="accordion1-header" id="flush-headingTwo" #target2>
                 <button id="accordionButton2" class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                  data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo" (click)="scroll(target2)">
                   <span class="material-symbols-outlined icon-accordion groups-3 icon-groups-3">
                     <!--<img src="assets/images/groups_3.svg" class="img_add">-->
                   </span>&nbsp;&nbsp;{{'stakeholder.identification'|translate|uppercase}}
@@ -96,9 +96,9 @@
             </div>
 
             <div class="accordion1-item">
-              <h2 class="accordion1-header" id="flush-headingThree">
+              <h2 class="accordion1-header" id="flush-headingThree" #target3>
                 <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                  data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                  data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree" (click)="scroll(target3)">
                   <span class="material-symbols-outlined icon-accordion folder-shared icon-folder-shared">
                     <!--<img src="assets/images/folder_shared.svg" class="img_add" />-->
                   </span>&nbsp;&nbsp;{{'stakeholder.documents'|translate|uppercase}}

@@ -116,19 +116,27 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
     context.filterIssues = [];
 
     let promise = new Promise((resolve, reject) => {
+
+      if (issues.shops.length == 0) {
+        finishedStore = true;
+      }
+      if (issues.stakeholders.length == 0) {
+        finishedStake = true;
+      }
+
       issues.documents.forEach(val => {
         var found = context.docTypes.find(doc => doc.code == val.document.type);
         if (found != undefined)
           val.document.type = found.description;
       });
-      issues.documents.forEach(value => {
-        value.issues.forEach(val => {
-          if (val.issueDescription != null && val.issueDescription != "") {
-            val["name"] = value.document.type;
-            context.filterIssues.push(val);
-          }
-        });
-      });
+      //issues.documents.forEach(value => {
+      //  value.issues.forEach(val => {
+      //    if (val.issueDescription != null && val.issueDescription != "") {
+      //      val["type"] = value.document.type;
+      //      //context.filterIssues.push(val);
+      //    }
+      //  });
+      //});
       issues.process.forEach(value => {
         if (value.issueDescription != null && value.issueDescription != "") {
           value["name"] = "Processo";
@@ -232,6 +240,29 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
           }
         });
     }).finally(() => {
+      issues.documents.forEach(value => {
+        value.issues.forEach(val => {
+          if (val.issueDescription != null && val.issueDescription != "") {
+            val["type"] = value.document.type;
+
+            var found = context.merchant.documents.find(doc => doc["id"] == value.document.id);
+            if (found != undefined)
+              val["name"] = context.merchant.legalName;
+
+            context.stakeholdersList.forEach(stake => {
+              var foundStake = stake.documents.find(doc => doc.id == value.document.id);
+              if (foundStake != undefined)
+                val["name"] = stake.shortName;
+            });
+            context.shopIssueList.forEach(shop => {
+              var foundShop = shop.documents.find(doc => doc.id == value.document.id);
+              if (foundShop != undefined)
+                val["name"] = shop.name;
+            });
+            context.filterIssues.push(val);
+          }
+        });
+      });
       if (isSelected) {
         this.loadSelectedReturnReasons(context.filterIssues);
       } else {

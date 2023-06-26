@@ -154,7 +154,7 @@ export class AddStoreComponent implements OnInit {
       if (this.submissionClient?.mainEconomicActivity != null && this.submissionClient?.mainEconomicActivity != "") {
         var code = this.submissionClient?.mainEconomicActivity.split('-')[0];
         this.clientHasCAE = true;
-        this.subs.push(this.tableInfo.FilterStoreByCAE(code).subscribe(result => {
+        this.tableInfo.FilterStoreByCAE(code).subscribe(result => {
           this.logger.info("Filter store by CAE result: " + JSON.stringify(result));
           this.activity = result;
           if (this.submissionClient?.otherEconomicActivities?.length > 0) {
@@ -162,24 +162,28 @@ export class AddStoreComponent implements OnInit {
             this.submissionClient?.otherEconomicActivities?.forEach(value => {
               this.tableInfo.FilterStoreByCAE(value).subscribe(res => {
                 length++;
-                var act = this.activity.find(a => a?.activityCode == res?.find(b => b?.activityCode == a?.activityCode)?.activityCode);
-
-                if (act == undefined) {
-                  this.activity.push(...res);
-                } else {
-                  this.activity.forEach(activity => {
-                    var find = res.find(val => val?.activityCode == activity?.activityCode);
-                    if (find != undefined) {
-                      find?.subActivities?.forEach(v => {
-                        var f = activity?.subActivities?.find(ac => ac?.subActivityCode == v?.subActivityCode);
-                        if (f == undefined) {
-                          activity.subActivities.push(v);
+                if (res.length > 0) {
+                  res.forEach(val => {
+                    var act = this.activity.find(a => a?.activityCode == val?.activityCode);
+                    if (act == undefined) {
+                      this.activity.push(val);
+                    } else {
+                      this.activity.forEach(activity => {
+                        var find = res.find(val => val?.activityCode == activity?.activityCode);
+                        if (find != undefined) {
+                          find?.subActivities?.forEach(v => {
+                            var f = activity?.subActivities?.find(ac => ac?.subActivityCode == v?.subActivityCode);
+                            if (f == undefined) {
+                              activity.subActivities.push(v);
+                            }
+                          });
                         }
                       });
                     }
                   });
-                }
+                  
 
+                }
                 if (length == context.submissionClient?.otherEconomicActivities?.length)
                   this.activity = this.activity.sort((a, b) => a.activityDescription > b.activityDescription ? 1 : -1); //ordenar resposta
               });
@@ -189,7 +193,7 @@ export class AddStoreComponent implements OnInit {
           }
         }, error => {
           this.logger.error(error, "", "Error fetching CAE by store");
-        }));
+        });
       } else {
         this.clientHasCAE = false;
         this.subs.push(this.tableInfo.GetAllShopActivities().subscribe(result => {

@@ -67,8 +67,8 @@
                               <p class="mb-0 text-primary text-start">
                                 {{'homepage.' + queueName|translate}}
                               </p>
-                              <p class="mb-0 text-primary text-start">{{(processHistoryItems.items[processHistoryItems.items.length - 1].whenStarted == null || processHistoryItems.items[processHistoryItems.items.length - 1].whenStarted == "") ? "-" : processHistoryItems.items[processHistoryItems.items.length - 1].whenStarted}}</p>
-                              <p class="mb-0 text-primary text-start">{{(processHistoryItems.items[processHistoryItems.items.length - 1].whoFinished == null || processHistoryItems.items[processHistoryItems.items.length - 1].whoFinished == "") ? "-" : processHistoryItems.items[processHistoryItems.items.length - 1].whoFinished}}</p>
+                              <p class="mb-0 text-primary text-start">{{(processHistoryItems?.items[processHistoryItems.items.length - 1]?.whenStarted == null || processHistoryItems?.items[processHistoryItems.items.length - 1]?.whenStarted == "") ? "-" : processHistoryItems?.items[processHistoryItems.items.length - 1]?.whenStarted}}</p>
+                              <p class="mb-0 text-primary text-start">{{(processHistoryItems?.items[processHistoryItems.items.length - 1]?.whoFinished == null || processHistoryItems?.items[processHistoryItems.items.length - 1]?.whoFinished == "") ? "-" : processHistoryItems?.items[processHistoryItems.items.length - 1]?.whoFinished}}</p>
                               <p class="mb-0 text-primary text-start">
                                 {{(processHistoryItems?.items[observationLength]?.observations == null || processHistoryItems?.items[observationLength]?.observations == "") ? "-" : processHistoryItems?.items[observationLength]?.observations}}
                               </p>
@@ -146,21 +146,21 @@
                         <mat-table [dataSource]="returnMat" class="table-responsive" matSort #returnSort="matSort" style="margin-left: auto; margin-right: auto; width: 95%;">
                           <ng-container matColumnDef="name">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
-                              {{'acceptance.returnReasons'|translate|uppercase}}
+                              {{'acceptance.returnReason0'|translate|uppercase}}
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row["name"]}} </mat-cell>
+                            <mat-cell *matCellDef="let row"> {{(row["name"] == null || row["name"] == '') ? '-' : row["name"]}} </mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="type">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
                               {{'acceptance.returnReason1'|translate|uppercase}}
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let row">{{(row.type == null || row.type == '') ? '-' : row.type}}</mat-cell>
+                            <mat-cell *matCellDef="let row">{{(row["type"] == null || row["type"] == '') ? '-' : row["type"]}}</mat-cell>
                           </ng-container>
                           <ng-container matColumnDef="issueDescription">
                             <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
                               {{'acceptance.returnReason2'|translate|uppercase}}
                             </mat-header-cell>
-                            <mat-cell *matCellDef="let row"> {{row.issueDescription}} </mat-cell>
+                            <mat-cell *matCellDef="let row" style="justify-content: center; word-break: break-word;"> {{row.issueDescription}} </mat-cell>
                           </ng-container>
                           <mat-header-row *matHeaderRowDef="returnColumns"></mat-header-row>
                           <mat-row *matRowDef="let row; let idx = index; columns: returnColumns;">
@@ -1011,21 +1011,21 @@
                     <mat-table [dataSource]="returnSelectedMat" class="table-responsive" matSort #returnSelectedSort="matSort" style="margin-left: auto; margin-right: auto; width: 95%;">
                       <ng-container matColumnDef="name">
                         <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
-                          {{'acceptance.returnReasons'|translate|uppercase}}
+                          {{'acceptance.returnReason0'|translate|uppercase}}
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let row"> {{row["name"]}} </mat-cell>
+                        <mat-cell *matCellDef="let row"> {{(row["name"] == null || row["name"] == '') ? '-' : row["name"]}} </mat-cell>
                       </ng-container>
                       <ng-container matColumnDef="type">
                         <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
                           {{'acceptance.returnReason1'|translate|uppercase}}
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let row">{{(row.type == null || row.type == '') ? '-' : row.type}}</mat-cell>
+                        <mat-cell *matCellDef="let row">{{(row["type"] == null || row["type"] == '') ? '-' : row["type"]}}</mat-cell>
                       </ng-container>
                       <ng-container matColumnDef="issueDescription">
                         <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
                           {{'acceptance.returnReason2'|translate|uppercase}}
                         </mat-header-cell>
-                        <mat-cell *matCellDef="let row"> {{row.issueDescription}} </mat-cell>
+                        <mat-cell *matCellDef="let row" style="justify-content: center; word-break: break-word;"> {{row.issueDescription}} </mat-cell>
                       </ng-container>
                       <mat-header-row *matHeaderRowDef="returnSelectedColumns"></mat-header-row>
                       <mat-row *matRowDef="let row; let idx = index; columns: returnSelectedColumns;">

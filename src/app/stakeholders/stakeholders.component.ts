@@ -9,7 +9,7 @@ import { distinctUntilChanged, of, Subscription } from 'rxjs';
 import { DataService } from '../nav-menu-interna/data.service';
 import { StakeholderService } from './stakeholder.service';
 import { ViewChild } from '@angular/core';
-import { BsModalService } from 'ngx-bootstrap/modal';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { ComprovativosService } from '../comprovativos/services/comprovativos.services';
 import { DatePipe } from '@angular/common';
@@ -26,6 +26,9 @@ import { dataCC } from '../citizencard/dataCC.interface';
 import { FileAndDetailsCC } from '../readcard/fileAndDetailsCC.interface';
 import { PostDocument } from '../submission/document/ISubmission-document';
 import { SubmissionDocumentService } from '../submission/document/submission-document.service';
+import { SubmissionService } from '../submission/service/submission-service.service';
+import { QueuesService } from '../queues-detail/queues.service';
+import { AuthService } from '../services/auth.service';
 
 /** Listagem Intervenientes / Intervenientes
  *
@@ -39,6 +42,8 @@ export class StakeholdersComponent implements OnInit {
 
   UUIDAPI: string = "eefe0ecd-4986-4ceb-9171-99c0b1d14658";
   @ViewChild('newModal') newModal;
+  @ViewChild('cancelModal') cancelModal;
+  cancelModalRef: BsModalRef | undefined;
 
   stakeholderList: StakeholdersCompleteInformation[] = [];
   insertStakeholderEvent: Observable<IStakeholders>;
@@ -178,7 +183,7 @@ export class StakeholdersComponent implements OnInit {
 
   constructor(public modalService: BsModalService, private datePipe: DatePipe,
     private route: Router, private data: DataService, private fb: FormBuilder, private stakeholderService: StakeholderService,
-    private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private clientService: ClientService, private logger: LoggerService, private translate: TranslateService, private processNrService: ProcessNumberService, private processService: ProcessService, private snackBar: MatSnackBar, private documentService: SubmissionDocumentService) {
+    private comprovativoService: ComprovativosService, private tableInfo: TableInfoService, private clientService: ClientService, private logger: LoggerService, private translate: TranslateService, private processNrService: ProcessNumberService, private processService: ProcessService, private snackBar: MatSnackBar, private documentService: SubmissionDocumentService, private submissionService: SubmissionService, private queueService: QueuesService, private authService: AuthService) {
     this.subscription = this.processNrService.processId.subscribe(id => this.processId = id);
     this.subscription = this.processNrService.updateProcessId.subscribe(id => this.updateProcessId = id);
     if (this.route.getCurrentNavigation().extras.state) {
@@ -426,16 +431,27 @@ export class StakeholdersComponent implements OnInit {
             }
             this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea = stakeForm.get("Locality").value;
             if (this.submissionClient.merchantType.toLocaleLowerCase() === 'entrepeneur' || this.submissionClient.merchantType === '02') {
-              this.submissionClient.headquartersAddress.address = stakeForm.get("Address").value;
-              this.submissionClient.headquartersAddress.country = stakeForm.get("Country").value;
-              if (stakeForm.get("ZIPCode").value.includes(" ")) {
-                var arr = stakeForm.get("ZIPCode").value.split(" ");
-                this.submissionClient.headquartersAddress.postalCode = arr[0];
-              } else {
-                this.submissionClient.headquartersAddress.postalCode = stakeForm.get("ZIPCode").value;
+              if (this.submissionClient.fiscalId == this.currentStakeholder.stakeholderAcquiring.fiscalId) {
+                this.submissionClient.headquartersAddress.address = stakeForm.get("Address").value;
+                this.submissionClient.headquartersAddress.country = stakeForm.get("Country").value;
+                if (stakeForm.get("ZIPCode").value.includes(" ")) {
+                  var arr = stakeForm.get("ZIPCode").value.split(" ");
+                  this.submissionClient.headquartersAddress.postalCode = arr[0];
+                } else {
+                  this.submissionClient.headquartersAddress.postalCode = stakeForm.get("ZIPCode").value;
+                }
+                this.submissionClient.headquartersAddress.postalArea = stakeForm.get("Locality").value;
+
+                if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+                  this.clientService.EditClient(this.submissionId, this.submissionClient).subscribe(result => {
+
+                  });
+                } else {
+                  this.processService.updateMerchantProcess(this.processId, this.submissionClient).then(result => {
+
+                  });
+                }
               }
-              this.submissionClient.headquartersAddress.postalArea = stakeForm.get("Locality").value;
-              this.clientService.EditClient(this.submissionId, this.submissionClient).subscribe(result => { });
             }
           }
 
@@ -797,27 +813,33 @@ export class StakeholdersComponent implements OnInit {
   }
 
   openCancelPopup() {
-    //this.cancelModalRef = this.modalService.show(this.cancelModal);
-    this.route.navigate(['/']);
+    this.cancelModalRef = this.modalService.show(this.cancelModal);
   }
 
   closeCancelPopup() {
-    //this.cancelModalRef?.hide();
+    this.cancelModalRef?.hide();
   }
 
   confirmCancel() {
-    //var context = this;
-    //var processNumber = "";
-    //this.processNrService.processNumber.subscribe(res => processNumber = res);
-    //var encodedCode = encodeURIComponent(processNumber);
-    //var baseUrl = this.configuration.getConfig().acquiringAPIUrl;
-    //var url = baseUrl + 'process?number=' + encodedCode;
-    //this.processService.advancedSearch(url, 0, 1).subscribe(result => {
-    //  context.queueService.markToCancel(result.items[0].processId, context.authService.GetCurrentUser().userName).then(res => {
-    //    context.closeCancelPopup();
-    //    context.route.navigate(['/']);
-    //  });
-    //});
+    if (this.returned != 'consult') {
+      var context = this;
+      var processNumber = "";
+      this.processNrService.processNumber.subscribe(res => processNumber = res);
+      var encodedCode = encodeURIComponent(processNumber);
+      if (this.returned == null || (this.returned == 'edit' && (this.processId == '' || this.processId == null))) {
+        this.submissionService.GetSubmissionByProcessNumber(encodedCode).then(result => {
+          context.queueService.markToCancel(result.result[0].processId, context.authService.GetCurrentUser().userName).then(res => {
+            context.closeCancelPopup();
+            context.route.navigate(['/']);
+          });
+        });
+      } else {
+        context.queueService.markToCancel(context.processId, context.authService.GetCurrentUser().userName).then(res => {
+          context.closeCancelPopup();
+          context.route.navigate(['/']);
+        });
+      }
+    }
   }
 
   validateNIF(nif: string): boolean {
@@ -869,5 +891,9 @@ export class StakeholdersComponent implements OnInit {
 
       return Number(nipc[8]) === comparador;
     }
+  }
+
+  scroll(el: HTMLElement) {
+    el.scrollIntoView({ behavior: 'auto', block: 'center', inline: 'center' });
   }
 }

@@ -225,7 +225,9 @@
     "noPresencialTransaction": "Transações não Presenciais",
     "combinedOffer": "Oferta Combinada",
     "subProduct": "Sub Produto",
-    "updateStore": "Esta alteração irá eliminar a configuração da Oferta Comercial. Deseja prosseguir?"
+    "updateStore": "Esta alteração irá eliminar a configuração da Oferta Comercial. Deseja prosseguir?",
+    "proofIBAN": "Falta anexar comprovativo de IBAN",
+    "addOrCancel": "Falta adicionar ou cancelar a loja caracterizada"
   },
   "supportingDocuments": {
     "title": "Comprovativos",
@@ -313,7 +315,8 @@
     "discount": "Desconto",
     "finalValue": "Valor Final",
     "cancelConfiguration": "Cancelar Configuração",
-    "openError": "É necessário selecionar um pacote comercial para abrir este tabulador"
+    "openError": "É necessário selecionar um pacote comercial para abrir este tabulador",
+    "packRequired": "É necessário selecionar um pacote comercial"
   },
   "declarativeInformation": {
     "title": "Informação Declarativa",
@@ -479,7 +482,8 @@
       "DOValidation": "Evidência de Esclarecimento de Dúvidas DO",
       "risk": "Evidência de Aprovação Risco",
       "negotiationApproval": "Evidência de Aprovação Negocial",
-      "success": "Upload efetuado com sucesso"
+      "success": "Upload efetuado com sucesso",
+      "pdfOnly": "Só é possível adicionar ficheiros PDF"
     },
     "completed": "Concluir parecer",
     "favorable": "Favorável",
@@ -518,7 +522,7 @@
     "enrollmentTerminalNumber": "Nº de Matricula do terminal",
     "conclude": "Concluir",
     "hits": "Hits",
-    "processInProgress": "Este processo já se encontra em curso"
+    "processInProgress": "O processo está em curso com o utilizador"
   },
   "generalKeywords": {
     "yes": "Sim",
@@ -554,7 +558,7 @@
     "clean": "Limpar",
     "formInvalid": "Faltam preencher campos obrigatórios",
     "requiredStore": "É obrigatório adicionar pelo menos uma loja",
-    "requiredPricing": "É obrigatório preencher o tabulador Precário Loja",
+    "requiredPricing": "É obrigatório preencher o Precário da Loja",
     "requiredTerminal": "É obrigatório existir pelo menos um terminal associado à loja",
     "invalidNumber": "O valor do desconto não pode ser superior ao valor original"
   },

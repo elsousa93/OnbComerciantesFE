@@ -183,7 +183,7 @@
                       </button>
                       <button id="btn5a4"
                               class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                              wappler-command="editContent" (click)="submit('ReturnToBackOffice')">
+                              wappler-command="editContent" (click)="submit('ReturnToBackOffice')" [disabled]="observation == null || observation?.length == 0">
                         {{'generalButtons.returnBackoffice'|translate|uppercase}}&nbsp;
                         <img src="assets/images/assignment_return_white.svg" style="height: 30px; vertical-align: bottom;">
                       </button>
@@ -254,21 +254,21 @@
                   <mat-table [dataSource]="returnSelectedMat" class="table-responsive" matSort #returnSelectedSort="matSort" style="margin-left: auto; margin-right: auto; width: 95%;">
                     <ng-container matColumnDef="name">
                       <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
-                        {{'acceptance.returnReasons'|translate|uppercase}}
+                        {{'acceptance.returnReason0'|translate|uppercase}}
                       </mat-header-cell>
-                      <mat-cell *matCellDef="let row"> {{row["name"]}} </mat-cell>
+                      <mat-cell *matCellDef="let row"> {{(row["name"] == null || row["name"] == '') ? '-' : row["name"]}} </mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="type">
                       <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
                         {{'acceptance.returnReason1'|translate|uppercase}}
                       </mat-header-cell>
-                      <mat-cell *matCellDef="let row">{{(row.type == null || row.type == '') ? '-' : row.type}}</mat-cell>
+                      <mat-cell *matCellDef="let row">{{(row["type"] == null || row["type"] == '') ? '-' : row["type"]}}</mat-cell>
                     </ng-container>
                     <ng-container matColumnDef="issueDescription">
                       <mat-header-cell *matHeaderCellDef mat-sort-header class="text-center text-primary bg-light table-white">
                         {{'acceptance.returnReason2'|translate|uppercase}}
                       </mat-header-cell>
-                      <mat-cell *matCellDef="let row"> {{row.issueDescription}} </mat-cell>
+                      <mat-cell *matCellDef="let row" style="justify-content: center; word-break: break-word;"> {{row.issueDescription}} </mat-cell>
                     </ng-container>
                     <mat-header-row *matHeaderRowDef="returnSelectedColumns"></mat-header-row>
                     <mat-row *matRowDef="let row; let idx = index; columns: returnSelectedColumns;">
@@ -300,7 +300,7 @@
                       </button>
                       <button id="btn5a4"
                               class="btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3"
-                              wappler-command="editContent" (click)="submit('ReturnToBackOffice')">
+                              wappler-command="editContent" (click)="submit('ReturnToBackOffice')" [disabled]="observation == null || observation?.length == 0">
                         {{'generalButtons.returnBackoffice'|translate|uppercase}}&nbsp;
                         <img src="assets/images/assignment_return_white.svg" style="height: 30px; vertical-align: bottom;">
                       </button>

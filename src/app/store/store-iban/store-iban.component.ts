@@ -153,31 +153,38 @@ export class StoreIbanComponent implements OnInit, OnChanges {
       }
       this.files = [];
       const files = <File[]>event.target.files;
-      this.IBANToShow = { tipo: this.translate.instant('supportingDocuments.checklistModal.IBAN'), dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy'), file: files[0], id: "0" }
       for (var i = 0; i < files.length; i++) {
         var file = files[i];
-        const sizeFile = file.size / (1024 * 1024);
-        var extensoesPermitidas = /(.pdf)$/i;
-        const limSize = 10;
-        if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
-          if (event.target.files && files[i]) {
-            var reader = new FileReader();
-            reader.onload = (event: any) => {
-              this.localUrl = event.target.result;
+        if (file.type == 'application/pdf') {
+          this.IBANToShow = { tipo: this.translate.instant('supportingDocuments.checklistModal.IBAN'), dataDocumento: this.datePipe.transform(new Date(), 'dd-MM-yyyy'), file: files[0], id: "0" }
+          const sizeFile = file.size / (1024 * 1024);
+          var extensoesPermitidas = /(.pdf)$/i;
+          const limSize = 10;
+          if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
+            if (event.target.files && files[i]) {
+              var reader = new FileReader();
+              reader.onload = (event: any) => {
+                this.localUrl = event.target.result;
+              }
+              reader.readAsDataURL(files[i]);
+              this.files.push(file);
+              this.formStores.get('bankIban').setValue(file);
+              this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
+                duration: 4000,
+                panelClass: ['snack-bar']
+              });
+            } else {
+              alert("Verifique o tipo / tamanho do ficheiro");
             }
-            reader.readAsDataURL(files[i]);
-            this.files.push(file);
-            this.formStores.get('bankIban').setValue(file);
-            this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
-              duration: 4000,
-              panelClass: ['snack-bar']
-            });
-          } else {
-            alert("Verifique o tipo / tamanho do ficheiro");
           }
+          this.fileEmitter.emit({ tipo: this.IBANToShow.tipo, dataDocumento: this.IBANToShow.dataDocumento, file: this.IBANToShow.file, id: this.IBANToShow.id });
+        } else {
+          this.snackBar.open(this.translate.instant('queues.attach.pdfOnly'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
         }
       }
-      this.fileEmitter.emit({ tipo: this.IBANToShow.tipo, dataDocumento: this.IBANToShow.dataDocumento, file: this.IBANToShow.file, id: this.IBANToShow.id });
     }
   }
 

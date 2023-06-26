@@ -186,9 +186,9 @@ export class PackContratualComponent implements OnInit, OnDestroy {
     this.processService.getDocumentFromProcess(this.processId).subscribe(result => {
       if (result.length > 0) {
         result.forEach(doc => {
-          //if (doc.type == "1101") {
+          if (doc.type == "1101") {
             this.manualSignatureFileId = doc.id;
-          //}
+          }
         });
       }
     });
@@ -217,32 +217,39 @@ export class PackContratualComponent implements OnInit, OnDestroy {
     const files = <File[]>event.target.files;
     for (var i = 0; i < files.length; i++) {
       var file = files[i];
-      const sizeFile = file.size / (1024 * 1024);
-      var extensoesPermitidas = /(.pdf)$/i;
-      const limSize = 10;
-      this.result = "teste";
-      if (this.result != null) {
-        if ((sizeFile <= limSize)) {
-          if (event.target.files && files[i]) {
-            var reader = new FileReader();
-            reader.onload = (event: any) => {
+      if (file.type == "application/pdf") {
+        const sizeFile = file.size / (1024 * 1024);
+        var extensoesPermitidas = /(.pdf)$/i;
+        const limSize = 10;
+        this.result = "teste";
+        if (this.result != null) {
+          if ((sizeFile <= limSize)) {
+            if (event.target.files && files[i]) {
+              var reader = new FileReader();
+              reader.onload = (event: any) => {
+              }
+              reader.readAsDataURL(files[i]);
+              this.files.push(file);
+              this.compsToShow.push({
+                id: "0",
+                type: "CONTRATO ASSINADO",
+                date: this.datepipe.transform(new Date(), 'dd-MM-yyyy'),
+                file: file
+              });
+              this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
+                duration: 4000,
+                panelClass: ['snack-bar']
+              });
+            } else {
+              alert("Verifique o tipo / tamanho do ficheiro");
             }
-            reader.readAsDataURL(files[i]);
-            this.files.push(file);
-            this.compsToShow.push({
-              id: "0",
-              type: "CONTRATO ASSINADO",
-              date: this.datepipe.transform(new Date(), 'dd-MM-yyyy'),
-              file: file
-            });
-            this.snackBar.open(this.translate.instant('queues.attach.success'), '', {
-              duration: 4000,
-              panelClass: ['snack-bar']
-            });
-          } else {
-            alert("Verifique o tipo / tamanho do ficheiro");
           }
         }
+      } else {
+        this.snackBar.open(this.translate.instant('queues.attach.pdfOnly'), '', {
+          duration: 4000,
+          panelClass: ['snack-bar']
+        });
       }
     }
     this.logger.debug("Attached files " + JSON.stringify(this.files));

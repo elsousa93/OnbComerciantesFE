@@ -116,19 +116,27 @@ export class HistoryComponent implements OnInit, AfterViewInit {
     context.filterIssues = [];
 
     let promise = new Promise((resolve, reject) => {
+
+      if (issues.shops.length == 0) {
+        finishedStore = true;
+      }
+      if (issues.stakeholders.length == 0) {
+        finishedStake = true;
+      }
+
       issues.documents.forEach(val => {
         var found = context.docTypes.find(doc => doc.code == val.document.type);
         if (found != undefined)
           val.document.type = found.description;
       });
-      issues.documents.forEach(value => {
-        value.issues.forEach(val => {
-          if (val.issueDescription != null && val.issueDescription != "") {
-            val["name"] = value.document.type;
-            context.filterIssues.push(val);
-          }
-        });
-      });
+      //issues.documents.forEach(value => {
+      //  value.issues.forEach(val => {
+      //    if (val.issueDescription != null && val.issueDescription != "") {
+      //      val["name"] = value.document.type;
+      //      context.filterIssues.push(val);
+      //    }
+      //  });
+      //});
       issues.process.forEach(value => {
         if (value.issueDescription != null && value.issueDescription != "") {
           value["name"] = "Processo";
@@ -155,13 +163,30 @@ export class HistoryComponent implements OnInit, AfterViewInit {
           }
         });
       }
-      issues.shops.forEach(val => {
-        var index = context.shopIssueList.findIndex(shop => shop.id == val?.shop?.id);
-        if (index == -1) {
-          context.queuesService.getProcessShopDetails(context.processId, val?.shop?.id).then(res => {
+      if (issues.shops.length > 0) {
+        issues.shops.forEach(val => {
+          var index = context.shopIssueList.findIndex(shop => shop.id == val?.shop?.id);
+          if (index == -1) {
+            context.queuesService.getProcessShopDetails(context.processId, val?.shop?.id).then(res => {
+              lengthStore++;
+              val.shop["name"] = res.result.name;
+              context.shopIssueList.push(res.result);
+              val.issues.forEach(v => {
+                if (v.issueDescription != null && v.issueDescription != "") {
+                  v["name"] = val.shop["name"];
+                  context.filterIssues.push(v);
+                }
+              });
+              if (lengthStore == issues.shops.length) {
+                finishedStore = true;
+                if (finishedStake) {
+                  resolve(true);
+                }
+              }
+            });
+          } else {
             lengthStore++;
-            val.shop["name"] = res.result.name;
-            context.shopIssueList.push(res.result);
+            val.shop["name"] = context.shopIssueList[index].name;
             val.issues.forEach(v => {
               if (v.issueDescription != null && v.issueDescription != "") {
                 v["name"] = val.shop["name"];
@@ -174,33 +199,35 @@ export class HistoryComponent implements OnInit, AfterViewInit {
                 resolve(true);
               }
             }
-          });
-        } else {
-          lengthStore++;
-          val.shop["name"] = context.shopIssueList[index].name;
-          val.issues.forEach(v => {
-            if (v.issueDescription != null && v.issueDescription != "") {
-              v["name"] = val.shop["name"];
-              context.filterIssues.push(v);
-            }
-          });
-          if (lengthStore == issues.shops.length) {
-            finishedStore = true;
-            if (finishedStake) {
-              resolve(true);
-            }
           }
-        }
 
-      });
+        });
+      }
 
-      issues.stakeholders.forEach(val => {
-        var index1 = context.stakeholdersList.findIndex(stake => stake.id == val?.stakeholder?.id);
-        if (index1 == -1) {
-          context.queuesService.getProcessStakeholderDetails(context.processId, val?.stakeholder?.id).then(res => {
+      if (issues.stakeholders.length > 0) {
+        issues.stakeholders.forEach(val => {
+          var index1 = context.stakeholdersList.findIndex(stake => stake.id == val?.stakeholder?.id);
+          if (index1 == -1) {
+            context.queuesService.getProcessStakeholderDetails(context.processId, val?.stakeholder?.id).then(res => {
+              lengthStake++;
+              val.stakeholder["name"] = res.result.shortName;
+              context.stakeholdersList.push(res.result);
+              val.issues.forEach(v => {
+                if (v.issueDescription != null && v.issueDescription != "") {
+                  v["name"] = val.stakeholder["name"];
+                  context.filterIssues.push(v);
+                }
+              });
+              if (lengthStake == issues.stakeholders.length) {
+                finishedStake = true;
+                if (finishedStore) {
+                  resolve(true);
+                }
+              }
+            });
+          } else {
             lengthStake++;
-            val.stakeholder["name"] = res.result.shortName;
-            context.stakeholdersList.push(res.result);
+            val.stakeholder["name"] = context.stakeholdersList[index1].shortName;
             val.issues.forEach(v => {
               if (v.issueDescription != null && v.issueDescription != "") {
                 v["name"] = val.stakeholder["name"];
@@ -213,25 +240,33 @@ export class HistoryComponent implements OnInit, AfterViewInit {
                 resolve(true);
               }
             }
-          });
-        } else {
-          lengthStake++;
-          val.stakeholder["name"] = context.stakeholdersList[index1].shortName;
-          val.issues.forEach(v => {
-            if (v.issueDescription != null && v.issueDescription != "") {
-              v["name"] = val.stakeholder["name"];
-              context.filterIssues.push(v);
-            }
-          });
-          if (lengthStake == issues.stakeholders.length) {
-            finishedStake = true;
-            if (finishedStore) {
-              resolve(true);
-            }
           }
-        }
-      });
+        });
+      }
     }).finally(() => {
+      issues.documents.forEach(value => {
+        value.issues.forEach(val => {
+          if (val.issueDescription != null && val.issueDescription != "") {
+            val["type"] = value.document.type;
+
+            var found = context.merchant.documents.find(doc => doc["id"] == value.document.id);
+            if (found != undefined)
+              val["name"] = context.merchant.legalName;
+
+            context.stakeholdersList.forEach(stake => {
+              var foundStake = stake.documents.find(doc => doc.id == value.document.id);
+              if (foundStake != undefined)
+                val["name"] = stake.shortName;
+            });
+            context.shopIssueList.forEach(shop => {
+              var foundShop = shop.documents.find(doc => doc.id == value.document.id);
+              if (foundShop != undefined)
+                val["name"] = shop.name;
+            });
+            context.filterIssues.push(val);
+          }
+        });
+      });
       if (isSelected) {
         this.loadSelectedReturnReasons(context.filterIssues);
       } else {
@@ -254,6 +289,10 @@ export class HistoryComponent implements OnInit, AfterViewInit {
         this.processState = this.translate.instant('searches.running');
       } else if (this.process.state == "AwaitingCompletion") {
         this.processState = this.translate.instant('searches.awaitingCompletion');
+      } else if (this.process.state == "Completed") {
+        this.processState = this.translate.instant('searches.completed');
+      } else if (this.process.state == "Cancelled") {
+        this.processState = this.translate.instant('searches.cancelled');
       }
       this.processNumber = result.processNumber;
       localStorage.setItem('processNumber', this.processNumber);

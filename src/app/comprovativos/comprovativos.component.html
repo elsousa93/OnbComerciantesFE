@@ -61,7 +61,7 @@
                            <td class="text-primary text-center">{{comp.status}}</td>
                            <td></td>
                            <td class="text-center text-primary" [ngStyle]="{'width': wnd.outerWidth <= 1024 ? '15%' : null}">
-                              <span *ngIf="!(comp.documentType === '0001' || comp.documentType === '0018' || comp.documentType === '0034' || comp.documentType === '0071' || returned == 'consult')" class="delete-blue-comp icon-delete-blue" (click)="onDelete(comp.file, comp.id)">
+                              <span *ngIf="!(comp.documentType === '0001' || comp.documentType === '0018' || comp.documentType === '0034' || comp.documentType === '0071' || returned == 'consult' || (processType == 'devolucao' && comp.id != null))" class="delete-blue-comp icon-delete-blue" (click)="onDelete(comp.file, comp.id)">
                                  <!--<img src="assets/images/delete_blue.svg"
                                     (click)="onDelete(comp.file, comp.id)"
                                     style="height: 25px !important; vertical-align: sub; cursor: pointer;">-->
@@ -94,7 +94,7 @@
                    </button>
                    <ng-container>
                      <input type="file" #fileUpload name="arquivo" id="arquivo" class="uploadInput"
-                            (change)="selectFile($event,client); fileUpload.value='';" style="display: none" accept=".pdf"
+                            (change)="selectFile($event,client); fileUpload.value='';" style="display: none" accept="application/pdf"
                             multiple [disabled]="returned === 'consult'">
                      <label for="arquivo"
                             class="uploadLabel btn botao_azul center-align center-align text-start vertical-align: baseline; btn-lg mt-3 mb-0 ms-2 me-0 pt-3 pb-3 ps-3">
