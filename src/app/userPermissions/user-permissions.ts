@@ -37,7 +37,8 @@ export enum UserPermissions {
   DO = "DO",
   COMPLIANCEOFFICE = "COMPLIANCEOFFICE",
   COMERCIAL = "COMERCIAL",
-  ADMIN = "ADMIN"
+  ADMIN = "ADMIN",
+  PROMOTOR = "PROMOTOR"
 }
 
 export function getMenuPermissions(user: any) {
@@ -47,26 +48,29 @@ export function getMenuPermissions(user: any) {
       permissions = { HomePage: true, ProcessOpening: true, Consultation: true, ProcessHandling: null };
       return permissions;
     case UserPermissions.UNICRE:
-      permissions = { HomePage: true, ProcessOpening: true, Consultation: true, ProcessHandling: { EligibilityOpinions: true } }
+      permissions = { HomePage: true, ProcessOpening: true, Consultation: true, ProcessHandling: { EligibilityOpinions: true, NegotiationAproval: true } }
       return permissions;
     case UserPermissions.CALLCENTER:
-      permissions = { HomePage: true, ProcessOpening: true, Consultation: true, ProcessHandling: { EligibilityOpinions: true } }
+      permissions = { HomePage: true, Consultation: true, ProcessHandling: null }
       return permissions;
     case UserPermissions.DO:
       permissions = {
-        HomePage: true, ProcessOpening: false, Consultation: true, ProcessHandling: { MultipleClientes: true, DOValidation: true, NegotiationAproval: true, MCCTreatment: true, EnrollmentValidation: true }
+        HomePage: true, ProcessOpening: false, Consultation: true, ProcessHandling: { MultipleClientes: true, DOValidation: true, MCCTreatment: true, EnrollmentValidation: true }
       };
       return permissions;
     case UserPermissions.COMPLIANCEOFFICE:
       permissions = { HomePage: true, ProcessOpening: false, Consultation: true, ProcessHandling: { RiskOpinion: true, ComplianceDoubts: true } };
       return permissions;
     case UserPermissions.COMERCIAL:
-      permissions = { HomePage: true, ProcessOpening: true, Consultation: true, ProcessHandling: { EligibilityOpinions: true } };
+      permissions = { HomePage: true, ProcessOpening: true, Consultation: true, ProcessHandling: { EligibilityOpinions: true} };
       return permissions;
     case UserPermissions.ADMIN:
       permissions = {
         HomePage: true, ProcessOpening: true, Consultation: true, ProcessHandling: { EligibilityOpinions: true, MultipleClientes: true, DOValidation: true, NegotiationAproval: true, MCCTreatment: true, EnrollmentValidation: true, RiskOpinion: true, ComplianceDoubts: true }
       };
+      return permissions;
+    case UserPermissions.PROMOTOR:
+      permissions = { HomePage: true, ProcessOpening: true, Consultation: true, ProcessHandling: null };
       return permissions;
   }
 }
@@ -76,16 +80,16 @@ export function getFTPermissions(user: any) {
 
   switch (user) {
     case UserPermissions.BANCA:
-      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingSent: true };
+      permissions = { pending: true, backOffice: true, returned: true, acceptance: true };
       return permissions;
     case UserPermissions.UNICRE:
-      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingEligibility: true, pendingSent: true }
+      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingEligibility: true, pendingSent: true, negotiationAproval: true }
       return permissions;
     case UserPermissions.CALLCENTER:
-      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingEligibility: true, pendingSent: true }
+      permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingSent: true }
       return permissions;
     case UserPermissions.DO:
-      permissions = { multipleClientes: true, DOValidation: true, negotiationAproval: true, MCCTreatment: true, validationSIBS: true };
+      permissions = { multipleClientes: true, DOValidation: true, MCCTreatment: true, validationSIBS: true, pendingSent: true };
       return permissions;
     case UserPermissions.COMPLIANCEOFFICE:
       permissions = { riskOpinion: true, complianceDoubts: true };
@@ -95,6 +99,9 @@ export function getFTPermissions(user: any) {
       return permissions;
     case UserPermissions.ADMIN:
       permissions = { pending: true, backOffice: true, returned: true, acceptance: true, pendingEligibility: true, pendingSent: true };
+      return permissions;
+    case UserPermissions.PROMOTOR:
+      permissions = { pending: true, backOffice: true, returned: true, acceptance: true };
       return permissions;
   }
 }
@@ -129,4 +136,8 @@ export const roles = [
     "name": "Comercial",
     "code": UserPermissions.COMERCIAL
   },
+  {
+    "name": "Promotor",
+    "code": UserPermissions.PROMOTOR
+  }
 ]

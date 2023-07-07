@@ -38,11 +38,11 @@
         <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-dark pt-2 pb-2 shadow">
           <span class="navbar-text text-light ms-4">
             <button id="btn2" (click)="toggleEvent()"
-              class="btn btn-dark-toggle text-muted btn-lg align-self-center ms-0 pt-0 pb-0 ps-0 pe-0">
+                    class="btn btn-dark-toggle text-muted btn-lg align-self-center ms-0 pt-0 pb-0 ps-0 pe-0">
               <img src="assets/images/bars-solid.svg">
             </button>
           </span>
-          <a [routerLink]="['/']">
+          <a (click)="goToHomePage()">
             <span class="navbar-text text-light logo-navbar icon-logo-navbar">
               <!--<img src="assets/images/logo_navbar_pres.svg" class="img-fluid ms-4 ">-->
             </span>
@@ -50,17 +50,17 @@
           <span class="navbar-text text-light ms-auto">
             <form class="d-flex" style="margin-bottom: 0px;">
               <input class="form-control me-2 form-control-sm" type="search"
-                placeholder="{{'searches.placeholderSearch'|translate}}" [(ngModel)]="processNumberToSearch"
-                aria-label="Search">
+                     placeholder="{{'searches.placeholderSearch'|translate}}" [(ngModel)]="processNumberToSearch"
+                     aria-label="Search">
               <button class="btn align-self-center btn-sm mt-0 mb-0 ms-0 me-3 pt-0 pb-0 ps-1 pe-1 text-white-50"
-                type="submit" (click)="openProcess()">
+                      type="submit" (click)="openProcess()">
                 <img src="assets/images/search.svg" class="img_btn">
               </button>
             </form>
           </span>
           <div id="navbar1_collapse">
             <mat-select #langSelect (selectionChange)="changeLanguage(langSelect.value)"
-              class="navbar-text bg-transparent mt-0 mb-0 ms-0 pt-0 pb-0 d-flex" [value]="translate.currentLang" [disabled]="currentRoute != '/'">
+                        class="navbar-text bg-transparent mt-0 mb-0 ms-0 pt-0 pb-0 d-flex" [value]="translate.currentLang" [disabled]="currentRoute != '/'">
               <mat-select-trigger>
                 <p class="botao_linguas form-select form-select-lg mt-0 mb-0 pt-0 pb-0">{{currentLanguage.name}}</p>
               </mat-select-trigger>
@@ -70,8 +70,9 @@
             </mat-select>
           </div>
           <span class="navbar-text mt-0 mb-0 pt-0 pb-0 ms-0 d-flex" style="margin-bottom: 4px !important;">
-            <button (click)="logout()" id="btn1" class="btn align-self-end pt-3 ps-1 fw-bold text-info"><img
-                src="assets/images/logout.svg" class="img_btn"></button>
+            <button (click)="logout()" id="btn1" class="btn align-self-end pt-3 ps-1 fw-bold text-info">
+              <img src="assets/images/logout.svg" class="img_btn">
+            </button>
           </span>
         </nav>
       </div>
@@ -80,3 +81,51 @@
   <div class="counter">
   </div>
 </header>
+<ng-template #exitModal>
+  <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0">
+    <div class="container-fluid ms-0 me-0 ps-0 pe-0">
+      <div class="row justify-content-center mt-0 ms-2 me-0 pt-0 pb-0 ps-0 pe-0">
+        <div class="align-self-center ms-0 me-0 pt-0 pb-0 ps-0 pe-0 col-12">
+          <nav class="navbar navbar-expand-lg navbar-light bg-primary mt-0 mb-0 ms-0 me-0 pt-0 pb-0 ps-0 pe-0">
+            <span class="navbar-text ms-auto align-self-start">
+              <h2 class="text-light mt-0 mb-0 ms-0 pt-0 pb-0 ps-0 pe-4" (click)="closeExitPopup()" style="cursor: pointer;">x</h2>
+            </span>
+          </nav>
+        </div>
+        <div class="row mb-5 ms-0 me-0 ps-0 pe-0">
+          <div class="mb-5 ps-0 pe-0 col-12">
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0">
+              <span class="navbar-text"></span>
+              <span class="material-symbols-rounded icon_alerta">
+                <img src="assets/images/warning.svg" class="img_warning">
+              </span>
+            </nav>
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center bg-primary mt-0 mb-0 pt-0 pb-0 text-center">
+              <span class="navbar-text">
+                <h5 class="fw-bold text-light mb-2">{{'queues.exitMsg'|translate|uppercase}}</h5>
+              </span>
+            </nav>
+            <nav class="navbar navbar-expand-lg navbar-light justify-content-center pt-0 pb-0 bg-primary">
+              <span class="navbar-text"></span>
+              <span class="navbar-text pb-0 pt-sm-0">
+                <button id="btn5a"
+                        class="btn text-start bg-primary text-light btn-primary boto_alerta_modal mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3"
+                        wappler-command="editContent"
+                        (click)="closeExitPopup()">
+                  {{'generalKeywords.no'|translate|uppercase}}
+                </button>
+              </span>
+              <span class="navbar-text pt-0 pb-0">
+                <button id="btn5a1" (click)="confirmExit()"
+                        class="btn text-start text-light btn-primary boto_alerta_modal bg-primary mt-4 mb-0 ms-3 me-3 pt-3 pb-3 ps-3 pe-3 mb-sm-0"
+                        wappler-command="editContent">
+                  {{'generalKeywords.yes'|translate|uppercase}}
+                </button>
+              </span>
+            </nav>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</ng-template>

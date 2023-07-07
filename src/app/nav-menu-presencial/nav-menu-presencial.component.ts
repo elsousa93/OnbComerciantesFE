@@ -1,4 +1,4 @@
-import { Component, HostBinding, OnInit } from '@angular/core';
+import { Component, HostBinding, OnInit, ViewChild } from '@angular/core';
 import { Output, EventEmitter } from '@angular/core';
 import { NavigationEnd, NavigationExtras, Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
@@ -18,6 +18,8 @@ import { ProcessService } from '../process/process.service';
 import { Bank } from '../store/IStore.interface';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { environment } from '../../environments/environment';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { AppConfigService } from '../app-config.service';
 
 @Component({
   selector: 'app-nav-menu-presencial',
@@ -69,8 +71,15 @@ export class NavMenuPresencialComponent implements OnInit {
   maxWidth: boolean;
   currentRoute: string;
   localStorage = localStorage;
+  @ViewChild('exitModal') exitModal;
+  exitModalRef: BsModalRef | undefined;
+  edit: boolean;
+  tenant: string
+  redirectUrl: string;
 
-  constructor(private route: Router, private snackBar: MatSnackBar, private processNrService: ProcessNumberService, private processService: ProcessService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService) {
+  constructor(private route: Router, private snackBar: MatSnackBar, private processNrService: ProcessNumberService, private processService: ProcessService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService, private modalService: BsModalService, private configuration: AppConfigService) {
+    this.tenant = this.configuration.getConfig().tenant;
+    this.redirectUrl = this.configuration.getConfig().redirectUrl[this.tenant];
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.progressImage = undefined;
     this.processNumber = null;
@@ -305,8 +314,8 @@ export class NavMenuPresencialComponent implements OnInit {
       duration: 4000,
       panelClass: ['snack-bar']
     });
-    if (environment.production != null) {
-      location.replace('https://www.reduniq.pt/');
+    if (environment.production == true) {
+      location.replace(this.redirectUrl);
     }
   }
 
@@ -314,4 +323,26 @@ export class NavMenuPresencialComponent implements OnInit {
     this.authService.reset();
     this.logout();
   }
+
+  goToHomePage() {
+    if (this.route.url == '/queues-detail') {
+      this.processNrService.edit.subscribe(edit => this.edit = edit);
+      if (this.edit)
+        this.exitModalRef = this.modalService.show(this.exitModal);
+      else
+        this.route.navigate(['/']);
+    } else {
+      this.route.navigate(['/']);
+    }
+  }
+
+  closeExitPopup() {
+    this.exitModalRef?.hide();
+  }
+
+  confirmExit() {
+    this.closeExitPopup();
+    this.route.navigate(['/']);
+  }
+
 }

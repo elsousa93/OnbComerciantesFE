@@ -27,6 +27,7 @@ import { StakeholderService } from '../stakeholders/stakeholder.service';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 import { User } from '../userPermissions/user';
 import { UserPermissions } from '../userPermissions/user-permissions';
+import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'queues-detail',
@@ -207,10 +208,13 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   currentUser: User = {};
   readonly UserPermissions = UserPermissions;
   observationLength: number;
+  @ViewChild('exitModal') exitModal;
+  exitModalRef: BsModalRef | undefined;
+  edit: boolean = true;
 
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, private http: HttpClient,
     private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService,
-    private datePipe: DatePipe, private queuesService: QueuesService, private processService: ProcessService, private clientService: ClientService, private tableInfo: TableInfoService, private authService: AuthService, private stakeholderService: StakeholderService, private processNrService: ProcessNumberService) {
+    private datePipe: DatePipe, private queuesService: QueuesService, private processService: ProcessService, private clientService: ClientService, private tableInfo: TableInfoService, private authService: AuthService, private stakeholderService: StakeholderService, private processNrService: ProcessNumberService, private modalService: BsModalService) {
 
     //Gets Queue Name and processId from the Dashboard component 
     if (this.route.getCurrentNavigation().extras.state) {
@@ -246,19 +250,21 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     var context = this;
     if (this.route.routerState.snapshot.url == "/" || this.route.routerState.snapshot.url == "/app-consultas" || this.route.routerState.snapshot.url == "/app-consultas-ft") {
       if (this.state == null) {
-        this.queuesService.getActiveWorkQueue(this.processId).then(result => {
-          var workQueue = result.result as WorkQueue;
-          if (workQueue.status == "InProgress") { // voltar a meter == 
-            var reassignWorkQueue: ReassingWorkQueue = {};
-            reassignWorkQueue.jobId = workQueue.id;
-            reassignWorkQueue.username = this.authService.GetCurrentUser().userName;
-            reassignWorkQueue.onHold = true;
-            reassignWorkQueue.forceReassign = false;
-            context.queuesService.postReassignWorkQueue(context.processId, reassignWorkQueue).then(res => {
+        if (this.edit) {
+          this.queuesService.getActiveWorkQueue(this.processId).then(result => {
+            var workQueue = result.result as WorkQueue;
+            if (workQueue.status == "InProgress") { // voltar a meter == 
+              var reassignWorkQueue: ReassingWorkQueue = {};
+              reassignWorkQueue.jobId = workQueue.id;
+              reassignWorkQueue.username = this.authService.GetCurrentUser().userName;
+              reassignWorkQueue.onHold = true;
+              reassignWorkQueue.forceReassign = false;
+              context.queuesService.postReassignWorkQueue(context.processId, reassignWorkQueue).then(res => {
 
-            });
-          }
-        });
+              });
+            }
+          });
+        }
       }
     }
 
@@ -387,7 +393,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       stakeholdersEligibility: new FormGroup({}),
       merchantEligibility: new FormControl('', Validators.required)
     });
-    if ((this.queueName == "risk" && this.currentUser.permissions != UserPermissions.COMPLIANCEOFFICE) || this.queueName == "eligibility" && (this.currentUser.permissions != UserPermissions.UNICRE && this.currentUser.permissions != UserPermissions.CALLCENTER && this.currentUser.permissions != UserPermissions.COMERCIAL)) {
+    if (!this.edit || (this.queueName == "risk" && this.currentUser.permissions != UserPermissions.COMPLIANCEOFFICE) || this.queueName == "eligibility" && (this.currentUser.permissions != UserPermissions.UNICRE && this.currentUser.permissions != UserPermissions.COMERCIAL)) { //relativamente ao eligibility -> && this.currentUser.permissions != UserPermissions.CALLCENTER
       this.form.disable();
     }
   }
@@ -396,7 +402,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     this.form = new FormGroup({
       shopsMCC: new FormGroup({})
     });
-    if (this.currentUser.permissions != UserPermissions.DO) {
+    if (!this.edit || this.currentUser.permissions != UserPermissions.DO) {
       this.form.disable();
     }
   }
@@ -411,7 +417,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       this.form.get("observation").setValue(observation);
       this.form.updateValueAndValidity();
     }
-    if (((this.queueName == "negotiationAproval" || this.queueName == "DOValidation") && this.currentUser.permissions != UserPermissions.DO) || (this.queueName == "compliance" && this.currentUser.permissions != UserPermissions.COMPLIANCEOFFICE)) {
+    if (!this.edit || (this.queueName == "DOValidation" && this.currentUser.permissions != UserPermissions.DO) || (this.queueName == "negotiationAproval" && this.currentUser.permissions != UserPermissions.UNICRE) || (this.queueName == "compliance" && this.currentUser.permissions != UserPermissions.COMPLIANCEOFFICE)) {
       this.form.disable();
     }
   }
@@ -428,7 +434,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       this.form.get("observation").setValue(observation);
       this.form.updateValueAndValidity();
     }
-    if (this.currentUser.permissions != UserPermissions.DO) {
+    if (!this.edit || this.currentUser.permissions != UserPermissions.DO) {
       this.form.disable();
     }
   }
@@ -440,7 +446,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       shops: new FormGroup({}),
       equipments: new FormGroup({})
     });
-    if (this.currentUser.permissions != UserPermissions.DO) {
+    if (!this.edit || this.currentUser.permissions != UserPermissions.DO) {
       this.form.disable();
     }
   }
@@ -479,7 +485,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     }
     this.form.updateValueAndValidity();
-    if ((this.queueName == "risk" && this.currentUser.permissions != UserPermissions.COMPLIANCEOFFICE) || this.queueName == "eligibility" && (this.currentUser.permissions != UserPermissions.UNICRE && this.currentUser.permissions != UserPermissions.CALLCENTER && this.currentUser.permissions != UserPermissions.COMERCIAL)) {
+    if (!this.edit || (this.queueName == "risk" && this.currentUser.permissions != UserPermissions.COMPLIANCEOFFICE) || this.queueName == "eligibility" && (this.currentUser.permissions != UserPermissions.UNICRE && this.currentUser.permissions != UserPermissions.COMERCIAL)) { //this.currentUser.permissions != UserPermissions.CALLCENTER
       this.form.disable();
     }
   }
@@ -504,14 +510,14 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     if (shops != null && shops.length > 0) {
       shops.forEach(val => {
         val.schemaClassifications.forEach(v => {
-          if (context.form.get("shopsMCC").get(val.shopId + v.paymentSchemeId)) {
-            context.form.get("shopsMCC").get(val.shopId + v.paymentSchemeId).setValue(v.classification);
+          if (context.form.get("shopsMCC").get(val.shopId + v.paymentSchemeId + v.subPaymentSchemaId)) {
+            context.form.get("shopsMCC").get(val.shopId + v.paymentSchemeId + v.subPaymentSchemaId).setValue(v.classification);
           }
         });
       });
       this.form.updateValueAndValidity();
     }
-    if (this.currentUser.permissions != UserPermissions.DO) {
+    if (!this.edit || this.currentUser.permissions != UserPermissions.DO) {
       this.form.disable();
     }
   }
@@ -568,7 +574,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       });
       this.form.updateValueAndValidity();
     }
-    if (this.currentUser.permissions != UserPermissions.DO) {
+    if (!this.edit || this.currentUser.permissions != UserPermissions.DO) {
       this.form.disable();
     }
   }
@@ -576,6 +582,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnInit(): void {
     this.subscription = this.data.currentData.subscribe(map => this.map = map);
     this.subscription = this.data.currentPage.subscribe(currentPage => this.currentPage = currentPage);
+    this.subscription = this.processNrService.edit.subscribe(edit => this.edit = edit);
     this.data.historyStream$.next(true);
     if (this.queueName === 'eligibility' || this.queueName === 'risk') {
       this.initializeElegibilityForm();
@@ -612,7 +619,6 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       this.queuesInfo.getProcessStakeholderDetails(processId, stakeholderId).then(res => {
         var stakeholder = res.result;
         var stakeholderGroup = this.form.get('stakeholdersEligibility') as FormGroup;
-
         stakeholderGroup.addControl(stakeholderId, new FormControl('', Validators.required));
         this.stakesList.push(stakeholder);
         resolve;
@@ -949,6 +955,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       this.process = result;
       this.processNumber = result.processNumber;
       localStorage.setItem('processNumber', this.processNumber);
+      this.processNrService.changeProcessNumber(this.processNumber);
       this.data.updateData(true, 0);
       this.processService.getProcessIssuesById(this.processId).subscribe(res => {
         this.logger.info("Get process issues result: " + JSON.stringify(result));
@@ -1944,5 +1951,21 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const blob = new Blob(byteArrays, { type: contentType });
     return blob;
+  }
+
+  openExitPopup() {
+    if(this.edit)
+      this.exitModalRef = this.modalService.show(this.exitModal);
+    else
+      this.route.navigate(['/']);
+  }
+
+  closeExitPopup() {
+    this.exitModalRef?.hide();
+  }
+
+  confirmExit() {
+    this.closeExitPopup();
+    this.route.navigate(['/']);
   }
 }

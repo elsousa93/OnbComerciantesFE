@@ -375,18 +375,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
       //Pendentes de Aceitação
       if (this.FTPermissions?.acceptance) {
-        //this.processService.searchProcessByState('ContractAcceptance', 0, 1).subscribe(result => {
-        //  this.logger.info('Pendentes de Aceitação' + JSON.stringify(result));
-        //  this.contractAcceptanceCount = result.pagination.total;
-        //  this.processService.searchProcessByState('ContractDigitalAcceptance', 0, 1).subscribe(res => {
-        //    this.contractDigitalAcceptanceCount = res.pagination.total;
-        //    this.processService.searchProcessByState('DigitalIdentification', 0, 1).subscribe(r => {
-        //      this.contractDigitalIdentificationCount = r.pagination.total;
-        //      this.contractTotal = this.contractAcceptanceCount + this.contractDigitalAcceptanceCount + this.contractDigitalIdentificationCount;
-        //    });
-        //  });
-        //});
-
         let promise = new Promise((resolve, reject) => {
           this.processService.searchProcessByState('ContractAcceptance', 0, 10).subscribe(resul => {
             this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
@@ -416,22 +404,22 @@ export class DashboardComponent implements OnInit, AfterViewInit {
               }
             });
             this.contractAcceptanceProcessess.items.push(...contractAcceptanceProcessess.items);
-          });
 
-          this.processService.searchProcessByState('DigitalIdentification', 0, 10).subscribe(resul => {
-            this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
-            this.contractDigitalIdentificationCount = resul.pagination.total;
-            this.contractTotal = this.contractAcceptanceCount + this.contractDigitalAcceptanceCount + this.contractDigitalIdentificationCount;
-            var contractAcceptanceProcessess = resul;
-            contractAcceptanceProcessess.items.forEach(process => {
-              process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-              // mapear os estados para aparecer em PT ou EN
-              if (process.state === 'DigitalIdentification') {
-                process.state = this.translate.instant('searches.digitalIdentification')
-              }
+            this.processService.searchProcessByState('DigitalIdentification', 0, 10).subscribe(res => {
+              this.logger.info('Search contract acceptance processes ' + JSON.stringify(res));
+              this.contractDigitalIdentificationCount = res.pagination.total;
+              this.contractTotal = this.contractAcceptanceCount + this.contractDigitalAcceptanceCount + this.contractDigitalIdentificationCount;
+              var contractAcceptanceProcessess = res;
+              contractAcceptanceProcessess.items.forEach(process => {
+                process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
+                // mapear os estados para aparecer em PT ou EN
+                if (process.state === 'DigitalIdentification') {
+                  process.state = this.translate.instant('searches.digitalIdentification')
+                }
+              });
+              this.contractAcceptanceProcessess.items.push(...contractAcceptanceProcessess.items); // entrou aqui
+              this.orderProcesses(this.dataSourceAceitacao, this.empTbSortAceitacao, this.contractAcceptanceProcessess);
             });
-            this.contractAcceptanceProcessess.items.push(...contractAcceptanceProcessess.items); // entrou aqui
-            this.orderProcesses(this.dataSourceAceitacao, this.empTbSortAceitacao, this.contractAcceptanceProcessess);
           });
         });
 
@@ -800,68 +788,80 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     dataSource.sort = sorter;
   }
 
-  FTSearch(queue: string, processId: string) {
+  FTSearch(queue: string, processId: string, edit: boolean = true) {
     this.processToAssign = processId;
     this.queue = queue;
-    this.username = this.authService.GetCurrentUser().userName;
-    this.queueService.getActiveWorkQueue(processId).then(result => {
-      this.workQueue = result.result;
-      if (result.result.lockedBy != null && result.result.lockedBy != "") {
-        if (result.result.status != "InProgress") {
-          if (result.result.status == "UnLocked" || result.result.status == "Locked") {
-            if (result.result.lockedBy.trim() != this.authService.GetCurrentUser().userName.trim()) {
-              this.existsUser = true;
-              this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
-            } else {
+    if (edit) {
+      this.username = this.authService.GetCurrentUser().userName;
+      this.queueService.getActiveWorkQueue(processId).then(result => {
+        this.workQueue = result.result;
+        if (result.result.lockedBy != null && result.result.lockedBy != "") {
+          if (result.result.status != "InProgress") {
+            if (result.result.status == "UnLocked" || result.result.status == "Locked") {
+              if (result.result.lockedBy.trim() != this.authService.GetCurrentUser().userName.trim()) {
+                this.existsUser = true;
+                this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
+              } else {
+                let navigationExtras: NavigationExtras = {
+                  state: {
+                    queueName: this.queue,
+                    processId: this.processToAssign
+                  }
+                };
+                var reassignWorkQueue: ReassingWorkQueue = {};
+                reassignWorkQueue.jobId = this.workQueue.id;
+                reassignWorkQueue.username = this.username;
+                reassignWorkQueue.onHold = false;
+                if (result.result.status == "UnLocked")
+                  reassignWorkQueue.forceReassign = false;
+                if (result.result.status == "Locked")
+                  reassignWorkQueue.forceReassign = true;
+                this.queueService.postReassignWorkQueue(this.processToAssign, reassignWorkQueue).then(res => {
+                  this.processNrService.changeProcessId(this.processToAssign);
+                  this.processNrService.changeQueueName(this.queue);
+                  this.processToAssign = "";
+                  this.jobId = 0;
+                  this.queue = "";
+                  this.logger.info('Redirecting to Queues Detail page');
+                  this.router.navigate(["/queues-detail"], navigationExtras);
+                });
+              }
+            }
+          } else {
+            if (result.result.lockedBy.trim() == this.authService.GetCurrentUser().userName.trim()) {
               let navigationExtras: NavigationExtras = {
                 state: {
                   queueName: this.queue,
                   processId: this.processToAssign
                 }
               };
-              var reassignWorkQueue: ReassingWorkQueue = {};
-              reassignWorkQueue.jobId = this.workQueue.id;
-              reassignWorkQueue.username = this.username;
-              reassignWorkQueue.onHold = false;
-              if (result.result.status == "UnLocked")
-                reassignWorkQueue.forceReassign = false;
-              if (result.result.status == "Locked")
-                reassignWorkQueue.forceReassign = true;
-              this.queueService.postReassignWorkQueue(this.processToAssign, reassignWorkQueue).then(res => {
-                this.processNrService.changeProcessId(this.processToAssign);
-                this.processNrService.changeQueueName(this.queue);
-                this.processToAssign = "";
-                this.jobId = 0;
-                this.queue = "";
-                this.logger.info('Redirecting to Queues Detail page');
-                this.router.navigate(["/queues-detail"], navigationExtras);
+              this.logger.info('Redirecting to Queues Detail page');
+              this.router.navigate(["/queues-detail"], navigationExtras);
+            } else {
+              this.snackBar.open(this.translate.instant('queues.processInProgress') + ' ' + result.result.lockedBy.trim(), '', {
+                duration: 4000,
+                panelClass: ['snack-bar']
               });
             }
           }
         } else {
-          if (result.result.lockedBy.trim() == this.authService.GetCurrentUser().userName.trim()) {
-            let navigationExtras: NavigationExtras = {
-              state: {
-                queueName: this.queue,
-                processId: this.processToAssign
-              }
-            };
-            this.logger.info('Redirecting to Queues Detail page');
-            this.router.navigate(["/queues-detail"], navigationExtras);
-          } else {
-            this.snackBar.open(this.translate.instant('queues.processInProgress') + ' ' + result.result.lockedBy.trim(), '', {
-              duration: 4000,
-              panelClass: ['snack-bar']
-            });
-          }
+          this.existsUser = false;
+          this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
         }
-      } else {
-        this.existsUser = false;
-        this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
-      }
-    }, error => {
-      this.logger.error(error, "Error while searching for active work queue");
-    });
+      }, error => {
+        this.logger.error(error, "Error while searching for active work queue");
+      });
+    } else {
+      this.processNrService.changeEdit(false);
+      let navigationExtras: NavigationExtras = {
+        state: {
+          queueName: this.queue,
+          processId: this.processToAssign
+        }
+      };
+      this.logger.info('Redirecting to Queues Detail page');
+      this.router.navigate(["/queues-detail"], navigationExtras);
+    }
   }
 
   cancelProcess(processId: string) {
@@ -1019,6 +1019,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.processNrService.changeObservation('');
     this.processNrService.changeMerchant('');
     this.processNrService.changeList([]);
+    this.processNrService.changeEdit(true);
     localStorage.removeItem("documents");
 
     this.dataSourcePendentes.filterPredicate = function (record, filterValue) {

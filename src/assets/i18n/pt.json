@@ -41,11 +41,11 @@
       "validationSIBS": "Fila de Validação Matrícula SIBS"
     },
     "processes": {
-      "pending": "Processos pendentes de Envio",
+      "pending": "Processos iniciados",
       "backOffice": "Processos em tratamento backoffice",
       "returned": "Processos devolvidos backoffice",
-      "acceptance": "Processos em fase de aceitação",
-      "pendingSent": "Processos pendentes de Conclusão pelo Aderente",
+      "acceptance": "Processos em fase Assinatura",
+      "pendingSent": "Processos em Processamento",
       "pendingEligibility": "Processo em fase de pareceres de elegibilidade",
       "multipleClients": "Processos em múltiplos clientes",
       "DOValidation": "Processos em valida DO",
@@ -364,13 +364,13 @@
     "search": "Pesquisa",
     "processNumber": "Nº de Processo",
     "state": "Estado",
-    "incompleted": "Pendente de Envio",
+    "incompleted": "Iniciado",
     "running": "Tratamento em Backoffice",
     "completed": "Concluído",
     "returned": "Devolvido",
     "cancelled": "Cancelado",
-    "contractAcceptance": "Aceitação",
-    "awaitingCompletion": "Pendente Conclusão pelo Aderente",
+    "contractAcceptance": "Fase Assinatura",
+    "awaitingCompletion": "Em Processamento",
     "eligibility": "Pareceres de Elegibilidade",
     "multipleClients": "Múltiplos Clientes",
     "DOValidation": "Valida DO",
@@ -522,7 +522,8 @@
     "enrollmentTerminalNumber": "Nº de Matricula do terminal",
     "conclude": "Concluir",
     "hits": "Hits",
-    "processInProgress": "O processo está em curso com o utilizador"
+    "processInProgress": "O processo está em curso com o utilizador",
+    "exitMsg": "A informação adicionada vai ser removida. Pretende sair?"
   },
   "generalKeywords": {
     "yes": "Sim",

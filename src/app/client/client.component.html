@@ -64,11 +64,11 @@
               <div class="row" *ngIf="!showENI">
                 <div class="col-12 ms-0 me-0 pe-0">
                   <div class="row">
-                    <div class="col-5">
+                    <div class="col-5" [ngClass]="window.outerWidth > 1024 ? 'col-5' : 'col-7'">
                       <p class="titulo-form-simples">{{'searches.documentType'|translate}}:*</p>
                       <select class="form-select campo-form-select" (change)="changeListElementDocType(docType, $event)"
                         id="docType" [(ngModel)]="newClient.documentationDeliveryMethod" name="docType"
-                        #docType="ngModel">
+                        #docType="ngModel" style="font-size: 0.95rem;">
                         <option *ngFor="let docType of ListaDocType" value={{docType.code}}>
                           {{docType.description}}
                         </option>
@@ -120,7 +120,7 @@
               <div class="row" *ngIf="showENI">
                 <div class="col-12 ms-0 me-0 pe-0">
                   <div class="row">
-                    <div class="col-5">
+                    <div class="col-5" [ngClass]="window.outerWidth > 1024 ? 'col-5' : 'col-6'">
                       <p class="titulo-form-simples">{{'searches.documentType'|translate}}:*</p>
                       <select class="form-select campo-form-select" (change)="changeListElementDocType(docType, $event)"
                         id="documentType" [(ngModel)]="newClient.documentationDeliveryMethod" name="docType"
@@ -256,7 +256,7 @@
                       <input name="nipc" #nipc type="text" (keypress)="numericOnly($event)" (onpaste)="onPaste($event)"
                         (keyup)="validateNIPC(nipc.value)" id="nipc" class="form-control" formControlName="nipc">
                     </div>
-                    <div class="col-6">
+                    <div class="col-6" [ngStyle]="{'padding-top': window.outerWidth > 1024 ? null : '22px'}">
                       <p class="titulo-form-simples">{{'client.socialDenomination'|translate|uppercase}}:*</p>
                       <input name="denominacaoSocial" type="text" id="denominacaoSocial" class="form-control"
                         formControlName="denominacaoSocial" maxlength="40">

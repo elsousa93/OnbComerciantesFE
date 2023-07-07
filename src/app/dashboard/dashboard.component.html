@@ -94,23 +94,6 @@
             {{'homepage.processes.acceptance'|translate|uppercase}}<br><br>
           </h1>
         </button>
-        <button *ngIf="FTPermissions.pendingSent" type="button" id="finalBtn"
-                class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center " data-bs-toggle="collapse"
-                data-bs-target="#flush-collapsePendingSent" (click)="callPendingSentCount()">
-          <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
-            <app-number-counter [number]="pendingSentCount"
-                                *ngIf="pendingSentCount !== undefined && pendingSentCount !== null">
-            </app-number-counter>
-          </h1>
-          <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
-            <span class="material-symbols-outlined icon-dash">
-              <img src="assets/images/queues/pending_sent_dash.svg">
-            </span>
-          </h1>
-          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
-            {{'homepage.processes.pendingSent'|translate|uppercase}}<br><br>
-          </h1>
-        </button>
         <button *ngIf="FTPermissions.pendingEligibility" type="button" id="finalBtn2"
                 class="col mt-2 mb-2 ms-2 me-3 ps-0 pe-0 fundo_dash align-self-center text-center " data-bs-toggle="collapse"
                 data-bs-target="#flush-collapsePendingEligibility" (click)="callPendingEligibilityCount()">
@@ -247,6 +230,23 @@
             {{'homepage.processes.complianceDoubts'|translate|uppercase}}<br><br>
           </h1>
         </button>
+        <button *ngIf="FTPermissions.pendingSent" type="button" id="finalBtn"
+                class="col mt-2 mb-2 ms-2 me-2 ps-0 pe-0 fundo_dash align-self-center text-center " data-bs-toggle="collapse"
+                data-bs-target="#flush-collapsePendingSent" (click)="callPendingSentCount()">
+          <h1 class="text-center text-uppercase text-white numero-dash mt-0 mb-0 pt-4 pb-3 ps-3 pe-3 shadow bg-secondary">
+            <app-number-counter [number]="pendingSentCount"
+                                *ngIf="pendingSentCount !== undefined && pendingSentCount !== null">
+            </app-number-counter>
+          </h1>
+          <h1 class="mt-4 mb-0 pt-0 pb-0 ps-3 pe-3">
+            <span class="material-symbols-outlined icon-dash">
+              <img src="assets/images/queues/pending_sent_dash.svg">
+            </span>
+          </h1>
+          <h1 class="subtitulo_dashboard  text-center text-uppercase mt-0 mb-0 ps-3 pe-3">
+            {{'homepage.processes.pendingSent'|translate|uppercase}}<br><br>
+          </h1>
+        </button>
       </div>
     </div>
     <div class="container">
@@ -336,7 +336,7 @@
                         <span class="material-symbols-rounded delete-icon icon-delete-blue">
                         </span>
                       </a>&nbsp;&nbsp;
-                      <a (click)="redirectToProcessStart(row)" style="padding: 5px;">
+                      <a (click)="redirectToProcessStart(row)" style="padding-left: 15px;">
                         <span class="material-symbols-rounded edit-icon icon-edit-square" style="cursor: pointer;">
                           <!--<img src="assets/images/edit_square.svg" title="Edit">-->
                         </span>
@@ -516,7 +516,7 @@
                         <span class="material-symbols-rounded delete-icon icon-delete-blue" style="cursor: pointer;">
                         </span>
                       </a>&nbsp;&nbsp;
-                      <a (click)="streamHistoryMenu(row)" style="padding: 5px;">
+                      <a (click)="streamHistoryMenu(row)" style="padding-left: 15px;">
                         <span class="material-symbols-rounded edit-icon icon-edit-square" style="cursor: pointer;">
                           <!--<img src="assets/images/edit_square.svg">-->
                         </span>
@@ -608,7 +608,7 @@
                         <span class="material-symbols-rounded delete-icon icon-delete-blue" style="cursor: pointer;">
                         </span>
                       </a>
-                      <a style="padding: 5px;">
+                      <a style="padding-left: 15px;">
                         <span (click)="openProcessAceitacao(row)" class="material-symbols-rounded edit-icon icon-search-blue" style="cursor: pointer;">
                         </span>
                       </a>
@@ -635,95 +635,6 @@
                         </span>
                         <span class="navbar-text ms-0 me-0">
                           <mat-paginator #paginatorPageAceitacao [length]="contractAcceptanceCount" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
-                          </mat-paginator>
-                        </span>
-                      </nav>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div *ngIf="FTPermissions.pendingSent" class="accordion1-item">
-              <h2 class="accordion1-header" id="flush-headingPendingSent" (click)="callPendingSentCount()">
-                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#flush-collapsePendingSent" aria-expanded="false"
-                        aria-controls="flush-collapsePendingSent" id="accordionButton5">
-                  <span class="material-symbols-outlined icon-accordion pending-sent icon-pending-sent">
-                    <!--<img src="assets/images/queues/pending_sent.svg">-->
-                  </span>&nbsp;&nbsp;{{'homepage.processes.pendingSent'|translate|uppercase}}
-                </button>
-              </h2>
-              <div id="flush-collapsePendingSent" class="accordion-collapse collapse"
-                   aria-labelledby="flush-headingPendingSent" data-bs-parent="#accordionFlushExample">
-                <mat-table [dataSource]="dataSourcePendingSent" matSort #empTbSortPendingSent="matSort">
-                  <!-- Nº Processo Column -->
-                  <ng-container matColumnDef="processNumber">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processNumber'|translate|uppercase}}
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
-                  </ng-container>
-                  <!-- NIPC Column -->
-                  <ng-container matColumnDef="merchant.fiscalId">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      NIPC
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.merchant?.fiscalId }} </mat-cell>
-                  </ng-container>
-                  <!-- Nome Cliente Empresa Column -->
-                  <ng-container matColumnDef="merchant.name">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.clientName'|translate|uppercase}}
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.merchant?.name }} </mat-cell>
-                  </ng-container>
-                  <!-- Data Processo Column -->
-                  <ng-container matColumnDef="startedAt">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.processDate'|translate|uppercase}}
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.startedAt }} </mat-cell>
-                  </ng-container>
-                  <!-- State Column -->
-                  <ng-container matColumnDef="state">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
-                      {{'homepage.state'|translate|uppercase}}
-                    </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
-                  </ng-container>
-                  <!-- Editar Processo Column -->
-                  <ng-container matColumnDef="buttons">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                      <a>
-                        <span (click)="openProcess(row)" class="material-symbols-rounded edit-icon icon-search-blue" style="cursor: pointer;">
-                          <!--<img src="assets/images/search_blue.svg">-->
-                        </span>
-                      </a>
-
-                    </mat-cell>
-                  </ng-container>
-                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                  <mat-row *matRowDef="let row; columns: displayedColumns;"> </mat-row>
-                </mat-table>
-                <div class="container-fluid ms-3 me-3 pt-0 pb-0 ps-0 pe-0">
-                  <div class="row ms-0 me-0 ps-0 pe-0">
-                    <div class="me-0 ps-0 pe-0 col-12">
-                      <nav class="navbar navbar-light bg-light">
-                        <span class="navbar-text ms-0 me-0">
-                          <mat-form-field>
-                            <input matInput (keyup)="applyFilterPendingSent($event.target.value)"
-                                   placeholder="{{'generalKeywords.performSearch'|translate}}">
-                          </mat-form-field>
-                        </span>
-                        <span class="navbar-text ms-auto me-0">
-                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
-                        </span>
-                        <span class="navbar-text ms-0 me-0">
-                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
-                        </span>
-                        <span class="navbar-text ms-0 me-0">
-                          <mat-paginator #paginatorPagePendingSent [length]="pendingSentCount" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
                           </mat-paginator>
                         </span>
                       </nav>
@@ -792,9 +703,13 @@
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a>
-                        <span (click)="FTSearch('eligibility', row.processId)"
+                        <span (click)="FTSearch('eligibility', row.processId, false)"
                               class="material-symbols-rounded edit-icon icon-search-blue" style="cursor: pointer;">
                           <!--<img src="assets/images/search_blue.svg">-->
+                        </span>
+                      </a>
+                      <a style="padding-left: 15px;">
+                        <span (click)="FTSearch('eligibility', row.processId)" class="material-symbols-rounded edit-icon icon-edit-square" style="cursor: pointer;">
                         </span>
                       </a>
                     </mat-cell>
@@ -889,9 +804,13 @@
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a>
-                        <span (click)="FTSearch('multipleClients', row.processId)"
+                        <span (click)="FTSearch('multipleClients', row.processId, false)"
                               class="material-symbols-rounded edit-icon icon-search-blue" style="cursor: pointer;">
                           <!--<img src="assets/images/search_blue.svg">-->
+                        </span>
+                      </a>
+                      <a style="padding-left: 15px;">
+                        <span (click)="FTSearch('multipleClients', row.processId)" class="material-symbols-rounded edit-icon icon-edit-square" style="cursor: pointer;">
                         </span>
                       </a>
                     </mat-cell>
@@ -985,9 +904,13 @@
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a>
-                        <span (click)="FTSearch('DOValidation', row.processId)"
+                        <span (click)="FTSearch('DOValidation', row.processId, false)"
                               class="material-symbols-rounded edit-icon icon-search-blue" style="cursor: pointer;">
                           <!--<img src="assets/images/search_blue.svg">-->
+                        </span>
+                      </a>
+                      <a style="padding-left: 15px;">
+                        <span (click)="FTSearch('DOValidation', row.processId)" class="material-symbols-rounded edit-icon icon-edit-square" style="cursor: pointer;">
                         </span>
                       </a>
                     </mat-cell>
@@ -1081,9 +1004,13 @@
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a>
-                        <span (click)="FTSearch('negotiationAproval', row.processId)"
+                        <span (click)="FTSearch('negotiationAproval', row.processId, false)"
                               class="material-symbols-rounded edit-icon icon-search-blue" style="cursor: pointer;">
                           <!--<img src="assets/images/search_blue.svg">-->
+                        </span>
+                      </a>
+                      <a style="padding-left: 15px;">
+                        <span (click)="FTSearch('negotiationAproval', row.processId)" class="material-symbols-rounded edit-icon icon-edit-square" style="cursor: pointer;">
                         </span>
                       </a>
                     </mat-cell>
@@ -1178,9 +1105,13 @@
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a>
-                        <span (click)="FTSearch('MCCTreatment', row.processId)"
+                        <span (click)="FTSearch('MCCTreatment', row.processId, false)"
                               class="material-symbols-rounded edit-icon icon-search-blue" style="cursor: pointer;">
                           <!--<img src="assets/images/search_blue.svg">-->
+                        </span>
+                      </a>
+                      <a style="padding-left: 15px;">
+                        <span (click)="FTSearch('MCCTreatment', row.processId)" class="material-symbols-rounded edit-icon icon-edit-square" style="cursor: pointer;">
                         </span>
                       </a>
                     </mat-cell>
@@ -1274,9 +1205,13 @@
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a>
-                        <span (click)="FTSearch('validationSIBS', row.processId)"
+                        <span (click)="FTSearch('validationSIBS', row.processId, false)"
                               class="material-symbols-rounded edit-icon icon-search-blue" style="cursor: pointer;">
                           <!--<img src="assets/images/search_blue.svg">-->
+                        </span>
+                      </a>
+                      <a style="padding-left: 15px;">
+                        <span (click)="FTSearch('validationSIBS', row.processId)" class="material-symbols-rounded edit-icon icon-edit-square" style="cursor: pointer;">
                         </span>
                       </a>
                     </mat-cell>
@@ -1371,9 +1306,13 @@
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a>
-                        <span (click)="FTSearch('risk', row.processId)" class="material-symbols-rounded edit-icon icon-search-blue"
+                        <span (click)="FTSearch('risk', row.processId, false)" class="material-symbols-rounded edit-icon icon-search-blue"
                               style="cursor: pointer;">
                           <!--<img src="assets/images/search_blue.svg">-->
+                        </span>
+                      </a>
+                      <a style="padding-left: 15px;">
+                        <span (click)="FTSearch('risk', row.processId)" class="material-symbols-rounded edit-icon icon-edit-square" style="cursor: pointer;">
                         </span>
                       </a>
                     </mat-cell>
@@ -1467,9 +1406,13 @@
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let row">
                       <a>
-                        <span (click)="FTSearch('compliance', row.processId)" class="material-symbols-rounded edit-icon icon-search-blue"
+                        <span (click)="FTSearch('compliance', row.processId, false)" class="material-symbols-rounded edit-icon icon-search-blue"
                               style="cursor: pointer;">
                           <!--<img src="assets/images/search_blue.svg">-->
+                        </span>
+                      </a>
+                      <a style="padding-left: 15px;">
+                        <span (click)="FTSearch('compliance', row.processId)" class="material-symbols-rounded edit-icon icon-edit-square" style="cursor: pointer;">
                         </span>
                       </a>
                     </mat-cell>
@@ -1495,6 +1438,95 @@
                         </span>
                         <span class="navbar-text ms-0 me-0">
                           <mat-paginator #paginatorPageComplianceDoubts [length]="complianceDoubtsCount" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
+                          </mat-paginator>
+                        </span>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="FTPermissions.pendingSent" class="accordion1-item">
+              <h2 class="accordion1-header" id="flush-headingPendingSent" (click)="callPendingSentCount()">
+                <button class="accordion1-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapsePendingSent" aria-expanded="false"
+                        aria-controls="flush-collapsePendingSent" id="accordionButton5">
+                  <span class="material-symbols-outlined icon-accordion pending-sent icon-pending-sent">
+                    <!--<img src="assets/images/queues/pending_sent.svg">-->
+                  </span>&nbsp;&nbsp;{{'homepage.processes.pendingSent'|translate|uppercase}}
+                </button>
+              </h2>
+              <div id="flush-collapsePendingSent" class="accordion-collapse collapse"
+                   aria-labelledby="flush-headingPendingSent" data-bs-parent="#accordionFlushExample">
+                <mat-table [dataSource]="dataSourcePendingSent" matSort #empTbSortPendingSent="matSort">
+                  <!-- Nº Processo Column -->
+                  <ng-container matColumnDef="processNumber">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processNumber'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.processNumber}} </mat-cell>
+                  </ng-container>
+                  <!-- NIPC Column -->
+                  <ng-container matColumnDef="merchant.fiscalId">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      NIPC
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.merchant?.fiscalId }} </mat-cell>
+                  </ng-container>
+                  <!-- Nome Cliente Empresa Column -->
+                  <ng-container matColumnDef="merchant.name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.clientName'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.merchant?.name }} </mat-cell>
+                  </ng-container>
+                  <!-- Data Processo Column -->
+                  <ng-container matColumnDef="startedAt">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.processDate'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.startedAt }} </mat-cell>
+                  </ng-container>
+                  <!-- State Column -->
+                  <ng-container matColumnDef="state">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                      {{'homepage.state'|translate|uppercase}}
+                    </mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
+                  </ng-container>
+                  <!-- Editar Processo Column -->
+                  <ng-container matColumnDef="buttons">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                      <a>
+                        <span (click)="openProcess(row)" class="material-symbols-rounded edit-icon icon-search-blue" style="cursor: pointer;">
+                          <!--<img src="assets/images/search_blue.svg">-->
+                        </span>
+                      </a>
+
+                    </mat-cell>
+                  </ng-container>
+                  <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                  <mat-row *matRowDef="let row; columns: displayedColumns;"> </mat-row>
+                </mat-table>
+                <div class="container-fluid ms-3 me-3 pt-0 pb-0 ps-0 pe-0">
+                  <div class="row ms-0 me-0 ps-0 pe-0">
+                    <div class="me-0 ps-0 pe-0 col-12">
+                      <nav class="navbar navbar-light bg-light">
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-form-field>
+                            <input matInput (keyup)="applyFilterPendingSent($event.target.value)"
+                                   placeholder="{{'generalKeywords.performSearch'|translate}}">
+                          </mat-form-field>
+                        </span>
+                        <span class="navbar-text ms-auto me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <h1 class="mt-0 mb-0 ms-3 me-0"></h1>
+                        </span>
+                        <span class="navbar-text ms-0 me-0">
+                          <mat-paginator #paginatorPagePendingSent [length]="pendingSentCount" [pageSizeOptions]="[10, 25, 100]" (page)="changePage($event)">
                           </mat-paginator>
                         </span>
                       </nav>

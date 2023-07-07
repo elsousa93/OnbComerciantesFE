@@ -41,11 +41,11 @@
       "validationSIBS": "Queue of SIBS Enrollment Validation"
     },
     "processes": {
-      "pending": "Pending Shipping Processes",
+      "pending": "Started Processes",
       "backOffice": "Backoffice treatment processes",
       "returned": "Backoffice returned processes",
-      "acceptance": "Processes in the acceptance phase",
-      "pendingSent": "Processes pending completion by the Adherent",
+      "acceptance": "Processes in signature phase",
+      "pendingSent": "Processing processes",
       "pendingEligibility": "Eligibility opinion process under way",
       "multipleClients": "Processes in multiple clients",
       "DOValidation": "Processes in DO valid",
@@ -363,13 +363,13 @@
     "search": "Search",
     "processNumber": "Process Number",
     "state": "State",
-    "incompleted": "Pending Sent",
+    "incompleted": "Started",
     "running": "Backoffice Treatment",
     "completed": "Finished",
     "returned": "Returned",
     "cancelled": "Cancelled",
-    "contractAcceptance": "Contract Acceptance",
-    "awaitingCompletion": "Pending Completion by Adherent",
+    "contractAcceptance": "Signature Phase",
+    "awaitingCompletion": "Processing",
     "eligibility": "Eligibility Assessment",
     "multipleClients": "Multiple Clients",
     "DOValidation": "DO Validation",
@@ -521,7 +521,8 @@
     "enrollmentTerminalNumber": "Terminal's Enrollment Number",
     "conclude": "Conclude",
     "hits": "Hits",
-    "processInProgress": "The process is already in progress with user"
+    "processInProgress": "The process is already in progress with user",
+    "exitMsg": "The added information will be deleted. Do you want to exit?"
   },
   "generalKeywords": {
     "yes": "Yes",

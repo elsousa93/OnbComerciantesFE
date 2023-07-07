@@ -19,6 +19,7 @@ import { ProcessNumberService } from '../nav-menu-presencial/process-number.serv
 import { ReassingWorkQueue, WorkQueue } from '../queues-detail/IQueues.interface';
 import { QueuesService } from '../queues-detail/queues.service';
 import { AuthService } from '../services/auth.service';
+import { UserPermissions } from '../userPermissions/user-permissions';
 
 interface Process {
   processNumber: string;
@@ -530,67 +531,79 @@ export class ConsultasComponent implements OnInit {
     }
   }
 
-  workQueuePopup(process, queue) {
+  workQueuePopup(process, queue, edit: boolean) {
     this.processId = process.processId;
     this.username = this.authService.GetCurrentUser().userName;
-    this.queueService.getActiveWorkQueue(process.processId).then(result => {
-      this.workQueue = result.result;
-      if (result.result.lockedBy != null && result.result.lockedBy != "") {
-        if (result.result.status != "InProgress") {
-          if (result.result.status == "UnLocked" || result.result.status == "Locked") {
-            if (result.result.lockedBy.trim() != this.authService.GetCurrentUser().userName.trim()) {
-              this.existsUser = true;
-              this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
-            } else {
+    if (edit) {
+      this.queueService.getActiveWorkQueue(process.processId).then(result => {
+        this.workQueue = result.result;
+        if (result.result.lockedBy != null && result.result.lockedBy != "") {
+          if (result.result.status != "InProgress") {
+            if (result.result.status == "UnLocked" || result.result.status == "Locked") {
+              if (result.result.lockedBy.trim() != this.authService.GetCurrentUser().userName.trim()) {
+                this.existsUser = true;
+                this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
+              } else {
+                let navigationExtras: NavigationExtras = {
+                  state: {
+                    queueName: queue,
+                    processId: this.processId
+                  }
+                };
+                var reassignWorkQueue: ReassingWorkQueue = {};
+                reassignWorkQueue.jobId = this.workQueue.id;
+                reassignWorkQueue.username = this.username;
+                reassignWorkQueue.onHold = false;
+                if (result.result.status == "UnLocked")
+                  reassignWorkQueue.forceReassign = false;
+                if (result.result.status == "Locked")
+                  reassignWorkQueue.forceReassign = true;
+                this.queueService.postReassignWorkQueue(this.processId, reassignWorkQueue).then(res => {
+                  this.processNrService.changeProcessId(this.processId);
+                  this.processNrService.changeQueueName(this.queueName);
+                  this.processId = "";
+                  this.jobId = 0;
+                  this.queueName = "";
+                  this.logger.info('Redirecting to Queues Detail page');
+                  this.route.navigate(["/queues-detail"], navigationExtras);
+                });
+              }
+            }
+          } else {
+            if (result.result.lockedBy.trim() == this.authService.GetCurrentUser().userName.trim()) {
               let navigationExtras: NavigationExtras = {
                 state: {
                   queueName: queue,
                   processId: this.processId
                 }
               };
-              var reassignWorkQueue: ReassingWorkQueue = {};
-              reassignWorkQueue.jobId = this.workQueue.id;
-              reassignWorkQueue.username = this.username;
-              reassignWorkQueue.onHold = false;
-              if (result.result.status == "UnLocked")
-                reassignWorkQueue.forceReassign = false;
-              if (result.result.status == "Locked")
-                reassignWorkQueue.forceReassign = true;
-              this.queueService.postReassignWorkQueue(this.processId, reassignWorkQueue).then(res => {
-                this.processNrService.changeProcessId(this.processId);
-                this.processNrService.changeQueueName(this.queueName);
-                this.processId = "";
-                this.jobId = 0;
-                this.queueName = "";
-                this.logger.info('Redirecting to Queues Detail page');
-                this.route.navigate(["/queues-detail"], navigationExtras);
+              this.logger.info('Redirecting to Queues Detail page');
+              this.route.navigate(["/queues-detail"], navigationExtras);
+            } else {
+              this.snackBar.open(this.translate.instant('queues.processInProgress') + ' ' + result.result.lockedBy.trim(), '', {
+                duration: 4000,
+                panelClass: ['snack-bar']
               });
             }
           }
         } else {
-          if (result.result.lockedBy.trim() == this.authService.GetCurrentUser().userName.trim()) {
-            let navigationExtras: NavigationExtras = {
-              state: {
-                queueName: queue,
-                processId: this.processId
-              }
-            };
-            this.logger.info('Redirecting to Queues Detail page');
-            this.route.navigate(["/queues-detail"], navigationExtras);
-          } else {
-            this.snackBar.open(this.translate.instant('queues.processInProgress') + ' ' + result.result.lockedBy.trim(), '', {
-              duration: 4000,
-              panelClass: ['snack-bar']
-            });
-          }
+          this.existsUser = false;
+          this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
         }
-      } else {
-        this.existsUser = false;
-        this.userModalRef = this.modalService.show(this.userModal, { class: 'modal-lg' });
-      }
-    }, error => {
-      this.logger.error(error, "Error while searching for active work queue");
-    });
+      }, error => {
+        this.logger.error(error, "Error while searching for active work queue");
+      });
+    } else {
+      this.processNrService.changeEdit(false);
+      let navigationExtras: NavigationExtras = {
+        state: {
+          queueName: queue,
+          processId: this.processId
+        }
+      };
+      this.logger.info('Redirecting to Queues Detail page');
+      this.route.navigate(["/queues-detail"], navigationExtras);
+    }
   }
 
   assign() {
@@ -620,7 +633,7 @@ export class ConsultasComponent implements OnInit {
     });
   }
 
-  openProcess(process) {
+  openProcess(process, edit: boolean = true) {
     this.processNrService.changeProcessNumber(process.processNumber);
     if (process.state === 'StandardIndustryClassificationChoice' || process.state === 'RiskAssessment' || process.state === 'EligibilityAssessment' || process.state === 'ClientChoice' || process.state === 'NegotiationApproval' || process.state === 'MerchantRegistration' || process.state === 'OperationsEvaluation' || process.state === 'ComplianceEvaluation') {
       if (process.state === 'StandardIndustryClassificationChoice') {
@@ -640,7 +653,8 @@ export class ConsultasComponent implements OnInit {
       } else if (process.state === 'ComplianceEvaluation') {
         this.queueName = "compliance";
       }
-      this.workQueuePopup(process, this.queueName);
+
+      this.workQueuePopup(process, this.queueName, edit);
 
     } else {
       if (process.state == "Returned") {
@@ -759,5 +773,32 @@ export class ConsultasComponent implements OnInit {
 
   closeUserModal() {
     this.userModalRef?.hide();
+  }
+
+  checkUserPermissions(process) {
+    switch (this.authService.GetCurrentUser().permissions) {
+      case UserPermissions.UNICRE:
+        if (process.state === 'NegotiationApproval' || process.state === 'EligibilityAssessment')
+          return false;
+        else
+          return true;
+      case UserPermissions.COMERCIAL:
+        if (process.state === 'EligibilityAssessment')
+          return false;
+        else
+          return true;
+      case UserPermissions.DO:
+        if (process.state === 'ClientChoice' || process.state === 'OperationsEvaluation' || process.state === 'StandardIndustryClassificationChoice' || process.state === 'MerchantRegistration')
+          return false;
+        else
+          return true;
+      case UserPermissions.COMPLIANCEOFFICE:
+        if (process.state === 'RiskAssessment' || process.state === 'ComplianceEvaluation')
+          return false;
+        else
+          return true;
+      default:
+        return true;
+    }
   }
 }

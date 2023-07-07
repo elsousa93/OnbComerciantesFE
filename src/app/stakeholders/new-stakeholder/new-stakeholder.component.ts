@@ -172,7 +172,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       this.okCC = false;
       this.addressReading = null;
       this.snackBar.open(this.translate.instant('stakeholder.differentNIFCC'), '', {
-        duration: 4000,
+        duration: 10000,
         panelClass: ['snack-bar']
       });
     }
@@ -681,7 +681,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   validateNIF(nif: string): boolean {
     this.incorrectNIFSize = false;
     this.incorrectNIF = false;
-    if (nif != '') {
+    if (nif != '' && nif != null) {
       if (nif.length != 9) {
         this.incorrectNIFSize = true;
         return false;
@@ -706,7 +706,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   validateNIPC(nipc: string): boolean {
     this.incorrectNIPCSize = false;
     this.incorrectNIPC = false;
-    if (nipc != '') {
+    if (nipc != '' && nipc != null) {
       if (nipc.length != 9) {
         this.incorrectNIPCSize = true;
         return false;

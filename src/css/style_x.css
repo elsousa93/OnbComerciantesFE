@@ -697,7 +697,7 @@ main {
   }
 
   .titulo-form-simples {
-    font-size: 16px;
+    font-size: 15px;
     color: rgb(var(--bs-primary-rgb)); /* --bs-primary-rgb */
     text-transform: uppercase;
     margin-bottom: 5px;

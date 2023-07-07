@@ -267,6 +267,7 @@ export class ClientComponent implements OnInit {
   title: string;
   merchant: boolean;
   createFormFirstTime: boolean = true;
+  window: any = window;
 
   constructor(private http: HttpClient, private logger: LoggerService, private formBuilder: FormBuilder, private translate: TranslateService,
     private route: Router, private data: DataService, private clientService: ClientService,

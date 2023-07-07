@@ -21,6 +21,8 @@ export class ProcessNumberService {
   merchant = this.dataMerchant.asObservable();
   private dataList = new BehaviorSubject([]);
   list = this.dataList.asObservable();
+  private dataEdit = new BehaviorSubject(true);
+  edit = this.dataEdit.asObservable();
 
   constructor() { }
   changeProcessNumber(value: string) {
@@ -49,5 +51,9 @@ export class ProcessNumberService {
 
   changeList(value: any[]) {
     this.dataList.next(value);
+  }
+
+  changeEdit(value: boolean) {
+    this.dataEdit.next(value);
   }
 }
