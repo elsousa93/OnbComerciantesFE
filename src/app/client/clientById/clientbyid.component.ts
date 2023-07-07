@@ -908,8 +908,10 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   openAccordeons() {
     document.getElementById("flush-collapseOne").className = "accordion-collapse collapse show";
     document.getElementById("accordionButton1").className = "accordion1-button";
-    document.getElementById("flush-collapseTwo").className = "accordion-collapse collapse show";
-    document.getElementById("accordionButton2").className = "accordion1-button";
+    if (document.getElementById("flush-collapseTwo") != null) {
+      document.getElementById("flush-collapseTwo").className = "accordion-collapse collapse show";
+      document.getElementById("accordionButton2").className = "accordion1-button";
+    }
   }
 
   openReturnPopup() {

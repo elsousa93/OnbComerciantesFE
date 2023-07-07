@@ -194,22 +194,22 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
             this.submissionClient.documents.forEach(val => {
               var isAnnulled = context.documentListAux?.find(doc => doc.id == val.id)?.isAnnulled;
               var found = context.compsToShow.find(v => v.id == val.id);
-              if (found == undefined) {
-                context.compsToShow.push({
-                  id: val.id,
-                  type: "pdf",
-                  expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
-                  stakeholder: context.submissionClient.commercialName,
-                  status: isAnnulled ? 'Anulado' : "Ativo",
-                  uploadDate: latest_date,
-                  file: val?.id,
-                  documentPurpose: val.purposes[0],
-                  documentType: val.documentType
-                });
-              } else {
-                found.stakeholder = context.submissionClient.commercialName;
-                found.status = isAnnulled ? 'Anulado' : "Ativo";
-              }
+              //if (found == undefined) {
+              //  context.compsToShow.push({
+              //    id: val.id,
+              //    type: "pdf",
+              //    expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+              //    stakeholder: context.submissionClient.commercialName,
+              //    status: isAnnulled ? 'Anulado' : "Ativo",
+              //    uploadDate: latest_date,
+              //    file: val?.id,
+              //    documentPurpose: val.purposes[0],
+              //    documentType: val.documentType
+              //  });
+              //} else {
+              //  found.stakeholder = context.submissionClient.commercialName;
+              //  found.status = isAnnulled ? 'Anulado' : "Ativo";
+              //}
             });
 
             context.processService.getStakeholdersFromProcess(context.processId).then(result => {
@@ -224,22 +224,22 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                   stake.documents.forEach(val => {
                     var isAnnulled = context.documentListAux?.find(doc => doc.id == val.id)?.isAnnulled;
                     var found = context.compsToShow.find(v => v.id == val.id);
-                    if (found == undefined) {
-                      context.compsToShow.push({
-                        id: val.id,
-                        type: "pdf",
-                        expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
-                        stakeholder: stake.fullName,
-                        status: isAnnulled ? 'Anulado' : "Ativo",
-                        uploadDate: latest_date,
-                        file: val?.id as any,
-                        documentPurpose: val.purposes[0],
-                        documentType: val.documentType
-                      });
-                    } else {
-                      found.stakeholder = stake.fullName;
-                      found.status = isAnnulled ? 'Anulado' : "Ativo";
-                    }
+                    //if (found == undefined) {
+                    //  context.compsToShow.push({
+                    //    id: val.id,
+                    //    type: "pdf",
+                    //    expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                    //    stakeholder: stake.fullName,
+                    //    status: isAnnulled ? 'Anulado' : "Ativo",
+                    //    uploadDate: latest_date,
+                    //    file: val?.id as any,
+                    //    documentPurpose: val.purposes[0],
+                    //    documentType: val.documentType
+                    //  });
+                    //} else {
+                    //  found.stakeholder = stake.fullName;
+                    //  found.status = isAnnulled ? 'Anulado' : "Ativo";
+                    //}
                   });
                   if (length === storeLength + stakeLength + submissionDocLength + corporateLength) {
                     resolve(null);
@@ -261,22 +261,22 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                   if (shop.result.documents.length > 0) {
                     var found = context.compsToShow.find(val => val.id == shop?.result?.documents[0]?.id);
                     var isAnnulled = context.documentListAux?.find(doc => doc.id == shop?.result?.documents[0]?.id)?.isAnnulled;
-                    if (found == undefined) {
-                      context.compsToShow.push({
-                        id: shop.result.documents[0].id,
-                        type: "pdf",
-                        expirationDate: context.datepipe.transform(shop.result.documents[0].validUntil, 'dd-MM-yyyy'),
-                        stakeholder: shop.result.name,
-                        status: isAnnulled ? 'Anulado' : "Ativo",
-                        uploadDate: latest_date,
-                        file: shop.result.documents[0]?.id,
-                        documentPurpose: shop.result.documents[0].purposes[0],
-                        documentType: shop.result.documents[0].documentType
-                      });
-                    } else {
-                      found.stakeholder = shop.result.name;
-                      found.status = isAnnulled ? 'Anulado' : "Ativo";
-                    }
+                    //if (found == undefined) {
+                    //  context.compsToShow.push({
+                    //    id: shop.result.documents[0].id,
+                    //    type: "pdf",
+                    //    expirationDate: context.datepipe.transform(shop.result.documents[0].validUntil, 'dd-MM-yyyy'),
+                    //    stakeholder: shop.result.name,
+                    //    status: isAnnulled ? 'Anulado' : "Ativo",
+                    //    uploadDate: latest_date,
+                    //    file: shop.result.documents[0]?.id,
+                    //    documentPurpose: shop.result.documents[0].purposes[0],
+                    //    documentType: shop.result.documents[0].documentType
+                    //  });
+                    //} else {
+                    //  found.stakeholder = shop.result.name;
+                    //  found.status = isAnnulled ? 'Anulado' : "Ativo";
+                    //}
                   }
                   if (length === storeLength + stakeLength + submissionDocLength + corporateLength) {
                     resolve(null);
@@ -295,22 +295,22 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                     corp.documents.forEach(val => {
                       var isAnnulled = context.documentListAux?.find(doc => doc.id == val.id)?.isAnnulled;
                       var found = context.compsToShow.find(v => v.id == val.id);
-                      if (found == undefined) {
-                        context.compsToShow.push({
-                          id: val.id,
-                          type: "pdf",
-                          expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
-                          stakeholder: corp.legalName,
-                          status: isAnnulled ? 'Anulado' : "Ativo",
-                          uploadDate: latest_date,
-                          file: val?.id as any,
-                          documentPurpose: val.purposes[0],
-                          documentType: val.documentType
-                        });
-                      } else {
-                        found.stakeholder = corp.legalName;
-                        found.status = isAnnulled ? 'Anulado' : "Ativo";
-                      }
+                      //if (found == undefined) {
+                      //  context.compsToShow.push({
+                      //    id: val.id,
+                      //    type: "pdf",
+                      //    expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                      //    stakeholder: corp.legalName,
+                      //    status: isAnnulled ? 'Anulado' : "Ativo",
+                      //    uploadDate: latest_date,
+                      //    file: val?.id as any,
+                      //    documentPurpose: val.purposes[0],
+                      //    documentType: val.documentType
+                      //  });
+                      //} else {
+                      //  found.stakeholder = corp.legalName;
+                      //  found.status = isAnnulled ? 'Anulado' : "Ativo";
+                      //}
                     });
                     if (length === storeLength + stakeLength + submissionDocLength + corporateLength) {
                       resolve(null);
@@ -333,12 +333,12 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                       id: doc.id,
                       type: "pdf",
                       expirationDate: context.datepipe.transform(doc.validUntil, 'dd-MM-yyyy'),
-                      stakeholder: "desconhecido",
+                      stakeholder: value.entityName == null ? "desconhecido" : value.entityName,
                       status: value.isAnnulled ? 'Anulado' : "Ativo",
                       uploadDate: latest_date,
                       file: doc.id,
                       documentPurpose: null,
-                      documentType: doc.documentType
+                      documentType: value.type
                     });
                   } else {
                     found.status = value.isAnnulled ? 'Anulado' : "Ativo";

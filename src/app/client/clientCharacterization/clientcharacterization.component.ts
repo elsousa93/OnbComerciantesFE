@@ -208,7 +208,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.crcCode = this.form.get("crcCode").value;
     this.logger.info("Date from CRC capital stock: " + this.processClient.capitalStock.date);
     //var b = this.datepipe.transform(this.processClient.capitalStock.date, 'dd-MM-yyyy').toString(); //'MM-dd-yyyy'
-    var formatedDate = formatDate(this.processClient.capitalStock.date, 'dd-MM-yyyy', 'pt_PT'); // yyyy-MM-dd
+    var formatedDate = formatDate(this.processClient?.capitalStock?.date, 'dd-MM-yyyy', 'pt_PT'); // yyyy-MM-dd
     var branch1 = '';
 
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
