@@ -163,7 +163,7 @@
                   {{'stores.postalCode'|translate}} *
                 </p>
                 <input formControlName="zipCodeStore" id="text4" name="text3" type="text"
-                  class="form-control campo_form" maxlength="8" (keyup)="GetCountryByZipCode()"
+                  class="form-control campo_form" maxlength="8" (keyup)="GetCountryByZipCode($event)" autocomplete="true"
                   (keypress)="numericOnly($event)">
                 <div class="alert alert-danger"
                      *ngIf="this.formStores.get('zipCodeStore').touched && !this.formStores.get('zipCodeStore').valid">
@@ -178,7 +178,7 @@
                 <p class="titulo-form-simples" wappler-command="editContent">
                   {{'stores.address'|translate}} *
                 </p>
-                <input formControlName="addressStore" id="text5" name="text4" type="text"
+                <input formControlName="addressStore" id="text5" name="text4" type="text" autocomplete="true"
                        class="form-control campo_form">
                 <div class="alert alert-danger"
                      *ngIf="this.formStores.get('addressStore').touched && !this.formStores.get('addressStore').valid">
@@ -191,7 +191,7 @@
                 <p class="titulo-form-simples" wappler-command="editContent">
                   {{'stores.locale'|translate}} *
                 </p>
-                <input formControlName="localeStore" id="text5" name="text4" type="text" class="form-control campo_form"
+                <input formControlName="localeStore" id="text5" name="text4" type="text" class="form-control campo_form" autocomplete="true"
                        [readonly]="canEditLocality() === false">
                 <div class="alert alert-danger"
                      *ngIf="this.formStores.get('localeStore').touched && !this.formStores.get('localeStore').valid">
@@ -237,8 +237,8 @@
                   {{'stores.postalCode'|translate}} *
                 </p>
                 <input formControlName="zipCodeStore" id="text4" name="text3" type="text"
-                       class="form-control campo_form" maxlength="8" (keyup)="GetComercialCenterByZipCode()"
-                       (keypress)="numericOnly($event)">
+                       class="form-control campo_form" maxlength="8" (keyup)="GetComercialCenterByZipCode($event)"
+                       (keypress)="numericOnly($event)" autocomplete="true">
                 <div class="alert alert-danger"
                      *ngIf="this.formStores.get('zipCodeStore').touched && !this.formStores.get('zipCodeStore').valid">
                   <div *ngIf="this.formStores.get('zipCodeStore').errors && this.formStores.get('zipCodeStore').errors?.['required']">

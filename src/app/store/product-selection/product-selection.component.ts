@@ -128,7 +128,7 @@ export class ProductSelectionComponent implements OnInit {
     this.formStores = new FormGroup({
       solutionType: new FormControl((this.store.productCode != null) ? this.store.productCode : '', Validators.required),
       subProduct: new FormControl((this.store.subProductCode != null) ? this.store.subProductCode : '', Validators.required),
-      url: new FormControl((this.store.website != null) ? this.store.website : '', Validators.email),
+      url: new FormControl((this.store.website != null) ? this.store.website : ''),
       solutionName: new FormControl(''),
       subProductName: new FormControl('')
     });

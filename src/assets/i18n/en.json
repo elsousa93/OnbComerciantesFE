@@ -226,7 +226,8 @@
     "subProduct": "Sub Product",
     "updateStore": "This change will delete the Commercial Offer configuration. Do you wish to proceed?",
     "proofIBAN": "IBAN proof is missing",
-    "addOrCancel": "You need to add or cancel the identified store"
+    "addOrCancel": "You need to add or cancel the identified store",
+    "URL": "Store's URL"
   },
   "supportingDocuments": {
     "title": "Supporting Documents",
@@ -366,7 +367,7 @@
     "incompleted": "Started",
     "running": "Backoffice Treatment",
     "completed": "Finished",
-    "returned": "Returned",
+    "returned": "Returned BackOffice",
     "cancelled": "Cancelled",
     "contractAcceptance": "Signature Phase",
     "awaitingCompletion": "Processing",

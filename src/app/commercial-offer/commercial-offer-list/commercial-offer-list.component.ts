@@ -1151,15 +1151,15 @@ export class CommercialOfferListComponent implements OnInit {
       }
     });
 
-    //estava aqui antes os valores do changedValue()
-    if (this.paymentSchemes != null) {
-      var index = this.list.findIndex(group => group.id == this.paymentSchemes?.id);
-      if (index > -1)
-        this.list.splice(index, 1);
-    }
 
     if (this.returned != 'consult') {
       if (this.form.valid && !(this.storeEquipList.length == 0 && !this.userBanca && this.isUnicre) && this.commissionId !== '') {
+        //estava aqui antes os valores do changedValue()
+        if (this.paymentSchemes != null) {
+          var index = this.list.findIndex(group => group.id == this.paymentSchemes?.id);
+          if (index > -1)
+            this.list.splice(index, 1);
+        }
         this.currentStore.equipments = this.storeEquipList;
         this.currentStore.pack = {
           packId: this.packId,
@@ -1342,6 +1342,8 @@ export class CommercialOfferListComponent implements OnInit {
   }
 
   storeToReplicate(e) {
+    this.changedEAT = true;
+    this.currentStore.pack = null;
     var context = this;
     var replicateShop = this.replicateStoresList.find(x => x.id == e.target.value);
     let length = 0;
@@ -1398,40 +1400,42 @@ export class CommercialOfferListComponent implements OnInit {
     }
   }
 
-  deleteConfiguration(shopEquipment: ShopEquipment) {
-    if (this.returned != 'consult') {
-      if ((this.processId != '' && this.processId != null) && this.returned != null) {
-        this.processService.deleteShopEquipmentFromProcess(this.processId, this.currentStore.id, shopEquipment.id).then(result => {
-          this.logger.info("Deleted shop equipment with id " + shopEquipment.id);
-          var index = this.storeEquipList.findIndex(equip => equip.id == shopEquipment.id);
-          if (index != -1) {
-            this.storeEquipList.splice(index, 1);
-            this.loadStoreEquips(this.storeEquipList);
-            if (!this.disableNewConfiguration && this.storeEquipList.length == 0) {
-              this.data.updateData(false, 5, 1);
-              this.data.changeEquips(false);
+  deleteConfiguration(shopEquipment: ShopEquipment, clicked: boolean = false) {
+    if (!clicked || this.isNewConfig == null) {
+      if (this.returned != 'consult') {
+        if ((this.processId != '' && this.processId != null) && this.returned != null) {
+          this.processService.deleteShopEquipmentFromProcess(this.processId, this.currentStore.id, shopEquipment.id).then(result => {
+            this.logger.info("Deleted shop equipment with id " + shopEquipment.id);
+            var index = this.storeEquipList.findIndex(equip => equip.id == shopEquipment.id);
+            if (index != -1) {
+              this.storeEquipList.splice(index, 1);
+              this.loadStoreEquips(this.storeEquipList);
+              if (!this.disableNewConfiguration && this.storeEquipList.length == 0) {
+                this.data.updateData(false, 5, 1);
+                this.data.changeEquips(false);
+              }
+              if (this.storeEquipList.length > 0) {
+                this.data.changeEquips(true);
+              }
             }
-            if (this.storeEquipList.length > 0) {
-              this.data.changeEquips(true);
+          });
+        } else {
+          this.storeService.deleteShopEquipmentConfigurationFromSubmission(this.submissionId, this.currentStore.id, shopEquipment.id).subscribe(result => {
+            this.logger.info("Deleted shop equipment with id " + shopEquipment.id);
+            var index = this.storeEquipList.findIndex(equip => equip.id == shopEquipment.id);
+            if (index != -1) {
+              this.storeEquipList.splice(index, 1);
+              this.loadStoreEquips(this.storeEquipList);
+              if (!this.disableNewConfiguration && this.storeEquipList.length == 0) {
+                this.data.updateData(false, 5, 1);
+                this.data.changeEquips(false);
+              }
+              if (this.storeEquipList.length > 0) {
+                this.data.changeEquips(true);
+              }
             }
-          }
-        });
-      } else {
-        this.storeService.deleteShopEquipmentConfigurationFromSubmission(this.submissionId, this.currentStore.id, shopEquipment.id).subscribe(result => {
-          this.logger.info("Deleted shop equipment with id " + shopEquipment.id);
-          var index = this.storeEquipList.findIndex(equip => equip.id == shopEquipment.id);
-          if (index != -1) {
-            this.storeEquipList.splice(index, 1);
-            this.loadStoreEquips(this.storeEquipList);
-            if (!this.disableNewConfiguration && this.storeEquipList.length == 0) {
-              this.data.updateData(false, 5, 1);
-              this.data.changeEquips(false);
-            }
-            if (this.storeEquipList.length > 0) {
-              this.data.changeEquips(true);
-            }
-          }
-        });
+          });
+        }
       }
     }
   }

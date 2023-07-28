@@ -62,8 +62,8 @@
             {{'generalKeywords.mandatoryParameter'|translate}}
           </div>
         </div>
-        <div [ngClass]="{'col-5' : window.outerWidth <= 1024}">
-          <p class="titulo-form-simples" wappler-command="editContent">URL</p><input formControlName="url"
+        <div [ngClass]="{'col-5' : window.outerWidth <= 1024}" *ngIf="formStores?.get('solutionType')?.value == 'FV_001302'">
+          <p class="titulo-form-simples" wappler-command="editContent">{{'stores.URL'|translate}}*</p><input formControlName="url"
                                                                                      (change)="URLFilled(true)" id="url" name="url" type="text" class="form-control campo_form"
                                                                                      [pattern]="urlRegex" #url>
           <div class="alert alert-danger" *ngIf="urlValid?.errors?.['pattern']">

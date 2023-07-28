@@ -685,7 +685,7 @@ export class ClientComponent implements OnInit {
       this.isENI = false;
       this.tipologia = "Company";
 
-      if (localStorage.getItem("submissionId") == null) {
+      if (localStorage.getItem("submissionId") == null || !this.firstTime) {
         this.newClient.documentationDeliveryMethod = "0502";
         this.firstTime = true;
         this.defaultValue = true;
@@ -696,7 +696,7 @@ export class ClientComponent implements OnInit {
       this.isENI = true;
       this.tipologia = "ENI";
 
-      if (localStorage.getItem("submissionId") == null) {
+      if (localStorage.getItem("submissionId") == null || !this.firstTime) {
         this.newClient.documentationDeliveryMethod = "0501";
         this.firstTime = true;
         this.defaultValue = true;

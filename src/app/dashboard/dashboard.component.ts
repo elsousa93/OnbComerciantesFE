@@ -23,6 +23,7 @@ import * as CryptoJS from 'crypto-js';
 import CryptoAES from 'crypto-js/aes';
 import CryptoHex from 'crypto-js/enc-utf8';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { AppConfigService } from '../app-config.service';
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -254,10 +255,12 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   existsUser: boolean;
   username: string = "";
   interval: any;
+  baseUrl: string;
+  searchedId: string; 
 
   constructor(private logger: LoggerService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
-    private datePipe: DatePipe, private authService: AuthService, private translate: TranslateService, public appComponent: AppComponent, private processNrService: ProcessNumberService, private queueService: QueuesService, private modalService: BsModalService, private tokenService: TokenService, private snackBar: MatSnackBar) {
+    private datePipe: DatePipe, private authService: AuthService, private translate: TranslateService, public appComponent: AppComponent, private processNrService: ProcessNumberService, private queueService: QueuesService, private modalService: BsModalService, private tokenService: TokenService, private snackBar: MatSnackBar, private configuration: AppConfigService) {
     if (this.authService.GetToken() == "" || this.authService.GetToken() == null) {
       var split = window.location.href.split("=");
       if (split[1] != undefined) {
@@ -277,6 +280,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
             user.authTime = (new Date()).toLocaleString('pt-PT');
             //user.permissions = UserPermissions.UNICRE;
             user.permissions = res["ext-acquiring-profile"];
+            user.tenant = res["ext-tenant"];
             var newDate = new Date(res.exp * 1000);
             this.timeout = newDate.getTime() - new Date().getTime();
             this.expirationCounter(this.timeout);
@@ -288,7 +292,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     } else {
       this.router.navigate(['/']);
     }
-
+    this.baseUrl = configuration.getConfig().acquiringAPIUrl;
     this.mobileQuery = media.matchMedia('(max-width: 850px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addListener(this._mobileQueryListener);
@@ -1020,6 +1024,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     this.processNrService.changeMerchant('');
     this.processNrService.changeList([]);
     this.processNrService.changeEdit(true);
+    this.processNrService.changeHasChange(false);
     localStorage.removeItem("documents");
 
     this.dataSourcePendentes.filterPredicate = function (record, filterValue) {
@@ -1137,62 +1142,124 @@ export class DashboardComponent implements OnInit, AfterViewInit {
 
   applyFilter(filterValue: string) {
     this.dataSourcePendentes.filter = filterValue;
+    this.searchProcess(filterValue, this.incompleteProcessess, this.dataSourcePendentes, 'Incomplete');
   }
 
   applyFilter1(filterValue: string) {
     this.dataSourceTratamento.filter = filterValue;
+    this.searchProcess(filterValue, this.ongoingProcessess, this.dataSourceTratamento, 'Ongoing');
   }
 
   applyFilterDevolvidos(filterValue: string) {
     this.dataSourceDevolvidos.filter = filterValue;
+    this.searchProcess(filterValue, this.returnedProcessess, this.dataSourceDevolvidos, 'Returned');
   }
 
   applyFilterAceitacao(filterValue: string) {
     this.dataSourceAceitacao.filter = filterValue;
+    var found = this.contractAcceptanceProcessess.items.find(p => p.processNumber == filterValue);
+    if (found == undefined) {
+      if (filterValue.length == 18) {
+        let url = this.baseUrl + 'process?state=ContractAcceptance&number=' + filterValue;
+        this.processService.advancedSearch(url, 0, 1).subscribe(result => {
+          if (result.items.length > 0) {
+            var found = this.contractAcceptanceProcessess.items.find(p => p.processId == result.items[0].processId);
+            if (found == undefined) {
+              this.searchedId = filterValue;
+              //data e estado corretamente formatados
+              this.contractAcceptanceProcessess.items.push(...result.items);
+              this.dataSourceAceitacao.data = this.contractAcceptanceProcessess.items;
+            }
+          } else {
+            url = this.baseUrl + 'process?state=ContractDigitalAcceptance&number=' + filterValue;
+            this.processService.advancedSearch(url, 0, 1).subscribe(res => {
+              if (res.items.length > 0) {
+                var found = this.contractAcceptanceProcessess.items.find(p => p.processId == res.items[0].processId);
+                if (found == undefined) {
+                  this.searchedId = filterValue;
+                  //data e estado corretamente formatados
+                  this.contractAcceptanceProcessess.items.push(...res.items);
+                  this.dataSourceAceitacao.data = this.contractAcceptanceProcessess.items;
+                }
+              } else {
+                url = this.baseUrl + 'process?state=DigitalIdentification&number=' + filterValue;
+                this.processService.advancedSearch(url, 0, 1).subscribe(r => {
+                  if (r.items.length > 0) {
+                    var found = this.contractAcceptanceProcessess.items.find(p => p.processId == r.items[0].processId);
+                    if (found == undefined) {
+                      this.searchedId = filterValue;
+                      //data e estado corretamente formatados
+                      this.contractAcceptanceProcessess.items.push(...r.items);
+                      this.dataSourceAceitacao.data = this.contractAcceptanceProcessess.items;
+                    }
+                  }
+                });
+              }
+            });
+          }
+        });
+      } else {
+        if (this.searchedId != null && this.searchedId != "") {
+          var index = this.contractAcceptanceProcessess.items.findIndex(p => p.processNumber == this.searchedId);
+          if (index != -1) {
+            this.contractAcceptanceProcessess.items.splice(index, 1);
+            this.dataSourcePendentes.data = this.contractAcceptanceProcessess.items;
+            this.searchedId = "";
+          }
+        }
+      }
+    }
   }
 
   applyFilterPendingSent(filterValue: string) {
     this.dataSourcePendingSent.filter = filterValue;
+    this.searchProcess(filterValue, this.pendingSentProcessess, this.dataSourcePendingSent, 'AwaitingCompletion');
   }
 
   applyFilterPendingEligibility(filterValue: string) {
     this.dataSourcePendingEligibility.filter = filterValue;
+    this.searchProcess(filterValue, this.pendingEligibilityProcessess, this.dataSourcePendingEligibility, 'EligibilityAssessment');
   }
 
   applyFilterMultipleClients(filterValue: string) {
     this.dataSourceMultipleClients.filter = filterValue;
+    this.searchProcess(filterValue, this.multipleClientesProcessess, this.dataSourceMultipleClients, 'ClientChoice');
   }
 
   applyFilterDOValidation(filterValue: string) {
     this.dataSourceDOValidation.filter = filterValue;
+    this.searchProcess(filterValue, this.DOValidationProcessess, this.dataSourceDOValidation, 'OperationsEvaluation');
   }
 
   applyFilterNegotiationAproval(filterValue: string) {
     this.dataSourceNegotiationAproval.filter = filterValue;
+    this.searchProcess(filterValue, this.negotiationAprovalProcessess, this.dataSourceNegotiationAproval, 'NegotiationApproval');
   }
 
   applyFilterMCCTreatment(filterValue: string) {
     this.dataSourceMCCTreatment.filter = filterValue;
+    this.searchProcess(filterValue, this.MCCTreatmentProcessess, this.dataSourceMCCTreatment, 'StandardIndustryClassificationChoice');
   }
 
   applyFilterValidationSIBS(filterValue: string) {
     this.dataSourceValidationSIBS.filter = filterValue;
+    this.searchProcess(filterValue, this.validationSIBSProcessess, this.dataSourceValidationSIBS, 'MerchantRegistration');
   }
 
   applyFilterRiskOpinion(filterValue: string) {
     this.dataSourceRiskOpinion.filter = filterValue;
+    this.searchProcess(filterValue, this.riskOpinionProcessess, this.dataSourceRiskOpinion, 'RiskAssessment');
   }
 
   applyFilterComplianceDoubts(filterValue: string) {
     this.dataSourceComplianceDoubts.filter = filterValue;
+    this.searchProcess(filterValue, this.complianceDoubtsProcessess, this.dataSourceComplianceDoubts, 'ComplianceEvaluation');
   }
 
   changePage(event) {
     var currentPageIdx = event.pageIndex;
     var currentPageSize = event.pageSize;
-    var previousPageIndex = event.previousPageIndex;
     var to = currentPageIdx * currentPageSize;
-    //var from = to - currentPageSize; // tirei o +1;
 
     if (this.incompleteOpened) {
       this.processService.searchProcessByState('Incomplete', to, currentPageSize).subscribe(resul => {
@@ -1209,37 +1276,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           });
           this.orderProcesses(this.dataSourcePendentes, this.empTbSort, this.incompleteProcessess);
         });
-      //if ((previousPageIndex < currentPageIdx && currentPageIdx >= Math.trunc(this.incompleteProcessess.items.length / currentPageSize)) || currentPageSize > event.length) {
-      //  if (currentPageSize > event.length) {
-      //    this.incompleteProcessess = null;
-      //    to = to - 1;
-      //    currentPageSize = currentPageSize + 1;
-      //  }
-      //  this.processService.searchProcessByState('Incomplete', to + 1, currentPageSize).subscribe(resul => {
-      //    this.logger.info('Search incomplete processes ' + JSON.stringify(resul));
-      //    if (this.incompleteProcessess == null) {
-      //      this.incompleteProcessess = resul;
-      //    } else {
-      //      this.incompleteProcessess.items.forEach(val => {
-      //        var index = resul.items.findIndex(v => v.processId == val.processId);
-      //        if (index != -1)
-      //          resul.items.splice(index, 1);
-      //      });
-      //      this.incompleteProcessess.items.push(...resul.items);
-      //      this.incompleteProcessess.pagination = resul.pagination;
-      //    }
-      //    this.incompleteProcessess.items.forEach(process => {
-      //      if (process.startedAt.includes("T")) {
-      //        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-      //      }
-      //      // mapear os estados para aparecer em PT ou EN
-      //      if (process.state === 'Incomplete') {
-      //        process.state = this.translate.instant('searches.incompleted');
-      //      }
-      //    });
-      //    this.orderProcesses(this.dataSourcePendentes, this.empTbSort, this.incompleteProcessess);
-      //  });
-      //}
     } else if (this.ongoingOpened) {
       this.processService.searchProcessByState('Ongoing', to, currentPageSize).subscribe(resul => {
         this.logger.info('Search ongoing processes ' + JSON.stringify(resul));
@@ -1255,38 +1291,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
         this.orderProcesses(this.dataSourceTratamento, this.empTbSortWithObject, this.ongoingProcessess);
       });
-      //if ((previousPageIndex < currentPageIdx && currentPageIdx >= Math.trunc(event.length / currentPageSize)) || currentPageSize > event.length) {
-      //  if (currentPageSize > event.length) {
-      //    this.ongoingProcessess = null;
-      //    to = to - 1;
-      //    currentPageSize = currentPageSize + 1;
-      //  }
-      //  this.processService.searchProcessByState('Ongoing', to + 1, currentPageSize).subscribe(resul => {
-      //    this.logger.info('Search ongoing processes ' + JSON.stringify(resul));
-      //    if (this.ongoingProcessess == null) {
-      //      this.ongoingProcessess = resul;
-      //    } else {
-      //      this.ongoingProcessess.items.forEach(val => {
-      //        var index = resul.items.findIndex(v => v.processId == val.processId);
-      //        if (index != -1)
-      //          resul.items.splice(index, 1);
-      //      });
-      //      this.ongoingProcessess.items.push(...resul.items);
-      //      this.ongoingProcessess.pagination = resul.pagination;
-      //    }
-      //    this.ongoingProcessess.items.forEach(process => {
-      //      if (process.startedAt.includes("T")) {
-      //        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-      //      }
-
-      //      // mapear os estados para aparecer em PT ou EN
-      //      if (process.state === 'Ongoing') {
-      //        process.state = this.translate.instant('searches.running');
-      //      }
-      //    });
-      //    this.orderProcesses(this.dataSourceTratamento, this.empTbSortWithObject, this.ongoingProcessess);
-      //  });
-      //}
     } else if (this.returnedOpened) {
       this.processService.searchProcessByState('Returned', to, currentPageSize).subscribe(resul => {
         this.logger.info('Search returned processes ' + JSON.stringify(resul));
@@ -1303,38 +1307,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
         this.orderProcesses(this.dataSourceDevolvidos, this.empTbSortDevolvidos, this.returnedProcessess);
       });
-      //if ((previousPageIndex < currentPageIdx && currentPageIdx >= Math.trunc(event.length / currentPageSize)) || currentPageSize > event.length) {
-      //  if (currentPageSize > event.length) {
-      //    this.returnedProcessess = null;
-      //    to = to - 1;
-      //    currentPageSize = currentPageSize + 1;
-      //  }
-      //  this.processService.searchProcessByState('Returned', to + 1, currentPageSize).subscribe(resul => {
-      //    this.logger.info('Search returned processes ' + JSON.stringify(resul));
-      //    if (this.returnedProcessess == null) {
-      //      this.returnedProcessess = resul;
-      //    } else {
-      //      this.returnedProcessess.items.forEach(val => {
-      //        var index = resul.items.findIndex(v => v.processId == val.processId);
-      //        if (index != -1)
-      //          resul.items.splice(index, 1);
-      //      });
-      //      this.returnedProcessess.items.push(...resul.items);
-      //      this.returnedProcessess.pagination = resul.pagination;
-      //    }
-      //    this.returnedProcessess.items.forEach(process => {
-      //      if (process.startedAt.includes("T")) {
-      //        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-      //      }
-
-      //      // mapear os estados para aparecer em PT ou EN
-      //      if (process.state === 'Returned') {
-      //        process.state = this.translate.instant('searches.returned');
-      //      }
-      //    });
-      //    this.orderProcesses(this.dataSourceDevolvidos, this.empTbSortDevolvidos, this.returnedProcessess);
-      //  });
-      //}
     } else if (this.contractAcceptanceOpened) {
       let promise = new Promise((resolve, reject) => {
         this.processService.searchProcessByState('ContractAcceptance', to, currentPageSize).subscribe(resul => {
@@ -1381,72 +1353,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           this.orderProcesses(this.dataSourceAceitacao, this.empTbSortAceitacao, this.contractAcceptanceProcessess);
         });
       });
-      //if ((previousPageIndex < currentPageIdx && currentPageIdx >= Math.trunc(event.length / currentPageSize)) || currentPageSize > event.length) {
-      //  if (currentPageSize > event.length) {
-      //    this.contractAcceptanceProcessess = null;
-      //    to = to - 1;
-      //    currentPageSize = currentPageSize + 1;
-      //  }
-      //  let promise = new Promise((resolve, reject) => {
-      //    this.processService.searchProcessByState('ContractAcceptance', to + 1, currentPageSize).subscribe(resul => {
-      //      this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
-      //      if (this.contractAcceptanceProcessess == null) {
-      //        this.contractAcceptanceProcessess = resul;
-      //      } else {
-      //        this.contractAcceptanceProcessess.items.forEach(val => {
-      //          var index = resul.items.findIndex(v => v.processId == val.processId);
-      //          if (index != -1)
-      //            resul.items.splice(index, 1);
-      //        });
-      //        this.contractAcceptanceProcessess.items.push(...resul.items);
-      //        this.contractAcceptanceProcessess.pagination = resul.pagination;
-      //      }
-      //      if (this.contractAcceptanceProcessess.items.length > 0) {
-      //        this.contractAcceptanceProcessess.items.forEach(process => {
-      //          if (process.startedAt.includes("T")) {
-      //            process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-      //          }
-      //          // mapear os estados para aparecer em PT ou EN
-      //          if (process.state === 'ContractAcceptance') {
-      //            process.state = this.translate.instant('searches.contractAcceptance')
-      //          }
-      //        });
-      //      }
-      //      resolve(null);
-      //    });
-      //  }).finally(() => {
-      //    this.processService.searchProcessByState('ContractDigitalAcceptance', to + 1, currentPageSize).subscribe(resul => {
-      //      this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
-      //      var contractAcceptanceProcessess = resul;
-      //      contractAcceptanceProcessess.items.forEach(process => {
-      //        if (process.startedAt.includes("T")) {
-      //          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-      //        }
-      //        // mapear os estados para aparecer em PT ou EN
-      //        if (process.state === 'ContractDigitalAcceptance') {
-      //          process.state = this.translate.instant('searches.contractDigitalAcceptance')
-      //        }
-      //      });
-      //      this.contractAcceptanceProcessess.items.push(...contractAcceptanceProcessess.items);
-      //    });
-
-      //    this.processService.searchProcessByState('DigitalIdentification', to + 1, currentPageSize).subscribe(resul => {
-      //      this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
-      //      var contractAcceptanceProcessess = resul;
-      //      contractAcceptanceProcessess.items.forEach(process => {
-      //        if (process.startedAt.includes("T")) {
-      //          process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-      //        }
-      //        // mapear os estados para aparecer em PT ou EN
-      //        if (process.state === 'DigitalIdentification') {
-      //          process.state = this.translate.instant('searches.digitalIdentification')
-      //        }
-      //      });
-      //      this.contractAcceptanceProcessess.items.push(...contractAcceptanceProcessess.items); // entrou aqui
-      //      this.orderProcesses(this.dataSourceAceitacao, this.empTbSortAceitacao, this.contractAcceptanceProcessess);
-      //    });
-      //  });
-      //}
     } else if (this.pendingSentOpened) {
       this.processService.searchProcessByState('AwaitingCompletion', to, currentPageSize).subscribe(resul => {
         this.logger.info('Search awaiting completion processes ' + JSON.stringify(resul));
@@ -1462,38 +1368,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
         this.orderProcesses(this.dataSourcePendingSent, this.empTbSortPendingSent, this.pendingSentProcessess);
       });
-      //if ((previousPageIndex < currentPageIdx && currentPageIdx >= Math.trunc(event.length / currentPageSize)) || currentPageSize > event.length) {
-      //  if (currentPageSize > event.length) {
-      //    this.pendingSentProcessess = null;
-      //    to = to - 1;
-      //    currentPageSize = currentPageSize + 1;
-      //  }
-      //  this.processService.searchProcessByState('AwaitingCompletion', to + 1, currentPageSize).subscribe(resul => {
-      //    this.logger.info('Search awaiting completion processes ' + JSON.stringify(resul));
-      //    if (this.pendingSentProcessess == null) {
-      //      this.pendingSentProcessess = resul;
-      //    } else {
-      //      this.pendingSentProcessess.items.forEach(val => {
-      //        var index = resul.items.findIndex(v => v.processId == val.processId);
-      //        if (index != -1)
-      //          resul.items.splice(index, 1);
-      //      });
-      //      this.pendingSentProcessess.items.push(...resul.items);
-      //      this.pendingSentProcessess.pagination = resul.pagination;
-      //    }
-      //    this.pendingSentProcessess.items.forEach(process => {
-      //      if (process.startedAt.includes("T")) {
-      //        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-      //      }
-
-      //      // mapear os estados para aparecer em PT ou EN
-      //      if (process.state === 'AwaitingCompletion') {
-      //        process.state = this.translate.instant('searches.awaitingCompletion');
-      //      }
-      //    });
-      //    this.orderProcesses(this.dataSourcePendingSent, this.empTbSortPendingSent, this.pendingSentProcessess);
-      //  });
-      //}
     } else if (this.pendingEligibilityOpened) {
       this.processService.searchProcessByState('EligibilityAssessment', to, currentPageSize).subscribe(resul => {
         this.logger.info('Search eligibility assessment processes ' + JSON.stringify(resul));
@@ -1510,38 +1384,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
         this.orderProcesses(this.dataSourcePendingEligibility, this.empTbSortPendingEligibility, this.pendingEligibilityProcessess);
       });
-      //if ((previousPageIndex < currentPageIdx && currentPageIdx >= Math.trunc(event.length / currentPageSize)) || currentPageSize > event.length) {
-      //  if (currentPageSize > event.length) {
-      //    this.pendingEligibilityProcessess = null;
-      //    to = to - 1;
-      //    currentPageSize = currentPageSize + 1;
-      //  }
-      //  this.processService.searchProcessByState('EligibilityAssessment', to + 1, currentPageSize).subscribe(resul => {
-      //    this.logger.info('Search eligibility assessment processes ' + JSON.stringify(resul));
-      //    if (this.pendingEligibilityProcessess == null) {
-      //      this.pendingEligibilityProcessess = resul;
-      //    } else {
-      //      this.pendingEligibilityProcessess.items.forEach(val => {
-      //        var index = resul.items.findIndex(v => v.processId == val.processId);
-      //        if (index != -1)
-      //          resul.items.splice(index, 1);
-      //      });
-      //      this.pendingEligibilityProcessess.items.push(...resul.items);
-      //      this.pendingEligibilityProcessess.pagination = resul.pagination;
-      //    }
-      //    this.pendingEligibilityProcessess.items.forEach(process => {
-      //      if (process.startedAt.includes("T")) {
-      //        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-      //      }
-
-      //      // mapear os estados para aparecer em PT ou EN
-      //      if (process.state === 'EligibilityAssessment') {
-      //        process.state = this.translate.instant('searches.eligibility');
-      //      }
-      //    });
-      //    this.orderProcesses(this.dataSourcePendingEligibility, this.empTbSortPendingEligibility, this.pendingEligibilityProcessess);
-      //  });
-      //}
     } else if (this.multipleClientesOpened) {
       this.processService.searchProcessByState('ClientChoice', to, currentPageSize).subscribe(resul => {
         this.logger.info('Search client choice processes ' + JSON.stringify(resul));
@@ -1557,38 +1399,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
         this.orderProcesses(this.dataSourceMultipleClients, this.empTbSortMultipleClients, this.multipleClientesProcessess);
       });
-      //if ((previousPageIndex < currentPageIdx && currentPageIdx >= Math.trunc(event.length / currentPageSize)) || currentPageSize > event.length) {
-      //  if (currentPageSize > event.length) {
-      //    this.multipleClientesProcessess = null;
-      //    to = to - 1;
-      //    currentPageSize = currentPageSize + 1;
-      //  }
-      //  this.processService.searchProcessByState('ClientChoice', to + 1, currentPageSize).subscribe(resul => {
-      //    this.logger.info('Search client choice processes ' + JSON.stringify(resul));
-      //    if (this.multipleClientesProcessess == null) {
-      //      this.multipleClientesProcessess = resul;
-      //    } else {
-      //      this.multipleClientesProcessess.items.forEach(val => {
-      //        var index = resul.items.findIndex(v => v.processId == val.processId);
-      //        if (index != -1)
-      //          resul.items.splice(index, 1);
-      //      });
-      //      this.multipleClientesProcessess.items.push(...resul.items);
-      //      this.multipleClientesProcessess.pagination = resul.pagination;
-      //    }
-      //    this.multipleClientesProcessess.items.forEach(process => {
-      //      if (process.startedAt.includes("T")) {
-      //        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-      //      }
-
-      //      // mapear os estados para aparecer em PT ou EN
-      //      if (process.state === 'ClientChoice') {
-      //        process.state = this.translate.instant('searches.multipleClients');
-      //      }
-      //    });
-      //    this.orderProcesses(this.dataSourceMultipleClients, this.empTbSortMultipleClients, this.multipleClientesProcessess);
-      //  });
-      //}
     } else if (this.DOValidationOpened) {
       this.processService.searchProcessByState('OperationsEvaluation', to, currentPageSize).subscribe(resul => {
         this.logger.info('Search operations evaluation processes ' + JSON.stringify(resul));
@@ -1606,38 +1416,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
         this.orderProcesses(this.dataSourceDOValidation, this.empTbSortDOValidation, this.DOValidationProcessess);
       });
-      //if ((previousPageIndex < currentPageIdx && currentPageIdx >= Math.trunc(event.length / currentPageSize)) || currentPageSize > event.length) {
-      //  if (currentPageSize > event.length) {
-      //    this.DOValidationProcessess = null;
-      //    to = to - 1;
-      //    currentPageSize = currentPageSize + 1;
-      //  }
-      //  this.processService.searchProcessByState('OperationsEvaluation', to + 1, currentPageSize).subscribe(resul => {
-      //    this.logger.info('Search operations evaluation processes ' + JSON.stringify(resul));
-      //    if (this.DOValidationProcessess == null) {
-      //      this.DOValidationProcessess = resul;
-      //    } else {
-      //      this.DOValidationProcessess.items.forEach(val => {
-      //        var index = resul.items.findIndex(v => v.processId == val.processId);
-      //        if (index != -1)
-      //          resul.items.splice(index, 1);
-      //      });
-      //      this.DOValidationProcessess.items.push(...resul.items);
-      //      this.DOValidationProcessess.pagination = resul.pagination;
-      //    }
-      //    this.DOValidationProcessess.items.forEach(process => {
-      //      if (process.startedAt.includes("T")) {
-      //        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-      //      }
-
-      //      // mapear os estados para aparecer em PT ou EN
-      //      if (process.state === 'OperationsEvaluation') {
-      //        process.state = this.translate.instant('searches.DOValidation');
-      //      }
-      //    });
-      //    this.orderProcesses(this.dataSourceDOValidation, this.empTbSortDOValidation, this.DOValidationProcessess);
-      //  });
-      //}
     } else if (this.negotiationAprovalOpened) {
       this.processService.searchProcessByState('NegotiationApproval', to, currentPageSize).subscribe(resul => {
         this.logger.info('Search negotiation approval processes ' + JSON.stringify(resul));
@@ -1653,38 +1431,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
         this.orderProcesses(this.dataSourceNegotiationAproval, this.empTbSortNegotiationAproval, this.negotiationAprovalProcessess);
       });
-      //if ((previousPageIndex < currentPageIdx && currentPageIdx >= Math.trunc(event.length / currentPageSize)) || currentPageSize > event.length) {
-      //  if (currentPageSize > event.length) {
-      //    this.negotiationAprovalProcessess = null;
-      //    to = to - 1;
-      //    currentPageSize = currentPageSize + 1;
-      //  }
-      //  this.processService.searchProcessByState('NegotiationApproval', to + 1, currentPageSize).subscribe(resul => {
-      //    this.logger.info('Search negotiation approval processes ' + JSON.stringify(resul));
-      //    if (this.negotiationAprovalProcessess == null) {
-      //      this.negotiationAprovalProcessess = resul;
-      //    } else {
-      //      this.negotiationAprovalProcessess.items.forEach(val => {
-      //        var index = resul.items.findIndex(v => v.processId == val.processId);
-      //        if (index != -1)
-      //          resul.items.splice(index, 1);
-      //      });
-      //      this.negotiationAprovalProcessess.items.push(...resul.items);
-      //      this.negotiationAprovalProcessess.pagination = resul.pagination;
-      //    }
-      //    this.negotiationAprovalProcessess.items.forEach(process => {
-      //      if (process.startedAt.includes("T")) {
-      //        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-      //      }
-
-      //      // mapear os estados para aparecer em PT ou EN
-      //      if (process.state === 'NegotiationApproval') {
-      //        process.state = this.translate.instant('searches.negotiationApproval');
-      //      }
-      //    });
-      //    this.orderProcesses(this.dataSourceNegotiationAproval, this.empTbSortNegotiationAproval, this.negotiationAprovalProcessess);
-      //  });
-      //}
     } else if (this.MCCTreatmentOpened) {
       this.processService.searchProcessByState('StandardIndustryClassificationChoice', to, currentPageSize).subscribe(resul => {
         this.logger.info('Search standard industry classification choice processes ' + JSON.stringify(resul));
@@ -1700,38 +1446,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
         this.orderProcesses(this.dataSourceMCCTreatment, this.empTbSortMCCTreatment, this.MCCTreatmentProcessess);
       });
-      //if ((previousPageIndex < currentPageIdx && currentPageIdx >= Math.trunc(event.length / currentPageSize)) || currentPageSize > event.length) {
-      //  if (currentPageSize > event.length) {
-      //    this.MCCTreatmentProcessess = null;
-      //    to = to - 1;
-      //    currentPageSize = currentPageSize + 1;
-      //  }
-      //  this.processService.searchProcessByState('StandardIndustryClassificationChoice', to + 1, currentPageSize).subscribe(resul => {
-      //    this.logger.info('Search standard industry classification choice processes ' + JSON.stringify(resul));
-      //    if (this.MCCTreatmentProcessess == null) {
-      //      this.MCCTreatmentProcessess = resul;
-      //    } else {
-      //      this.MCCTreatmentProcessess.items.forEach(val => {
-      //        var index = resul.items.findIndex(v => v.processId == val.processId);
-      //        if (index != -1)
-      //          resul.items.splice(index, 1);
-      //      });
-      //      this.MCCTreatmentProcessess.items.push(...resul.items);
-      //      this.MCCTreatmentProcessess.pagination = resul.pagination;
-      //    }
-      //    this.MCCTreatmentProcessess.items.forEach(process => {
-      //      if (process.startedAt.includes("T")) {
-      //        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-      //      }
-
-      //      // mapear os estados para aparecer em PT ou EN
-      //      if (process.state === 'StandardIndustryClassificationChoice') {
-      //        process.state = this.translate.instant('searches.MCCTreatment');
-      //      }
-      //    });
-      //    this.orderProcesses(this.dataSourceMCCTreatment, this.empTbSortMCCTreatment, this.MCCTreatmentProcessess);
-      //  });
-      //}
     } else if (this.validationSIBSOpened) {
       this.processService.searchProcessByState('MerchantRegistration', to, currentPageSize).subscribe(resul => {
         this.logger.info('Search merchant registration processes ' + JSON.stringify(resul));
@@ -1747,38 +1461,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
         this.orderProcesses(this.dataSourceValidationSIBS, this.empTbSortValidationSIBS, this.validationSIBSProcessess);
       });
-      //if ((previousPageIndex < currentPageIdx && currentPageIdx >= Math.trunc(event.length / currentPageSize)) || currentPageSize > event.length) {
-      //  if (currentPageSize > event.length) {
-      //    this.validationSIBSProcessess = null;
-      //    to = to - 1;
-      //    currentPageSize = currentPageSize + 1;
-      //  }
-      //  this.processService.searchProcessByState('MerchantRegistration', to + 1, currentPageSize).subscribe(resul => {
-      //    this.logger.info('Search merchant registration processes ' + JSON.stringify(resul));
-      //    if (this.validationSIBSProcessess == null) {
-      //      this.validationSIBSProcessess = resul;
-      //    } else {
-      //      this.validationSIBSProcessess.items.forEach(val => {
-      //        var index = resul.items.findIndex(v => v.processId == val.processId);
-      //        if (index != -1)
-      //          resul.items.splice(index, 1);
-      //      });
-      //      this.validationSIBSProcessess.items.push(...resul.items);
-      //      this.validationSIBSProcessess.pagination = resul.pagination;
-      //    }
-      //    this.validationSIBSProcessess.items.forEach(process => {
-      //      if (process.startedAt.includes("T")) {
-      //        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-      //      }
-
-      //      // mapear os estados para aparecer em PT ou EN
-      //      if (process.state === 'MerchantRegistration') {
-      //        process.state = this.translate.instant('searches.validationSIBS');
-      //      }
-      //    });
-      //    this.orderProcesses(this.dataSourceValidationSIBS, this.empTbSortValidationSIBS, this.validationSIBSProcessess);
-      //  });
-      //}
     } else if (this.riskOpinionOpened) {
       this.processService.searchProcessByState('RiskAssessment', to, currentPageSize).subscribe(resul => {
         this.logger.info('Search risk assessment processes ' + JSON.stringify(resul));
@@ -1793,38 +1475,6 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
         this.orderProcesses(this.dataSourceRiskOpinion, this.empTbSortRiskOpinion, this.riskOpinionProcessess);
       });
-      //if ((previousPageIndex < currentPageIdx && currentPageIdx >= Math.trunc(event.length / currentPageSize)) || currentPageSize > event.length) {
-      //  if (currentPageSize > event.length) {
-      //    this.riskOpinionProcessess = null;
-      //    to = to - 1;
-      //    currentPageSize = currentPageSize + 1;
-      //  }
-      //  this.processService.searchProcessByState('RiskAssessment', to + 1, currentPageSize).subscribe(resul => {
-      //    this.logger.info('Search risk assessment processes ' + JSON.stringify(resul));
-      //    if (this.riskOpinionProcessess == null) {
-      //      this.riskOpinionProcessess = resul;
-      //    } else {
-      //      this.riskOpinionProcessess.items.forEach(val => {
-      //        var index = resul.items.findIndex(v => v.processId == val.processId);
-      //        if (index != -1)
-      //          resul.items.splice(index, 1);
-      //      });
-      //      this.riskOpinionProcessess.items.push(...resul.items);
-      //      this.riskOpinionProcessess.pagination = resul.pagination;
-      //    }
-      //    this.riskOpinionProcessess.items.forEach(process => {
-      //      if (process.startedAt.includes("T")) {
-      //        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-      //      }
-
-      //      // mapear os estados para aparecer em PT ou EN
-      //      if (process.state === 'RiskAssessment') {
-      //        process.state = this.translate.instant('searches.riskOpinion');
-      //      }
-      //    });
-      //    this.orderProcesses(this.dataSourceRiskOpinion, this.empTbSortRiskOpinion, this.riskOpinionProcessess);
-      //  });
-      //}
     } else if (this.complianceDoubtsOpened) {
       this.processService.searchProcessByState('ComplianceEvaluation', to, currentPageSize).subscribe(resul => {
         this.logger.info('Search compliance evaluation processes ' + JSON.stringify(resul));
@@ -1839,38 +1489,77 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
         this.orderProcesses(this.dataSourceComplianceDoubts, this.empTbSortComplianceDoubts, this.complianceDoubtsProcessess);
       });
-      //if ((previousPageIndex < currentPageIdx && currentPageIdx >= Math.trunc(event.length / currentPageSize)) || currentPageSize > event.length) {
-      //  if (currentPageSize > event.length) {
-      //    this.complianceDoubtsProcessess = null;
-      //    to = to - 1;
-      //    currentPageSize = currentPageSize + 1;
-      //  }
-      //  this.processService.searchProcessByState('ComplianceEvaluation', to + 1, currentPageSize).subscribe(resul => {
-      //    this.logger.info('Search compliance evaluation processes ' + JSON.stringify(resul));
-      //    if (this.complianceDoubtsProcessess == null) {
-      //      this.complianceDoubtsProcessess = resul;
-      //    } else {
-      //      this.complianceDoubtsProcessess.items.forEach(val => {
-      //        var index = resul.items.findIndex(v => v.processId == val.processId);
-      //        if (index != -1)
-      //          resul.items.splice(index, 1);
-      //      });
-      //      this.complianceDoubtsProcessess.items.push(...resul.items);
-      //      this.complianceDoubtsProcessess.pagination = resul.pagination;
-      //    }
-      //    this.complianceDoubtsProcessess.items.forEach(process => {
-      //      if (process.startedAt.includes("T")) {
-      //        process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
-      //      }
+    }
+  }
 
-      //      // mapear os estados para aparecer em PT ou EN
-      //      if (process.state === 'ComplianceEvaluation') {
-      //        process.state = this.translate.instant('searches.complianceDoubts');
-      //      }
-      //    });
-      //    this.orderProcesses(this.dataSourceComplianceDoubts, this.empTbSortComplianceDoubts, this.complianceDoubtsProcessess);
-      //  });
-      //}
+  searchProcess(filterValue: string, processes: ProcessGet, dataSource: MatTableDataSource<ProcessList>, state: string) {
+    var found = processes.items.find(p => p.processNumber == filterValue);
+    if (found == undefined) {
+      if (filterValue.length == 18) {
+        let url = this.baseUrl + 'process?state=' + state + '&number=' + filterValue;
+        this.processService.advancedSearch(url, 0, 1).subscribe(result => {
+          if (result.items.length > 0) {
+            var found = processes.items.find(p => p.processId == result.items[0].processId);
+            if (found == undefined) {
+              this.searchedId = filterValue;
+              //data e estado corretamente formatados
+              result.items.forEach(process => {
+                process.startedAt = this.datePipe.transform(process.startedAt, 'dd-MM-yyyy').toString();
+                if (process.state === 'ClientChoice') {
+                  process.state = this.translate.instant('searches.multipleClients');
+                }
+                if (process.state === 'Incomplete') {
+                  process.state = this.translate.instant('searches.incompleted');
+                }
+                if (process.state === 'Ongoing') {
+                  process.state = this.translate.instant('searches.running');
+                }
+                if (process.state === 'Returned') {
+                  process.state = this.translate.instant('searches.returned');
+                }
+                if (process.state === 'ContractAcceptance') {
+                  process.state = this.translate.instant('searches.contractAcceptance')
+                }
+                if (process.state === 'AwaitingCompletion') {
+                  process.state = this.translate.instant('searches.awaitingCompletion');
+                }
+                if (process.state === 'EligibilityAssessment') {
+                  process.state = this.translate.instant('searches.eligibility');
+                }
+                if (process.state === 'OperationsEvaluation') {
+                  process.state = this.translate.instant('searches.DOValidation');
+                }
+                if (process.state === 'NegotiationApproval') {
+                  process.state = this.translate.instant('searches.negotiationApproval');
+                }
+                if (process.state === 'StandardIndustryClassificationChoice') {
+                  process.state = this.translate.instant('searches.MCCTreatment');
+                }
+                if (process.state === 'MerchantRegistration') {
+                  process.state = this.translate.instant('searches.validationSIBS');
+                }
+                if (process.state === 'RiskAssessment') {
+                  process.state = this.translate.instant('searches.riskOpinion');
+                }
+                if (process.state === 'ComplianceEvaluation') {
+                  process.state = this.translate.instant('searches.complianceDoubts');
+                }
+              });
+              processes.items.push(...result.items);
+              dataSource.data = processes.items;
+            }
+          }
+        });
+      } else {
+        if (this.searchedId != null && this.searchedId != "") {
+          var index = processes.items.findIndex(p => p.processNumber == this.searchedId);
+          if (index != -1) {
+            processes.items.splice(index, 1);
+            dataSource.data = processes.items;
+            this.searchedId = "";
+          }
+        }
+      }
     }
   }
 

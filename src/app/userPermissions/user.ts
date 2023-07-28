@@ -6,5 +6,6 @@ export interface User {
   bankLocation?: string,
   permissions?: UserPermissions,
   token?: string,
-  authTime?: string
+  authTime?: string,
+  tenant?: string
 }

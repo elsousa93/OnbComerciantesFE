@@ -177,7 +177,7 @@
                   <!--<img src="assets/images/cancel.svg" style="height: 25px !important; vertical-align: sub;">-->
                   </button>
                 </span>
-                <button id="btn5a3"
+                <button id="btn5a3" *ngIf="!(returned == 'edit' && (processId == null || processId == ''))"
                   class="btn botao_azul_pesquisa center-align text-start vertical-align: baseline; mt-3 mb-0 ms-2 me-1 pt-3 pb-3 ps-3 btn-lg"
                   wappler-command="editContent" (click)="openReturnPopup()">
                   <span class="material-symbols-rounded m-align">

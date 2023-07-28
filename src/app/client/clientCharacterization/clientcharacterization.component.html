@@ -396,7 +396,7 @@
         </p>
         <input formControlName="socialDenomination" name="socialDenomination" type="text" id="socialDenomination"
           class="form-control campo_form" style="width: 906px;"
-          [attr.disabled]="(returned === 'consult' || (tipologia === 'ENI' || tipologia === 'Entrepeneur' || tipologia === '02')) ? true : null">
+          [attr.disabled]="(returned === 'consult') ? true : null"> <!--|| (tipologia === 'ENI' || tipologia === 'Entrepeneur' || tipologia === '02')-->
       </div>
     </div>
   </div>

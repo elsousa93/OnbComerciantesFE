@@ -227,7 +227,8 @@
     "subProduct": "Sub Produto",
     "updateStore": "Esta alteração irá eliminar a configuração da Oferta Comercial. Deseja prosseguir?",
     "proofIBAN": "Falta anexar comprovativo de IBAN",
-    "addOrCancel": "Falta adicionar ou cancelar a loja caracterizada"
+    "addOrCancel": "Falta adicionar ou cancelar a loja caracterizada",
+    "URL": "URL da Loja"
   },
   "supportingDocuments": {
     "title": "Comprovativos",
@@ -367,7 +368,7 @@
     "incompleted": "Iniciado",
     "running": "Tratamento em Backoffice",
     "completed": "Concluído",
-    "returned": "Devolvido",
+    "returned": "Devolvido BackOffice",
     "cancelled": "Cancelado",
     "contractAcceptance": "Fase Assinatura",
     "awaitingCompletion": "Em Processamento",

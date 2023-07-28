@@ -211,6 +211,8 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('exitModal') exitModal;
   exitModalRef: BsModalRef | undefined;
   edit: boolean = true;
+  initialValues: any;
+  hasChange: boolean = false;
 
   constructor(private logger: LoggerService, private translate: TranslateService, private snackBar: MatSnackBar, private http: HttpClient,
     private route: Router, private data: DataService, private queuesInfo: QueuesService, private documentService: ComprovativosService,
@@ -416,10 +418,12 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     if (observation != null && observation != "") {
       this.form.get("observation").setValue(observation);
       this.form.updateValueAndValidity();
+      this.hasChange = true;
     }
     if (!this.edit || (this.queueName == "DOValidation" && this.currentUser.permissions != UserPermissions.DO) || (this.queueName == "negotiationAproval" && this.currentUser.permissions != UserPermissions.UNICRE) || (this.queueName == "compliance" && this.currentUser.permissions != UserPermissions.COMPLIANCEOFFICE)) {
       this.form.disable();
     }
+    this.onCreateGroupFormValueChange();
   }
 
   initializeMultipleClientsForm() {
@@ -433,10 +437,12 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     if (observation != null && observation != "") {
       this.form.get("observation").setValue(observation);
       this.form.updateValueAndValidity();
+      this.hasChange = true;
     }
     if (!this.edit || this.currentUser.permissions != UserPermissions.DO) {
       this.form.disable();
     }
+    this.onCreateGroupFormValueChange();
   }
 
   initializeValidationSIBSForm() {
@@ -471,10 +477,12 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     this.processNrService.observation.subscribe(obs => observation = obs);
     if (observation != null && observation != "") {
       this.form.get("observation").setValue(observation);
+      this.hasChange = true;
     }
     this.processNrService.merchant.subscribe(m => merchant = m);
     if (merchant != null && merchant != "") {
       this.form.get("merchantEligibility").setValue(merchant);
+      this.hasChange = true;
     }
     this.processNrService.list.subscribe(value => stakes = value);
     if (stakes != null && stakes.length > 0) {
@@ -483,11 +491,13 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
           this.form.get("stakeholdersEligibility").get(val.stakeholderId).setValue(val.accepted);
         }
       });
+      this.hasChange = true;
     }
     this.form.updateValueAndValidity();
     if (!this.edit || (this.queueName == "risk" && this.currentUser.permissions != UserPermissions.COMPLIANCEOFFICE) || this.queueName == "eligibility" && (this.currentUser.permissions != UserPermissions.UNICRE && this.currentUser.permissions != UserPermissions.COMERCIAL)) { //this.currentUser.permissions != UserPermissions.CALLCENTER
       this.form.disable();
     }
+    this.onCreateGroupFormValueChange();
   }
 
   updateShopForm() {
@@ -516,10 +526,12 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       });
       this.form.updateValueAndValidity();
+      this.hasChange = true;
     }
     if (!this.edit || this.currentUser.permissions != UserPermissions.DO) {
       this.form.disable();
     }
+    this.onCreateGroupFormValueChange();
   }
 
   updateShopValidationForm() {
@@ -545,7 +557,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       context.form.setControl("equipments", formGroupEquip);
     });
     this.form.setControl("shops", formGroupShop);
-    this.form.get("enrollmentMerchantNumber").setValue(this.merchant.merchantRegistrationId);
+    this.form.get("enrollmentMerchantNumber").setValue(this.merchant.merchantRegistrationId ?? "");
     this.finished = true;
 
     var context = this;
@@ -555,10 +567,12 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     this.processNrService.observation.subscribe(obs => observation = obs);
     if (observation != null && observation != "") {
       this.form.get("observation").setValue(observation);
+      this.hasChange = true;
     }
     this.processNrService.merchant.subscribe(m => merchant = m);
     if (merchant != null && merchant != "") {
       this.form.get("enrollmentMerchantNumber").setValue(merchant);
+      this.hasChange = true;
     }
     this.processNrService.list.subscribe(value => shops = value);
     if (shops != null && shops.length > 0) {
@@ -573,10 +587,12 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
         });
       });
       this.form.updateValueAndValidity();
+      this.hasChange = true;
     }
     if (!this.edit || this.currentUser.permissions != UserPermissions.DO) {
       this.form.disable();
     }
+    this.onCreateGroupFormValueChange();
   }
 
   ngOnInit(): void {
@@ -1954,7 +1970,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   openExitPopup() {
-    if(this.edit)
+    if (this.edit && (this.hasChange || this.files.length > 0))
       this.exitModalRef = this.modalService.show(this.exitModal);
     else
       this.route.navigate(['/']);
@@ -1967,5 +1983,14 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
   confirmExit() {
     this.closeExitPopup();
     this.route.navigate(['/']);
+  }
+
+  onCreateGroupFormValueChange() {
+    const initialValue = this.form.value
+    this.form.valueChanges.subscribe(value => {
+      this.hasChange = Object.keys(initialValue).some(key => this.form.value[key] !=
+        initialValue[key]);
+      this.processNrService.changeHasChange(this.hasChange);
+    });
   }
 }

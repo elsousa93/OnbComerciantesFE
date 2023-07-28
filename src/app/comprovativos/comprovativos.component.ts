@@ -407,6 +407,27 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
       } else {
         this.processService.getDocumentFromProcess(this.processId).subscribe(result => {
           if (result.length > 0) {
+            result.forEach(function (value, index) {
+              context.processService.getDocumentDetailsFromProcess(context.processId, value.id).subscribe(doc => {
+                length++;
+                var found = context.compsToShow.find(val => val.id == doc.id);
+                if (found == undefined) {
+                  context.compsToShow.push({
+                    id: doc.id,
+                    type: "pdf",
+                    expirationDate: context.datepipe.transform(doc.validUntil, 'dd-MM-yyyy'),
+                    stakeholder: value.entityName == null ? "desconhecido" : value.entityName,
+                    status: value.isAnnulled ? 'Anulado' : "Ativo",
+                    uploadDate: latest_date,
+                    file: doc.id,
+                    documentPurpose: null,
+                    documentType: value.type
+                  });
+                } else {
+                  found.status = value.isAnnulled ? 'Anulado' : "Ativo";
+                }
+              });
+            });
             result.forEach(doc => {
               context.documentListAux.push(doc);
             });
@@ -420,22 +441,22 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
             if (val.updateProcessAction != "Delete") {
               var isAnnulled = context.documentListAux?.find(doc => doc.id == val.id)?.isAnnulled;
               var found = context.compsToShow.find(v => v.id == val.id);
-              if (found == undefined) {
-                context.compsToShow.push({
-                  id: val.id,
-                  type: "pdf",
-                  expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
-                  stakeholder: context.submissionClient.commercialName,
-                  status: isAnnulled ? 'Anulado' : "Ativo",
-                  uploadDate: latest_date,
-                  file: val?.id,
-                  documentPurpose: val.purposes[0],
-                  documentType: val.documentType
-                });
-              } else {
-                found.stakeholder = context.submissionClient.commercialName;
-                found.status = isAnnulled ? 'Anulado' : "Ativo";
-              }
+              //if (found == undefined) {
+              //  context.compsToShow.push({
+              //    id: val.id,
+              //    type: "pdf",
+              //    expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+              //    stakeholder: context.submissionClient.commercialName,
+              //    status: isAnnulled ? 'Anulado' : "Ativo",
+              //    uploadDate: latest_date,
+              //    file: val?.id,
+              //    documentPurpose: val.purposes[0],
+              //    documentType: val.documentType
+              //  });
+              //} else {
+              //  found.stakeholder = context.submissionClient.commercialName;
+              //  found.status = isAnnulled ? 'Anulado' : "Ativo";
+              //}
             }
           });
 
@@ -447,22 +468,22 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                   if (val.updateProcessAction != "Delete") {
                     var isAnnulled = context.documentListAux?.find(doc => doc.id == val.id)?.isAnnulled;
                     var found = context.compsToShow.find(v => v.id == val.id);
-                    if (found == undefined) {
-                      context.compsToShow.push({
-                        id: val.id,
-                        type: "pdf",
-                        expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
-                        stakeholder: stake.fullName,
-                        status: isAnnulled ? 'Anulado' : "Ativo",
-                        uploadDate: latest_date,
-                        file: val?.id as any,
-                        documentPurpose: val.purposes[0],
-                        documentType: val.documentType
-                      });
-                    } else {
-                      found.stakeholder = stake.fullName;
-                      found.status = isAnnulled ? 'Anulado' : "Ativo";
-                    }
+                    //if (found == undefined) {
+                    //  context.compsToShow.push({
+                    //    id: val.id,
+                    //    type: "pdf",
+                    //    expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                    //    stakeholder: stake.fullName,
+                    //    status: isAnnulled ? 'Anulado' : "Ativo",
+                    //    uploadDate: latest_date,
+                    //    file: val?.id as any,
+                    //    documentPurpose: val.purposes[0],
+                    //    documentType: val.documentType
+                    //  });
+                    //} else {
+                    //  found.stakeholder = stake.fullName;
+                    //  found.status = isAnnulled ? 'Anulado' : "Ativo";
+                    //}
                   }
                 });
               }
@@ -476,22 +497,22 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                 if (shop.updateProcessAction != "Delete") {
                   var isAnnulled = context.documentListAux?.find(doc => doc.id == shop?.documents[0]?.id)?.isAnnulled;
                   var found = context.compsToShow.find(v => v.id == shop?.documents[0]?.id);
-                  if (found == undefined) {
-                    context.compsToShow.push({
-                      id: shop.documents[0].id,
-                      type: "pdf",
-                      expirationDate: context.datepipe.transform(shop.documents[0].validUntil, 'dd-MM-yyyy'),
-                      stakeholder: shop.name,
-                      status: isAnnulled ? 'Anulado' : "Ativo",
-                      uploadDate: latest_date,
-                      file: shop.documents[0]?.id,
-                      documentPurpose: shop.documents[0].purposes[0],
-                      documentType: shop.documents[0].documentType
-                    });
-                  } else {
-                    found.stakeholder = shop?.name;
-                    found.status = isAnnulled ? 'Anulado' : "Ativo";
-                  }
+                  //if (found == undefined) {
+                  //  context.compsToShow.push({
+                  //    id: shop.documents[0].id,
+                  //    type: "pdf",
+                  //    expirationDate: context.datepipe.transform(shop.documents[0].validUntil, 'dd-MM-yyyy'),
+                  //    stakeholder: shop.name,
+                  //    status: isAnnulled ? 'Anulado' : "Ativo",
+                  //    uploadDate: latest_date,
+                  //    file: shop.documents[0]?.id,
+                  //    documentPurpose: shop.documents[0].purposes[0],
+                  //    documentType: shop.documents[0].documentType
+                  //  });
+                  //} else {
+                  //  found.stakeholder = shop?.name;
+                  //  found.status = isAnnulled ? 'Anulado' : "Ativo";
+                  //}
                 }
               }
             }
@@ -505,22 +526,22 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                   if (val.updateProcessAction != "Delete") {
                     var isAnnulled = context.documentListAux?.find(doc => doc.id == val.id)?.isAnnulled;
                     var found = context.compsToShow.find(v => v.id == val.id);
-                    if (found == undefined) {
-                      context.compsToShow.push({
-                        id: val.id,
-                        type: "pdf",
-                        expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
-                        stakeholder: corp.legalName,
-                        status: isAnnulled ? 'Anulado' : "Ativo",
-                        uploadDate: latest_date,
-                        file: val?.id as any,
-                        documentPurpose: val.purposes[0],
-                        documentType: val.documentType
-                      });
-                    } else {
-                      found.stakeholder = corp.legalName;
-                      found.status = isAnnulled ? 'Anulado' : "Ativo";
-                    }
+                    //if (found == undefined) {
+                    //  context.compsToShow.push({
+                    //    id: val.id,
+                    //    type: "pdf",
+                    //    expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                    //    stakeholder: corp.legalName,
+                    //    status: isAnnulled ? 'Anulado' : "Ativo",
+                    //    uploadDate: latest_date,
+                    //    file: val?.id as any,
+                    //    documentPurpose: val.purposes[0],
+                    //    documentType: val.documentType
+                    //  });
+                    //} else {
+                    //  found.stakeholder = corp.legalName;
+                    //  found.status = isAnnulled ? 'Anulado' : "Ativo";
+                    //}
                   }
                 });
               }
@@ -529,17 +550,17 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
           this.processInfo.documents.forEach(doc => {
             if (doc.updateProcessAction != "Delete") {
-              context.compsToShow.push({
-                id: doc.id,
-                type: "pdf",
-                expirationDate: context.datepipe.transform(doc.validUntil, 'dd-MM-yyyy'),
-                stakeholder: "desconhecido",
-                status: doc.isAnnulled ? 'Anulado' : "Ativo",
-                uploadDate: latest_date,
-                file: doc.id,
-                documentPurpose: null,
-                documentType: doc.documentType
-              });
+              //context.compsToShow.push({
+              //  id: doc.id,
+              //  type: "pdf",
+              //  expirationDate: context.datepipe.transform(doc.validUntil, 'dd-MM-yyyy'),
+              //  stakeholder: "desconhecido",
+              //  status: doc.isAnnulled ? 'Anulado' : "Ativo",
+              //  uploadDate: latest_date,
+              //  file: doc.id,
+              //  documentPurpose: null,
+              //  documentType: doc.documentType
+              //});
             }
           });
 
@@ -610,6 +631,10 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           }
         this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
           this.submission = result.result;
+
+          if (this.submission.observation != null && this.submission.observation != "")
+            this.form.get("observations").setValue(this.submission.observation);
+
           var storeLength = context.submission.shops.length;
           var stakeLength = context.submission.stakeholders.length;
           var submissionDocLength = context.submission.documents.length;

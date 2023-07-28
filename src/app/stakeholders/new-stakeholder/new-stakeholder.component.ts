@@ -619,16 +619,29 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
 
   GetCountryByZipCode(event?: any) {
     if (event != undefined) {
-      /*var ASCIICode = (event.which) ? event.which : event.keyCode;
-      if (ASCIICode > 31 && (ASCIICode < 48 || ASCIICode > 57) && (ASCIICode < 96 || ASCIICode > 105) && ASCIICode != 45)
-        return false;
-        */
-      const allowedKeys = ['Backspace', 'Delete', 'Tab'];
-      let patt = /^([0-9-])$/;
-      let result = patt.test(event.key);
+      const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
+
+      if (allowedKeys.indexOf(event?.key) === -1) {
+        var zipcode = this.formNewStakeholder.value['ZIPCode'];
+        if (zipcode.length <= 8) {
+          zipcode = zipcode.replace(/\D/g, '');
+          zipcode = zipcode.replace(/(\d{4})/g, '$1-');
+        }
+        if (zipcode.length > 8)
+          zipcode = zipcode.substring(0, 8);
+
+        this.formNewStakeholder.get('ZIPCode').setValue(zipcode);
+      }
+
+      //let patt = /^([0-9-])$/;
+      //let result = patt.test(event.key);
+      let patt = /(\b\d{4})-(\b\d{3})/i;
+      let result = patt.test(zipcode);
       if (!result && allowedKeys.indexOf(event.key) === -1)
         return false;
+
     }
+
     var currentCountry = this.formNewStakeholder.get('Country').value;
 
     if (this.sameZIPCode && this.formNewStakeholder?.value['ZIPCode']?.length == 8 && currentCountry == "PT")

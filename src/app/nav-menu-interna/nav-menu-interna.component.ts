@@ -12,6 +12,8 @@ import { IStakeholders } from '../stakeholders/IStakeholders.interface';
 import { StakeholderService } from '../stakeholders/stakeholder.service';
 import { ClientService } from '../client/client.service';
 import { Client } from '../client/Client.interface';
+import { SubmissionDocumentService } from '../submission/document/submission-document.service';
+import { StoreService } from '../store/store.service';
 
 @Component({
   selector: 'app-nav-menu-interna',
@@ -53,7 +55,7 @@ export class NavMenuInternaComponent implements OnInit {
   submissionStakeholders: IStakeholders[] = [];
   merchantInfo: Client;
 
-  constructor(private logger: LoggerService, private data: DataService, private route: Router, private processNrService: ProcessNumberService, private modalService: BsModalService, private stakeholderService: StakeholderService, private clientService: ClientService, ) {
+  constructor(private logger: LoggerService, private data: DataService, private route: Router, private processNrService: ProcessNumberService, private modalService: BsModalService, private stakeholderService: StakeholderService, private clientService: ClientService, private documentService: SubmissionDocumentService, private storeService: StoreService) {
   }
 
   ngOnInit(): void {
@@ -299,36 +301,52 @@ export class NavMenuInternaComponent implements OnInit {
       this.returnModalRef?.hide();
       var length = 0;
       var context = this;
-      context.clientService.GetClientByIdAcquiring(localStorage.getItem("submissionId")).then(function (res) {
-        context.logger.info("Get client by id result: " + JSON.stringify(res));
-        context.merchantInfo = res;
-        context.stakeholderService.GetAllStakeholdersFromSubmission(localStorage.getItem("submissionId")).then(result => {
-          context.logger.info("Get all stakeholders from submission result: " + JSON.stringify(result));
-          var stakeholders = result.result;
-          stakeholders.forEach(function (value, index) {
-            context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).then(res => {
-              length++;
-              context.logger.info("Get stakeholder from submission result: " + JSON.stringify(res));
-              context.submissionStakeholders.push(res.result);
-              if (stakeholders.length == length) {
-                if (context.submissionStakeholders.length > 0) {
-                  context.submissionStakeholders.forEach(stake => {
-                    if (context.merchantInfo.fiscalId == stake.fiscalId) {
-                      context.stakeholderService.DeleteStakeholder(localStorage.getItem("submissionId"), stake.id).subscribe(result => {
-                        context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
-                      });
-                    }
+      context.stakeholderService.GetAllStakeholdersFromSubmission(localStorage.getItem("submissionId")).then(result => {
+        context.logger.info("Get all stakeholders from submission result: " + JSON.stringify(result));
+        var stakeholders = result.result;
+        stakeholders.forEach(function (value, index) {
+          context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).then(res => {
+            length++;
+            context.logger.info("Get stakeholder from submission result: " + JSON.stringify(res));
+            context.submissionStakeholders.push(res.result);
+            if (stakeholders.length == length) {
+              if (context.submissionStakeholders.length > 0) {
+                context.submissionStakeholders.forEach(stake => {
+                  context.stakeholderService.DeleteStakeholder(localStorage.getItem("submissionId"), stake.id).subscribe(result => {
+                    context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
                   });
-                }
+                });
               }
-            }, error => {
-              context.logger.error(error);
+            }
+          }, error => {
+            context.logger.error(error);
+          });
+        });
+      }, error => {
+        context.logger.error(error);
+      });
+
+      this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).then(result => {
+        var shops = result.result;
+        if (shops.length > 0) {
+          shops.forEach(val => {
+            context.storeService.deleteSubmissionShop(localStorage.getItem("submissionId"), val.id).subscribe(res => {
+              context.logger.info("Deleted store result: " + JSON.stringify(res));
             });
           });
-        }, error => {
-          context.logger.error(error);
-        });
+        }
       });
+
+      this.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(docs => {
+        if (docs.length > 0) {
+          docs.forEach(val => {
+            context.documentService.DeleteDocumentFromSubmission(localStorage.getItem("submissionId"), val.id).subscribe(res => {
+              context.logger.info("Deleted document result: " + JSON.stringify(res));
+            });
+          });
+        }
+      });
+
       this.data.changeData(new Map().set(0, undefined)
         .set(1, undefined)
         .set(2, undefined)

@@ -73,10 +73,11 @@ export class AuthComponent implements OnInit {
     user.bankLocation = this.authForm.get('bankLocation').value;
     user.permissions = this.authForm.get('role').value;
     user.authTime = (new Date()).toLocaleString('pt-PT');
+    user.tenant = this.authForm.get('tenant').value;
 
     //fazer um if para quando o utilizador for unicre ou banca conseguir realizar o login neste portal, caso contrario não deve ser possível
 
-    this.token.getLoginToken(user.userName, user.bankName, user.bankLocation, user.permissions).then(result => {
+      this.token.getLoginToken(user.userName, user.bankName, user.bankLocation, user.permissions, user.tenant).then(result => {
       this.logger.info("Get login token result: " + JSON.stringify(result));
       user.token = result.access_token;
       this.token.getLoginTokenInfo(user.token).then(res => {
@@ -85,6 +86,7 @@ export class AuthComponent implements OnInit {
         user.bankName = res["ext-bank"];
         user.bankLocation = res["ext-bankLocation"];
         user.permissions = res["ext-acquiring-profile"];
+        user.tenant = res["ext-tenant"];
         var newDate = new Date(res.exp * 1000);
         this.timeout = newDate.getTime() - new Date().getTime();
         this.expirationCounter(this.timeout);
@@ -121,7 +123,8 @@ export class AuthComponent implements OnInit {
       userName: new FormControl('', Validators.required),
       bankName: new FormControl('', Validators.required),
       bankLocation: new FormControl('', Validators.required),
-      role: new FormControl('', Validators.required)
+      role: new FormControl('', Validators.required),
+      tenant: new FormControl('')
     })
   }
 

@@ -61,6 +61,11 @@
                 <option *ngFor="let role of roles" value={{role.code}}>{{role.name}}</option>
               </select>
             </div>
+            <div>
+              <p class="titulo-form-simples" for="tenant">Tenant: </p>
+              <input type="text" formControlName="tenant" name="tenant" id="tenant"
+                class="form-control campo_form" />
+            </div>
           </div>
         </div>
         <button id="btn3a" class="btn text-start bg-primary text-light btn-primary style10 mt-3 ms-2 btn-lg"

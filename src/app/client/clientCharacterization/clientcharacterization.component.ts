@@ -125,7 +125,7 @@ export class ClientCharacterizationComponent implements OnInit {
       commercialSociety: new FormControl(false, [Validators.required]), //sim
       collectCRC: new FormControl(this.hasCRC ? true : collectCRC)
     }));
-    if (this.form.get("socialDenomination").value.length > 40) {
+    if (this.form.get("socialDenomination").value.length > 40 || this.form.get("socialDenomination").value == null || this.form.get("socialDenomination").value == "") {
       this.form.get("socialDenomination").enable();
     } else {
       this.form.get("socialDenomination").disable();

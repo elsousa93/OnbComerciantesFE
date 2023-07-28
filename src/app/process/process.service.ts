@@ -9,7 +9,7 @@ import { BankInformation, Client, Contacts, ForeignFiscalInformation, Headquarte
 import { HttpMethod } from '../enums/enum-data';
 import { LoadingService } from '../loading.service';
 import { AuthService } from '../services/auth.service';
-import { CorporateEntity, IStakeholders } from '../stakeholders/IStakeholders.interface';
+import { CorporateEntity, IStakeholders, PostCorporateEntity } from '../stakeholders/IStakeholders.interface';
 import { ShopDetailsAcquiring, ShopEquipment } from '../store/IStore.interface';
 import { PostDocument } from '../submission/document/ISubmission-document';
 import { SimplifiedReference } from '../submission/ISubmission.interface';
@@ -201,7 +201,7 @@ export class ProcessService {
     return this.API.callAPIAcquiring(HttpMethod.POST, url, document);
   }
 
-  addCorporateEntityToProcess(processId: string, corporate: CorporateEntity) {
+  addCorporateEntityToProcess(processId: string, corporate: PostCorporateEntity) {
     var url = this.baseUrl + 'process/' + processId + '/corporate-entity';
     return this.API.callAPIAcquiring(HttpMethod.POST, url, corporate);
   }

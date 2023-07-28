@@ -22,7 +22,7 @@ import { StakeholderService } from '../../stakeholders/stakeholder.service';
 import { ProcessNumberService } from '../../nav-menu-presencial/process-number.service';
 import { StoreService } from '../../store/store.service';
 import { ShopDetailsAcquiring } from '../../store/IStore.interface';
-import { IStakeholders, OutboundDocument } from '../../stakeholders/IStakeholders.interface';
+import { IStakeholders, OutboundDocument, PostCorporateEntity } from '../../stakeholders/IStakeholders.interface';
 import { AuthService } from '../../services/auth.service';
 import { ISubmissionDocument } from '../../submission/document/ISubmission-document';
 import { SubmissionPostDocumentTemplate } from '../../submission/ISubmission.interface';
@@ -943,21 +943,43 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         }
       };
       if (this.returned == null) {
-        if (this.clientContext.tipologia === 'ENI' || this.clientContext.tipologia === 'Entrepeneur' || this.clientContext.tipologia === '02') {
-          var context = this;
-          var client = this.clientContext.getClient();
-          var stakeholders = this.clientContext.newSubmission.stakeholders;
-          //eliminar dados aqui
-          if (this.submissionStakeholders.length > 0) {
-            this.submissionStakeholders.forEach(stake => {
-              if (client.fiscalId == stake.fiscalId) {
-                context.stakeholderService.DeleteStakeholder(localStorage.getItem("submissionId"), stake.id).subscribe(result => {
-                  context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
-                });
-              }
+        //if (this.clientContext.tipologia === 'ENI' || this.clientContext.tipologia === 'Entrepeneur' || this.clientContext.tipologia === '02') {
+        var context = this;
+        var client = this.clientContext.getClient();
+        var stakeholders = this.clientContext.newSubmission.stakeholders;
+        //eliminar dados aqui
+        if (this.submissionStakeholders.length > 0) {
+          this.submissionStakeholders.forEach(stake => {
+            //if (client.fiscalId == stake.fiscalId) {
+              context.stakeholderService.DeleteStakeholder(localStorage.getItem("submissionId"), stake.id).subscribe(result => {
+                context.logger.info("Deleted stakeholder result: " + JSON.stringify(result));
+              });
+            //}
+          });
+        }
+
+        this.storeService.getSubmissionShopsList(localStorage.getItem("submissionId")).then(result => {
+          var shops = result.result;
+          if (shops.length > 0) {
+            shops.forEach(val => {
+              context.storeService.deleteSubmissionShop(localStorage.getItem("submissionId"), val.id).subscribe(res => {
+                context.logger.info("Deleted store result: " + JSON.stringify(res));
+              });
             });
           }
-        }
+        });
+
+        this.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(docs => {
+          if (docs.length > 0) {
+            docs.forEach(val => {
+              context.documentService.DeleteDocumentFromSubmission(localStorage.getItem("submissionId"), val.id).subscribe(res => {
+                context.logger.info("Deleted document result: " + JSON.stringify(res));
+              });
+            });
+          }
+        });
+
+        //}
         this.data.changeData(new Map().set(0, undefined)
           .set(1, undefined)
           .set(2, undefined)
@@ -1185,13 +1207,37 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
                 if (value.fiscalId !== client.fiscalId) {
                   if (context.returned == null) {
-                    context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
-                      context.logger.info("Created stakeholder result: " + JSON.stringify(result));
-                    });
+                    if (['5', '6', '8', '9'].includes(value.fiscalId.substr(0, 1))) {
+                      var corp = {
+                        fiscalId: value.fiscalId,
+                        headquartersAddress: value.fiscalAddress,
+                        legalName: value.fullName,
+                        shortName: value.shortName
+                      } as PostCorporateEntity;
+                      context.stakeholderService.AddNewCorporateEntity(submissionID, corp).then(result => {
+                        context.logger.info("Created corporate entity result: " + JSON.stringify(result));
+                      });
+                    } else {
+                      context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+                        context.logger.info("Created stakeholder result: " + JSON.stringify(result));
+                      });
+                    }
                   } else {
-                    context.processService.addStakeholderToProcess(context.processId, value).then(result => {
-                      context.logger.info("Created stakeholder result: " + JSON.stringify(result));
-                    });
+                    if (['5', '6', '8', '9'].includes(value.fiscalId.substr(0, 1))) {
+                      var corp = {
+                        fiscalId: value.fiscalId,
+                        headquartersAddress: value.fiscalAddress,
+                        legalName: value.fullName,
+                        shortName: value.shortName
+                      } as PostCorporateEntity;
+                      context.processService.addCorporateEntityToProcess(context.processId, corp).then(result => {
+                        context.logger.info("Created corporate entity result: " + JSON.stringify(result));
+                      });
+                    } else {
+                      context.processService.addStakeholderToProcess(context.processId, value).then(result => {
+                        context.logger.info("Created stakeholder result: " + JSON.stringify(result));
+                      });
+                    }
                   }
                 } else {
                   if (localStorage.getItem("documentType") == "0501") {
@@ -1234,13 +1280,37 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 }
               } else {
                 if (context.returned == null) {
-                  context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
-                    context.logger.info("Created stakeholder result: " + JSON.stringify(result));
-                  });
+                  if (['5', '6', '8', '9'].includes(value.fiscalId.substr(0, 1))) {
+                    var corp = {
+                      fiscalId: value.fiscalId,
+                      headquartersAddress: value.fiscalAddress,
+                      legalName: value.fullName,
+                      shortName: value.shortName
+                    } as PostCorporateEntity;
+                    context.stakeholderService.AddNewCorporateEntity(submissionID, corp).then(result => {
+                      context.logger.info("Created corporate entity result: " + JSON.stringify(result));
+                    });
+                  } else {
+                    context.stakeholderService.CreateNewStakeholder(submissionID, value).subscribe(result => {
+                      context.logger.info("Created stakeholder result: " + JSON.stringify(result));
+                    });
+                  }
                 } else {
-                  context.processService.addStakeholderToProcess(context.processId, value).then(result => {
-                    context.logger.info("Created stakeholder result: " + JSON.stringify(result));
-                  });
+                  if (['5', '6', '8', '9'].includes(value.fiscalId.substr(0, 1))) {
+                    var corp = {
+                      fiscalId: value.fiscalId,
+                      headquartersAddress: value.fiscalAddress,
+                      legalName: value.fullName,
+                      shortName: value.shortName
+                    } as PostCorporateEntity;
+                    context.processService.addCorporateEntityToProcess(context.processId, corp).then(result => {
+                      context.logger.info("Created corporate entity result: " + JSON.stringify(result));
+                    });
+                  } else {
+                    context.processService.addStakeholderToProcess(context.processId, value).then(result => {
+                      context.logger.info("Created stakeholder result: " + JSON.stringify(result));
+                    });
+                  }
                 }
               }
             });

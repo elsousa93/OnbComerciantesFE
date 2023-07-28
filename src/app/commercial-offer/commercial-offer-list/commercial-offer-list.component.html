@@ -390,9 +390,9 @@
                   <ng-container matColumnDef="delete">
                     <mat-header-cell *matHeaderCellDef> </mat-header-cell>
                     <mat-cell *matCellDef="let storeEquip">
-                      <span [hidden]="storeEquip == null" (click)="deleteConfiguration(storeEquip)"
+                      <span [hidden]="storeEquip == null" (click)="deleteConfiguration(storeEquip, true)"
                             class="material-symbols-rounded delete-icon delete-blue icon-delete-blue"
-                            [ngStyle]="{'cursor': (returned != 'consult') ? 'pointer' : ''}" style="background-color: rgb(var(--bs-primary-rgb))">
+                            [ngStyle]="{'cursor': (returned != 'consult' && isNewConfig == null) ? 'pointer' : ''}" style="background-color: rgb(var(--bs-primary-rgb))">
                         <!--<img src="assets/images/delete_blue.svg">-->
                       </span>
                     </mat-cell>

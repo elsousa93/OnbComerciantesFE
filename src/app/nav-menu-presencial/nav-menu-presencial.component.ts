@@ -76,10 +76,9 @@ export class NavMenuPresencialComponent implements OnInit {
   edit: boolean;
   tenant: string
   redirectUrl: string;
+  hasChange: boolean;
 
   constructor(private route: Router, private snackBar: MatSnackBar, private processNrService: ProcessNumberService, private processService: ProcessService, private dataService: DataService, private authService: AuthService, public _location: Location, private logger: LoggerService, public translate: TranslateService, private tableInfo: TableInfoService, private modalService: BsModalService, private configuration: AppConfigService) {
-    this.tenant = this.configuration.getConfig().tenant;
-    this.redirectUrl = this.configuration.getConfig().redirectUrl[this.tenant];
     authService.currentUser.subscribe(user => this.currentUser = user);
     this.progressImage = undefined;
     this.processNumber = null;
@@ -308,15 +307,33 @@ export class NavMenuPresencialComponent implements OnInit {
   }
 
   logout() {
+    this.tenant = this.authService.GetCurrentUser().tenant;
+    this.redirectUrl = this.configuration.getConfig().redirectUrl[this.tenant];
+
+    if (environment.production != null) {
+      if (this.redirectUrl != null) {
+        this.authService.changeExpired(true);
+        location.replace(this.redirectUrl);
+      } else {
+        if (this.authService.GetCurrentUser().token != null && this.authService.GetCurrentUser().token != "") {
+          history.pushState(null, "");
+          this.authService.changeExpired(true);
+        } else {
+          if (environment.production == true) {
+            history.pushState(null, "");
+            this.authService.changeExpired(true);
+          }
+        }
+      }
+    }
+
     localStorage.removeItem('auth');
     this.authService.reset();
     this.snackBar.open(this.translate.instant('generalKeywords.logout'), '', {
       duration: 4000,
       panelClass: ['snack-bar']
     });
-    if (environment.production == true) {
-      location.replace(this.redirectUrl);
-    }
+
   }
 
   login() {
@@ -327,7 +344,8 @@ export class NavMenuPresencialComponent implements OnInit {
   goToHomePage() {
     if (this.route.url == '/queues-detail') {
       this.processNrService.edit.subscribe(edit => this.edit = edit);
-      if (this.edit)
+      this.processNrService.hasChange.subscribe(change => this.hasChange = change);
+      if (this.edit && this.hasChange)
         this.exitModalRef = this.modalService.show(this.exitModal);
       else
         this.route.navigate(['/']);

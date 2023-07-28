@@ -275,7 +275,28 @@ export class AddStoreComponent implements OnInit {
     return true;
   }
 
-  GetComercialCenterByZipCode() {
+  GetComercialCenterByZipCode(event?: any) {
+    if (event != undefined) {
+      const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
+
+      if (allowedKeys.indexOf(event?.key) === -1) {
+        var zipcode = this.formStores.value['zipCodeStore'];
+        if (zipcode.length <= 8) {
+          zipcode = zipcode.replace(/\D/g, '');
+          zipcode = zipcode.replace(/(\d{4})/g, '$1-');
+        }
+        if (zipcode.length > 8)
+          zipcode = zipcode.substring(0, 8);
+
+        this.formStores.get('zipCodeStore').setValue(zipcode);
+      }
+
+      let patt = /(\b\d{4})-(\b\d{3})/i;
+      let result = patt.test(zipcode);
+      if (!result && allowedKeys.indexOf(event.key) === -1)
+        return false;
+
+    }
     this.foundComercialCentre = false;
     this.showError = false;
     this.subzonesShopping = [];
@@ -301,7 +322,29 @@ export class AddStoreComponent implements OnInit {
 
   }
 
-  GetCountryByZipCode() {
+  GetCountryByZipCode(event?: any) {
+    if (event != undefined) {
+      const allowedKeys = ['Backspace', 'ArrowLeft', 'ArrowRight', 'Delete', 'Tab'];
+
+      if (allowedKeys.indexOf(event?.key) === -1) {
+        var zipcode = this.formStores.value['zipCodeStore'];
+        if (zipcode.length <= 8) {
+          zipcode = zipcode.replace(/\D/g, '');
+          zipcode = zipcode.replace(/(\d{4})/g, '$1-');
+        }
+        if (zipcode.length > 8)
+          zipcode = zipcode.substring(0, 8);
+
+        this.formStores.get('zipCodeStore').setValue(zipcode);
+      }
+
+      let patt = /(\b\d{4})-(\b\d{3})/i;
+      let result = patt.test(zipcode);
+      if (!result && allowedKeys.indexOf(event.key) === -1)
+        return false;
+
+    }
+
     this.subzonesShopping = null;
     var currentCountry = this.formStores.get('countryStore').value;
     this.formStores.get('addressStore').setValue('');

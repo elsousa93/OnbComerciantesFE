@@ -12,8 +12,8 @@
   "clientSecret": "SIBS123456",
   "baseUrlCC": "https://shwbs3.tservices.sibspteste/GatewayApp/backendportalacquiring",
   "timeout": 30,
-  "tenant": "0800",
   "redirectUrl": {
-    "0800": "https://www.reduniq.pt/"
+    "0800": "https://www.reduniq.pt/",
+    "default": "/expired"
   }
 }
