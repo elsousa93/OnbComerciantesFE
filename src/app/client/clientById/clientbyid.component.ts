@@ -380,7 +380,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
 
     if (this.isClient == null) {
-      this.subscription = this.data.currentIsClient.subscribe(isClient => this.isClient = isClient);
+      this.subscription = this.data.currentIsClient.subscribe(isClient => this.isClient = isClient); 
     }
     if (this.dataCC == null) {
       this.subscription = this.data.currentDataCC.subscribe(dataCC => this.dataCC = dataCC);
@@ -753,7 +753,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               clientToInsert.shareCapital = {};
               clientToInsert.merchantType = this.tipologia;
               clientToInsert.documentationDeliveryMethod = 'Portal';
-              this.clientContext.isClient = false;
+              this.clientContext.isClient = false; 
               this.clientContext.setNIFNIPC(this.NIFNIPC);
             }).then(result => {
               if (this.clientContext.isClient == false) {
@@ -1206,7 +1206,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             stakeholders.forEach(function (value, idx) {
               if (context.clientContext.tipologia === 'ENI' || context.clientContext.tipologia === 'Entrepeneur' || context.clientContext.tipologia === '02') {
                 if (value.fiscalId !== client.fiscalId) {
-                  if (context.returned == null) {
+                  if (context.returned == null || context.returned == 'edit' && (context.processId == '' || context.processId == null)) {
                     if (['5', '6', '8', '9'].includes(value.fiscalId.substr(0, 1))) {
                       var corp = {
                         fiscalId: value.fiscalId,
@@ -1279,7 +1279,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                   }
                 }
               } else {
-                if (context.returned == null) {
+                if (context.returned == null || context.returned == 'edit' && (context.processId == '' || context.processId == null)) {
                   if (['5', '6', '8', '9'].includes(value.fiscalId.substr(0, 1))) {
                     var corp = {
                       fiscalId: value.fiscalId,
