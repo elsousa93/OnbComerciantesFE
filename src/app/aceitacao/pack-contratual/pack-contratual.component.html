@@ -196,11 +196,11 @@
                     </ng-container>
                   </span>-->
 
-                  <h4 class="text-primary mt-5 ps-0">
+                  <h4 *ngIf="manualSignature" class="text-primary mt-5 ps-0">
                     <span class="attach-file icon-attach-file"></span>
                     {{'acceptance.contratualPack.processDocuments'|translate|uppercase}}
                   </h4>
-                  <div class="table-responsive pb-3 mb-2" style="margin-bottom: 0px !important;">
+                  <div *ngIf="manualSignature" class="table-responsive pb-3 mb-2" style="margin-bottom: 0px !important;">
                     <p class="titulo-form-simples mt-0 mb-3">
                       {{'acceptance.contratualPack.scannAttach'|translate|uppercase}}
                     </p>
@@ -256,7 +256,7 @@
                       <textarea id="observations" formControlName="observations" name="observations" class="form-control"></textarea>
                     </div>
                   </form>
-                  <div style="margin-top: 25px; margin-bottom: 0px !important; padding-left: 0px;">
+                  <div *ngIf="manualSignature" style="margin-top: 25px; margin-bottom: 0px !important; padding-left: 0px;">
                     <!--<div class="form-check">
       <input class="form-check-input" type="checkbox" value="" id="input5" name="input5" (change)="validatedStakeIdentification($event.target.checked)">
       <label class="form-check-label" for="input5">{{'acceptance.stakeIdentification'|translate}}</label>

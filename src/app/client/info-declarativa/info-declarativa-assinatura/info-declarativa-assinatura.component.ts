@@ -145,7 +145,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
             stakeholders.forEach(function (value, index) {
               context.stakeholderService.GetStakeholderFromSubmission(context.submissionId, value.id).then(res => {
                 var stake = res.result;
-                if (stake.signType == 'CitizenCard') {
+                if (stake.signType != 'NotSign') {
                   if (context.currentStakes.has(stake.id)) {
                     context.form.addControl(stake.id, new FormControl(context.currentStakes.get(stake.id), Validators.required));
                   } else {
@@ -166,7 +166,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
               stakeholders.forEach(function (value, index) {
                 context.processService.getStakeholderByIdFromProcess(context.processId, value.id).subscribe(res => {
                   var stake = res;
-                  if (stake.signType == 'CitizenCard') {
+                  if (stake.signType != 'NotSign') {
                     if (context.currentStakes.has(stake.id)) {
                       context.form.addControl(stake.id, new FormControl(context.currentStakes.get(stake.id), Validators.required));
                     } else {
@@ -184,7 +184,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
             this.processService.getUpdateProcessInfo(this.processId, this.updateProcessId).then(result => {
               var stakeholders = result.result.stakeholders;
               stakeholders.forEach(stake => {
-                if (stake.signType == 'CitizenCard') {
+                if (stake.signType != 'NotSign') {
                   if (context.currentStakes.has(stake.id)) {
                     context.form.addControl(stake.id, new FormControl(context.currentStakes.get(stake.id), Validators.required));
                   } else {

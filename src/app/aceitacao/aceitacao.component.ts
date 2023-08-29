@@ -14,7 +14,7 @@ import { LoggerService } from '../logger.service';
 import { DataService } from '../nav-menu-interna/data.service';
 import { ProcessNumberService } from '../nav-menu-presencial/process-number.service';
 import { BusinessIssueViewModel, IssueViewModel, ProcessHistory, ProcessList, ProcessService, SearchProcessHistory } from '../process/process.service';
-import { ContractAcceptance, State } from '../queues-detail/IQueues.interface';
+import { ContractAcceptance, ContractDigitalAcceptance, DigitalIdentification, State } from '../queues-detail/IQueues.interface';
 import { QueuesService } from '../queues-detail/queues.service';
 import { AuthService } from '../services/auth.service';
 import { IStakeholders } from '../stakeholders/IStakeholders.interface';
@@ -370,14 +370,27 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
   submit(state: string) {
     var externalState;
     var stateType;
-
-    externalState = {} as ContractAcceptance;
-    stateType = State.CONTRACT_ACCEPTANCE;
-    externalState.$type = stateType;
-    externalState.contractAcceptanceResult = state;
-
+    if (this.process.state == "ContractAcceptance") {
+      externalState = {} as ContractAcceptance;
+      stateType = State.CONTRACT_ACCEPTANCE;
+      externalState.$type = stateType;
+      externalState.contractAcceptanceResult = state;
+    } else if (this.process.state == "ContractDigitalAcceptance") {
+      externalState = {} as ContractDigitalAcceptance;
+      stateType = State.CONTRACT_DIGITAL_ACCEPTANCE;
+      externalState.$type = stateType;
+      if (state == "Cancel")
+        state = "CancelDigitalSignature";
+      externalState.contractDigitalAcceptanceResult = state;
+    } else if (this.process.state == "DigitalIdentification"){
+      externalState = {} as DigitalIdentification;
+      stateType = State.DIGITAL_IDENTIFICATION;
+      externalState.$type = stateType;
+      if (state == "Cancel")
+        state = "CancelDigitalIdentification";
+      externalState.digitalIdentificationResult = state;
+    }
     externalState.submissionUser = this.authService.GetCurrentUser().userName;
-
     externalState.userObservations = this.observation;
     this.queuesInfo.postExternalState(this.processId, stateType, externalState).then(res => {
       this.route.navigate(['/']);

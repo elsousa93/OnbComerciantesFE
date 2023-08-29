@@ -256,7 +256,8 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   username: string = "";
   interval: any;
   baseUrl: string;
-  searchedId: string; 
+  searchedId: string;
+  window: any = window;
 
   constructor(private logger: LoggerService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
@@ -963,7 +964,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.deleteModalRef?.hide();
       var state: State;
       var queueModel;
-      if (this.processQueueToDelete["tenantState"] == "ContractDigitalAcceptance") {
+      if (this.processQueueToDelete["state"] == "ContractDigitalAcceptance" || this.processQueueToDelete["state"] == "Aceitação de contrato digital" || this.processQueueToDelete["tenantState"] == "ContractDigitalAcceptance") {
         state = State.CONTRACT_DIGITAL_ACCEPTANCE;
         queueModel = {
           $type: "ContractDigitalAcceptance",
@@ -971,7 +972,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           submissionUser: this.authService.GetCurrentUser().userName
         };
       }
-      if (this.processQueueToDelete["tenantState"] == "ContractAcceptance") {
+      if (this.processQueueToDelete["state"] == "ContractAcceptance" || this.processQueueToDelete["state"] == "Fase Assinatura" || this.processQueueToDelete["tenantState"] == "ContractAcceptance") {
         state = State.CONTRACT_ACCEPTANCE;
         queueModel = {
           $type: "ContractAcceptanceModel",
@@ -979,7 +980,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           submissionUser: this.authService.GetCurrentUser().userName
         };
       }
-      if (this.processQueueToDelete["tenantState"] == "DigitalIdentification") {
+      if (this.processQueueToDelete["state"] == "DigitalIdentification" || this.processQueueToDelete["state"] == "Identificação digital" || this.processQueueToDelete["tenantState"] == "DigitalIdentification") {
         state = State.DIGITAL_IDENTIFICATION;
         queueModel = {
           $type: "DigitalIdentification",
@@ -1604,5 +1605,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     var iv = CryptoJS.lib.WordArray.create([0x00, 0x00, 0x00, 0x00]);  // Use zero vector as IV
     var decrypted = CryptoAES.decrypt(ciphertextB64.toString(), key, { iv : iv }); // By default: CBC, PKCS7 
     return decrypted.toString(CryptoHex);                       // Convert into string (using Utf8)
-}
+  }
+
+  sortData(event) {
+    //console.log(event);
+  }
 }

@@ -213,20 +213,24 @@ export class ClientCharacterizationComponent implements OnInit {
 
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
 
+
+
     this.changeFormStructure(new FormGroup({
       crcCode: new FormControl(this.processClient.code /*this.client.incorporationStatement.code*/, [Validators.required]), //sim
       natJuridicaN1: new FormControl({ value: this.processClient.legalNature, disabled: (this.processClient.legalNature == "" || this.processClient.legalNature == null) ? false : true/*, disabled: this.clientExists */ }, [Validators.required]), //sim
       natJuridicaNIFNIPC: new FormControl(this.NIFNIPC, [Validators.required]), //sim
       natJuridicaN2: new FormControl(''), //sim
       socialDenomination: new FormControl(this.processClient?.companyName?.slice(0, 100), Validators.required), //sim
+
       CAE1: new FormControl(this.processClient.mainEconomicActivity, Validators.required), //sim
       CAE1Branch: new FormControl(branch1), //talvez
-      CAESecondary1: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[0] : ''), //sim
-      CAESecondary1Branch: new FormControl(''), //talvez
-      CAESecondary2: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[1] : ''), //sim
-      CAESecondary2Branch: new FormControl(''), //talvez
-      CAESecondary3: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[2] : ''), //sim
-      CAESecondary3Branch: new FormControl(''), //talvez
+      //CAESecondary1: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[0] : ''), //sim
+      //CAESecondary1Branch: new FormControl(''), //talvez
+      //CAESecondary2: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[1] : ''), //sim
+      //CAESecondary2Branch: new FormControl(''), //talvez
+      //CAESecondary3: new FormControl((this.processClient.secondaryEconomicActivity !== null) ? this.processClient.secondaryEconomicActivity[2] : ''), //sim
+      //CAESecondary3Branch: new FormControl(''), //talvez
+
       constitutionDate: new FormControl(formatedDate), //sim this.processClient.capitalStock.date + ''
       country: new FormControl(this.processClient.headquartersAddress.country, Validators.required), //sim
       location: new FormControl(this.processClient.headquartersAddress.postalArea, Validators.required), //sim
@@ -236,70 +240,26 @@ export class ClientCharacterizationComponent implements OnInit {
       collectCRC: new FormControl(true, [Validators.required])
     }));
 
+    this.processClient?.secondaryEconomicActivity?.forEach(value => {
+      let formAux = this.form as FormGroup;
+      formAux.setControl("CAE" + value, new FormControl(value));
+      formAux.setControl("CAESecondary" + value, new FormControl(''));
+      this.searchBranch(value).then((data) => {
+        formAux.get("CAESecondary" + data.code).setValue(data.description);
+      });
+    });
+
     if (this.form.get("socialDenomination").value.length > 40) {
       this.form.get("socialDenomination").enable();
     } else {
       this.form.get("socialDenomination").disable();
     }
 
-    this.form.get("CAE1").valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.form.get("CAE1Branch").setValidators([Validators.required]);
-      } else {
-        this.form.get("CAE1Branch").clearValidators();
-      }
-      this.form.get("CAE1Branch").updateValueAndValidity();
-    });
-    this.form.get("CAESecondary1").valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.form.get("CAESecondary1Branch").setValidators([Validators.required]);
-      } else {
-        this.form.get("CAESecondary1Branch").clearValidators();
-      }
-      this.form.get("CAESecondary1Branch").updateValueAndValidity();
-    });
-    this.form.get("CAESecondary2").valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.form.get("CAESecondary2Branch").setValidators([Validators.required]);
-      } else {
-        this.form.get("CAESecondary2Branch").clearValidators();
-      }
-      this.form.get("CAESecondary2Branch").updateValueAndValidity();
-    });
-    this.form.get("CAESecondary3").valueChanges.subscribe(data => {
-      if (data !== '') {
-        this.form.get("CAESecondary3Branch").setValidators([Validators.required]);
-      } else {
-        this.form.get("CAESecondary3Branch").clearValidators();
-      }
-      this.form.get("CAESecondary3Branch").updateValueAndValidity();
-    });
-
     this.searchBranch(this.processClient.mainEconomicActivity.split("-")[0])
       .then((data) => {
         this.form.get("CAE1Branch").setValue(data.description);
-      });
+    });
 
-    if (this.processClient.secondaryEconomicActivity[0] != null && this.processClient.secondaryEconomicActivity[0] != '') {
-      this.searchBranch(this.processClient.secondaryEconomicActivity[0]?.split("-")[0])
-        .then((data) => {
-          this.form.get("CAESecondary1Branch").setValue(data.description);
-        });
-    }
-
-    if (this.processClient.secondaryEconomicActivity[1] != null && this.processClient.secondaryEconomicActivity[1] != '') {
-      this.searchBranch(this.processClient.secondaryEconomicActivity[1]?.split("-")[0])
-        .then((data) => {
-          this.form.get("CAESecondary2Branch").setValue(data.description);
-        });
-    }
-
-    if (this.processClient.secondaryEconomicActivity[2] != null && this.processClient.secondaryEconomicActivity[2] != '') {
-      this.searchBranch(this.processClient.secondaryEconomicActivity[2]?.split("-")[0])
-        .then((data) => {
-          this.form.get("CAESecondary3Branch").setValue(data.description);
-        });
-    }
     this.formClientCharacterizationReady.emit(this.form);
   }
 
@@ -735,7 +695,8 @@ export class ClientCharacterizationComponent implements OnInit {
           "isBeneficiary": value.isBeneficiary,
           "role": value.role,
           "isProxy": false,
-          "signType": "CitizenCard"
+          "signType": "CitizenCard",
+          "clientId": value["clientId"] != null ? value["clientId"] : null
         } as IStakeholders;
         newSubmission.stakeholders.push(stakeholderToInsert);
       } else {
@@ -744,6 +705,10 @@ export class ClientCharacterizationComponent implements OnInit {
     });
 
     if (crc != null && crc != undefined) {
+      let othersEconomicActivitiesCode = "";
+      this.processClient?.secondaryEconomicActivity?.forEach(value => {
+        othersEconomicActivitiesCode += value + ";";
+      });
       newSubmission.documents.push({
         documentType: "0034",
         documentPurpose: 'CorporateBody',
@@ -767,11 +732,12 @@ export class ClientCharacterizationComponent implements OnInit {
           postalArea: this.processClient.headquartersAddress.postalArea,
           country: this.processClient.headquartersAddress.country,
           economicActivityCode: this.processClient.mainEconomicActivity,
-          economicActivityCode2: this.processClient?.secondaryEconomicActivity[0],
-          economicActivityCode3: this.processClient?.secondaryEconomicActivity[1],
-          economicActivityCode4: this.processClient?.secondaryEconomicActivity[2],
-          economicActivityCode5: null,
-          economicActivityCode6: null,
+          othersEconomicActivitiesCode: othersEconomicActivitiesCode,
+          //economicActivityCode2: this.processClient?.secondaryEconomicActivity[0],
+          //economicActivityCode3: this.processClient?.secondaryEconomicActivity[1],
+          //economicActivityCode4: this.processClient?.secondaryEconomicActivity[2],
+          //economicActivityCode5: null,
+          //economicActivityCode6: null,
           validUntil: this.processClient.expirationDate
         }
       })

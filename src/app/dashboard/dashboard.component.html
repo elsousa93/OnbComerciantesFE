@@ -292,7 +292,7 @@
               </h2>
               <div id="flush-collapsePending" class="accordion-collapse collapse" aria-labelledby="flush-headingPending"
                    data-bs-parent="#accordionFlushExample">
-                <mat-table [dataSource]="dataSourcePendentes" matSort #empTbSort="matSort">
+                <mat-table [dataSource]="dataSourcePendentes" matSort #empTbSort="matSort" (matSortChange)="sortData($event)">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -323,10 +323,10 @@
                   </ng-container>
                   <!-- State Column -->
                   <ng-container matColumnDef="state">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell [hidden]="window.outerWidth <= 1024" *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
+                    <mat-cell [hidden]="window.outerWidth <= 1024" *matCellDef="let row"> {{row.state}} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
@@ -415,10 +415,10 @@
                   </ng-container>
                   <!-- State Column -->
                   <ng-container matColumnDef="state">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell [hidden]="window.outerWidth <= 1024" *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
+                    <mat-cell [hidden]="window.outerWidth <= 1024" *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
@@ -503,10 +503,10 @@
                   </ng-container>
                   <!-- State Column -->
                   <ng-container matColumnDef="state">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell [hidden]="window.outerWidth <= 1024" *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
+                    <mat-cell [hidden]="window.outerWidth <= 1024" *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
@@ -595,10 +595,10 @@
                   </ng-container>
                   <!-- State Column -->
                   <ng-container matColumnDef="state">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell [hidden]="window.outerWidth <= 1024" *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
+                    <mat-cell [hidden]="window.outerWidth <= 1024" *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">
@@ -686,10 +686,10 @@
                   </ng-container>
                   <!-- State Column -->
                   <ng-container matColumnDef="state">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell [hidden]="window.outerWidth <= 1024" *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
+                    <mat-cell [hidden]="window.outerWidth <= 1024" *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Assigned Column -->
                   <ng-container matColumnDef="assigned">
@@ -787,10 +787,10 @@
                   </ng-container>
                   <!-- State Column -->
                   <ng-container matColumnDef="state">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell [hidden]="window.outerWidth <= 1024" *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
+                    <mat-cell [hidden]="window.outerWidth <= 1024" *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Assigned Column -->
                   <ng-container matColumnDef="assigned">
@@ -887,10 +887,10 @@
                   </ng-container>
                   <!-- State Column -->
                   <ng-container matColumnDef="state">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell [hidden]="window.outerWidth <= 1024" *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
+                    <mat-cell [hidden]="window.outerWidth <= 1024" *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Assigned Column -->
                   <ng-container matColumnDef="assigned">
@@ -987,10 +987,10 @@
                   </ng-container>
                   <!-- State Column -->
                   <ng-container matColumnDef="state">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell [hidden]="window.outerWidth <= 1024" *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
+                    <mat-cell [hidden]="window.outerWidth <= 1024" *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Assigned Column -->
                   <ng-container matColumnDef="assigned">
@@ -1088,10 +1088,10 @@
                   </ng-container>
                   <!-- State Column -->
                   <ng-container matColumnDef="state">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell [hidden]="window.outerWidth <= 1024" *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
+                    <mat-cell [hidden]="window.outerWidth <= 1024" *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Assigned Column -->
                   <ng-container matColumnDef="assigned">
@@ -1188,10 +1188,10 @@
                   </ng-container>
                   <!-- State Column -->
                   <ng-container matColumnDef="state">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell [hidden]="window.outerWidth <= 1024" *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
+                    <mat-cell [hidden]="window.outerWidth <= 1024" *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Assigned Column -->
                   <ng-container matColumnDef="assigned">
@@ -1289,10 +1289,10 @@
 
                   <!-- State Column -->
                   <ng-container matColumnDef="state">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell [hidden]="window.outerWidth <= 1024" *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
+                    <mat-cell [hidden]="window.outerWidth <= 1024" *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Assigned Column -->
                   <ng-container matColumnDef="assigned">
@@ -1389,10 +1389,10 @@
                   </ng-container>
                   <!-- State Column -->
                   <ng-container matColumnDef="state">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell [hidden]="window.outerWidth <= 1024" *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
+                    <mat-cell [hidden]="window.outerWidth <= 1024" *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Assigned Column -->
                   <ng-container matColumnDef="assigned">
@@ -1489,10 +1489,10 @@
                   </ng-container>
                   <!-- State Column -->
                   <ng-container matColumnDef="state">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>
+                    <mat-header-cell [hidden]="window.outerWidth <= 1024" *matHeaderCellDef mat-sort-header>
                       {{'homepage.state'|translate|uppercase}}
                     </mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{ row.state }} </mat-cell>
+                    <mat-cell [hidden]="window.outerWidth <= 1024" *matCellDef="let row"> {{ row.state }} </mat-cell>
                   </ng-container>
                   <!-- Editar Processo Column -->
                   <ng-container matColumnDef="buttons">

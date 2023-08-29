@@ -410,22 +410,22 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           context.stakeholderService.GetStakeholderFromSubmission(localStorage.getItem("submissionId"), value.id).then(res => {
             context.logger.info("Get stakeholder from submission result: " + JSON.stringify(res));
             context.submissionStakeholders.push(res.result);
+            var stakeholdersToInsert = context.clientContext.getStakeholdersToInsert();
+            stakeholdersToInsert.push(res.result);
+            context.clientContext.setStakeholdersToInsert(stakeholdersToInsert);
           }, error => {
             context.logger.error(error);
           }).then(r => {
 
-            var stakeholdersToInsert = context.clientContext.getStakeholdersToInsert();
-            stakeholdersToInsert.push(...context.submissionStakeholders);
-            context.clientContext.setStakeholdersToInsert(stakeholdersToInsert);
+
           });
         });
       }, error => {
         context.logger.error(error);
       }).then(res => {
-
-        var stakeholdersToInsert = context.clientContext.getStakeholdersToInsert();
-        stakeholdersToInsert.push(...context.submissionStakeholders);
-        context.clientContext.setStakeholdersToInsert(stakeholdersToInsert);
+        //var stakeholdersToInsert = context.clientContext.getStakeholdersToInsert();
+        //stakeholdersToInsert.push(...context.submissionStakeholders);
+        //context.clientContext.setStakeholdersToInsert(stakeholdersToInsert);
       });
 
       this.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(result => {
@@ -1263,19 +1263,18 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
                         });
                       }
-
                     });
                   } else {
-                    context.processService.addStakeholderToProcess(context.processId, value).then(result => {
-                      context.logger.info("Created stakeholder result: " + JSON.stringify(result));
-                      value.id = result.result.id;
-                      var found = newSubmission.documents.find(doc => doc.documentType == '0018');
-                      if (found != undefined) {
-                        context.processService.addDocumentToStakeholderProcess(context.processId, value.id, found).then(res => {
+                    //context.processService.addStakeholderToProcess(context.processId, value).then(result => {
+                    //  context.logger.info("Created stakeholder result: " + JSON.stringify(result));
+                    //  value.id = result.result.id;
+                    //  var found = newSubmission.documents.find(doc => doc.documentType == '0018');
+                    //  if (found != undefined) {
+                    //    context.processService.addDocumentToStakeholderProcess(context.processId, value.id, found).then(res => {
 
-                        });
-                      }
-                    });
+                    //    });
+                    //  }
+                    //});
                   }
                 }
               } else {

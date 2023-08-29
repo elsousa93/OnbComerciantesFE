@@ -169,34 +169,22 @@
                   </div>-->
                 </div>
               </div>
-              <div class="row">
+              <div class="row" *ngFor="let activity of processClient?.secondaryEconomicActivity; let i = index;">
                 <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 1024 }">
-                  <p class="titulo-form-simples" for="CAESecondary1">{{'client.secondaryCAE'|translate}} 1: </p>
-                  <input formControlName="CAESecondary1" name="CAESecondary1" type="text" id="CAESecondary1"
+                  <p class="titulo-form-simples">{{'client.secondaryCAE'|translate}} {{i + 1}}: </p>
+                  <input formControlName="{{'CAE' + activity}}" name="{{'CAE' + activity}}" type="text" id="{{'CAE' + activity}}"
                          class="form-control campo_form" readonly>
-                  <!--<div class="alert alert-danger"
-                       *ngIf="this.form.get('CAESecondary1').touched && !this.form.get('CAESecondary1').valid">
-                    <div *ngIf="this.form.get('CAESecondary1').errors && this.form.get('CAESecondary1').errors?.['required']">
-                      {{'generalKeywords.mandatoryParameter'|translate}}
-                    </div>
-                  </div>-->
                 </div>
                 <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 1024 }">
-                  <p class="titulo-form-simples" for="ramoSecundario1">
+                  <p class="titulo-form-simples">
                     {{'client.secondaryCAEBranch'|translate}}
-                    1:
+                    {{i + 1}}:
                   </p>
-                  <input formControlName="CAESecondary1Branch" name="ramoSecundario1" type="text" id="ramoSecundario1"
+                  <input formControlName="{{'CAESecondary' + activity}}" name="{{'CAESecondary' + activity}}" type="text" id="{{'CAESecondary' + activity}}"
                          class="form-control campo_form" readonly>
-                  <!--<div class="alert alert-danger"
-                       *ngIf="this.form.get('CAESecondary1Branch').touched && !this.form.get('CAESecondary1Branch').valid">
-                    <div *ngIf="this.form.get('CAESecondary1Branch').errors && this.form.get('CAESecondary1Branch').errors?.['required']">
-                      {{'generalKeywords.mandatoryParameter'|translate}}
-                    </div>
-                  </div>-->
                 </div>
               </div>
-              <div class="row">
+              <!--<div class="row">
                 <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 1024 }">
                   <p class="titulo-form-simples" for="CAESecondary2">{{'client.secondaryCAE'|translate}} 2: </p>
                   <input formControlName="CAESecondary2" name="CAESecondary2" type="text" id="CAESecondary2"
@@ -249,7 +237,7 @@
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>-->
               <div class="row">
                 <div class="col-xxl" [ngClass]="{'col-6' : window.outerWidth > 1024 }">
                   <p class="titulo-form-simples" for="paisSedeSocial">

@@ -542,21 +542,25 @@ export class StoreComponent implements AfterViewInit {
                 }
               } else {
                 this.visitedStores.push(this.currentStore.id);
-                this.visitedStores = Array.from(new Set(this.visitedStores));
-                //if (!clickedTable) {
-                //  if (this.visitedStores.length < this.storesLength) {
-                //    this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-                //    this.resetForm();
-                //  } else {
-                //    this.resetForm();
-                //    this.currentStore = null;
-                //    this.currentIdx = -2;
-                //    this.data.changeShops(true);
-                //    this.logger.info("Redirecting to Comprovativos page");
-                //    this.data.updateData(true, 3);
-                //    this.route.navigate(['comprovativos']);
-                //  }
-                //}
+                this.visitedStores = Array.from(new Set(this.visitedStores)); //entrou aqui
+
+                if (!clickedTable) {
+                  if (!isEditButton) {
+                    if (this.visitedStores.length < this.storesLength) {
+                      this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                      this.resetForm();
+                    } else {
+                      this.resetForm();
+                      this.currentStore = null;
+                      this.currentIdx = -2;
+                      this.data.changeShops(true);
+                      this.logger.info("Redirecting to Comprovativos page");
+                      this.data.updateData(true, 3);
+                      this.route.navigate(['comprovativos']);
+                    }
+                  }
+                }
+
               }
             } else {
               if (!this.editStores.pristine) {
@@ -595,20 +599,23 @@ export class StoreComponent implements AfterViewInit {
               } else {
                 this.visitedStores.push(this.currentStore.id);
                 this.visitedStores = Array.from(new Set(this.visitedStores));
-                //if (!clickedTable) {
-                //  if (this.visitedStores.length < this.storesLength) {
-                //    this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-                //    this.resetForm();
-                //  } else {
-                //    this.resetForm();
-                //    this.currentStore = null;
-                //    this.currentIdx = -2;
-                //    this.data.changeShops(true);
-                //    this.logger.info("Redirecting to Comprovativos page");
-                //    this.data.updateData(true, 3);
-                //    this.route.navigate(['comprovativos']);
-                //  }
-                //}
+
+                if (!clickedTable) {
+                  if (!isEditButton) {
+                    if (this.visitedStores.length < this.storesLength) {
+                      this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                      this.resetForm();
+                    } else {
+                      this.resetForm();
+                      this.currentStore = null;
+                      this.currentIdx = -2;
+                      this.data.changeShops(true);
+                      this.logger.info("Redirecting to Comprovativos page");
+                      this.data.updateData(true, 3);
+                      this.route.navigate(['comprovativos']);
+                    }
+                  }
+                }
               }
             }
           } else {

@@ -12,7 +12,7 @@ import { IStakeholders } from '../../stakeholders/IStakeholders.interface';
 import { QueuesService } from '../../queues-detail/queues.service';
 import { AceitacaoDoc } from '../../comprovativos/IComprovativos.interface';
 import { DatePipe } from '@angular/common';
-import { ContractAcceptance, ContractAcceptanceEnum, ContractDigitalAcceptance, ContractDigitalAcceptanceEnum, State } from '../../queues-detail/IQueues.interface';
+import { ContractAcceptance, ContractAcceptanceEnum, ContractDigitalAcceptance, ContractDigitalAcceptanceEnum, DigitalIdentification, State } from '../../queues-detail/IQueues.interface';
 import { ComprovativosService } from '../../comprovativos/services/comprovativos.services';
 import { PostDocument } from '../../submission/document/ISubmission-document';
 import { ProcessList, ProcessService } from '../../process/process.service';
@@ -130,7 +130,7 @@ export class PackContratualComponent implements OnInit, OnDestroy {
       });
     });
     this.processService.getProcessById(this.processId).subscribe(res => {
-      this.process = res;  
+      this.process = res;
       this.queuesInfo.getProcessStakeholdersList(this.processId).then(result => {
         this.logger.info("Get stakeholders list from process result: " + JSON.stringify(result));
         var stakeholders = result.result;
@@ -304,12 +304,18 @@ export class PackContratualComponent implements OnInit, OnDestroy {
   }
 
   cancelIdentification() {
-    if (this.updatedInfo) {
-      this.canceled = true;
-      this.submit('CancelDigitalSignature');
-    } else {
+    if (this.state == "DigitalIdentification") {
       this.submit('CancelDigitalIdentification');
     }
+    if (this.state == "ContractDigitalAcceptance") {
+      this.submit('CancelDigitalSignature');
+    }
+    //if (this.updatedInfo) {
+    //  this.canceled = true;
+    //  this.submit('CancelDigitalSignature'); // ContractDigitalAcceptance => CancelDigitalSignature
+    //} else {
+    //  this.submit('Cancel'); // DigitalIdentification => CancelDigitalIdentification
+    //}
   }
 
   downloadAll() {
@@ -333,10 +339,18 @@ export class PackContratualComponent implements OnInit, OnDestroy {
     var stateType;
 
     if (!this.manualSignature) { //digital
-      externalState = {} as ContractDigitalAcceptance;
-      stateType = State.CONTRACT_DIGITAL_ACCEPTANCE;
-      externalState.$type = stateType;
-      externalState.contractDigitalAcceptanceResult = state;
+      if (this.state == "ContractDigitalAcceptance") {
+        externalState = {} as ContractDigitalAcceptance;
+        stateType = State.CONTRACT_DIGITAL_ACCEPTANCE;
+        externalState.$type = stateType;
+        externalState.contractDigitalAcceptanceResult = state;
+      }
+      if (this.state == "DigitalIdentification") {
+        externalState = {} as DigitalIdentification;
+        stateType = State.DIGITAL_IDENTIFICATION;
+        externalState.$type = stateType;
+        externalState.digitalIdentificationResult = state;
+      }
     } else { //manual
       externalState = {} as ContractAcceptance;
       stateType = State.CONTRACT_ACCEPTANCE;
@@ -411,18 +425,18 @@ export class PackContratualComponent implements OnInit, OnDestroy {
   }
 
   getSignTypeDescription(code: string) {
-    return this.signTypeList.find(value => value.code == code).description;
+    return this.signTypeList?.find(value => value?.code == code)?.description;
   }
 
   getIdentificationStateDescription(code: string) {
-    return this.identificationStateList.find(value => value.code == code).description;
+    return this.identificationStateList?.find(value => value?.code == code)?.description;
   }
 
   getSignatureStateDescription(code: string) {
-    return this.signatureStateList.find(value => value.code == code).description;
+    return this.signatureStateList?.find(value => value?.code == code)?.description;
   }
 
   getRepresentaionPowersDescription(code: string) {
-    return this.representationPowersList.find(value => value.code == code).description;
+    return this.representationPowersList?.find(value => value?.code == code)?.description;
   }
 }

@@ -1591,14 +1591,14 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       };
 
       if (queueModel.merchantAssessment.accepted == false) {
-        context.queuesInfo.markToCancel(context.processId).then(res => {
+        context.queuesInfo.markToCancel(context.processId, context.authService.GetCurrentUser().userName).then(res => {
           localStorage.removeItem("documents");
           context.route.navigate(['/']);
         });
       } else {
         queueModel.stakeholdersAssessment.forEach(stake => {
           if (stake.accepted == false) {
-            context.queuesInfo.markToCancel(context.processId).then(res => {
+            context.queuesInfo.markToCancel(context.processId, context.authService.GetCurrentUser().userName).then(res => {
               localStorage.removeItem("documents");
               context.route.navigate(['/']);
             });
