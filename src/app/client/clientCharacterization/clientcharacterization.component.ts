@@ -208,7 +208,7 @@ export class ClientCharacterizationComponent implements OnInit {
     this.crcCode = this.form.get("crcCode").value;
     this.logger.info("Date from CRC capital stock: " + this.processClient.capitalStock.date);
     //var b = this.datepipe.transform(this.processClient.capitalStock.date, 'dd-MM-yyyy').toString(); //'MM-dd-yyyy'
-    var formatedDate = formatDate(this.processClient?.capitalStock?.date, 'dd-MM-yyyy', 'pt_PT'); // yyyy-MM-dd
+    var formatedDate = this.processClient?.capitalStock?.date != null ? formatDate(this.processClient?.capitalStock?.date, 'dd-MM-yyyy', 'pt_PT') : ''; // yyyy-MM-dd
     var branch1 = '';
 
     this.NIFNIPC = this.form.get("natJuridicaNIFNIPC").value;
@@ -364,7 +364,7 @@ export class ClientCharacterizationComponent implements OnInit {
   }
 
   getIsCommercialSocietyFromLegalNature(legalNatureCode: string) {
-    return this.legalNatureList.find(ln => ln.code === legalNatureCode).isCommercialCompany;
+    return this.legalNatureList?.find(ln => ln?.code === legalNatureCode)?.isCommercialCompany;
   }
 
   ngOnDestroy(): void {
@@ -705,10 +705,7 @@ export class ClientCharacterizationComponent implements OnInit {
     });
 
     if (crc != null && crc != undefined) {
-      let othersEconomicActivitiesCode = "";
-      this.processClient?.secondaryEconomicActivity?.forEach(value => {
-        othersEconomicActivitiesCode += value + ";";
-      });
+      let othersEconomicActivitiesCode = this.processClient?.secondaryEconomicActivity;
       newSubmission.documents.push({
         documentType: "0034",
         documentPurpose: 'CorporateBody',
@@ -733,11 +730,6 @@ export class ClientCharacterizationComponent implements OnInit {
           country: this.processClient.headquartersAddress.country,
           economicActivityCode: this.processClient.mainEconomicActivity,
           othersEconomicActivitiesCode: othersEconomicActivitiesCode,
-          //economicActivityCode2: this.processClient?.secondaryEconomicActivity[0],
-          //economicActivityCode3: this.processClient?.secondaryEconomicActivity[1],
-          //economicActivityCode4: this.processClient?.secondaryEconomicActivity[2],
-          //economicActivityCode5: null,
-          //economicActivityCode6: null,
           validUntil: this.processClient.expirationDate
         }
       })

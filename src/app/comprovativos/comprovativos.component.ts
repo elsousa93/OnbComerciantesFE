@@ -820,7 +820,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
               if (stakeholderDocPurposes.documentState === 'NotExists') {
                 var foundStake = context.stakeholdersList.find(s => s.id == stakeholder.entityId);
                 if (foundStake.clientId != "" && foundStake.clientId != null) {
-                  context.stakeholderService.SearchStakeholderByQuery(foundStake.clientId, "0501", "por mudar", "por mudar").then(stake => {
+                  context.stakeholderService.SearchStakeholderByQuery(foundStake.clientId, "1010", "por mudar", "por mudar").then(stake => {
                     context.logger.info("Search stakeholder: " + JSON.stringify(stake));
                     var exists = context.checkDocumentExists(stake.result[0].stakeholderId, stakeholderDocPurposes, 'stakeholder');
                     stakeholderDocPurposes["existsOutbound"] = exists;
@@ -846,7 +846,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
               if (corporateDocPurposes.documentState === 'NotExists') {
                 var foundCorporate = context.stakeholdersList.find(s => s.id == corporate.entityId);
                 if (foundCorporate.clientId != null && foundCorporate.clientId != "") {
-                  context.clientService.SearchClientByQuery(foundCorporate.clientId, "0502", "", "").subscribe(res => {
+                  context.clientService.SearchClientByQuery(foundCorporate.clientId, "1010", "", "").subscribe(res => {
                     var exists = context.checkDocumentExists(res[0].merchantId, corporateDocPurposes, 'corporateEntity');
                     corporateDocPurposes["existsOutbound"] = exists;
                   }, error => {

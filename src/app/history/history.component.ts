@@ -301,6 +301,16 @@ export class HistoryComponent implements OnInit, AfterViewInit {
         this.logger.info("Get process issues result: " + JSON.stringify(result));
         this.issues = res;
         this.getNames(this.issues, false);
+      }, error => {
+        this.queuesService.getProcessStakeholdersList(this.processId).then(result => {
+          if (result.result.length > 0) {
+            result.result.forEach(value => {
+              this.queuesService.getProcessStakeholderDetails(this.processId, value?.id).then(res => {
+                this.stakeholdersList.push(res.result);
+              });
+            });
+          }
+        });
       });
     });
 

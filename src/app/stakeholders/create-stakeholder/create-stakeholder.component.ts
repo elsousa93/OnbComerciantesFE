@@ -841,9 +841,9 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     var dateCC = this.dataCCcontents.expiricyDateCC;
     var separated = dateCC?.split(' ');
     if (separated) {
-      var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0];
+      var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0] as any;
     } else {
-      var formatedDate = '2023-10-10';
+      var formatedDate = null;
     }
     if (this.dataCCcontents?.notes != null || this.dataCCcontents?.notes != "") {
       var assinatura = "Sabe assinar";
@@ -979,10 +979,10 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
             "shortName": shortName,
             "contactName": shortName,
             "identificationDocument": {
-              "type": '0001',
+              "type": this.isNoDataReadable ? '0018' : '0001',
               "number": this.dataCCcontents?.cardNumberCC ?? this.stakeholderNumber?.replace(/\s/g, ""),
               "country": this.dataCCcontents.countryCC ?? 'PT',
-              "expirationDate": new Date(formatedDate).toISOString(),
+              "expirationDate": formatedDate != null ? new Date(formatedDate).toISOString() : null, //
               "checkDigit": null     //FIXME
             },
             "fiscalAddress": {
@@ -993,7 +993,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
             },
             "phone1": {},
             "phone2": {},
-            "signType": "DigitalCitizenCard",
+            "signType": this.isNoDataReadable ? "DigitalCitizenCard" : "CitizenCard",
           }
           this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
           if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
@@ -1046,10 +1046,10 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
           "shortName": shortName,
           "contactName": shortName,
           "identificationDocument": {
-            "type": '0001',
+            "type": this.isNoDataReadable ? '0018' : '0001',
             "number": this.dataCCcontents?.cardNumberCC ?? this.stakeholderNumber?.replace(/\s/g, ""),
             "country": this.dataCCcontents.countryCC ?? 'PT',
-            "expirationDate": new Date(formatedDate).toISOString(),
+            "expirationDate": formatedDate != null ? new Date(formatedDate).toISOString() : null, //
             "checkDigit": null     //FIXME
           },
           "fiscalAddress": {
@@ -1060,7 +1060,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
           },
           "phone1": {},
           "phone2": {},
-          "signType": "DigitalCitizenCard",
+          "signType": this.isNoDataReadable ? "DigitalCitizenCard" : "CitizenCard",
         }
         this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
         if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
@@ -1113,10 +1113,10 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         "shortName": shortName,
         "contactName": shortName,
         "identificationDocument": {
-          "type": '0001',
+          "type": this.isNoDataReadable ? '0018' : '0001',
           "number": this.dataCCcontents?.cardNumberCC ?? this.stakeholderNumber?.replace(/\s/g, ""),
           "country": this.dataCCcontents.countryCC ?? 'PT',
-          "expirationDate": new Date(formatedDate).toISOString(),
+          "expirationDate": formatedDate != null ? new Date(formatedDate).toISOString() : null, //
           "checkDigit": null     //FIXME
         },
         "fiscalAddress": {
@@ -1127,7 +1127,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         },
         "phone1": {},
         "phone2": {},
-        "signType": "DigitalCitizenCard",
+        "signType": this.isNoDataReadable ? "DigitalCitizenCard" : "CitizenCard",
       }
       this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
       if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {

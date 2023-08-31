@@ -51,7 +51,7 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
   docTypes: DocumentSearchType[] = [];
   observationLength: number;
   observation: string;
-
+  totalLength: number = 0;
   historyMat = new MatTableDataSource<ProcessHistory>();
   historyColumns: string[] = ['processNumber', 'processState', 'whenStarted', 'whoFinished', 'observations'];
   @ViewChild('historySort') historySort = new MatSort();
@@ -262,6 +262,17 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
           }
         });
       });
+      if (this.stakeholdersList.length == this.totalLength) {
+        this.queuesService.getProcessStakeholdersList(this.processId).then(result => {
+          if (result.result.length > 0) {
+            result.result.forEach(value => {
+              this.queuesService.getProcessStakeholderDetails(this.processId, value?.id).then(res => {
+                this.stakeholdersList.push(res.result);
+              });
+            });
+          }
+        });
+      }
       if (isSelected) {
         this.loadSelectedReturnReasons(context.filterIssues);
       } else {
@@ -288,6 +299,16 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
         this.logger.info("Get process issues result: " + JSON.stringify(result));
         this.issues = res;
         this.getNames(this.issues, false);
+      }, error => {
+        this.queuesService.getProcessStakeholdersList(this.processId).then(result => {
+          if (result.result.length > 0) {
+            result.result.forEach(value => {
+              this.queuesService.getProcessStakeholderDetails(this.processId, value?.id).then(res => {
+                this.stakeholdersList.push(res.result);
+              });
+            });
+          }
+        });
       });
     });
 
@@ -343,6 +364,7 @@ export class AceitacaoComponent implements OnInit, AfterViewInit {
     });
 
     this.processService.getProcessEntities(this.processId).then(result => {
+      this.totalLength = result.result.length;
       result.result.forEach(value => {
         if (value.entityType === 'CorporateEntity') {
           context.processService.getProcessCorporateEntity(context.processId, value.id).then(res => {

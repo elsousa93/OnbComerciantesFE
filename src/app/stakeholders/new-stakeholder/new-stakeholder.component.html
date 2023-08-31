@@ -166,7 +166,7 @@
             <div class="row">
               <p class="titulo-form-simples">{{'stakeholder.country'|translate|uppercase}} *</p>
               <select tabindex="2" class="form-select campo-form-select" formControlName="Country"
-                      (click)="clean()" [attr.disabled]="(returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001')) ) ? true : null">
+                      (click)="clean()" [attr.disabled]="(returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018 ')) ) ? true : null">
                 <option *ngFor="let country of countries" value="{{country.code}}">
                   {{country.description}}
                 </option>
@@ -181,7 +181,7 @@
             <div class="row">
               <p class="titulo-form-simples">{{'stakeholder.address'|translate|uppercase}} *</p>
               <input tabindex="4" class="form-control" type="text" formControlName="Address" autocomplete="true"
-                     [attr.disabled]="(returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001')) ) ? true : null">
+                     [attr.disabled]="(returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018 ')) ) ? true : null">
               <div class="alert alert-danger"
                    *ngIf="formNewStakeholder.get('Address').touched && !formNewStakeholder.get('Address').valid">
                 <div *ngIf="formNewStakeholder.get('Address').errors && formNewStakeholder.get('Address').errors?.['required']">
@@ -195,7 +195,7 @@
               <p class="titulo-form-simples">{{'stakeholder.postalCode'|translate|uppercase}} *</p>
               <input tabindex="3" class="form-control" type="text" formControlName="ZIPCode" (focusout)="onFocusOut()"
                      (keyup)="GetCountryByZipCode($event)" (keypress)="numericOnly($event)" maxlength="8" autocomplete="true"
-                     [attr.disabled]="(returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001')) ) ? true : null">
+                     [attr.disabled]="(returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018 ')) ) ? true : null">
               <div class="alert alert-danger"
                    *ngIf="formNewStakeholder.get('ZIPCode').touched && !formNewStakeholder.get('ZIPCode').valid">
                 <div *ngIf="formNewStakeholder.get('ZIPCode').errors && (formNewStakeholder.get('ZIPCode').errors?.['required'] || formNewStakeholder.get('ZIPCode').errors?.['minlength'] || formNewStakeholder.get('ZIPCode').errors?.['maxlength'])">
@@ -206,7 +206,7 @@
             <div class="row ms-0">
               <p class="titulo-form-simples">{{'stakeholder.locale'|translate|uppercase}} *</p>
               <input tabindex="5" class="form-control" type="text" formControlName="Locality" autocomplete="true"
-                     [readonly]="canEditLocality() === false || returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001'))">
+                     [readonly]="canEditLocality() === false || returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018 '))">
               <div class="alert alert-danger"
                    *ngIf="formNewStakeholder.get('Locality').touched && !formNewStakeholder.get('Locality').valid">
                 <div *ngIf="formNewStakeholder.get('Locality').errors && formNewStakeholder.get('Locality').errors?.['required']">
@@ -264,7 +264,7 @@
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.country'|translate|uppercase}}</p>
             <select class="form-select campo-form-select" formControlName="Country"
-                    (click)="clean()" [attr.disabled]="(returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001'))) ? true : null">
+                    (click)="clean()" [attr.disabled]="(returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018 '))) ? true : null">
               <option *ngFor="let country of countries" value="{{country.code}}">
                 {{country.description}}
               </option>
@@ -279,7 +279,7 @@
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.locale'|translate|uppercase}}</p>
             <input class="form-control campo_form" type="text" autocomplete="true"
-                   formControlName="Locality" [readonly]="canEditLocality() === false || returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001'))">
+                   formControlName="Locality" [readonly]="canEditLocality() === false || returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018 '))">
             <div class="alert alert-danger"
                  *ngIf="formNewStakeholder.get('Locality').touched && !formNewStakeholder.get('Locality').valid">
               <div *ngIf="formNewStakeholder.get('Locality').errors && formNewStakeholder.get('Locality').errors?.['required']">
@@ -293,7 +293,7 @@
             <p class="titulo-form-simples mt-0">{{'stakeholder.postalCode'|translate|uppercase}}</p>
             <input class="form-control campo_form" type="text" formControlName="ZIPCode"
                    (keyup)="GetCountryByZipCode()" (keypress)="numericOnly($event)" maxlength="8" autocomplete="true"
-                   [attr.disabled]="(returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001'))) ? true : null">
+                   [attr.disabled]="(returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018 '))) ? true : null">
             <div class="alert alert-danger"
                  *ngIf="formNewStakeholder.get('ZIPCode').touched && !formNewStakeholder.get('ZIPCode').valid">
               <div *ngIf="formNewStakeholder.get('ZIPCode').errors && formNewStakeholder.get('ZIPCode').errors?.['required']">
@@ -304,7 +304,7 @@
           <div class="col-6">
             <p class="titulo-form-simples mt-0">{{'stakeholder.address'|translate|uppercase}}</p>
             <input class="form-control campo_form" type="text" autocomplete="true"
-                   formControlName="Address" [attr.disabled]="(returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018' || currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0001'))) ? true : null">
+                   formControlName="Address" [attr.disabled]="(returned === 'consult' || (returned == null && (currentStakeholder?.stakeholderAcquiring?.identificationDocument?.type == '0018 '))) ? true : null">
             <div class="alert alert-danger"
                  *ngIf="formNewStakeholder.get('Address').touched && !formNewStakeholder.get('Address').valid">
               <div *ngIf="formNewStakeholder.get('Address').errors && formNewStakeholder.get('Address').errors?.['required']">

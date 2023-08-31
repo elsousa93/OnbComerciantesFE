@@ -394,7 +394,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       contractAssociation: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.signType === 'CitizenCard' || this.currentStakeholder?.stakeholderAcquiring?.signType === 'DigitalCitizenCard' ? 'true' : 'false', Validators.required),
       proxy: new FormControl(this.currentStakeholder?.stakeholderAcquiring?.isProxy != null ? this.currentStakeholder?.stakeholderAcquiring?.isProxy + '' : 'false', Validators.required),
       NIF: new FormControl((this.currentStakeholder?.stakeholderAcquiring != undefined) ? this.currentStakeholder?.stakeholderAcquiring.fiscalId : '', Validators.required),
-      Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress != null) ? this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.country : 'PT', Validators.required), // tirei do if (this.returned != null)
+      Country: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.country != null && this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.country != "") ? this.currentStakeholder?.stakeholderAcquiring?.fiscalAddress?.country : 'PT', Validators.required), // tirei do if (this.returned != null)
       ZIPCode: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? zipcode : ''), //
       Locality: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.postalArea : ''), //
       Address: new FormControl((this.currentStakeholder?.stakeholderAcquiring != null && this.currentStakeholder?.stakeholderAcquiring.fiscalAddress != null) ? this.currentStakeholder.stakeholderAcquiring.fiscalAddress.address : '') //
@@ -524,9 +524,9 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     var dateCC = this.dataCCcontents.expiricyDateCC;
     var separated = dateCC?.split(' ');
     if (separated) {
-      var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0];
+      var formatedDate = separated[2] + "-" + separated[1] + "-" + separated[0] as any;
     } else {
-      var formatedDate = '2023-10-10';
+      var formatedDate = null;
     }
 
     var fullName = this.dataCCcontents.nameCC ?? this.formNewStakeholder.get("name")?.value;
@@ -541,7 +541,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
       type: '0018',
       number: this.dataCCcontents?.cardNumberCC?.replace(/\s/g, ""),
       country: this.dataCCcontents.countryCC ?? 'PT',
-      expirationDate: new Date(formatedDate).toISOString(),
+      expirationDate: formatedDate != null ? new Date(formatedDate).toISOString() : null,
       checkDigit: null
     };
     this.currentStakeholder.stakeholderAcquiring.fiscalAddress = {

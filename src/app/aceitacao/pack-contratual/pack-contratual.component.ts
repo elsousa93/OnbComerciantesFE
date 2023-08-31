@@ -67,6 +67,7 @@ export class PackContratualComponent implements OnInit, OnDestroy {
   identificationStateList: DigitalSignature[] = [];
   signatureStateList: DigitalSignature[] = [];
   representationPowersList: RepresentationPowers[] = [];
+  finished: boolean = false;
 
   constructor(private logger: LoggerService,
     private modalService: BsModalService, private translate: TranslateService, private snackBar: MatSnackBar,
@@ -136,45 +137,9 @@ export class PackContratualComponent implements OnInit, OnDestroy {
         var stakeholders = result.result;
         stakeholders.forEach(value => {
           this.queuesInfo.getProcessStakeholderDetails(this.processId, value.id).then(result => {
-            if (result.result.signType == "NotSign") {
-              result.result.signType = context.translate.instant('acceptance.contratualPack.notSign');
-            } else if (result.result.signType == "CitizenCard") {
-              result.result.signType = context.translate.instant('acceptance.contratualPack.citizenCard');
-            } else if (result.result.signType == "DigitalCitizenCard") {
-              result.result.signType = context.translate.instant('acceptance.contratualPack.digitalCitizenCard');
-            } else if (result.result.signType == "OneTimePassword") {
-              result.result.signType = context.translate.instant('acceptance.contratualPack.oneTimePassword');
-            } else if (result.result.signType == "Biometric") {
-              result.result.signType = context.translate.instant('acceptance.contratualPack.biometric');
-            }
-
-            if (result.result.identificationState != "Identified" && result.result.signatureState == "NotSigned") {
-              if (result.result.identificationState == "NotIdentified") {
-                result.result.identificationState = context.translate.instant('acceptance.contratualPack.notIdentified');
-              } else if (result.result.identificationState == "Identified") {
-                result.result.identificationState = context.translate.instant('acceptance.contratualPack.identified');
-              } else if (result.result.identificationState == "Pending") {
-                result.result.identificationState = context.translate.instant('acceptance.contratualPack.pending');
-              } else if (result.result.identificationState == "Cancelled") {
-                result.result.identificationState = context.translate.instant('acceptance.contratualPack.canceled');
-              } else if (result.result.identificationState == "Refused") {
-                result.result.identificationState = context.translate.instant('acceptance.contratualPack.refused');
-              }
-            } else {
-              if (result.result.signatureState == "NotSigned") {
-                result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.notSigned');
-              } else if (result.result.signatureState == "Signed") {
-                result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.signed');
-              } else if (result.result.signatureState == "Pending") {
-                result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.pending');
-              } else if (result.result.signatureState == "Cancelled") {
-                result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.canceled');
-              } else if (result.result.signatureState == "Refused") {
-                result.result.identificationState = context.translate.instant('acceptance.contratualPack.signature.refused');
-              }
-            }
-
             this.stakeholdersList.push(result.result);
+            if (stakeholders.length == this.stakeholdersList.length)
+              this.finished = true;
           });
         });
       });

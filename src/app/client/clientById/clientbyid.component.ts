@@ -260,6 +260,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 context.processService.getUpdateProcessInfo(context.processId, context.updateProcessId).then(r => {
                   context.processInfo = r.result;
                   context.merchantInfo = r.result.merchant;
+                  context.clientAux = context.merchantInfo?.incorporationStatement?.code;
                   context.clientDocs = [];
                   context.merchantInfo.documents.forEach(doc => {
                     var docOutbound = {
@@ -292,6 +293,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               context.processService.getUpdateProcessInfo(context.processId, context.updateProcessId).then(r => {
                 context.processInfo = r.result;
                 context.merchantInfo = r.result.merchant;
+                context.clientAux = context.merchantInfo?.incorporationStatement?.code;
                 context.clientDocs = [];
                 context.merchantInfo.documents.forEach(doc => {
                   var docOutbound = {
@@ -328,6 +330,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             context.clientService.GetClientByIdAcquiring(resul?.result[0]?.submissionId).then(function (res) {
               context.logger.info("Get client by id result: " + JSON.stringify(res));
               context.merchantInfo = res;
+              context.clientAux = context.merchantInfo?.incorporationStatement?.code;
               context.clientDocs = [];
               context.merchantInfo.documents.forEach(doc => {
                 var docOutbound = {
@@ -380,7 +383,9 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
 
     if (this.isClient == null) {
-      this.subscription = this.data.currentIsClient.subscribe(isClient => this.isClient = isClient); 
+      this.subscription = this.data.currentIsClient.subscribe(isClient => this.isClient = isClient);
+      this.countriesListValid = this.isClient;
+      this.formCountryIsValid = this.isClient;
     }
     if (this.dataCC == null) {
       this.subscription = this.data.currentDataCC.subscribe(dataCC => this.dataCC = dataCC);
@@ -1425,7 +1430,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
       const filter = a1.filter(e => e.fiscalId === x)[0];
       const filter2 = a2.filter(e => e.fiscalId === x)[0];
-      if (filter.clientId !== filter2.clientId) return false;
+      if (filter.clientId != filter2.clientId) return false;
     }
     return true;
   }

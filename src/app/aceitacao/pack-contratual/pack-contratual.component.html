@@ -108,14 +108,14 @@
                                 </th>
                               </tr>
                             </thead>
-                            <tbody>
+                            <tbody *ngIf="finished">
                               <ng-container *ngFor="let stake of stakeholdersList">
                                 <tr *ngIf="stake.representationPower?.representationPowers != null && stake.representationPower?.representationPowers != ''">
                                   <td class="text-primary text-center align-middle">{{stake?.shortName}}</td>
                                   <td class="text-primary text-center align-middle">{{stake?.fiscalId}}</td>
                                   <td class="text-primary text-center align-middle">{{getRepresentaionPowersDescription(stake.representationPower?.representationPowers)}}</td>
                                   <td class="text-primary text-center align-middle">{{(stake.representationPower?.restrictions == null || stake.representationPower?.restrictions == '') ? '-' : stake.representationPower?.restrictions}}</td>
-                                  <td class="text-primary text-center align-middle" *ngIf="state != 'ContractAcceptance'">{{getSignTypeDescription(process?.contractSignature?.signType)}}</td>
+                                  <td class="text-primary text-center align-middle" *ngIf="state != 'ContractAcceptance'">{{process?.contractSignature?.signType == 0 ? '-' : process?.contractSignature?.signType}}</td>
                                   <td class="text-primary text-center align-middle" *ngIf="state != 'ContractAcceptance'">{{getSignTypeDescription(stake?.signType)}}</td>
                                   <td class="text-primary text-center align-middle" *ngIf="state != 'ContractAcceptance'">{{getIdentificationStateDescription(stake?.identificationState)}}</td>
                                   <td class="text-primary text-center align-middle" *ngIf="state != 'ContractAcceptance'">{{getSignatureStateDescription(stake?.signatureState)}}</td>

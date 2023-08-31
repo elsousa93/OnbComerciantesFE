@@ -977,6 +977,16 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
         this.logger.info("Get process issues result: " + JSON.stringify(result));
         this.issues = res;
         this.getNames(this.issues, false);
+      }, error => {
+        this.queuesService.getProcessStakeholdersList(this.processId).then(result => {
+          if (result.result.length > 0) {
+            result.result.forEach(value => {
+              this.queuesService.getProcessStakeholderDetails(this.processId, value?.id).then(res => {
+                this.stakeholdersList.push(res.result);
+              });
+            });
+          }
+        });
       });
     });
 
@@ -1590,21 +1600,21 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
         merchantId: this.merchant.id
       };
 
-      if (queueModel.merchantAssessment.accepted == false) {
-        context.queuesInfo.markToCancel(context.processId, context.authService.GetCurrentUser().userName).then(res => {
-          localStorage.removeItem("documents");
-          context.route.navigate(['/']);
-        });
-      } else {
-        queueModel.stakeholdersAssessment.forEach(stake => {
-          if (stake.accepted == false) {
-            context.queuesInfo.markToCancel(context.processId, context.authService.GetCurrentUser().userName).then(res => {
-              localStorage.removeItem("documents");
-              context.route.navigate(['/']);
-            });
-          }
-        });
-      }
+      //if (queueModel.merchantAssessment.accepted == false) {
+      //  context.queuesInfo.markToCancel(context.processId, context.authService.GetCurrentUser().userName).then(res => {
+      //    localStorage.removeItem("documents");
+      //    context.route.navigate(['/']);
+      //  });
+      //} else {
+      //  queueModel.stakeholdersAssessment.forEach(stake => {
+      //    if (stake.accepted == false) {
+      //      context.queuesInfo.markToCancel(context.processId, context.authService.GetCurrentUser().userName).then(res => {
+      //        localStorage.removeItem("documents");
+      //        context.route.navigate(['/']);
+      //      });
+      //    }
+      //  });
+      //}
 
     } else if (this.queueName === 'compliance') {
       this.state = State.COMPLIANCE_EVALUATION;

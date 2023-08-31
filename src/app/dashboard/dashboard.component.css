@@ -38,8 +38,8 @@
 }
 
 .mat-cell {
-  /*padding-right: 25px !important;*/
-  padding-right: 18px !important;
+  /*padding-right: 18px !important;*/
+  padding-right: 0px !important;
   justify-content: center;
   word-break: break-word;
 }
