@@ -483,7 +483,8 @@
       "risk": "Evidence of Approval Risk",
       "negotiationApproval": "Evidence of Business Approval",
       "success": "Successful attachment",
-      "pdfOnly": "Only PDF files can be uploaded"
+      "pdfOnly": "Only PDF files can be uploaded",
+      "fileSize": "The inserted file exceeds the maximum size. Please insert files smaller than 10MB."
     },
     "completed": "Complete opinion",
     "favorable": "Favorable",

@@ -1095,6 +1095,11 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           } else {
             alert("Verifique o tipo / tamanho do ficheiro");
           }
+        } else {
+          this.snackBar.open(this.translate.instant('queues.attach.fileSize'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
         }
       } else {
         this.snackBar.open(this.translate.instant('queues.attach.pdfOnly'), '', {

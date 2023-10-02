@@ -706,6 +706,13 @@ export class ClientCharacterizationComponent implements OnInit {
 
     if (crc != null && crc != undefined) {
       let othersEconomicActivitiesCode = this.processClient?.secondaryEconomicActivity;
+      let aux = "";
+      othersEconomicActivitiesCode?.forEach((val, index) => {
+        if (index + 1 != othersEconomicActivitiesCode.length)
+          aux += val + ";";
+        else
+          aux += val;
+      });
       newSubmission.documents.push({
         documentType: "0034",
         documentPurpose: 'CorporateBody',
@@ -729,7 +736,7 @@ export class ClientCharacterizationComponent implements OnInit {
           postalArea: this.processClient.headquartersAddress.postalArea,
           country: this.processClient.headquartersAddress.country,
           economicActivityCode: this.processClient.mainEconomicActivity,
-          othersEconomicActivitiesCode: othersEconomicActivitiesCode,
+          othersEconomicActivitiesCode: aux,
           validUntil: this.processClient.expirationDate
         }
       })

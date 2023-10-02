@@ -484,7 +484,8 @@
       "risk": "Evidência de Aprovação Risco",
       "negotiationApproval": "Evidência de Aprovação Negocial",
       "success": "Upload efetuado com sucesso",
-      "pdfOnly": "Só é possível adicionar ficheiros PDF"
+      "pdfOnly": "Só é possível adicionar ficheiros PDF",
+      "fileSize": "O ficheiro inserido excede o tamanho máximo. Por favor insira ficheiros inferiores a 10MB."
     },
     "completed": "Concluir parecer",
     "favorable": "Favorável",

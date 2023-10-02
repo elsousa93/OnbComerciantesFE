@@ -330,12 +330,26 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
           }
         }
       } else {
-        this.openAccordeons();
-        this.infoStakeholders.markAllAsTouched();
-        this.snackBar.open(this.translate.instant('generalKeywords.formInvalid'), '', {
-          duration: 15000,
-          panelClass: ['snack-bar']
-        });
+        if (this.currentStakeholder.stakeholderAcquiring?.signType != null) {
+          this.openAccordeons();
+          this.infoStakeholders.markAllAsTouched();
+          this.snackBar.open(this.translate.instant('generalKeywords.formInvalid'), '', {
+            duration: 15000,
+            panelClass: ['snack-bar']
+          });
+        } else {
+          this.visitedStakes.push(this.currentStakeholder.stakeholderAcquiring.id);
+          this.visitedStakes = Array.from(new Set(this.visitedStakes));
+          if (!clickedTable) {
+            if (this.visitedStakes.length < (this.stakesLength)) {
+              this.emitUpdatedStakeholder(of({ stake: this.currentStakeholder, idx: this.currentIdx }));
+            } else {
+              this.data.updateData(false, 6, 3);
+              this.logger.info("Redirecting to Info Declarativa Lojas page");
+              this.route.navigate(['info-declarativa-lojas']);
+            }
+          }
+        }
       } 
     } else {
       if (!clickedTable) {
@@ -347,10 +361,12 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   }
 
   openAccordeons() {
-    document.getElementById("flush-collapseOne").className = "accordion-collapse collapse show";
-    document.getElementById("accordionButton1").className = "accordion1-button";
-    document.getElementById("flush-collapseTwo").className = "accordion-collapse collapse show";
-    document.getElementById("accordionButton2").className = "accordion1-button";
+    if (this.currentStakeholder != null && this.currentStakeholder.stakeholderAcquiring.signType != null && this.currentStakeholder.stakeholderAcquiring.signType !== '') { 
+      document.getElementById("flush-collapseOne").className = "accordion-collapse collapse show";
+      document.getElementById("accordionButton1").className = "accordion1-button";
+      document.getElementById("flush-collapseTwo").className = "accordion-collapse collapse show";
+      document.getElementById("accordionButton2").className = "accordion1-button";
+    }
   }
 
   getStakesListLength(value) {
@@ -372,10 +388,12 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
   }
 
   closeAccordion() {
-    document.getElementById("flush-collapseOne").className = "accordion-collapse collapse show";
-    document.getElementById("accordionButton1").className = "accordion1-button";
-    document.getElementById("flush-collapseTwo").className = "accordion-collapse collapse";
-    document.getElementById("accordionButton2").className = "accordion1-button collapsed";
+    if (this.currentStakeholder != null && this.currentStakeholder.stakeholderAcquiring.signType != null && this.currentStakeholder.stakeholderAcquiring.signType !== '') {
+      document.getElementById("flush-collapseOne").className = "accordion-collapse collapse show";
+      document.getElementById("accordionButton1").className = "accordion1-button";
+      document.getElementById("flush-collapseTwo").className = "accordion-collapse collapse";
+      document.getElementById("accordionButton2").className = "accordion1-button collapsed";
+    }
   }
 
   openCancelPopup() {

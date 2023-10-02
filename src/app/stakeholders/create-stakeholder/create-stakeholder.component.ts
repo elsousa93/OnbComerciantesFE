@@ -611,20 +611,24 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
           stakeholderToInsert["clientId"] = this.currentStakeholder["stakeholderNumber"];
           stakeholderToInsert["fiscalAddress"] = stakeholderToInsert["address"];
 
-          if (stakeholderToInsert["phone1"] != null) {
-            stakeholderToInsert["phone1"] = {
-              countryCode: stakeholderToInsert["contacts"]["phone1"]["country"],
-              phoneNumber: stakeholderToInsert["contacts"]["phone1"]["phoneNumber"]
+          if (stakeholderToInsert["contacts"] != null) {
+            if (stakeholderToInsert["phone1"] != null) {
+              stakeholderToInsert["phone1"] = {
+                countryCode: stakeholderToInsert["contacts"]["phone1"]["country"],
+                phoneNumber: stakeholderToInsert["contacts"]["phone1"]["phoneNumber"]
+              }
             }
+
+            if (stakeholderToInsert["phone2"] != null) {
+              stakeholderToInsert["phone2"] = {
+                countryCode: stakeholderToInsert["contacts"]["phone2"]["country"],
+                phoneNumber: stakeholderToInsert["contacts"]["phone2"]["phoneNumber"]
+              }
+            }
+
+            stakeholderToInsert["email"] = stakeholderToInsert["contacts"]["email"];
           }
 
-          if (stakeholderToInsert["phone2"] != null)
-            stakeholderToInsert["phone2"] = {
-              countryCode: stakeholderToInsert["contacts"]["phone2"]["country"],
-              phoneNumber: stakeholderToInsert["contacts"]["phone2"]["phoneNumber"]
-            }
-
-          stakeholderToInsert["email"] = stakeholderToInsert["contacts"]["email"];
           stakeholderToInsert["contacts"] = null;
           stakeholderToInsert["contactName"] = stakeholderToInsert["shortName"];
 

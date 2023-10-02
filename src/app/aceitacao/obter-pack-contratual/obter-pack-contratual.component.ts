@@ -122,7 +122,7 @@ export class ObterPackContratualComponent implements OnInit {
       const sizeFile = file.size / (1024 * 1024);
       var extensoesPermitidas = /(.pdf)$/i;
       const limSize = 10;
-      if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
+      if ((sizeFile <= limSize)) {
         if (event.target.files && files[i]) {
           var reader = new FileReader();
           reader.onload = (event: any) => {
@@ -137,6 +137,11 @@ export class ObterPackContratualComponent implements OnInit {
         } else {
           alert("Verifique o tipo / tamanho do ficheiro");
         }
+      } else {
+        this.snackBar.open(this.translate.instant('queues.attach.fileSize'), '', {
+          duration: 4000,
+          panelClass: ['snack-bar']
+        });
       }
     }
   }

@@ -160,7 +160,7 @@ export class StoreIbanComponent implements OnInit, OnChanges {
           const sizeFile = file.size / (1024 * 1024);
           var extensoesPermitidas = /(.pdf)$/i;
           const limSize = 10;
-          if ((sizeFile <= limSize) && (extensoesPermitidas.exec(file.name))) {
+          if ((sizeFile <= limSize)) {
             if (event.target.files && files[i]) {
               var reader = new FileReader();
               reader.onload = (event: any) => {
@@ -176,6 +176,11 @@ export class StoreIbanComponent implements OnInit, OnChanges {
             } else {
               alert("Verifique o tipo / tamanho do ficheiro");
             }
+          } else {
+            this.snackBar.open(this.translate.instant('queues.attach.fileSize'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
           }
           this.fileEmitter.emit({ tipo: this.IBANToShow.tipo, dataDocumento: this.IBANToShow.dataDocumento, file: this.IBANToShow.file, id: this.IBANToShow.id });
         } else {

@@ -208,6 +208,11 @@ export class PackContratualComponent implements OnInit, OnDestroy {
             } else {
               alert("Verifique o tipo / tamanho do ficheiro");
             }
+          } else {
+            this.snackBar.open(this.translate.instant('queues.attach.fileSize'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
           }
         }
       } else {

@@ -24,7 +24,7 @@ import { StoreService } from '../../store/store.service';
 import { ShopDetailsAcquiring } from '../../store/IStore.interface';
 import { IStakeholders, OutboundDocument, PostCorporateEntity } from '../../stakeholders/IStakeholders.interface';
 import { AuthService } from '../../services/auth.service';
-import { ISubmissionDocument } from '../../submission/document/ISubmission-document';
+import { ISubmissionDocument, PostDocument } from '../../submission/document/ISubmission-document';
 import { SubmissionPostDocumentTemplate } from '../../submission/ISubmission.interface';
 import { TranslateService } from '@ngx-translate/core';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
@@ -1268,6 +1268,24 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
                         });
                       }
+
+                      context?.clientDocs?.forEach(doc => {
+                        let purpose = doc.purpose == "undefined" ? null : doc.purpose;
+                        if (doc.purpose == "undefined")
+                        var postDocument: PostDocument = {
+                          data: null,
+                          documentPurpose: purpose,
+                          documentType: doc.documentType,
+                          file: {
+                            binary: doc.uniqueReference,
+                            fileType: "pdf"
+                          },
+                          validUntil: doc.validUntil 
+                        }
+                        context.stakeholderService.AddNewDocumentStakeholder(submissionID, value.id, postDocument).subscribe(res => {
+                          
+                        });
+                      });
                     });
                   } else {
                     //context.processService.addStakeholderToProcess(context.processId, value).then(result => {
@@ -1481,7 +1499,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   }
 
   getClientDocumentImage(uniqueReference: string, format: string, archiveSource: string) {
-    if (archiveSource != null) {
+    if (this.submissionDocs?.length == 0) {
       this.documentService.GetDocumentImageOutbound(uniqueReference, "por mudar", "por mudar", format).subscribe(result => {
         this.logger.info("Get document image outbound result: " + JSON.stringify(result));
         this.b64toBlob(result.binary, 'application/pdf', 512);
