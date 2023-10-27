@@ -413,217 +413,225 @@ export class StoreComponent implements AfterViewInit {
   submit(addStore: boolean, isEditButton?: boolean, clickedTable: boolean = false) {
     if (this.returned != 'consult') {
       if (this.editStores.valid) {
+        
         var infoStores = this.editStores.get("infoStores");
+        if (infoStores.get("contactPoint").value.trim().indexOf(' ') != -1) {
 
-        if (!infoStores.get("replicate").value) {
-          this.currentStore.address.address.postalArea = infoStores.get("localeStore").value;
-          this.currentStore.address.address.address = infoStores.get("addressStore").value;
-          this.currentStore.address.address.country = infoStores.get("countryStore").value;
-          this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
-          this.currentStore.address.useMerchantAddress = false;
-        } else {
-          this.currentStore.address.useMerchantAddress = true;
-          if (this.submissionClient.headquartersAddress.address != null) {
-            this.currentStore.address.address.address = this.submissionClient.headquartersAddress.address;
-            this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
-            this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
-            this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
+          if (!infoStores.get("replicate").value) {
+            this.currentStore.address.address.postalArea = infoStores.get("localeStore").value;
+            this.currentStore.address.address.address = infoStores.get("addressStore").value;
+            this.currentStore.address.address.country = infoStores.get("countryStore").value;
+            this.currentStore.address.address.postalCode = infoStores.get("zipCodeStore").value;
+            this.currentStore.address.useMerchantAddress = false;
           } else {
-            this.currentStore.address.shoppingCenterPostalCode = infoStores.get("zipCodeStore").value; //antes estava address.postalCode
+            this.currentStore.address.useMerchantAddress = true;
+            if (this.submissionClient.headquartersAddress.address != null) {
+              this.currentStore.address.address.address = this.submissionClient.headquartersAddress.address;
+              this.currentStore.address.address.country = this.submissionClient.headquartersAddress.country;
+              this.currentStore.address.address.postalArea = this.submissionClient.headquartersAddress.postalArea;
+              this.currentStore.address.address.postalCode = this.submissionClient.headquartersAddress.postalCode;
+            } else {
+              this.currentStore.address.shoppingCenterPostalCode = infoStores.get("zipCodeStore").value; //antes estava address.postalCode
+            }
           }
-        }
 
-        if (infoStores.get("commercialCenter").value) {
-          this.currentStore.address.shoppingCenter = infoStores.get("subZoneStore").value;
-          this.currentStore.address.isInsideShoppingCenter = true;
-        } else {
-          this.currentStore.address.shoppingCenter = null;
-          this.currentStore.address.isInsideShoppingCenter = false;
-        }
-
-        this.currentStore.name = infoStores.get("storeName").value;
-        this.currentStore.activity = infoStores.get("activityStores").value;
-        this.currentStore.subActivity = infoStores.get("subactivityStore").value;
-        this.currentStore.contactPerson = infoStores.get("contactPoint").value;
-
-        var bankStores = this.editStores.controls["bankStores"];
-
-        this.currentStore.bank = {
-          bank: {
-            bank: bankStores.get("supportBank").value,
-            iban: this.currentStore.bank?.bank?.iban
-          },
-          useMerchantBank: bankStores.get("bankInformation").value
-        }
-
-        var productStores = this.editStores.controls["productStores"];
-
-        this.currentStore.productCode = productStores.get("solutionType").value;
-        this.currentStore.subProductCode = productStores.get("subProduct").value;
-        this.currentStore.website = productStores.get("url").value;
-        this.currentStore.productCodeDescription = productStores.get("solutionName").value;
-        this.currentStore.subProductCodeDescription = productStores.get("subProductName").value;
-
-        if (this.currentUser.permissions == "UNICRE") {
-          this.currentStore.supportEntity = TerminalSupportEntityEnum.ACQUIRER;
-        } else {
-          this.currentStore.supportEntity = TerminalSupportEntityEnum.OTHER;
-        }
-        if (addStore) {
-          this.logger.info("Shop to add: " + JSON.stringify(this.currentStore));
-          if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
-            this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
-              this.logger.info("Added shop result: " + JSON.stringify(result));
-              this.currentStore.id = result["id"];
-              this.visitedStores.push(this.currentStore.id);
-              this.visitedStores = Array.from(new Set(this.visitedStores));
-              this.addDocumentToShop(result["id"], this.currentStore);
-              this.emitInsertedStore(this.currentStore);
-              this.resetForm();
-              this.currentStore = null;
-              this.currentIdx = -2;
-            });
+          if (infoStores.get("commercialCenter").value) {
+            this.currentStore.address.shoppingCenter = infoStores.get("subZoneStore").value;
+            this.currentStore.address.isInsideShoppingCenter = true;
           } else {
-            this.processService.addShopToProcess(this.processId, this.currentStore).then(result => {
-              this.logger.info("Added shop result: " + JSON.stringify(result.result));
-              this.currentStore.id = result.result["id"];
-              this.visitedStores.push(this.currentStore.id);
-              this.visitedStores = Array.from(new Set(this.visitedStores));
-              this.addDocumentToShop(result.result["id"], this.currentStore);
-              this.emitInsertedStore(this.currentStore);
-              this.resetForm();
-              this.currentStore = null;
-              this.currentIdx = -2;
-            });
+            this.currentStore.address.shoppingCenter = null;
+            this.currentStore.address.isInsideShoppingCenter = false;
           }
-        } else {
-          if (this.storesLength > 0) {
-            if (this.currentStore.id == null || this.currentStore.id == "") {
-              this.snackBar.open(this.translate.instant('stores.addOrCancel'), '', {
+
+          this.currentStore.name = infoStores.get("storeName").value;
+          this.currentStore.activity = infoStores.get("activityStores").value;
+          this.currentStore.subActivity = infoStores.get("subactivityStore").value;
+          this.currentStore.contactPerson = infoStores.get("contactPoint").value;
+
+          var bankStores = this.editStores.controls["bankStores"];
+
+          this.currentStore.bank = {
+            bank: {
+              bank: bankStores.get("supportBank").value,
+              iban: this.currentStore.bank?.bank?.iban
+            },
+            useMerchantBank: bankStores.get("bankInformation").value
+          }
+
+          var productStores = this.editStores.controls["productStores"];
+
+          this.currentStore.productCode = productStores.get("solutionType").value;
+          this.currentStore.subProductCode = productStores.get("subProduct").value;
+          this.currentStore.website = productStores.get("url").value;
+          this.currentStore.productCodeDescription = productStores.get("solutionName").value;
+          this.currentStore.subProductCodeDescription = productStores.get("subProductName").value;
+
+          if (this.currentUser.permissions == "UNICRE") {
+            this.currentStore.supportEntity = TerminalSupportEntityEnum.ACQUIRER;
+          } else {
+            this.currentStore.supportEntity = TerminalSupportEntityEnum.OTHER;
+          }
+          if (addStore) {
+            this.logger.info("Shop to add: " + JSON.stringify(this.currentStore));
+            if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+              this.storeService.addShopToSubmission(localStorage.getItem("submissionId"), this.currentStore).subscribe(result => {
+                this.logger.info("Added shop result: " + JSON.stringify(result));
+                this.currentStore.id = result["id"];
+                this.visitedStores.push(this.currentStore.id);
+                this.visitedStores = Array.from(new Set(this.visitedStores));
+                this.addDocumentToShop(result["id"], this.currentStore);
+                this.emitInsertedStore(this.currentStore);
+                this.resetForm();
+                this.currentStore = null;
+                this.currentIdx = -2;
+              });
+            } else {
+              this.processService.addShopToProcess(this.processId, this.currentStore).then(result => {
+                this.logger.info("Added shop result: " + JSON.stringify(result.result));
+                this.currentStore.id = result.result["id"];
+                this.visitedStores.push(this.currentStore.id);
+                this.visitedStores = Array.from(new Set(this.visitedStores));
+                this.addDocumentToShop(result.result["id"], this.currentStore);
+                this.emitInsertedStore(this.currentStore);
+                this.resetForm();
+                this.currentStore = null;
+                this.currentIdx = -2;
+              });
+            }
+          } else {
+            if (this.storesLength > 0) {
+              if (this.currentStore.id == null || this.currentStore.id == "") {
+                this.snackBar.open(this.translate.instant('stores.addOrCancel'), '', {
+                  duration: 15000,
+                  panelClass: ['snack-bar']
+                });
+                return;
+              }
+              if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+                if (!this.editStores.pristine) {
+                  if (!this.activityChanged && !this.subActivityChanged && !this.bankChanged) {
+                    this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
+                      this.visitedStores.push(this.currentStore.id);
+                      this.visitedStores = Array.from(new Set(this.visitedStores));
+                      this.logger.info("Updated shop result: " + JSON.stringify(result));
+                      if (!clickedTable) {
+                        if (isEditButton) {
+                          this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                          this.resetForm();
+                          this.currentStore = null;
+                          this.currentIdx = -2;
+                        } else {
+                          if (this.visitedStores.length < this.storesLength) {
+                            this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                            this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                            this.resetForm();
+                          } else {
+                            this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                            this.resetForm();
+                            this.currentStore = null;
+                            this.currentIdx = -2;
+                            this.data.changeShops(true);
+                            this.logger.info("Redirecting to Comprovativos page");
+                            this.data.updateData(true, 3);
+                            this.route.navigate(['comprovativos']);
+                          }
+                        }
+                      }
+                    });
+                  } else {
+                    //mostrar popup
+                    this.updateModalRef = this.modalService.show(this.updateModal, { class: 'modal-lg' });
+                  }
+                } else {
+                  this.visitedStores.push(this.currentStore.id);
+                  this.visitedStores = Array.from(new Set(this.visitedStores)); //entrou aqui
+
+                  if (!clickedTable) {
+                    if (!isEditButton) {
+                      if (this.visitedStores.length < this.storesLength) {
+                        this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                        this.resetForm();
+                      } else {
+                        this.resetForm();
+                        this.currentStore = null;
+                        this.currentIdx = -2;
+                        this.data.changeShops(true);
+                        this.logger.info("Redirecting to Comprovativos page");
+                        this.data.updateData(true, 3);
+                        this.route.navigate(['comprovativos']);
+                      }
+                    }
+                  }
+
+                }
+              } else {
+                if (!this.editStores.pristine) {
+                  if (!this.activityChanged && !this.subActivityChanged && !this.bankChanged) {
+                    this.processService.updateShopProcess(this.processId, this.currentStore.id, this.currentStore).then(result => {
+                      this.visitedStores.push(this.currentStore.id);
+                      this.visitedStores = Array.from(new Set(this.visitedStores));
+                      if (!clickedTable) {
+                        if (isEditButton) {
+                          this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                          this.resetForm();
+                          this.currentStore = null;
+                          this.currentIdx = -2;
+                        } else {
+                          if (this.visitedStores.length < this.storesLength) {
+                            this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                            this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                            this.resetForm();
+                          } else {
+                            this.addDocumentToShop(this.currentStore.id, this.currentStore);
+                            this.resetForm();
+                            this.currentStore = null;
+                            this.currentIdx = -2;
+                            this.data.changeShops(true);
+                            this.logger.info("Redirecting to Comprovativos page");
+                            this.data.updateData(true, 3);
+                            this.route.navigate(['comprovativos']);
+                          }
+                        }
+                      }
+                    });
+                  } else {
+                    //mostrar popup
+                    this.updateModalRef = this.modalService.show(this.updateModal, { class: 'modal-lg' });
+                  }
+                } else {
+                  this.visitedStores.push(this.currentStore.id);
+                  this.visitedStores = Array.from(new Set(this.visitedStores));
+
+                  if (!clickedTable) {
+                    if (!isEditButton) {
+                      if (this.visitedStores.length < this.storesLength) {
+                        this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
+                        this.resetForm();
+                      } else {
+                        this.resetForm();
+                        this.currentStore = null;
+                        this.currentIdx = -2;
+                        this.data.changeShops(true);
+                        this.logger.info("Redirecting to Comprovativos page");
+                        this.data.updateData(true, 3);
+                        this.route.navigate(['comprovativos']);
+                      }
+                    }
+                  }
+                }
+              }
+            } else {
+              this.snackBar.open(this.translate.instant('generalKeywords.requiredStore'), '', {
                 duration: 15000,
                 panelClass: ['snack-bar']
               });
-              return;
             }
-            if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
-              if (!this.editStores.pristine) {
-                if (!this.activityChanged && !this.subActivityChanged && !this.bankChanged) {
-                  this.storeService.updateSubmissionShop(localStorage.getItem("submissionId"), this.currentStore.id, this.currentStore).subscribe(result => {
-                    this.visitedStores.push(this.currentStore.id);
-                    this.visitedStores = Array.from(new Set(this.visitedStores));
-                    this.logger.info("Updated shop result: " + JSON.stringify(result));
-                    if (!clickedTable) {
-                      if (isEditButton) {
-                        this.addDocumentToShop(this.currentStore.id, this.currentStore);
-                        this.resetForm();
-                        this.currentStore = null;
-                        this.currentIdx = -2;
-                      } else {
-                        if (this.visitedStores.length < this.storesLength) {
-                          this.addDocumentToShop(this.currentStore.id, this.currentStore);
-                          this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-                          this.resetForm();
-                        } else {
-                          this.addDocumentToShop(this.currentStore.id, this.currentStore);
-                          this.resetForm();
-                          this.currentStore = null;
-                          this.currentIdx = -2;
-                          this.data.changeShops(true);
-                          this.logger.info("Redirecting to Comprovativos page");
-                          this.data.updateData(true, 3);
-                          this.route.navigate(['comprovativos']);
-                        }
-                      }
-                    }
-                  });
-                } else {
-                  //mostrar popup
-                  this.updateModalRef = this.modalService.show(this.updateModal, { class: 'modal-lg' });
-                }
-              } else {
-                this.visitedStores.push(this.currentStore.id);
-                this.visitedStores = Array.from(new Set(this.visitedStores)); //entrou aqui
-
-                if (!clickedTable) {
-                  if (!isEditButton) {
-                    if (this.visitedStores.length < this.storesLength) {
-                      this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-                      this.resetForm();
-                    } else {
-                      this.resetForm();
-                      this.currentStore = null;
-                      this.currentIdx = -2;
-                      this.data.changeShops(true);
-                      this.logger.info("Redirecting to Comprovativos page");
-                      this.data.updateData(true, 3);
-                      this.route.navigate(['comprovativos']);
-                    }
-                  }
-                }
-
-              }
-            } else {
-              if (!this.editStores.pristine) {
-                if (!this.activityChanged && !this.subActivityChanged && !this.bankChanged) {
-                  this.processService.updateShopProcess(this.processId, this.currentStore.id, this.currentStore).then(result => {
-                    this.visitedStores.push(this.currentStore.id);
-                    this.visitedStores = Array.from(new Set(this.visitedStores));
-                    if (!clickedTable) {
-                      if (isEditButton) {
-                        this.addDocumentToShop(this.currentStore.id, this.currentStore);
-                        this.resetForm();
-                        this.currentStore = null;
-                        this.currentIdx = -2;
-                      } else {
-                        if (this.visitedStores.length < this.storesLength) {
-                          this.addDocumentToShop(this.currentStore.id, this.currentStore);
-                          this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-                          this.resetForm();
-                        } else {
-                          this.addDocumentToShop(this.currentStore.id, this.currentStore);
-                          this.resetForm();
-                          this.currentStore = null;
-                          this.currentIdx = -2;
-                          this.data.changeShops(true);
-                          this.logger.info("Redirecting to Comprovativos page");
-                          this.data.updateData(true, 3);
-                          this.route.navigate(['comprovativos']);
-                        }
-                      }
-                    }
-                  });
-                } else {
-                  //mostrar popup
-                  this.updateModalRef = this.modalService.show(this.updateModal, { class: 'modal-lg' });
-                }
-              } else {
-                this.visitedStores.push(this.currentStore.id);
-                this.visitedStores = Array.from(new Set(this.visitedStores));
-
-                if (!clickedTable) {
-                  if (!isEditButton) {
-                    if (this.visitedStores.length < this.storesLength) {
-                      this.emitUpdatedStore(of({ store: this.currentStore, idx: this.currentIdx }));
-                      this.resetForm();
-                    } else {
-                      this.resetForm();
-                      this.currentStore = null;
-                      this.currentIdx = -2;
-                      this.data.changeShops(true);
-                      this.logger.info("Redirecting to Comprovativos page");
-                      this.data.updateData(true, 3);
-                      this.route.navigate(['comprovativos']);
-                    }
-                  }
-                }
-              }
-            }
-          } else {
-            this.snackBar.open(this.translate.instant('generalKeywords.requiredStore'), '', {
-              duration: 15000,
-              panelClass: ['snack-bar']
-            });
           }
+        } else {
+          this.snackBar.open(this.translate.instant('stores.twoWords'), '', {
+            duration: 15000,
+            panelClass: ['snack-bar']
+          });
         }
       } else {
         if (!clickedTable) {

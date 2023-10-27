@@ -384,7 +384,7 @@
               </h2>
               <div id="flush-collapseBackOffice" class="accordion-collapse collapse"
                    aria-labelledby="flush-headingBackOffice" data-bs-parent="#accordionFlushExample">
-                <mat-table [dataSource]="dataSourceTratamento" matSort #empTbSortWithObject="matSort">
+                <mat-table [dataSource]="dataSourceTratamento" matSort #empTbSortWithObject="matSort" (matSortChange)="sortData($event)">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -472,7 +472,7 @@
               </h2>
               <div id="flush-collapseReturned" class="accordion-collapse collapse"
                    aria-labelledby="flush-headingReturned" data-bs-parent="#accordionFlushExample">
-                <mat-table [dataSource]="dataSourceDevolvidos" matSort #empTbSortDevolvidos="matSort">
+                <mat-table [dataSource]="dataSourceDevolvidos" matSort #empTbSortDevolvidos="matSort" (matSortChange)="sortData($event)">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -564,7 +564,7 @@
               </h2>
               <div id="flush-collapseAcceptance" class="accordion-collapse collapse"
                    aria-labelledby="flush-headingAcceptance" data-bs-parent="#accordionFlushExample">
-                <mat-table [dataSource]="dataSourceAceitacao" matSort #empTbSortAceitacao="matSort">
+                <mat-table [dataSource]="dataSourceAceitacao" matSort #empTbSortAceitacao="matSort" (matSortChange)="sortData($event)">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -655,7 +655,7 @@
               </h2>
               <div id="flush-collapsePendingEligibility" class="accordion-collapse collapse"
                    aria-labelledby="flush-headingPendingEligibility" data-bs-parent="#accordionFlushExample">
-                <mat-table [dataSource]="dataSourcePendingEligibility" matSort #empTbSortPendingEligibility="matSort">
+                <mat-table [dataSource]="dataSourcePendingEligibility" matSort #empTbSortPendingEligibility="matSort" (matSortChange)="sortData($event)">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -756,7 +756,7 @@
               </h2>
               <div id="flush-collapseMultipleClients" class="accordion-collapse collapse"
                    aria-labelledby="flush-headingMultipleClients" data-bs-parent="#accordionFlushExample">
-                <mat-table [dataSource]="dataSourceMultipleClients" matSort #empTbSortMultipleClients="matSort">
+                <mat-table [dataSource]="dataSourceMultipleClients" matSort #empTbSortMultipleClients="matSort" (matSortChange)="sortData($event)">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -856,7 +856,7 @@
               </h2>
               <div id="flush-collapseDOValidation" class="accordion-collapse collapse"
                    aria-labelledby="flush-headingDOValidation" data-bs-parent="#accordionFlushExample">
-                <mat-table [dataSource]="dataSourceDOValidation" matSort #empTbSortDOValidation="matSort">
+                <mat-table [dataSource]="dataSourceDOValidation" matSort #empTbSortDOValidation="matSort" (matSortChange)="sortData($event)">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -956,7 +956,7 @@
               </h2>
               <div id="flush-collapseNegotiationAproval" class="accordion-collapse collapse"
                    aria-labelledby="flush-headingNegotiationAproval" data-bs-parent="#accordionFlushExample">
-                <mat-table [dataSource]="dataSourceNegotiationAproval" matSort #empTbSortNegotiationAproval="matSort">
+                <mat-table [dataSource]="dataSourceNegotiationAproval" matSort #empTbSortNegotiationAproval="matSort" (matSortChange)="sortData($event)">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -1057,7 +1057,7 @@
               </h2>
               <div id="flush-collapseMCCTreatment" class="accordion-collapse collapse"
                    aria-labelledby="flush-headingMCCTreatment" data-bs-parent="#accordionFlushExample">
-                <mat-table [dataSource]="dataSourceMCCTreatment" matSort #empTbSortMCCTreatment="matSort">
+                <mat-table [dataSource]="dataSourceMCCTreatment" matSort #empTbSortMCCTreatment="matSort" (matSortChange)="sortData($event)">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -1157,7 +1157,7 @@
               </h2>
               <div id="flush-collapseValidationSIBS" class="accordion-collapse collapse"
                    aria-labelledby="flush-headingValidationSIBS" data-bs-parent="#accordionFlushExample">
-                <mat-table [dataSource]="dataSourceValidationSIBS" matSort #empTbSortValidationSIBS="matSort">
+                <mat-table [dataSource]="dataSourceValidationSIBS" matSort #empTbSortValidationSIBS="matSort" (matSortChange)="sortData($event)">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -1257,7 +1257,7 @@
               </h2>
               <div id="flush-collapseRiskOpinion" class="accordion-collapse collapse"
                    aria-labelledby="flush-headingRiskOpinion" data-bs-parent="#accordionFlushExample">
-                <mat-table [dataSource]="dataSourceRiskOpinion" matSort #empTbSortRiskOpinion="matSort">
+                <mat-table [dataSource]="dataSourceRiskOpinion" matSort #empTbSortRiskOpinion="matSort" (matSortChange)="sortData($event)">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -1358,7 +1358,7 @@
               </h2>
               <div id="flush-collapseComplianceDoubts" class="accordion-collapse collapse"
                    aria-labelledby="flush-headingComplianceDoubts" data-bs-parent="#accordionFlushExample">
-                <mat-table [dataSource]="dataSourceComplianceDoubts" matSort #empTbSortComplianceDoubts="matSort">
+                <mat-table [dataSource]="dataSourceComplianceDoubts" matSort #empTbSortComplianceDoubts="matSort" (matSortChange)="sortData($event)">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>
@@ -1458,7 +1458,7 @@
               </h2>
               <div id="flush-collapsePendingSent" class="accordion-collapse collapse"
                    aria-labelledby="flush-headingPendingSent" data-bs-parent="#accordionFlushExample">
-                <mat-table [dataSource]="dataSourcePendingSent" matSort #empTbSortPendingSent="matSort">
+                <mat-table [dataSource]="dataSourcePendingSent" matSort #empTbSortPendingSent="matSort" (matSortChange)="sortData($event)">
                   <!-- Nº Processo Column -->
                   <ng-container matColumnDef="processNumber">
                     <mat-header-cell *matHeaderCellDef mat-sort-header>

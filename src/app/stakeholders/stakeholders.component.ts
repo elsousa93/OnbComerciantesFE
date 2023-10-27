@@ -362,19 +362,23 @@ export class StakeholdersComponent implements OnInit {
       context.selectedStakeholderComprovativos = [];
       this.currentStakeholder = info.stakeholder;
       this.currentIdx = info.idx;
-      this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
+      //this.logger.info("Selected stakeholder: " + JSON.stringify(this.currentStakeholder));
       this.logger.info("Selected stakeholder index: " + this.currentIdx);
-      if (this.currentStakeholder?.stakeholderAcquiring?.documents?.length > 0) {
-        this.currentStakeholder.stakeholderAcquiring.documents.forEach(doc => {
-          doc["uniqueReference"] = doc.id;
-          doc["archiveSource"] = null;
-          context.selectedStakeholderComprovativos.push(doc);
-        });
-        this.getDocumentDescription(this.selectedStakeholderComprovativos);
-      }
       if (this.currentStakeholder.stakeholderOutbound != undefined) {
-        this.selectedStakeholderComprovativos = this.currentStakeholder.stakeholderOutbound.supportingDocuments;
+        this.currentStakeholder?.stakeholderOutbound["documents"]?.forEach(doc => {
+          doc["archiveSource"] = "outbound";
+        });
+        this.selectedStakeholderComprovativos.push(...this.currentStakeholder.stakeholderOutbound["documents"]);
         this.getDocumentDescription(this.selectedStakeholderComprovativos);
+      } else {
+        if (this.currentStakeholder?.stakeholderAcquiring?.documents?.length > 0) {
+          this.currentStakeholder.stakeholderAcquiring.documents.forEach(doc => {
+            doc["uniqueReference"] = doc.id;
+            doc["archiveSource"] = null;
+            context.selectedStakeholderComprovativos.push(doc);
+          });
+          this.getDocumentDescription(this.selectedStakeholderComprovativos);
+        }
       }
       setTimeout(() => this.setFormData(), 500);
     }
@@ -479,7 +483,7 @@ export class StakeholdersComponent implements OnInit {
               }
               //Colocar comprovativo do CC na Submissao
               var documentCC: PostDocument = {
-                documentType: '0001',
+                documentType: '0018',
                 documentPurpose: 'Identification',
                 file: {
                   binary: this.prettyPDF?.file,
@@ -757,7 +761,7 @@ export class StakeholdersComponent implements OnInit {
   }
 
   loadStakeholderDocument(documentReference, archiveSource) {
-    if (archiveSource != null) {
+    if (archiveSource != null) { //antes estava !=
       this.documentService.GetDocumentImageOutbound(documentReference, "por mudar", "por mudar", 'pdf').subscribe(result => {
         this.logger.info("Get document image outbound result: " + JSON.stringify(result));
         this.b64toBlob(result.binary, 'application/pdf', 512);

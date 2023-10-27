@@ -132,14 +132,15 @@
                         <td class="text-primary text-center align-middle"> {{stakeholder.fiscalId == undefined ? "-" : stakeholder.fiscalId}} </td>
                         <td class="text-primary text-center align-middle">
                           <select *ngIf="!isVisible" id="{{stakeholder.id}}" name="{{stakeholder.id}}" formControlName="{{stakeholder.id}}">
-                            <option value="OneTimePassword">OTP</option>
-                            <option value="DigitalCitizenCard">Chave Móvel Digital</option>
-                            <option value="CitizenCard">CC</option>
+                            <option *ngFor="let value of signTypeList" value={{value.code}}>{{value.description}}</option>
                           </select>
                         </td>
                       </tr>
                     </tbody>
                   </table>
+                </div>
+                <div *ngIf="checkOTPSelected()">
+                  {{'declarativeInformation.OTPMessage'|translate}}
                 </div>
                 <ng-template #closeSubmissionModal>
                   <main class="container-fluid bg-primary ms-0 me-0 ps-0 pe-0" style="margin-top: 0px !important;">

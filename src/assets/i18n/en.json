@@ -190,7 +190,8 @@
     "corporate": "Corporate",
     "signError": "There must be at least one stakeholder who signs the contract",
     "stakeExistsError": "There must be at least one private stakeholder",
-    "differentNIFCC": "It's not possible to update the data, as the NIF of the CC does not match that of the current stakeholder"
+    "differentNIFCC": "It's not possible to update the data, as the NIF of the CC does not match that of the current stakeholder",
+    "twoWords": "The stakeholder's name should have at least 2 words"
   },
   "stores": {
     "title": "Stores",
@@ -227,7 +228,8 @@
     "updateStore": "This change will delete the Commercial Offer configuration. Do you wish to proceed?",
     "proofIBAN": "IBAN proof is missing",
     "addOrCancel": "You need to add or cancel the identified store",
-    "URL": "Store's URL"
+    "URL": "Store's URL",
+    "twoWords": "The point of contact's name should have at least two words"
   },
   "supportingDocuments": {
     "title": "Supporting Documents",
@@ -357,7 +359,8 @@
       "submission": "Are you sure you want to close the submission and send it to the backoffice?",
       "title": "Choose the digital signature type",
       "finalSubmission": "Submission sent"
-    }
+    },
+    "OTPMessage": "The Digital Signature via OTP is only available to participants who have one of the following identification documents Portuguese Citizen Card or Passport for the following countries (Portugal; Spain; Italy; France; Brazil; United States) If you have another identification document, You must select another type of Subscription"
   },
   "searches": {
     "title": "Searches",

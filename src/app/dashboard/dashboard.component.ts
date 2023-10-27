@@ -70,6 +70,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
         pager._intl = new MatPaginatorIntl();
         pager._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+        pager.firstPage();
       });
     }
   }
@@ -79,6 +80,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       this.translate.get('homepage.diaryPerformance').subscribe((translated: string) => {
         pager._intl = new MatPaginatorIntl();
         pager._intl.itemsPerPageLabel = this.translate.instant('generalKeywords.itemsPerPage');
+        
       });
     }
   }
@@ -258,6 +260,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   baseUrl: string;
   searchedId: string;
   window: any = window;
+  orderField: string = null;
+  order: string = null;
+  pageIndex: number = 0;
 
   constructor(private logger: LoggerService, private router: Router,
     changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, private dataService: DataService, private processService: ProcessService,
@@ -1261,9 +1266,9 @@ export class DashboardComponent implements OnInit, AfterViewInit {
     var currentPageIdx = event.pageIndex;
     var currentPageSize = event.pageSize;
     var to = currentPageIdx * currentPageSize;
-
+    this.pageIndex = event.pageIndex;
     if (this.incompleteOpened) {
-      this.processService.searchProcessByState('Incomplete', to, currentPageSize).subscribe(resul => {
+      this.processService.searchProcessByState('Incomplete', to, currentPageSize, this.orderField, this.order).subscribe(resul => {
           this.logger.info('Search incomplete processes ' + JSON.stringify(resul));
           this.incompleteProcessess.items = [];
           this.incompleteProcessess.items.push(...resul.items);
@@ -1278,7 +1283,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           this.orderProcesses(this.dataSourcePendentes, this.empTbSort, this.incompleteProcessess);
         });
     } else if (this.ongoingOpened) {
-      this.processService.searchProcessByState('Ongoing', to, currentPageSize).subscribe(resul => {
+      this.processService.searchProcessByState('Ongoing', to, currentPageSize, this.orderField, this.order).subscribe(resul => {
         this.logger.info('Search ongoing processes ' + JSON.stringify(resul));
         this.ongoingProcessess.items = [];
         this.ongoingProcessess.items.push(...resul.items);
@@ -1293,7 +1298,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.orderProcesses(this.dataSourceTratamento, this.empTbSortWithObject, this.ongoingProcessess);
       });
     } else if (this.returnedOpened) {
-      this.processService.searchProcessByState('Returned', to, currentPageSize).subscribe(resul => {
+      this.processService.searchProcessByState('Returned', to, currentPageSize, this.orderField, this.order).subscribe(resul => {
         this.logger.info('Search returned processes ' + JSON.stringify(resul));
         this.returnedProcessess.items = [];
         this.returnedProcessess.items.push(...resul.items);
@@ -1310,7 +1315,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
       });
     } else if (this.contractAcceptanceOpened) {
       let promise = new Promise((resolve, reject) => {
-        this.processService.searchProcessByState('ContractAcceptance', to, currentPageSize).subscribe(resul => {
+        this.processService.searchProcessByState('ContractAcceptance', to, currentPageSize, this.orderField, this.order).subscribe(resul => {
           this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
           this.contractAcceptanceProcessess.items = [];
           this.contractAcceptanceProcessess.items.push(...resul.items);
@@ -1327,7 +1332,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           resolve(null);
         });
       }).finally(() => {
-        this.processService.searchProcessByState('ContractDigitalAcceptance', to, currentPageSize).subscribe(resul => {
+        this.processService.searchProcessByState('ContractDigitalAcceptance', to, currentPageSize, this.orderField, this.order).subscribe(resul => {
           this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
           var contractAcceptanceProcessess = resul;
           contractAcceptanceProcessess.items.forEach(process => {
@@ -1340,7 +1345,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
           this.contractAcceptanceProcessess.items.push(...contractAcceptanceProcessess.items);
         });
 
-        this.processService.searchProcessByState('DigitalIdentification', to, currentPageSize).subscribe(resul => {
+        this.processService.searchProcessByState('DigitalIdentification', to, currentPageSize, this.orderField, this.order).subscribe(resul => {
           this.logger.info('Search contract acceptance processes ' + JSON.stringify(resul));
           var contractAcceptanceProcessess = resul;
           contractAcceptanceProcessess.items.forEach(process => {
@@ -1355,7 +1360,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         });
       });
     } else if (this.pendingSentOpened) {
-      this.processService.searchProcessByState('AwaitingCompletion', to, currentPageSize).subscribe(resul => {
+      this.processService.searchProcessByState('AwaitingCompletion', to, currentPageSize, this.orderField, this.order).subscribe(resul => {
         this.logger.info('Search awaiting completion processes ' + JSON.stringify(resul));
         this.pendingSentProcessess.items = [];
         this.pendingSentProcessess.items.push(...resul.items);
@@ -1370,7 +1375,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.orderProcesses(this.dataSourcePendingSent, this.empTbSortPendingSent, this.pendingSentProcessess);
       });
     } else if (this.pendingEligibilityOpened) {
-      this.processService.searchProcessByState('EligibilityAssessment', to, currentPageSize).subscribe(resul => {
+      this.processService.searchProcessByState('EligibilityAssessment', to, currentPageSize, this.orderField, this.order).subscribe(resul => {
         this.logger.info('Search eligibility assessment processes ' + JSON.stringify(resul));
         this.pendingEligibilityProcessess.items = [];
         this.pendingEligibilityProcessess.items.push(...resul.items);
@@ -1386,7 +1391,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.orderProcesses(this.dataSourcePendingEligibility, this.empTbSortPendingEligibility, this.pendingEligibilityProcessess);
       });
     } else if (this.multipleClientesOpened) {
-      this.processService.searchProcessByState('ClientChoice', to, currentPageSize).subscribe(resul => {
+      this.processService.searchProcessByState('ClientChoice', to, currentPageSize, this.orderField, this.order).subscribe(resul => {
         this.logger.info('Search client choice processes ' + JSON.stringify(resul));
         this.multipleClientesProcessess.items = [];
         this.multipleClientesProcessess.items.push(...resul.items);
@@ -1401,7 +1406,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.orderProcesses(this.dataSourceMultipleClients, this.empTbSortMultipleClients, this.multipleClientesProcessess);
       });
     } else if (this.DOValidationOpened) {
-      this.processService.searchProcessByState('OperationsEvaluation', to, currentPageSize).subscribe(resul => {
+      this.processService.searchProcessByState('OperationsEvaluation', to, currentPageSize, this.orderField, this.order).subscribe(resul => {
         this.logger.info('Search operations evaluation processes ' + JSON.stringify(resul));
         this.DOValidationProcessess.items = [];
         this.DOValidationProcessess.items.push(...resul.items);
@@ -1418,7 +1423,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.orderProcesses(this.dataSourceDOValidation, this.empTbSortDOValidation, this.DOValidationProcessess);
       });
     } else if (this.negotiationAprovalOpened) {
-      this.processService.searchProcessByState('NegotiationApproval', to, currentPageSize).subscribe(resul => {
+      this.processService.searchProcessByState('NegotiationApproval', to, currentPageSize, this.orderField, this.order).subscribe(resul => {
         this.logger.info('Search negotiation approval processes ' + JSON.stringify(resul));
         this.negotiationAprovalProcessess.items = [];
         this.negotiationAprovalProcessess.items.push(...resul.items);
@@ -1433,7 +1438,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.orderProcesses(this.dataSourceNegotiationAproval, this.empTbSortNegotiationAproval, this.negotiationAprovalProcessess);
       });
     } else if (this.MCCTreatmentOpened) {
-      this.processService.searchProcessByState('StandardIndustryClassificationChoice', to, currentPageSize).subscribe(resul => {
+      this.processService.searchProcessByState('StandardIndustryClassificationChoice', to, currentPageSize, this.orderField, this.order).subscribe(resul => {
         this.logger.info('Search standard industry classification choice processes ' + JSON.stringify(resul));
         this.MCCTreatmentProcessess.items = [];
         this.MCCTreatmentProcessess.items.push(...resul.items);
@@ -1448,7 +1453,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.orderProcesses(this.dataSourceMCCTreatment, this.empTbSortMCCTreatment, this.MCCTreatmentProcessess);
       });
     } else if (this.validationSIBSOpened) {
-      this.processService.searchProcessByState('MerchantRegistration', to, currentPageSize).subscribe(resul => {
+      this.processService.searchProcessByState('MerchantRegistration', to, currentPageSize, this.orderField, this.order).subscribe(resul => {
         this.logger.info('Search merchant registration processes ' + JSON.stringify(resul));
         this.validationSIBSProcessess.items = [];
         this.validationSIBSProcessess.items.push(...resul.items);
@@ -1463,7 +1468,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.orderProcesses(this.dataSourceValidationSIBS, this.empTbSortValidationSIBS, this.validationSIBSProcessess);
       });
     } else if (this.riskOpinionOpened) {
-      this.processService.searchProcessByState('RiskAssessment', to, currentPageSize).subscribe(resul => {
+      this.processService.searchProcessByState('RiskAssessment', to, currentPageSize, this.orderField, this.order).subscribe(resul => {
         this.logger.info('Search risk assessment processes ' + JSON.stringify(resul));
         this.riskOpinionProcessess.items.push(...resul.items);
         this.riskOpinionProcessess.pagination = resul.pagination;
@@ -1477,7 +1482,7 @@ export class DashboardComponent implements OnInit, AfterViewInit {
         this.orderProcesses(this.dataSourceRiskOpinion, this.empTbSortRiskOpinion, this.riskOpinionProcessess);
       });
     } else if (this.complianceDoubtsOpened) {
-      this.processService.searchProcessByState('ComplianceEvaluation', to, currentPageSize).subscribe(resul => {
+      this.processService.searchProcessByState('ComplianceEvaluation', to, currentPageSize, this.orderField, this.order).subscribe(resul => {
         this.logger.info('Search compliance evaluation processes ' + JSON.stringify(resul));
         this.complianceDoubtsProcessess.items.push(...resul.items);
         this.complianceDoubtsProcessess.pagination = resul.pagination;
@@ -1608,6 +1613,91 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   }
 
   sortData(event) {
-    //console.log(event);
+    let orderField, order = null;
+    switch (event.active) {
+      case "processNumber":
+        orderField = "ProcessNumber";
+        break;
+      case "merchant.fiscalId":
+        orderField = "FiscalNumber";
+        break;
+      case "merchant.name":
+        orderField = "CommercialName";
+        break;
+      case "startedAt":
+        orderField = "Date";
+        break;
+    }
+
+    switch (event.direction) {
+      case "asc":
+        order = "Ascending";
+        break;
+      case "desc":
+        order = "Descending";
+        break;
+      case "":
+        orderField = null;
+        order = null;
+        break;
+    }
+    this.orderField = orderField;
+    this.order = order;
+    var pageSize = this.getCurrentPageSize();
+    this.changePage({ length: 0, pageIndex: this.pageIndex, pageSize: pageSize });
+    
+  }
+
+  getCurrentPageSize() {
+    if (this.incompleteOpened) {
+      //setTimeout(() => { this.paginatorPage.pageIndex = 0; });
+      return this.dataSourcePendentes.data.length;
+    } else if (this.ongoingOpened) {
+      //this.paginatorPageSize.pageIndex = 0;
+      return this.dataSourceTratamento.data.length;
+    } else if (this.returnedOpened) {
+      //this.paginatorPageDevolvidos.pageIndex = 0;
+      return this.dataSourceDevolvidos.data.length;
+    }
+    else if (this.contractAcceptanceOpened) {
+      //this.paginatorPageAceitacao.pageIndex = 0;
+      return this.dataSourceAceitacao.data.length;
+    }
+    else if (this.pendingSentOpened) {
+      //this.paginatorPagePendingSent.pageIndex = 0;
+      return this.dataSourcePendingSent.data.length;
+    }
+    else if (this.pendingEligibilityOpened) {
+      //this.paginatorPagePendingEligibility.pageIndex = 0;
+      return this.dataSourcePendingEligibility.data.length;
+    }
+    else if (this.multipleClientesOpened) {
+      //this.paginatorPageMultipleClients.pageIndex = 0;
+      return this.dataSourceMultipleClients.data.length;
+    }
+    else if (this.DOValidationOpened) {
+      //this.paginatorPageDOValidation.pageIndex = 0;
+      return this.dataSourceDOValidation.data.length;
+    }
+    else if (this.negotiationAprovalOpened) {
+      //this.paginatorPageNegotiationAproval.pageIndex = 0;
+      return this.dataSourceNegotiationAproval.data.length;
+    }
+    else if (this.MCCTreatmentOpened) {
+      //this.paginatorPageMCCTreatment.pageIndex = 0;
+      return this.dataSourceMCCTreatment.data.length;
+    }
+    else if (this.validationSIBSOpened) {
+      //this.paginatorPageValidationSIBS.pageIndex = 0;
+      return this.dataSourceValidationSIBS.data.length;
+    }
+    else if (this.riskOpinionOpened) {
+      //this.paginatorPageRiskOpinion.pageIndex = 0;
+      return this.dataSourceRiskOpinion.data.length;
+    }
+    else if (this.complianceDoubtsOpened) {
+      //this.paginatorPageComplianceDoubts.pageIndex = 0;
+      return this.dataSourceComplianceDoubts.data.length;
+    }
   }
 }

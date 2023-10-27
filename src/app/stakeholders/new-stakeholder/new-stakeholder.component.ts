@@ -530,7 +530,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
     }
 
     var fullName = this.dataCCcontents.nameCC ?? this.formNewStakeholder.get("name")?.value;
-    var nameArray = fullName.split(" ").filter(element => element);
+    var nameArray = fullName.trim().split(" ").filter(element => element);
     var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
     shortName.slice(0, 40);
     this.currentStakeholder.stakeholderAcquiring.fiscalId = this.dataCCcontents.nifCC;

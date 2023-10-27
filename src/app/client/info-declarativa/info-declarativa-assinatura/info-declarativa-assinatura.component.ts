@@ -13,7 +13,7 @@ import { ProcessNumberService } from 'src/app/nav-menu-presencial/process-number
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { StakeholderService } from 'src/app/stakeholders/stakeholder.service';
 import { TableInfoService } from '../../../table-info/table-info.service';
-import { ContractPackLanguage } from '../../../table-info/ITable-info.interface';
+import { ContractPackLanguage, DigitalSignature } from '../../../table-info/ITable-info.interface';
 import { ProcessService } from '../../../process/process.service';
 import { AuthService } from '../../../services/auth.service';
 import { QueuesService } from '../../../queues-detail/queues.service';
@@ -50,6 +50,8 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
   updateProcessId: string;
   @ViewChild('cancelModal') cancelModal;
   cancelModalRef: BsModalRef | undefined;
+  isClientAwaiting: boolean;
+  signTypeList: DigitalSignature[] = [];
 
   constructor(private logger: LoggerService, private processNrService: ProcessNumberService, private router: Router, private modalService: BsModalService, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService, private submissionService: SubmissionService, private stakeholderService: StakeholderService, private tableInfoService: TableInfoService, private processService: ProcessService, private authService: AuthService, private queueService: QueuesService) {
     if (this.router?.getCurrentNavigation()?.extras?.state) {
@@ -60,9 +62,30 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
     this.subscription = this.processNrService.processNumber.subscribe(processNumber => this.processNumber = processNumber);
     this.subscription = this.processNrService.processId.subscribe(processId => this.processId = processId);
     this.subscription = this.processNrService.updateProcessId.subscribe(processId => this.updateProcessId = processId);
-    this.initializeForm();
-
     this.returned = localStorage.getItem("returned");
+
+    if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+      this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
+        this.submissionAnswer = result.result;
+      });
+    } else {
+      this.processService.getProcessById(this.processId).subscribe(result => {
+        this.isVisible = result.contractSignature.signType == "Manual" ? true : false; //Digital ou Manual
+        this.isClientAwaiting = result.isClientAwaiting;
+        if (this.form != null) {
+          this.form.get("signature").setValue(this.isVisible);
+          this.form.get("signature").updateValueAndValidity();
+          this.choosePaper(this.isVisible);
+        }
+      });
+    }
+
+    this.tableInfoService.GetDigitalSignatureType("SignType").then(result => {
+      this.signTypeList = result.result;
+      this.signTypeList = this.signTypeList.filter(v => v.code != "NotSign");
+    });
+
+    this.initializeForm();
 
     if (this.returned == 'consult') {
       this.form.disable();
@@ -98,7 +121,7 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
 
     this.form = new FormGroup({
       language: new FormControl('PT', Validators.required),
-      signature: new FormControl(true, Validators.required)
+      signature: new FormControl(this.isVisible, Validators.required)
     });
 
     this.form.statusChanges.pipe(distinctUntilChanged()).subscribe(val => {
@@ -172,12 +195,14 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
                     } else {
                       context.form.addControl(stake.id, new FormControl(stake.signType, Validators.required));
                     }
+                    context.form.get(stake.id).disable();
                     context.submissionStakeholders.push(stake);
                   }
                 }, error => {
                   context.logger.error(error);
                 });
               });
+              context.form.disable();
             }, error => {
             });
           } else {
@@ -220,55 +245,50 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
         });
 
         if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
-          this.submissionService.GetSubmissionByID(this.submissionId).then(result => {
-            this.submissionAnswer = result.result;
-            var submissionToSend = {
-              submissionType: "DigitalComplete",
-              processNumber: this.submissionAnswer.processNumber,
-              processKind: this.submissionAnswer.processKind,
-              processType: this.submissionAnswer.processType,
-              signType: this.isVisible ? "Manual" : "Digital",
-              isClientAwaiting: this.submissionAnswer.isClientAwaiting,
-              submissionUser: this.submissionAnswer.submissionUser,
-              id: this.submissionAnswer.id,
-              bank: this.submissionAnswer.bank,
-              state: "Ready",
-              startedAt: new Date().toISOString(),
-              contractPackLanguage: this.form.get("language").value,
-              observation: this.submissionAnswer.observation
-            }
-            this.logger.info("Updated submission data: " + JSON.stringify(submissionToSend));
-            this.submissionService.EditSubmission(this.submissionId, submissionToSend).subscribe(result => {
-              this.logger.info("Submission updated: " + JSON.stringify(result));
-              this.logger.info("Redirecting to Dashboard page");
-              this.router.navigate(["/"]);
-              this.data.reset();
-            });
+          var submissionToSend = {
+            submissionType: "DigitalComplete",
+            processNumber: this.submissionAnswer.processNumber,
+            processKind: this.submissionAnswer.processKind,
+            processType: this.submissionAnswer.processType,
+            signType: this.isVisible ? "Manual" : "Digital",
+            isClientAwaiting: this.submissionAnswer.isClientAwaiting,
+            submissionUser: this.submissionAnswer.submissionUser,
+            id: this.submissionAnswer.id,
+            bank: this.submissionAnswer.bank,
+            state: "Ready",
+            startedAt: new Date().toISOString(),
+            contractPackLanguage: this.form.get("language").value,
+            observation: this.submissionAnswer.observation
+          }
+          this.logger.info("Updated submission data: " + JSON.stringify(submissionToSend));
+          this.submissionService.EditSubmission(this.submissionId, submissionToSend).subscribe(result => {
+            this.logger.info("Submission updated: " + JSON.stringify(result));
+            this.logger.info("Redirecting to Dashboard page");
+            this.router.navigate(["/"]);
+            this.data.reset();
           });
         } else {
-          this.processService.getProcessById(this.processId).subscribe(result => {
-            var updateProcessBody = {
-              submissionUser: "",
-              observation: "",
-              contractPackLanguage: "",
-              signType: "",
-              isClientAwaiting: false
+          var updateProcessBody = {
+            submissionUser: "",
+            observation: "",
+            contractPackLanguage: "",
+            signType: "",
+            isClientAwaiting: false
+          };
+          updateProcessBody.submissionUser = context.authService.GetCurrentUser().userName;
+          updateProcessBody.isClientAwaiting = context.isClientAwaiting;
+          updateProcessBody.signType = this.isVisible ? "Manual" : "Digital";
+          updateProcessBody.contractPackLanguage = "PT";
+          context.processService.updateProcess(context.processId, updateProcessBody).then(result => {
+            this.logger.info("Process updated: " + JSON.stringify(result));
+            this.logger.info("Redirecting to Dashboard page");
+            var object = {
+              submissionUser: context.authService.GetCurrentUser().userName,
+              observations: null
             };
-            updateProcessBody.submissionUser = context.authService.GetCurrentUser().userName;
-            updateProcessBody.isClientAwaiting = result.isClientAwaiting;
-            updateProcessBody.signType = this.isVisible ? "Manual" : "Digital";
-            updateProcessBody.contractPackLanguage = "PT";
-            context.processService.updateProcess(context.processId, updateProcessBody).then(result => {
-              this.logger.info("Process updated: " + JSON.stringify(result));
-              this.logger.info("Redirecting to Dashboard page");
-              var object = {
-                submissionUser: context.authService.GetCurrentUser().userName,
-                observations: null
-              };
-              context.processService.finishProcessUpdate(context.processId, object).then(res => {
-                this.router.navigate(["/"]);
-                this.data.reset();
-              });
+            context.processService.finishProcessUpdate(context.processId, object).then(res => {
+              this.router.navigate(["/"]);
+              this.data.reset();
             });
           });
         }
@@ -322,5 +342,13 @@ export class InfoDeclarativaAssinaturaComponent implements OnInit {
         });
       }
     }
+  }
+
+  checkOTPSelected() {
+    for (let i = 0; i < this.submissionStakeholders.length; i++) {
+      if (this.form.get(this.submissionStakeholders[i].id).value == "OneTimePassword")
+        return true;
+    }
+    return false;
   }
 }

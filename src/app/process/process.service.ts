@@ -107,8 +107,12 @@ export class ProcessService {
     return this.http.get<ProcessGet>(this.baseUrl + 'process' + '?number=' + processNumber + "&from=" + from + '&count=' + count);
   }
 
-  searchProcessByState(state: string, from: number, count: number) {
-    return this.http.get<ProcessGet>(this.baseUrl + 'process' + '?state=' + state + "&from=" + from + '&count=' + count);
+  searchProcessByState(state: string, from: number, count: number, orderField: string = null, order: string = null) {
+    var url = this.baseUrl + 'process' + '?state=' + state;
+    if (orderField != null && order != null)
+      url = url + "&orderField=" + orderField + "&order=" + order;
+    url = url + "&from=" + from + '&count=' + count
+    return this.http.get<ProcessGet>(url);
   }
 
   getProcessById(processId: string) {

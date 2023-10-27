@@ -190,7 +190,8 @@
     "corporate": "Empresa",
     "signError": "É necessário existir pelo menos um interveniente que assine o contrato",
     "stakeExistsError": "É necessário adicionar pelo menos um interveniente particular",
-    "differentNIFCC": "Não é possível efetuar a atualização dos dados, pois o NIF do CC não coincide com o do interveniente atual"
+    "differentNIFCC": "Não é possível efetuar a atualização dos dados, pois o NIF do CC não coincide com o do interveniente atual",
+    "twoWords": "O nome do interveniente deve ter no mínimo duas palavras"
   },
   "stores": {
     "title": "Lojas",
@@ -228,7 +229,8 @@
     "updateStore": "Esta alteração irá eliminar a configuração da Oferta Comercial. Deseja prosseguir?",
     "proofIBAN": "Falta anexar comprovativo de IBAN",
     "addOrCancel": "Falta adicionar ou cancelar a loja caracterizada",
-    "URL": "URL da Loja"
+    "URL": "URL da Loja",
+    "twoWords": "O nome do ponto de contacto deve ter no mínimo duas palavras"
   },
   "supportingDocuments": {
     "title": "Comprovativos",
@@ -358,7 +360,8 @@
       "submission": "Tem a certeza que deseja fechar a submissão e enviá-la para backoffice?",
       "title": "Selecione o tipo de assinatura digital",
       "finalSubmission": "Submissão enviada"
-    }
+    },
+    "OTPMessage": "A Assinatura Digital por OTP apenas está disponível para os intervenientes que possuam um dos seguintes documentos de identificação Cartão do Cidadão Português ou Passaporte para os seguintes países (Portugal; Espanha; Itália; França; Brasil; Estados Unidos) Caso tenha outro documento de identificação, deverá selecionar outro tipo de Assinatura"
   },
   "searches": {
     "title": "Consultas",

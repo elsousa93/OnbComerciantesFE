@@ -129,7 +129,7 @@
                           <td class="text-primary text-center">{{doc.receivedAt}}</td>
                           <td class="text-primary text-center">{{doc.validUntil}}</td>
                           <td>
-                            <span class="search-blue icon-search-blue" (click)="loadStakeholderDocument(doc.uniqueReference, doc.archiveSource)">
+                            <span class="search-blue icon-search-blue" (click)="loadStakeholderDocument(doc['uniqueReference'], doc.archiveSource)">
                               <!-- método antigo do click => b64toBlob(doc.uniqueReference, 'application/pdf', 512) -->
                               <!--<img src="assets/images/search_blue.svg"
                                 (click)="loadStakeholderDocument(doc.uniqueReference)"

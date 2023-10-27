@@ -107,9 +107,15 @@ export class SearchStakeholdersComponent implements OnInit, OnChanges {
             stake.forEach(function (value, idx) {
               if (value != null) {
                 var stakeInfo = value.result;
+                if (stakeInfo?.shortName == null || stakeInfo?.shortName == "") {
+                  if (stakeInfo?.fullName != '') {
+                    var nameArray = stakeInfo?.fullName?.trim()?.split(" ")?.filter(element => element);
+                    var shortName = nameArray?.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : stakeInfo?.fullName;
+                  }
+                }
                 stakeholder = {
                   "stakeholderNumber": stakeInfo.stakeholderId,
-                  "stakeholderName": stakeInfo.shortName,
+                  "stakeholderName": stakeInfo.shortName != null && stakeInfo.shortName != "" ? stakeInfo.shortName : shortName,
                   "stakeholderNIF": stakeInfo.fiscalIdentification.fiscalId,
                   "address": stakeInfo.address,
                   "elegible": "elegivel",

@@ -630,7 +630,6 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
           }
 
           stakeholderToInsert["contacts"] = null;
-          stakeholderToInsert["contactName"] = stakeholderToInsert["shortName"];
 
           if (stakeholderToInsert["documents"].length == 0) {
             stakeholderToInsert["documents"] = null;
@@ -652,6 +651,27 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
           } else {
             stakeholderToInsert["signType"] = stakeholderToInsert["signType"];
           }
+
+          if (stakeholderToInsert["shortName"] == null || stakeholderToInsert["shortName"] == "") {
+            if (stakeholderToInsert["fullName"] != '') {
+              var nameArray = stakeholderToInsert["fullName"].trim()?.split(" ")?.filter(element => element);
+              var shortName = nameArray?.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : stakeholderToInsert["fullName"];
+              stakeholderToInsert["shortName"] = shortName;
+            }
+          }
+          stakeholderToInsert["contactName"] = stakeholderToInsert["shortName"];
+
+          var oldArray = JSON.stringify(stakeholderToInsert["documents"]);
+          var docsOutbound = JSON.parse(oldArray);
+
+          if (stakeholderToInsert["documents"] != null && stakeholderToInsert["documents"]?.length > 0) {
+            for (var i = stakeholderToInsert["documents"]?.length - 1; i >= 0; i--) {
+              if (stakeholderToInsert["documents"][i]?.documentType != "0018" && stakeholderToInsert["documents"][i]?.documentType != "0034") {
+                stakeholderToInsert["documents"]?.splice(i, 1);
+              }
+            }
+          }
+
           this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
           let o = Object.fromEntries(Object.entries(stakeholderToInsert).filter(([_, v]) => v != null));
           if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
@@ -662,6 +682,30 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
                 duration: 4000,
                 panelClass: ['snack-bar']
               });
+              if (stakeholderToInsert["documents"] != null && stakeholderToInsert["documents"]?.length > 0) {
+                stakeholderToInsert["documents"].forEach(doc => {
+                  this.submissionDocumentService.GetDocumentImageOutbound(doc["uniqueReference"], "por mudar", "por mudar", 'pdf').subscribe(result => {
+                    this.logger.info("Get document image outbound result: " + JSON.stringify(result));                  
+                    var documentPost = {
+                      data: null,
+                      documentPurpose: doc["purpose"] == "undefined" ? null : doc["purpose"],
+                      documentType: doc["documentType"],
+                      file: {
+                        binary: result.binary,
+                        fileType: result.fileType,
+                      },
+                      validUntil: doc["validUntil"]
+                    } as PostDocument;
+                    this.logger.info("Document to add " + JSON.stringify(documentPost));
+                    this.stakeholderService.AddNewDocumentStakeholder(this.submissionId, stakeholderToInsert.id, documentPost).subscribe(res => {
+                      this.logger.info("Added document to stakeholder " + JSON.stringify(res));
+                    });
+                  });
+
+                })
+              }
+              stakeholder.result.documents = docsOutbound;
+              stakeholderToInsert["outbound"] = stakeholder.result;
               this.emitInsertedStake(of(stakeholderToInsert));
               this.clearForm();
               this.route.navigate(['/stakeholders/']);
@@ -694,7 +738,15 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
           corporateToInsert.headquartersAddress = stakeholderToInsert["headquartersAddress"];
           corporateToInsert.legalName = stakeholderToInsert["fullName"];
           corporateToInsert.potentialClientIds = this.potentialClientIds;
+          if (stakeholderToInsert["shortName"] == null || stakeholderToInsert["shortName"] == "") {
+            if (stakeholderToInsert["fullName"] != '') {
+              var nameArray = stakeholderToInsert["fullName"].trim()?.split(" ")?.filter(element => element);
+              var shortName = nameArray?.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : stakeholderToInsert["fullName"];
+              stakeholderToInsert["shortName"] = shortName;
+            }
+          }
           corporateToInsert.shortName = stakeholderToInsert["shortName"];
+
           this.logger.info("Corporate to add: " + JSON.stringify(corporateToInsert));
           let o = Object.fromEntries(Object.entries(corporateToInsert).filter(([_, v]) => v != null));
           if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
@@ -732,103 +784,117 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     else {
       if (this.stakeholderType === 'Particular') {
         var fullName = (this.formNewStakeholder.get("name")?.value != '' && this.formNewStakeholder.get("name")?.value != null) ? this.formNewStakeholder.get("name")?.value : this.formNewStakeholder.get("socialDenomination")?.value
-        var nameArray = fullName.split(" ").filter(element => element);
-        var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
-        var stakeholderToInsert: IStakeholders = {
-          "fiscalId": (this.formNewStakeholder.get("nif")?.value != '' && this.formNewStakeholder.get("nif")?.value != null) ? this.formNewStakeholder.get("nif")?.value : this.formNewStakeholder.get("nipc")?.value,
-          "phone1": {},
-          "phone2": {},
-          "fiscalAddress": null,
-          "fullName": fullName,
-          "shortName": shortName,
-          "contactName": shortName,
-          "isProxy": false,
-          "signType": "CitizenCard"
-        }
-        if (this.submissionClient.fiscalId !== stakeholderToInsert.fiscalId) {
-          this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
-          if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
-            this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-              this.logger.info("Added stakeholder result: " + JSON.stringify(result));
-              stakeholderToInsert.id = result["id"];
-              this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
-                duration: 4000,
-                panelClass: ['snack-bar']
-              });
-              this.emitInsertedStake(of(stakeholderToInsert));
-              this.clearForm();
-              this.route.navigate(['/stakeholders/']);
-            });
-          } else {
-            this.processService.addStakeholderToProcess(this.processId, stakeholderToInsert).then(result => {
-              this.logger.info("Added stakeholder result: " + JSON.stringify(result));
-              stakeholderToInsert.id = result.result["id"];
-              this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
-                duration: 4000,
-                panelClass: ['snack-bar']
-              });
-              this.emitInsertedStake(of(stakeholderToInsert));
-              this.clearForm();
-              this.route.navigate(['/stakeholders/']);
-            }, error => {
-            });
+        if (fullName.trim().indexOf(' ') != -1) {  //there is at least one space, excluding leading and training spaces
+          var nameArray = fullName?.trim()?.split(" ")?.filter(element => element);
+          var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
+          var stakeholderToInsert: IStakeholders = {
+            "fiscalId": (this.formNewStakeholder.get("nif")?.value != '' && this.formNewStakeholder.get("nif")?.value != null) ? this.formNewStakeholder.get("nif")?.value : this.formNewStakeholder.get("nipc")?.value,
+            "phone1": {},
+            "phone2": {},
+            "fiscalAddress": null,
+            "fullName": fullName,
+            "shortName": shortName,
+            "contactName": shortName,
+            "isProxy": false,
+            "signType": "CitizenCard"
           }
+          if (this.submissionClient.fiscalId !== stakeholderToInsert.fiscalId) {
+            this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
+            if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+              this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+                this.logger.info("Added stakeholder result: " + JSON.stringify(result));
+                stakeholderToInsert.id = result["id"];
+                this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+                  duration: 4000,
+                  panelClass: ['snack-bar']
+                });
+                this.emitInsertedStake(of(stakeholderToInsert));
+                this.clearForm();
+                this.route.navigate(['/stakeholders/']);
+              });
+            } else {
+              this.processService.addStakeholderToProcess(this.processId, stakeholderToInsert).then(result => {
+                this.logger.info("Added stakeholder result: " + JSON.stringify(result));
+                stakeholderToInsert.id = result.result["id"];
+                this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+                  duration: 4000,
+                  panelClass: ['snack-bar']
+                });
+                this.emitInsertedStake(of(stakeholderToInsert));
+                this.clearForm();
+                this.route.navigate(['/stakeholders/']);
+              }, error => {
+              });
+            }
 
+          } else {
+            if (this.docType === '0501') {
+              this.sameNIFMatch = true;
+            }
+            if (this.docType === '0502') {
+              this.sameNIPC = true;
+            }
+          }
         } else {
-          if (this.docType === '0501') {
-            this.sameNIFMatch = true;
-          }
-          if (this.docType === '0502') {
-            this.sameNIPC = true;
-          }
+          this.snackBar.open(this.translate.instant('stakeholder.twoWords'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
         }
       } else {
         var fullName = (this.formNewStakeholder.get("name")?.value != '' && this.formNewStakeholder.get("name")?.value != null) ? this.formNewStakeholder.get("name")?.value : this.formNewStakeholder.get("socialDenomination")?.value
-        var nameArray = fullName.split(" ").filter(element => element);
-        var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
-        var corporateToInsert: PostCorporateEntity = {
-          fiscalId: (this.formNewStakeholder.get("nif")?.value != '' && this.formNewStakeholder.get("nif")?.value != null) ? this.formNewStakeholder.get("nif")?.value : this.formNewStakeholder.get("nipc")?.value,
-          legalName: fullName,
-          shortName: shortName,
-          clientId: null,
-          headquartersAddress: null,
-          potentialClientIds: null
-        };
-        if (this.submissionClient.fiscalId !== corporateToInsert.fiscalId) {
-          this.logger.info("Stakeholder to add: " + JSON.stringify(corporateToInsert));
-          let o = Object.fromEntries(Object.entries(corporateToInsert).filter(([_, v]) => v != null));
-          if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
-            this.stakeholderService.AddNewCorporateEntity(this.submissionId, o).then(result => {
-              this.logger.info("Added stakeholder result: " + JSON.stringify(result.result));
-              corporateToInsert["id"] = result.result["id"];
-              this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
-                duration: 4000,
-                panelClass: ['snack-bar']
+        if (fullName.trim().indexOf(' ') != -1) {  //there is at least one space, excluding leading and training spaces
+          var nameArray = fullName?.trim()?.split(" ")?.filter(element => element);
+          var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
+          var corporateToInsert: PostCorporateEntity = {
+            fiscalId: (this.formNewStakeholder.get("nif")?.value != '' && this.formNewStakeholder.get("nif")?.value != null) ? this.formNewStakeholder.get("nif")?.value : this.formNewStakeholder.get("nipc")?.value,
+            legalName: fullName,
+            shortName: shortName,
+            clientId: null,
+            headquartersAddress: null,
+            potentialClientIds: null
+          };
+          if (this.submissionClient.fiscalId !== corporateToInsert.fiscalId) {
+            this.logger.info("Stakeholder to add: " + JSON.stringify(corporateToInsert));
+            let o = Object.fromEntries(Object.entries(corporateToInsert).filter(([_, v]) => v != null));
+            if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+              this.stakeholderService.AddNewCorporateEntity(this.submissionId, o).then(result => {
+                this.logger.info("Added stakeholder result: " + JSON.stringify(result.result));
+                corporateToInsert["id"] = result.result["id"];
+                this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+                  duration: 4000,
+                  panelClass: ['snack-bar']
+                });
+                this.emitInsertedStake(of(corporateToInsert));
+                this.clearForm();
               });
-              this.emitInsertedStake(of(corporateToInsert));
-              this.clearForm();
-            });
-          } else {
-            this.processService.addCorporateEntityToProcess(this.processId, o).then(result => {
-              this.logger.info("Added Corporate result: " + JSON.stringify(result.result));
-              corporateToInsert["id"] = result.result["id"];
-              this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
-                duration: 4000,
-                panelClass: ['snack-bar']
+            } else {
+              this.processService.addCorporateEntityToProcess(this.processId, o).then(result => {
+                this.logger.info("Added Corporate result: " + JSON.stringify(result.result));
+                corporateToInsert["id"] = result.result["id"];
+                this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+                  duration: 4000,
+                  panelClass: ['snack-bar']
+                });
+                this.emitInsertedStake(of(corporateToInsert));
+                this.clearForm();
+              }, error => {
               });
-              this.emitInsertedStake(of(corporateToInsert));
-              this.clearForm();
-            }, error => {
-            });
-          }
+            }
 
+          } else {
+            if (this.docType === '0501') {
+              this.sameNIFMatch = true;
+            }
+            if (this.docType === '0502') {
+              this.sameNIPC = true;
+            }
+          }
         } else {
-          if (this.docType === '0501') {
-            this.sameNIFMatch = true;
-          }
-          if (this.docType === '0502') {
-            this.sameNIPC = true;
-          }
+          this.snackBar.open(this.translate.instant('stakeholder.twoWords'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
         }
       }
     }
@@ -858,7 +924,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     if (this.prettyPDF != null) { 
       //Colocar comprovativo do CC na Submissao
       var documentCC: PostDocument = {
-        documentType: '0001',
+        documentType: '0018',
         documentPurpose: 'Identification',
         file: {
           binary: this.prettyPDF.file,
@@ -893,22 +959,25 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
           stakeholderToInsert["clientId"] = stakeholderToInsert.stakeholderId;
           stakeholderToInsert["fiscalAddress"] = stakeholderToInsert["address"];
 
-          if (stakeholderToInsert["phone1"] != null) {
-            stakeholderToInsert["phone1"] = {
-              countryCode: stakeholderToInsert["contacts"]["phone1"]["country"],
-              phoneNumber: stakeholderToInsert["contacts"]["phone1"]["phoneNumber"]
+          if (stakeholderToInsert["contacts"] != null) {
+            if (stakeholderToInsert["phone1"] != null) {
+              stakeholderToInsert["phone1"] = {
+                countryCode: stakeholderToInsert["contacts"]["phone1"]["country"],
+                phoneNumber: stakeholderToInsert["contacts"]["phone1"]["phoneNumber"]
+              }
             }
+
+            if (stakeholderToInsert["phone2"] != null)
+              stakeholderToInsert["phone2"] = {
+                countryCode: stakeholderToInsert["contacts"]["phone2"]["country"],
+                phoneNumber: stakeholderToInsert["contacts"]["phone2"]["phoneNumber"]
+              }
+
+            stakeholderToInsert["email"] = stakeholderToInsert["contacts"]["email"];
           }
 
-          if (stakeholderToInsert["phone2"] != null)
-            stakeholderToInsert["phone2"] = {
-              countryCode: stakeholderToInsert["contacts"]["phone2"]["country"],
-              phoneNumber: stakeholderToInsert["contacts"]["phone2"]["phoneNumber"]
-            }
-
-          stakeholderToInsert["email"] = stakeholderToInsert["contacts"]["email"];
           stakeholderToInsert["contacts"] = null;
-          stakeholderToInsert["contactName"] = stakeholderToInsert["shortName"];
+
 
           if (stakeholderToInsert["documents"].length == 0) {
             stakeholderToInsert["documents"] = null;
@@ -930,6 +999,27 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
           } else {
             stakeholderToInsert["signType"] = stakeholderToInsert["signType"];
           }
+
+          if (stakeholderToInsert["shortName"] == null || stakeholderToInsert["shortName"] == "") {
+            if (stakeholderToInsert["fullName"] != '') {
+              var nameArray = stakeholderToInsert["fullName"].trim()?.split(" ")?.filter(element => element);
+              var shortName = nameArray?.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : stakeholderToInsert["fullName"];
+              stakeholderToInsert["shortName"] = shortName;
+            }
+          }
+          stakeholderToInsert["contactName"] = stakeholderToInsert["shortName"];
+
+          var oldArray = JSON.stringify(stakeholderToInsert["documents"]);
+          var docsOutbound = JSON.parse(oldArray);
+
+          if (stakeholderToInsert["documents"] != null && stakeholderToInsert["documents"]?.length > 0) {
+            for (var i = stakeholderToInsert["documents"]?.length - 1; i >= 0; i--) {
+              if (stakeholderToInsert["documents"][i]?.documentType != "0018" && stakeholderToInsert["documents"][i]?.documentType != "0034") {
+                stakeholderToInsert["documents"]?.splice(i, 1);
+              }
+            }
+          }
+
           this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
           let o = Object.fromEntries(Object.entries(stakeholderToInsert).filter(([_, v]) => v != null));
           if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
@@ -940,12 +1030,35 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
                 duration: 4000,
                 panelClass: ['snack-bar']
               });
+              if (stakeholderToInsert["documents"] != null && stakeholderToInsert["documents"]?.length > 0) {
+                stakeholderToInsert["documents"].forEach(doc => {
+                  this.submissionDocumentService.GetDocumentImageOutbound(doc["uniqueReference"], "por mudar", "por mudar", 'pdf').subscribe(result => {
+                    this.logger.info("Get document image outbound result: " + JSON.stringify(result));
+                    var documentPost = {
+                      data: null,
+                      documentPurpose: doc["purpose"] == "undefined" ? null : doc["purpose"],
+                      documentType: doc["documentType"],
+                      file: {
+                        binary: result.binary,
+                        fileType: result.fileType,
+                      },
+                      validUntil: doc["validUntil"]
+                    } as PostDocument;
+                    this.logger.info("Document to add " + JSON.stringify(documentPost));
+                    this.stakeholderService.AddNewDocumentStakeholder(this.submissionId, stakeholderToInsert.id, documentPost).subscribe(res => {
+                      this.logger.info("Added document to stakeholder " + JSON.stringify(res));
+                    });
+                  });
+                })
+              }
               if (this.prettyPDF != null) {
                 this.logger.info("Document to add " + JSON.stringify(documentCC));
                 this.stakeholderService.AddNewDocumentStakeholder(this.submissionId, stakeholderToInsert.id, documentCC).subscribe(res => {
                   this.logger.info("Added document to stakeholder " + JSON.stringify(res));
                 });
               }
+              stakeholder.result.documents = docsOutbound;
+              stakeholderToInsert["outbound"] = stakeholder.result;
               this.emitInsertedStake(of(stakeholderToInsert));
               this.clearForm();
             }, error => {
@@ -975,7 +1088,82 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
 
         }, error => {
           var fullName = this.dataCCcontents.nameCC ?? this.formNewStakeholder.get("name")?.value;
-          var nameArray = fullName.split(" ").filter(element => element);
+          if (fullName.trim().indexOf(' ') != -1) {
+            var nameArray = fullName?.trim()?.split(" ")?.filter(element => element);
+            var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
+            stakeholderToInsert = {
+              "fiscalId": this.dataCCcontents.nifCC ?? this.formNewStakeholder.get("nif")?.value,
+              "fullName": fullName,
+              "shortName": shortName,
+              "contactName": shortName,
+              "identificationDocument": {
+                "type": this.isNoDataReadable ? '0018' : '0001',
+                "number": this.dataCCcontents?.cardNumberCC ?? this.stakeholderNumber?.replace(/\s/g, ""),
+                "country": this.dataCCcontents.countryCC ?? 'PT',
+                "expirationDate": formatedDate != null ? new Date(formatedDate).toISOString() : null, //
+                "checkDigit": null     //FIXME
+              },
+              "fiscalAddress": {
+                "address": this.dataCCcontents.addressCC,
+                "postalCode": this.dataCCcontents?.postalCodeCC?.split(" ")[0], //
+                "postalArea": this.dataCCcontents.localityCC,
+                "country": this.dataCCcontents.countryCC,
+              },
+              "phone1": {},
+              "phone2": {},
+              "signType": this.isNoDataReadable ? "DigitalCitizenCard" : "CitizenCard",
+            }
+            this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
+            if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+              this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
+                this.logger.info("Added stakeholder result: " + JSON.stringify(result));
+                stakeholderToInsert.id = result["id"];
+                this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+                  duration: 4000,
+                  panelClass: ['snack-bar']
+                });
+                if (this.prettyPDF != null) {
+                  this.logger.info("Document to add " + JSON.stringify(documentCC));
+                  this.stakeholderService.AddNewDocumentStakeholder(this.submissionId, stakeholderToInsert.id, documentCC).subscribe(res => {
+                    this.logger.info("Added document to stakeholder " + JSON.stringify(res));
+                  });
+                }
+                this.emitInsertedStake(of(stakeholderToInsert));
+                this.clearForm();
+              }, error => {
+                this.logger.error(error, "", "Error creating stakeholder with citizen card");
+              });
+            } else {
+              this.processService.addStakeholderToProcess(this.processId, stakeholderToInsert).then(result => {
+                this.logger.info("Added stakeholder result: " + JSON.stringify(result));
+                stakeholderToInsert.id = result.result["id"];
+                this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+                  duration: 4000,
+                  panelClass: ['snack-bar']
+                });
+                if (this.prettyPDF != null) {
+                  this.logger.info("Document to add " + JSON.stringify(documentCC));
+                  this.processService.addDocumentToStakeholderProcess(this.processId, stakeholderToInsert.id, documentCC).then(res => {
+                    this.logger.info("Added document to stakeholder " + JSON.stringify(res.result));
+                  });
+                }
+                this.emitInsertedStake(of(stakeholderToInsert));
+                this.clearForm();
+              }, error => {
+                this.logger.error(error, "", "Error creating stakeholder with citizen card");
+              });
+            }
+          } else {
+            this.snackBar.open(this.translate.instant('stakeholder.twoWords'), '', {
+              duration: 4000,
+              panelClass: ['snack-bar']
+            });
+          }
+        });
+      } else {
+        var fullName = this.dataCCcontents.nameCC ?? this.formNewStakeholder.get("name")?.value;
+        if (fullName.trim().indexOf(' ') != -1) {
+          var nameArray = fullName?.trim()?.split(" ")?.filter(element => element);
           var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
           stakeholderToInsert = {
             "fiscalId": this.dataCCcontents.nifCC ?? this.formNewStakeholder.get("nif")?.value,
@@ -1039,10 +1227,17 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
               this.logger.error(error, "", "Error creating stakeholder with citizen card");
             });
           }
-        });
-      } else {
-        var fullName = this.dataCCcontents.nameCC ?? this.formNewStakeholder.get("name")?.value;
-        var nameArray = fullName.split(" ").filter(element => element);
+        } else {
+          this.snackBar.open(this.translate.instant('stakeholder.twoWords'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
+        }
+      }
+    }, error => {
+      var fullName = this.dataCCcontents.nameCC ?? this.formNewStakeholder.get("name")?.value;
+      if (fullName.trim().indexOf(' ') != -1) {
+        var nameArray = fullName?.trim()?.split(" ")?.filter(element => element);
         var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
         stakeholderToInsert = {
           "fiscalId": this.dataCCcontents.nifCC ?? this.formNewStakeholder.get("nif")?.value,
@@ -1106,76 +1301,13 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
             this.logger.error(error, "", "Error creating stakeholder with citizen card");
           });
         }
-      }
-    }, error => {
-      var fullName = this.dataCCcontents.nameCC ?? this.formNewStakeholder.get("name")?.value;
-      var nameArray = fullName.split(" ").filter(element => element);
-      var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
-      stakeholderToInsert = {
-        "fiscalId": this.dataCCcontents.nifCC ?? this.formNewStakeholder.get("nif")?.value,
-        "fullName": fullName,
-        "shortName": shortName,
-        "contactName": shortName,
-        "identificationDocument": {
-          "type": this.isNoDataReadable ? '0018' : '0001',
-          "number": this.dataCCcontents?.cardNumberCC ?? this.stakeholderNumber?.replace(/\s/g, ""),
-          "country": this.dataCCcontents.countryCC ?? 'PT',
-          "expirationDate": formatedDate != null ? new Date(formatedDate).toISOString() : null, //
-          "checkDigit": null     //FIXME
-        },
-        "fiscalAddress": {
-          "address": this.dataCCcontents.addressCC,
-          "postalCode": this.dataCCcontents?.postalCodeCC?.split(" ")[0], //
-          "postalArea": this.dataCCcontents.localityCC,
-          "country": this.dataCCcontents.countryCC,
-        },
-        "phone1": {},
-        "phone2": {},
-        "signType": this.isNoDataReadable ? "DigitalCitizenCard" : "CitizenCard",
-      }
-      this.logger.info("Stakeholder to add: " + JSON.stringify(stakeholderToInsert));
-      if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
-        this.stakeholderService.CreateNewStakeholder(this.submissionId, stakeholderToInsert).subscribe(result => {
-          this.logger.info("Added stakeholder result: " + JSON.stringify(result));
-          stakeholderToInsert.id = result["id"];
-          this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
-            duration: 4000,
-            panelClass: ['snack-bar']
-          });
-          if (this.prettyPDF != null) {
-            this.logger.info("Document to add " + JSON.stringify(documentCC));
-            this.stakeholderService.AddNewDocumentStakeholder(this.submissionId, stakeholderToInsert.id, documentCC).subscribe(res => {
-              this.logger.info("Added document to stakeholder " + JSON.stringify(res));
-            });
-          }
-          this.emitInsertedStake(of(stakeholderToInsert));
-          this.clearForm();
-        }, error => {
-          this.logger.error(error, "", "Error creating stakeholder with citizen card");
-        });
       } else {
-        this.processService.addStakeholderToProcess(this.processId, stakeholderToInsert).then(result => {
-          this.logger.info("Added stakeholder result: " + JSON.stringify(result));
-          stakeholderToInsert.id = result.result["id"];
-          this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
-            duration: 4000,
-            panelClass: ['snack-bar']
-          });
-          if (this.prettyPDF != null) {
-            this.logger.info("Document to add " + JSON.stringify(documentCC));
-            this.processService.addDocumentToStakeholderProcess(this.processId, stakeholderToInsert.id, documentCC).then(res => {
-              this.logger.info("Added document to stakeholder " + JSON.stringify(res.result));
-            });
-          }
-          this.emitInsertedStake(of(stakeholderToInsert));
-          this.clearForm();
-        }, error => {
-          this.logger.error(error, "", "Error creating stakeholder with citizen card");
+        this.snackBar.open(this.translate.instant('stakeholder.twoWords'), '', {
+          duration: 4000,
+          panelClass: ['snack-bar']
         });
       }
     });
-
-
   }
 
   cancelSearch() {

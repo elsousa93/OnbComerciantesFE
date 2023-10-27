@@ -255,7 +255,7 @@ export class ClientCharacterizationComponent implements OnInit {
       this.form.get("socialDenomination").disable();
     }
 
-    this.searchBranch(this.processClient.mainEconomicActivity.split("-")[0])
+    this.searchBranch(this.processClient?.mainEconomicActivity?.split("-")[0])
       .then((data) => {
         this.form.get("CAE1Branch").setValue(data.description);
     });
@@ -599,7 +599,7 @@ export class ClientCharacterizationComponent implements OnInit {
         this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
         this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
         this.client.commercialName = this.form.get("socialDenomination").value.slice(0, 40); 
-        this.client.legalName = this.form.get("socialDenomination").value;
+        //this.client.legalName = this.form.get("socialDenomination").value;
         this.client.shortName = this.form.get("socialDenomination").value.slice(0, 40);
         this.client.shareCapital = {
           capital: this.processClient.capitalStock.capital,
@@ -621,7 +621,7 @@ export class ClientCharacterizationComponent implements OnInit {
       this.client.fiscalId = this.form.value["natJuridicaNIFNIPC"];
       this.client['fiscalId'] = this.form.value["natJuridicaNIFNIPC"];
       this.client.commercialName = this.form.get("socialDenomination")?.value?.slice(0, 40);
-      this.client.legalName = this.form.get("socialDenomination")?.value;
+      //this.client.legalName = this.form.get("socialDenomination")?.value;
       this.client.shortName = this.form.get("socialDenomination")?.value?.slice(0, 40);
 
       if (this.tipologia === 'corporation' || this.tipologia === 'Company' || this.tipologia === 'Corporate' || this.tipologia === '01') {
@@ -637,7 +637,7 @@ export class ClientCharacterizationComponent implements OnInit {
       //this.client.commercialName = this.form.value["socialDenomination"];
     }
     if (this.tipologia === 'ENI' || this.tipologia === 'Entrepeneur' || this.tipologia === '02') {
-      this.client.legalName = this.form.get("socialDenomination").value;
+      //this.client.legalName = this.form.get("socialDenomination").value;
       this.client.commercialName = this.form.get("socialDenomination").value.slice(0, 40);
       this.client.merchantType = 'Entrepeneur';
       if (this.dataCC !== undefined && this.dataCC !== null) {

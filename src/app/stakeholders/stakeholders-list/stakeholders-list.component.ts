@@ -27,11 +27,13 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
   updateProcessId: string;
   processInfo: any;
   public visitedStakes: string[] = [];
+  //public currentSubPage: number;
 
   constructor(private translate: TranslateService, public modalService: BsModalService, private route: Router, private stakeholderService: StakeholderService, private clientService: ClientService, private dataService: DataService, private logger: LoggerService, private processNrService: ProcessNumberService, private processService: ProcessService) {
     this.processNrService.processId.subscribe(id => this.processId = id);
     this.processNrService.updateProcessId.subscribe(id => this.updateProcessId = id);
     this.returned = localStorage.getItem("returned");
+    //this.dataService.currentSubPage.subscribe(val => this.currentSubPage = val);
   }
 
   stakeholderExists() {
@@ -83,9 +85,10 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         if (result.fiscalId === null) {
           result.fiscalId = (result as any).fiscalIdentification.fiscalId;
         }
+
         var stakeToInsert = {
           stakeholderAcquiring: result,
-          stakeholderOutbound: undefined,
+          stakeholderOutbound: result["outbound"],
           displayName: "",
           eligibility: false
         } as StakeholdersCompleteInformation;
@@ -96,6 +99,7 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
         this.stakeholderExists();
         this.checkContractAssociation();
         this.loadStakeholders(this.submissionStakeholders);
+        
       });
     }
     if (changes["updatedStakeholderEvent"]) {
@@ -364,8 +368,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
               stakeholderAcquiring: AcquiringStakeholder,
               stakeholderOutbound: undefined
             }
-            if (AcquiringStakeholder.id != null) {
-              context.stakeholderService.getStakeholderByID(AcquiringStakeholder.id, "requestID", "AcquiringUserID").then(success => {
+            if (AcquiringStakeholder.id != null) { 
+              context.stakeholderService.getStakeholderByID(AcquiringStakeholder.clientId, "requestID", "AcquiringUserID").then(success => {
                 context.logger.info("Get stakeholder by id result: " + JSON.stringify(success));
                 stakeholderToInsert.stakeholderOutbound = success.result;
               }, error => {
@@ -528,8 +532,20 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
             resolve(null);
           })
         } else {
-          context.submissionStakeholders.push(stakeholderToInsert);
-          resolve(null);
+          if (AcquiringStakeholder.clientId != "" && AcquiringStakeholder.clientId != null  && context.isInfoDeclarativa && this.route.url == "/stakeholders") {
+            context.stakeholderService.getStakeholderByID(AcquiringStakeholder.clientId, '0501', 'eefe0ecd-4986-4ceb-9171-99c0b1d14658', "AcquiringUserID").then(r => {
+              context.logger.info("Get stakeholder by id result: " + JSON.stringify(r));
+              stakeholderToInsert.stakeholderOutbound = r.result;
+              context.submissionStakeholders.push(stakeholderToInsert);
+              resolve(null);
+            }, rej => {
+              context.submissionStakeholders.push(stakeholderToInsert);
+              resolve(null);
+            });
+          } else {
+            context.submissionStakeholders.push(stakeholderToInsert);
+            resolve(null);
+          }
         }
       });
     });

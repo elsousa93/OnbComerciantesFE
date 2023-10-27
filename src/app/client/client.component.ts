@@ -439,6 +439,11 @@ export class ClientComponent implements OnInit {
             }
             context2.clientService.getClientByID(value.merchantId, "por mudar", "por mudar").then(c => {
               context.logger.info("Get Merchant Outbound result: " + JSON.stringify(c));
+              if (c.result.commercialName == null || c.result.commercialName == "") {
+                var nameArray = c.result?.legalName?.trim()?.split(" ")?.filter(element => element);
+                var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : c.result.legalName;
+                c.result.commercialName = shortName;
+              }
               var client = {
                 "clientId": c.result.merchantId,
                 "commercialName": c.result.commercialName,

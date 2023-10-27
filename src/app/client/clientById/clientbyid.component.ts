@@ -169,7 +169,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
     if (localStorage.getItem("clientName") != null) {
       this.socialDenomination = localStorage.getItem("clientName");
-      var nameArray = this.socialDenomination.split(" ").filter(element => element);
+      var nameArray = this.socialDenomination?.trim()?.split(" ")?.filter(element => element);
       this.shortName = nameArray?.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : this.socialDenomination;
       this.shortName.slice(0, 40);
     }
@@ -234,6 +234,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 uniqueReference: doc.id,
                 validUntil: context.datepipe.transform(doc.validUntil, "yyyy-MM-dd"),
                 purpose: doc.purposes[0],
+                archiveSource: null
               } as OutboundDocument;
               context.clientDocs.push(docOutbound);
             });
@@ -268,6 +269,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                       uniqueReference: doc.id,
                       validUntil: context.datepipe.transform(doc.validUntil, "yyyy-MM-dd"),
                       purpose: doc.purposes[0],
+                      archiveSource: null
                     } as OutboundDocument;
                     context.clientDocs.push(docOutbound);
                   });
@@ -301,6 +303,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                     uniqueReference: doc.id,
                     validUntil: doc.validUntil,
                     purpose: doc.purposes[0],
+                    archiveSource: null
                   } as OutboundDocument;
                   context.clientDocs.push(docOutbound);
                 });
@@ -338,6 +341,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                   uniqueReference: doc.id,
                   validUntil: context.datepipe.transform(doc.validUntil, "yyyy-MM-dd"),
                   purpose: doc.purposes[0],
+                  archiveSource: null
                 } as OutboundDocument;
                 context.clientDocs.push(docOutbound);
               });
@@ -580,6 +584,22 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                   branch: result.result.contextId
                 }
 
+                if (result.result.commercialName == null || result.result.commercialName == "") {
+                  var nameArray = result?.result?.legalName?.trim().split(" ").filter(element => element);
+                  var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : result?.result?.legalName;
+                  result.result.commercialName = shortName;
+                }
+
+                if (result.result.shortName == null || result.result.shortName == "") {
+                  var nameArray = result?.result?.legalName?.trim().split(" ").filter(element => element);
+                  var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : result?.result?.legalName;
+                  result.result.shortName = shortName;
+                }
+
+                client.legalName = result.result.legalName;
+                client.commercialName = result.result.commercialName;
+                client.shortName = result.result.shortName;
+
                 client.merchantType = result.result.merchantType;
                 client["documents"] = result.result.documents;
                 this.clientDocs = result.result.documents;
@@ -587,6 +607,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                 this.clientDocs.forEach(doc => {
                   doc.validUntil = this.datepipe.transform(doc.validUntil, "yyyy-MM-dd");
                   doc.receivedAt = this.datepipe.transform(doc.receivedAt, "yyyy-MM-dd");
+                  doc["archiveSource"] = "outbound";
                 });
                 this.fetchDocumentDescriptions();
                 this.clientContext.clientExists = true;
@@ -724,10 +745,29 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               }
               clientToInsert.merchantType = client.merchantType;
               clientToInsert["documents"] = client.documents;
-              this.clientDocs = client.documents;
+
+              if (client.commercialName == null || client.commercialName == "") {
+                var nameArray = client?.legalName?.trim().split(" ").filter(element => element);
+                var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : client?.legalName;
+                client.commercialName = shortName;
+              }
+
+              if (client.shortName == null || client.shortName == "") {
+                var nameArray = client?.legalName?.trim().split(" ").filter(element => element);
+                var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : client?.legalName;
+                client.shortName = shortName;
+              }
+
+              clientToInsert.commercialName = client.commercialName;
+              clientToInsert.shortName = client.shortName;
+
+              var oldArray = JSON.stringify(result?.documents);
+              this.clientDocs = JSON.parse(oldArray);
+
               this.clientDocs.forEach(doc => {
                 doc.validUntil = this.datepipe.transform(doc.validUntil, "yyyy-MM-dd");
                 doc.receivedAt = this.datepipe.transform(doc.receivedAt, "yyyy-MM-dd");
+                doc["archiveSource"] = "outbound";
               });
               this.fetchDocumentDescriptions();
               this.clientContext.clientExists = true;
@@ -740,7 +780,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
               var clientToInsert: AcquiringClientPost = {};
               clientToInsert.fiscalId = this.NIFNIPC;
               clientToInsert.legalName = this.socialDenomination;
-              clientToInsert.commercialName = this.socialDenomination;
+              clientToInsert.commercialName = this.shortName;
               clientToInsert.shortName = this.shortName ?? this.socialDenomination;
               clientToInsert.knowYourSales = {
                 servicesOrProductsDestinations: [],
@@ -773,7 +813,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
             var clientToInsert: AcquiringClientPost = {};
             clientToInsert.fiscalId = this.NIFNIPC;
             clientToInsert.legalName = this.socialDenomination;
-            clientToInsert.commercialName = this.socialDenomination;
+            clientToInsert.commercialName = this.shortName;
             clientToInsert.shortName = this.shortName ?? this.socialDenomination;
             clientToInsert.knowYourSales = {
               servicesOrProductsDestinations: [],
@@ -816,37 +856,18 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           this.tipologia = result.merchantType;
           this.clientId = result.fiscalId;
           this.submissionDocs.push(...result.documents);
-          context.documentService.GetSubmissionDocuments(localStorage.getItem("submissionId")).subscribe(res => {
-            context.logger.info("Get submission documents result: " + JSON.stringify(res));
-            if (res.length > 0) {
-              res.forEach(doc => {
-                context.documentService.GetSubmissionDocumentById(localStorage.getItem("submissionId"), doc.id).subscribe(r => {
-                  context.logger.info("Get submission document result: " + JSON.stringify(r));
-                  if (doc.type === '0001') {
-                    var file = {
-                      documentType: '0001',
-                      receivedAt: this.datepipe.transform(r.receivedAt, "yyyy-MM-dd"),
-                      validUntil: this.datepipe.transform(r.validUntil, "yyyy-MM-dd"),
-                      uniqueReference: r.id,
-                      archiveSource: null,
-                    } as OutboundDocument;
-                    this.clientDocs = [];
-                    this.clientDocs.push(file);
-                    var acquiringFile = {
-                      documentType: "0001",
-                      data: null,
-                      validUntil: r.validUntil
-                    } as SubmissionPostDocumentTemplate;
-                    this.clientContext.newSubmission.documents.push(acquiringFile);
-                    this.fetchDocumentDescriptions();
-                  } else {
-                    if(doc.type !== '0034')
-                      this.clientContext.newSubmission.documents.push(r);
-                  }
-                });
-              });
-            }
+          this.clientDocs = [];
+          this.submissionDocs.forEach(doc => {
+            var file = {
+              documentType: doc.documentType,
+              receivedAt: "-",
+              validUntil: this.datepipe.transform(doc.validUntil, "yyyy-MM-dd"),
+              uniqueReference: doc.id,
+              archiveSource: null,
+            } as OutboundDocument;
+            this.clientDocs.push(file);
           });
+          this.fetchDocumentDescriptions();
         }).then(result => {
           if (this.clientContext.isClient == false) { // !
             this.countriesComponent.getClientContextValues();
@@ -1088,6 +1109,15 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
         this.clientContext.setStakeholdersToInsert([stakeholder]);
       }
 
+      if (newSubmission.merchant["documents"] != null && newSubmission.merchant["documents"]?.length > 0) {
+        for (var i = newSubmission.merchant["documents"]?.length - 1; i >= 0; i--) {
+          if (newSubmission.merchant["documents"][i]?.documentType != "0018" && newSubmission.merchant["documents"][i]?.documentType != "0034") {
+            newSubmission.merchant["documents"]?.splice(i, 1);
+          }
+        }
+      }
+      
+
       this.clientContext.newSubmission = newSubmission;
       this.clientContext.setClient(newSubmission.merchant);
 
@@ -1098,6 +1128,22 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
           localStorage.setItem("submissionId", result.id);
           context.processNrService.changeProcessNumber(result.processNumber);
         });
+      } else {
+        if (newSubmission.merchant.clientId != null && newSubmission.merchant.clientId != "") {
+          this.clientService.GetClientByIdOutbound(newSubmission?.merchant?.clientId).then(result => {
+            context.logger.info("Get client by id outbound result: " + JSON.stringify(result));
+            if (this.clientDocs != null)
+              this.clientDocs.push(...result?.documents);
+            else
+              this.clientDocs = result?.documents
+            this.clientDocs.forEach(doc => {
+              doc.validUntil = this.datepipe.transform(doc.validUntil, "yyyy-MM-dd");
+              doc.receivedAt = this.datepipe.transform(doc.receivedAt, "yyyy-MM-dd");
+              doc["archiveSource"] = "outbound";
+            });
+            this.fetchDocumentDescriptions();
+          });
+        }
       }
       //adicionar o stakeholder após criar a submissão para que este não seja imediatamente criado
       newSubmission.stakeholders.push(stakeholder);
@@ -1139,7 +1185,19 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
       var client = this.clientContext.getClient();
       var merchant = this.clientContext.newSubmission.merchant;
-      var clientToSubmit: OutboundClient
+      var clientToSubmit: OutboundClient;
+
+      if (client?.commercialName == null || client?.commercialName == "") {
+        var nameArray = client?.legalName?.trim().split(" ").filter(element => element);
+        var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : client?.legalName;
+        client.commercialName = shortName;
+      }
+
+      if (client?.shortName == null || client?.shortName == null) {
+        var nameArray = client?.legalName?.trim().split(" ").filter(element => element);
+        var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : client?.legalName;
+        client.shortName = shortName;
+      }
 
       //antes estava merchant
       if (this.returned == 'edit' && this.processId != null && this.processId != '') {
@@ -1268,24 +1326,32 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
                         });
                       }
+                      var foundCRC = newSubmission.documents.find(doc => doc.documentType == '0034');
+                      if (foundCRC != undefined) {
+                        context.stakeholderService.AddNewDocumentStakeholder(submissionID, value.id, found).subscribe(res => {
 
-                      context?.clientDocs?.forEach(doc => {
-                        let purpose = doc.purpose == "undefined" ? null : doc.purpose;
-                        if (doc.purpose == "undefined")
-                        var postDocument: PostDocument = {
-                          data: null,
-                          documentPurpose: purpose,
-                          documentType: doc.documentType,
-                          file: {
-                            binary: doc.uniqueReference,
-                            fileType: "pdf"
-                          },
-                          validUntil: doc.validUntil 
-                        }
-                        context.stakeholderService.AddNewDocumentStakeholder(submissionID, value.id, postDocument).subscribe(res => {
-                          
                         });
-                      });
+                      }
+
+                      //context?.clientDocs?.forEach(doc => {
+                      //  if (doc.documentType == "0034") {
+                      //    let purpose = doc.purpose == "undefined" ? null : doc.purpose;
+                      //    //if (doc.purpose == "undefined")
+                      //      var postDocument: PostDocument = {
+                      //        data: null,
+                      //        documentPurpose: purpose,
+                      //        documentType: doc.documentType,
+                      //        file: {
+                      //          binary: doc.uniqueReference,
+                      //          fileType: "pdf"
+                      //        },
+                      //        validUntil: doc.validUntil
+                      //      }
+                      //    context.stakeholderService.AddNewDocumentStakeholder(submissionID, value.id, postDocument).subscribe(res => {
+
+                      //    });
+                      //  }
+                      //});
                     });
                   } else {
                     //context.processService.addStakeholderToProcess(context.processId, value).then(result => {
@@ -1371,11 +1437,34 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
 
             if (documents.length > 0) {
               documents.forEach(doc => {
-                if (doc.documentType !== '0001') {
+                if (doc.documentType == '0034' || doc.documentType == "0018") {
                   context.clientService.merchantPostDocument(submissionID, doc).subscribe(result => {
                     context.logger.info('Added document to submission: ' + JSON.stringify(result));
                   });
 
+                }
+              });
+            }
+
+            if (this.clientDocs?.length > 0) {
+              this.clientDocs.forEach(doc => {
+                if (doc.documentType == '0034') {
+                  this.documentService.GetDocumentImageOutbound(doc.uniqueReference, "por mudar", "por mudar", "pdf").subscribe(result => {
+                    this.logger.info("Get document image outbound result: " + JSON.stringify(result));
+                    var d = {
+                      data: null,
+                      documentPurpose: doc.purpose == "undefined" ? null : doc.purpose,
+                      documentType: doc.documentType,
+                      file: {
+                        binary: result.binary,
+                        fileType: "pdf"
+                      },
+                      validUntil: doc.validUntil
+                    } as SubmissionPostDocumentTemplate;
+                    context.clientService.merchantPostDocument(submissionID, d).subscribe(result => {
+                      context.logger.info('Added document to submission: ' + JSON.stringify(result));
+                    });
+                  });
                 }
               });
             }
@@ -1499,7 +1588,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
   }
 
   getClientDocumentImage(uniqueReference: string, format: string, archiveSource: string) {
-    if (this.submissionDocs?.length == 0) {
+    if (archiveSource != null) {
       this.documentService.GetDocumentImageOutbound(uniqueReference, "por mudar", "por mudar", format).subscribe(result => {
         this.logger.info("Get document image outbound result: " + JSON.stringify(result));
         this.b64toBlob(result.binary, 'application/pdf', 512);
