@@ -684,7 +684,7 @@ export class NewStakeholderComponent implements OnInit, OnChanges {
   }
 
   validate(value: string) {
-    if (this.currentStakeholder?.stakeholderAcquiring?.signType != null && this.currentStakeholder?.stakeholderAcquiring?.signType !== '') {
+    if ((this.currentStakeholder?.stakeholderAcquiring?.signType != null && this.currentStakeholder?.stakeholderAcquiring?.signType !== '') || this.currentStakeholder?.stakeholderAcquiring['relation'] == "Indireta") {
       this.validateNIF(value);
     } else {
       this.validateNIPC(value);

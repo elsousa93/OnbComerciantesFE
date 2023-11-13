@@ -16,5 +16,11 @@
   "redirectUrl": {
     "0800": "https://www.reduniq.pt/",
     "default": "/expired"
+  },
+  "TSC": {
+    "0800": {
+      "minValue": 0.00,
+      "maxValue": 0.05
+    }
   }
 }

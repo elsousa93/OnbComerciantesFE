@@ -4,7 +4,7 @@ import { NavigationExtras, Router } from '@angular/router';
 import { Observable, of, Subject, Subscription } from 'rxjs';
 import { DataService } from '../../nav-menu-interna/data.service';
 import { SubmissionDocumentService } from '../../submission/document/submission-document.service';
-import { CorporateEntity, IStakeholders, PostCorporateEntity, StakeholdersCompleteInformation } from '../IStakeholders.interface';
+import { CorporateEntity, IStakeholders, PostCorporateEntity, PostPrivateEntity, StakeholdersCompleteInformation } from '../IStakeholders.interface';
 import { StakeholderService } from '../stakeholder.service';
 import { stakeTypeList } from '../stakeholderType';
 import { TemplateRef, ViewChild } from '@angular/core';
@@ -290,6 +290,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
   potentialClientIds: string[] = [];
   showSameNIFErrorForm: boolean = false;
   processId: string;
+  corporateRelationsList: any = [{ code: "0000", description: "Direta" }, { code: "0001", description: "Indireta" }];
 
   constructor(private logger: LoggerService, private readCardService: ReadcardService, public modalService: BsModalService,
     private route: Router, private data: DataService, private snackBar: MatSnackBar, private translate: TranslateService,
@@ -378,7 +379,8 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.formStakeholderSearch = new FormGroup({
       type: new FormControl('', Validators.required),
       documentType: new FormControl('', Validators.required),
-      documentNumber: new FormControl('', Validators.required)
+      documentNumber: new FormControl('', Validators.required),
+      corporateRelation: new FormControl('')
     });
 
     this.formNewStakeholder = new FormGroup({
@@ -450,12 +452,15 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     if (this.stakeholderType === 'Particular') {
       this.isParticular = true;
       this.formStakeholderSearch.get("documentType").setValue("0501"); // NIF, por default
+      this.formStakeholderSearch.get("corporateRelation").setValidators(Validators.required);
       this.changeListElementDocType(null, { target: { value: "0501" } });
     } else if (this.stakeholderType === 'Empresa') {
       this.isParticular = false;
       this.formStakeholderSearch.get("documentType").setValue("0502"); // Número de identificação fiscal, por default
+      this.formStakeholderSearch.get("corporateRelation").setValidators(null);
       this.changeListElementDocType(null, { target: { value: "0502" } });
     }
+    this.formStakeholderSearch.get("corporateRelation").updateValueAndValidity();
     this.stakeType = true;
     this.okCC = false;
     this.resetSearchStakeholder(); //
@@ -602,7 +607,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
     this.showSameNIFError = false;
     this.showSameNIFErrorForm = false;
     if (this.foundStakeholders && this.dataCCcontents.cardNumberCC == null) {
-      if (this.stakeholderType === 'Particular') {
+      if (this.stakeholderType === 'Particular' && this.formStakeholderSearch?.get("corporateRelation")?.value == "0000") {
         this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], this.docType, 'por mudar').then(stakeholder => {
           this.logger.info("Get stakeholder outbound: " + JSON.stringify(stakeholder));
           var stakeholderToInsert = stakeholder.result;
@@ -728,6 +733,73 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
         }, error => {
           this.logger.error(error, "", "Error fetching stakeholder");
         });
+      } else if (this.formStakeholderSearch?.get("corporateRelation")?.value == "0001") {
+        this.stakeholderService.getStakeholderByID(this.currentStakeholder["stakeholderNumber"], this.docType, 'por mudar').then(stakeholder => {
+          this.logger.info("Get stakeholder outbound: " + JSON.stringify(stakeholder));
+          var privateToInsert = {} as PostPrivateEntity;
+          var stakeholderToInsert = stakeholder.result;
+
+          privateToInsert.fiscalId = this.currentStakeholder["stakeholderNIF"];
+          privateToInsert.fiscalAddress = stakeholderToInsert["address"];
+
+          if (stakeholderToInsert["identificationDocument"] != null) {
+            privateToInsert.identificationDocument = {
+              type: stakeholderToInsert["identificationDocument"]["documentType"],
+              number: stakeholderToInsert["identificationDocument"]["documentId"],
+              country: stakeholderToInsert["identificationDocument"]["documentIssuer"],
+              expirationDate: stakeholderToInsert["identificationDocument"]["validUntil"],
+              checkDigit: stakeholderToInsert["identificationDocument"]["checkDigit"],
+            };
+          }
+
+          privateToInsert.potentialClientIds = this.potentialClientIds;
+          if (stakeholderToInsert["shortName"] == null || stakeholderToInsert["shortName"] == "") {
+            if (stakeholderToInsert["fullName"] != '') {
+              var nameArray = stakeholderToInsert["fullName"].trim()?.split(" ")?.filter(element => element);
+              var shortName = nameArray?.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : stakeholderToInsert["fullName"];
+              stakeholderToInsert["shortName"] = shortName;
+            }
+          }
+          privateToInsert.shortName = stakeholderToInsert["shortName"];
+          privateToInsert.contactName = stakeholderToInsert["shortName"];
+          privateToInsert.fullName = stakeholderToInsert["fullName"];
+
+          this.logger.info("Stakeholder to add: " + JSON.stringify(privateToInsert));
+          let o = Object.fromEntries(Object.entries(privateToInsert).filter(([_, v]) => v != null));
+          if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+            this.stakeholderService.AddNewPrivateEntity(this.submissionId, o).then(result => {
+              this.logger.info("Added stakeholder result: " + JSON.stringify(result.result));
+              privateToInsert["id"] = result.result["id"];
+              this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+                duration: 4000,
+                panelClass: ['snack-bar']
+              });
+              stakeholderToInsert["outbound"] = stakeholder.result;
+              privateToInsert['relation'] = 'Indireta';
+              this.emitInsertedStake(of(privateToInsert));
+              this.clearForm();
+              this.route.navigate(['/stakeholders/']);
+            }, error => {
+            });
+          } else {
+            this.processService.addPrivateEntityToProcess(this.processId, o).then(result => {
+              this.logger.info("Added stakeholder result: " + JSON.stringify(result));
+              privateToInsert["id"] = result.result["id"];
+              this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+                duration: 4000,
+                panelClass: ['snack-bar']
+              });
+              privateToInsert['relation'] = 'Indireta';
+              this.emitInsertedStake(of(privateToInsert));
+              this.clearForm();
+              this.route.navigate(['/stakeholders/']);
+            }, error => {
+            });
+          }
+        }, error => {
+          this.logger.error(error, "", "Error fetching stakeholder");
+        });
+
       } else {
         this.clientService.getClientByID(this.currentStakeholder["stakeholderNumber"], this.docType, 'por mudar').then(stakeholder => {
           this.logger.info("Get stakeholder outbound: " + JSON.stringify(stakeholder));
@@ -757,6 +829,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
                 duration: 4000,
                 panelClass: ['snack-bar']
               });
+              corporateToInsert["isCorporate"] = true;
               this.emitInsertedStake(of(corporateToInsert));
               this.clearForm();
             }, error => {
@@ -769,6 +842,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
                 duration: 4000,
                 panelClass: ['snack-bar']
               });
+              corporateToInsert["isCorporate"] = true;
               this.emitInsertedStake(of(corporateToInsert));
               this.clearForm();
             }, error => {
@@ -782,7 +856,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       this.addStakeholderWithCC();
     }
     else {
-      if (this.stakeholderType === 'Particular') {
+      if (this.stakeholderType === 'Particular' && this.formStakeholderSearch?.get("corporateRelation")?.value == "0000") {
         var fullName = (this.formNewStakeholder.get("name")?.value != '' && this.formNewStakeholder.get("name")?.value != null) ? this.formNewStakeholder.get("name")?.value : this.formNewStakeholder.get("socialDenomination")?.value
         if (fullName.trim().indexOf(' ') != -1) {  //there is at least one space, excluding leading and training spaces
           var nameArray = fullName?.trim()?.split(" ")?.filter(element => element);
@@ -841,6 +915,68 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
             panelClass: ['snack-bar']
           });
         }
+      } else if (this.formStakeholderSearch?.get("corporateRelation")?.value == "0001") {
+        var fullName = (this.formNewStakeholder.get("name")?.value != '' && this.formNewStakeholder.get("name")?.value != null) ? this.formNewStakeholder.get("name")?.value : this.formNewStakeholder.get("socialDenomination")?.value
+        if (fullName.trim().indexOf(' ') != -1) {  //there is at least one space, excluding leading and training spaces
+          var nameArray = fullName?.trim()?.split(" ")?.filter(element => element);
+          var shortName = nameArray.length > 2 ? nameArray[0] + " " + nameArray[nameArray.length - 1] : fullName;
+          var privateToInsert: PostPrivateEntity = {
+            fiscalId: (this.formNewStakeholder.get("nif")?.value != '' && this.formNewStakeholder.get("nif")?.value != null) ? this.formNewStakeholder.get("nif")?.value : this.formNewStakeholder.get("nipc")?.value,
+            fullName: fullName,
+            shortName: shortName,
+            contactName: shortName,
+            clientId: null,
+            fiscalAddress: null,
+            potentialClientIds: null,
+            //directCapitalHeld: null,
+            //identificationDocument: null,
+            //indirectCapitalHeld: null,
+            //isBeneficiary: null
+          };
+          if (this.submissionClient.fiscalId !== privateToInsert.fiscalId) {
+            this.logger.info("Stakeholder to add: " + JSON.stringify(privateToInsert));
+            let o = Object.fromEntries(Object.entries(privateToInsert).filter(([_, v]) => v != null));
+            if (this.returned == null || (this.returned == 'edit' && (this.processId == null || this.processId == ''))) {
+              this.stakeholderService.AddNewPrivateEntity(this.submissionId, o).then(result => {
+                this.logger.info("Added stakeholder result: " + JSON.stringify(result.result));
+                privateToInsert["id"] = result.result["id"];
+                this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+                  duration: 4000,
+                  panelClass: ['snack-bar']
+                });
+                privateToInsert['relation'] = 'Indireta';
+                this.emitInsertedStake(of(privateToInsert));
+                this.clearForm();
+              });
+            } else {
+              this.processService.addPrivateEntityToProcess(this.processId, o).then(result => {
+                this.logger.info("Added Corporate result: " + JSON.stringify(result.result));
+                privateToInsert["id"] = result.result["id"];
+                this.snackBar.open(this.translate.instant('stakeholder.addSuccess'), '', {
+                  duration: 4000,
+                  panelClass: ['snack-bar']
+                });
+                privateToInsert['relation'] = 'Indireta';
+                this.emitInsertedStake(of(privateToInsert));
+                this.clearForm();
+              }, error => {
+              });
+            }
+
+          } else {
+            if (this.docType === '0501') {
+              this.sameNIFMatch = true;
+            }
+            if (this.docType === '0502') {
+              this.sameNIPC = true;
+            }
+          }
+        } else {
+          this.snackBar.open(this.translate.instant('stakeholder.twoWords'), '', {
+            duration: 4000,
+            panelClass: ['snack-bar']
+          });
+        }
       } else {
         var fullName = (this.formNewStakeholder.get("name")?.value != '' && this.formNewStakeholder.get("name")?.value != null) ? this.formNewStakeholder.get("name")?.value : this.formNewStakeholder.get("socialDenomination")?.value
         if (fullName.trim().indexOf(' ') != -1) {  //there is at least one space, excluding leading and training spaces
@@ -865,6 +1001,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
                   duration: 4000,
                   panelClass: ['snack-bar']
                 });
+                corporateToInsert["isCorporate"] = true;
                 this.emitInsertedStake(of(corporateToInsert));
                 this.clearForm();
               });
@@ -876,6 +1013,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
                   duration: 4000,
                   panelClass: ['snack-bar']
                 });
+                corporateToInsert["isCorporate"] = true;
                 this.emitInsertedStake(of(corporateToInsert));
                 this.clearForm();
               }, error => {

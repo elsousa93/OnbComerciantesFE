@@ -191,7 +191,11 @@
     "signError": "There must be at least one stakeholder who signs the contract",
     "stakeExistsError": "There must be at least one private stakeholder",
     "differentNIFCC": "It's not possible to update the data, as the NIF of the CC does not match that of the current stakeholder",
-    "twoWords": "The stakeholder's name should have at least 2 words"
+    "twoWords": "The stakeholder's name should have at least 2 words",
+    "corporateRelation": "Relationship with company",
+    "indirect": "Indirect",
+    "direct": "Direct",
+    "NIPCRelation":  "Relationship NIPC"
   },
   "stores": {
     "title": "Stores",
@@ -318,7 +322,8 @@
     "finalValue": "Final Value",
     "cancelConfiguration": "Cancel Configuration",
     "openError": "You must select a commercial pack to open this tab",
-    "packRequired": "You must select a commercial pack"
+    "packRequired": "You must select a commercial pack",
+    "TSCError": "The TSC value must be higher or equal to {{minValue}}% and less or equal to {{maxValue}}%"
   },
   "declarativeInformation": {
     "title": "Declarative Information",

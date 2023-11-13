@@ -191,7 +191,11 @@
     "signError": "É necessário existir pelo menos um interveniente que assine o contrato",
     "stakeExistsError": "É necessário adicionar pelo menos um interveniente particular",
     "differentNIFCC": "Não é possível efetuar a atualização dos dados, pois o NIF do CC não coincide com o do interveniente atual",
-    "twoWords": "O nome do interveniente deve ter no mínimo duas palavras"
+    "twoWords": "O nome do interveniente deve ter no mínimo duas palavras",
+    "corporateRelation": "Relação com empresa",
+    "indirect": "Indireta",
+    "direct": "Direta",
+    "NIPCRelation": "NIPC da Relação"
   },
   "stores": {
     "title": "Lojas",
@@ -319,7 +323,8 @@
     "finalValue": "Valor Final",
     "cancelConfiguration": "Cancelar Configuração",
     "openError": "É necessário selecionar um pacote comercial para abrir este tabulador",
-    "packRequired": "É necessário selecionar um pacote comercial"
+    "packRequired": "É necessário selecionar um pacote comercial",
+    "TSCError": "O valor do TSC deve ser superior ou igual a {{minValue}}% e inferior ou igual a {{maxValue}}%"
   },
   "declarativeInformation": {
     "title": "Informação Declarativa",

@@ -76,6 +76,7 @@ export interface SubmissionGetTemplate {
   documents?: SimplifiedDocument[]
   shops?: SimplifiedReference[]
   corporateEntities?: SimplifiedReference[]
+  privateEntities?: SimplifiedReference[]
   submissionType?: string
   processNumber?: string
   processKind?: string

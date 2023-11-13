@@ -26,10 +26,10 @@
               {{'generalKeywords.mandatoryParameter'|translate}}
             </div>
           </div>
-          <p class="titulo-form-simples mb-1" *ngIf="currentStakeholder?.stakeholderAcquiring?.signType != null && currentStakeholder?.stakeholderAcquiring?.signType !== ''">
+          <p class="titulo-form-simples mb-1" *ngIf="currentStakeholder?.stakeholderAcquiring?.signType != null && currentStakeholder?.stakeholderAcquiring?.signType !== '' && !currentStakeholder?.stakeholderAcquiring['isCorporate']" >
             {{'citizenCard.updateData'|translate|uppercase}}*
           </p>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light" *ngIf="currentStakeholder?.stakeholderAcquiring?.signType != null && currentStakeholder?.stakeholderAcquiring?.signType !== ''">
+          <nav class="navbar navbar-expand-lg navbar-light bg-light" *ngIf="currentStakeholder?.stakeholderAcquiring?.signType != null && currentStakeholder?.stakeholderAcquiring?.signType !== '' && !currentStakeholder?.stakeholderAcquiring['isCorporate']" >
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" formControlName="flagRecolhaEletronica" name="flagRecolhaEletronica"
@@ -141,7 +141,7 @@
           <div class="col-6" id="nif">
             <div class="row">
               <p class="titulo-form-simples">
-                {{(currentStakeholder?.stakeholderAcquiring?.signType != null && currentStakeholder?.stakeholderAcquiring?.signType !== '' ? 'NIF *' : 'NIPC *')}}
+                {{(((currentStakeholder?.stakeholderAcquiring?.signType != null && currentStakeholder?.stakeholderAcquiring?.signType !== '') || !currentStakeholder?.stakeholderAcquiring['isCorporate']) ? 'NIF *' : 'NIPC *')}}
                 <span class="titulo-form-error" *ngIf="incorrectNIF" class="titulo-form-simples-erro">
                   {{'client.incorrectNIF'|translate}}
                 </span>

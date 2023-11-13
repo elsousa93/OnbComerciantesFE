@@ -28,6 +28,27 @@
             </div>
           </div>
         </div>
+        <div class="col-5" *ngIf="stakeholderType === 'Particular'">
+          <div class="row">
+            <div class="col">
+              <p class="titulo-form-simples">
+                {{'stakeholder.corporateRelation'|translate}}: *
+              </p>
+              <select class="form-select campo-form-select"
+                      id="corporateRelation" formControlName="corporateRelation">
+                <option *ngFor="let relation of corporateRelationsList" value={{relation.code}}>
+                  {{relation.description}}
+                </option>
+              </select>
+              <div class="alert alert-danger"
+                   *ngIf="formStakeholderSearch.get('corporateRelation').touched && !formStakeholderSearch.get('corporateRelation').valid">
+                <div *ngIf="formStakeholderSearch.get('corporateRelation').errors && formStakeholderSearch.get('corporateRelation').errors?.['required']">
+                  {{'generalKeywords.mandatoryParameter'|translate}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <div class="row ms-0 me-0">
         <div class="col-5 ms-0 me-0 ps-0 pe-0">

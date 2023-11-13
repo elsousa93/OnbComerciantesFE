@@ -25,6 +25,7 @@ import { QueuesService } from '../../queues-detail/queues.service';
 import { Client } from '../../client/Client.interface';
 import { SubmissionService } from '../../submission/service/submission-service.service';
 import { BsModalRef, BsModalService } from 'ngx-bootstrap/modal';
+import { AppConfigService } from '../../app-config.service';
 
 @Component({
   selector: 'app-commercial-offer-list',
@@ -133,6 +134,8 @@ export class CommercialOfferListComponent implements OnInit {
   merchant: Client;
   @ViewChild('cancelModal') cancelModal;
   cancelModalRef: BsModalRef | undefined;
+  minTSCValue: number;
+  maxTSCValue: number;
 
   emitPreviousStore(idx) {
     this.previousStoreEvent = idx;
@@ -146,7 +149,7 @@ export class CommercialOfferListComponent implements OnInit {
     this.storeEquipMat.sort = this.storeEquipSort;
   }
 
-  constructor(private translate: TranslateService, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private clientService: ClientService, private tableInfo: TableInfoService, private logger: LoggerService, private snackBar: MatSnackBar, private processNrService: ProcessNumberService, private processService: ProcessService, private queuesInfo: QueuesService, private submissionService: SubmissionService, private modalService: BsModalService) {
+  constructor(private translate: TranslateService, private route: Router, private data: DataService, private authService: AuthService, private storeService: StoreService, private COService: CommercialOfferService, private clientService: ClientService, private tableInfo: TableInfoService, private logger: LoggerService, private snackBar: MatSnackBar, private processNrService: ProcessNumberService, private processService: ProcessService, private queuesInfo: QueuesService, private submissionService: SubmissionService, private modalService: BsModalService, private configuration: AppConfigService) {
     this.ngOnInit();
     //this.loadReferenceData();
     authService.currentUser.subscribe(user => this.currentUser = user);
@@ -1153,6 +1156,24 @@ export class CommercialOfferListComponent implements OnInit {
 
 
     if (this.returned != 'consult') {
+      let error = false;
+      let tenant = this.authService.GetCurrentUser().tenant;
+      this.minTSCValue = this.configuration.getConfig().TSC[tenant]["minValue"];
+      this.maxTSCValue = this.configuration.getConfig().TSC[tenant]["maxValue"];
+      this.commissionAttributeList.forEach(commission => {
+        if (commission.percentageValue.finalValue < this.minTSCValue || commission.percentageValue.finalValue > this.maxTSCValue) {
+          error = true;
+        }
+      });
+      if (error) {
+        this.openAccordeons();
+        this.form.markAllAsTouched();
+        this.snackBar.open(this.translate.instant('commercialOffer.TSCError', { minValue: this.minTSCValue * 100, maxValue: this.maxTSCValue * 100 }), '', {
+          duration: 15000,
+          panelClass: ['snack-bar']
+        });
+        return;
+      }
       if (this.form.valid && !(this.storeEquipList.length == 0 && !this.userBanca && this.isUnicre) && this.commissionId !== '') {
         //estava aqui antes os valores do changedValue()
         if (this.paymentSchemes != null) {
@@ -1284,6 +1305,7 @@ export class CommercialOfferListComponent implements OnInit {
           this.currentStore.registrationId = this.form.get("terminalRegistrationNumber")?.value?.toString();
         }
       }
+
     } else {
       if (!clickedTable) {
         this.data.changeEquips(true);

@@ -794,8 +794,12 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     var context = this;
     var lengthStake = 0;
     var lengthStore = 0;
+    var lengthCorporate = 0;
+    var lengthPrivate = 0;
     var finishedStake = false;
     var finishedStore = false;
+    var finishedCorporate = false;
+    var finishedPrivate = false;
     context.filterIssues = [];
 
     let promise = new Promise((resolve, reject) => {
@@ -805,6 +809,12 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
       }
       if (issues.stakeholders.length == 0) {
         finishedStake = true;
+      }
+      if (issues.corporateEntities.length == 0) {
+        finishedCorporate = true;
+      }
+      if (issues.privateEntities.length == 0) {
+        finishedPrivate = true;
       }
 
       issues.documents.forEach(val => {
@@ -862,9 +872,9 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
               });
               if (lengthStore == issues.shops.length) {
                 finishedStore = true;
-                if (finishedStake) {
+                //if (finishedStake && finishedPrivate && finishedCorporate) {
                   resolve(true);
-                }
+                //}
               }
             });
           } else {
@@ -878,9 +888,9 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
             });
             if (lengthStore == issues.shops.length) {
               finishedStore = true;
-              if (finishedStake) {
+              //if (finishedStake && finishedPrivate && finishedCorporate) {
                 resolve(true);
-              }
+              //}
             }
           }
 
@@ -918,13 +928,89 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
             });
             if (lengthStake == issues.stakeholders.length) {
               finishedStake = true;
-              if (finishedStore) {
+              if (finishedPrivate && finishedCorporate) {
                 resolve(true);
               }
             }
           }
-
         });
+
+        issues.corporateEntities.forEach(val => {
+          var index1 = context.stakeIssuesList.findIndex(stake => stake.id == val?.corporateEntity?.id);
+          if (index1 == -1) {
+            context.processService.getProcessCorporateEntity(context.processId, val?.corporateEntity?.id).then(res => {
+              lengthCorporate++;
+              val.corporateEntity["name"] = res.result.shortName;
+              context.stakeIssuesList.push(res.result);
+              val.issues.forEach(v => {
+                if (v.issueDescription != null && v.issueDescription != "") {
+                  v["name"] = val.corporateEntity["name"];
+                  context.filterIssues.push(v);
+                }
+              });
+              if (lengthCorporate == issues.corporateEntities.length) {
+                finishedCorporate = true;
+                if (finishedStake && finishedPrivate) {
+                  resolve(true);
+                }
+              }
+            });
+          } else {
+            lengthCorporate++;
+            val.corporateEntity["name"] = context.stakeIssuesList[index1].shortName;
+            val.issues.forEach(v => {
+              if (v.issueDescription != null && v.issueDescription != "") {
+                v["name"] = val.corporateEntity["name"];
+                context.filterIssues.push(v);
+              }
+            });
+            if (lengthCorporate == issues.corporateEntities.length) {
+              finishedCorporate = true;
+              if (finishedStake && finishedPrivate) {
+                resolve(true);
+              }
+            }
+          }
+        });
+
+        issues.privateEntities.forEach(val => {
+          var index1 = context.stakeIssuesList.findIndex(stake => stake.id == val?.privateEntity?.id);
+          if (index1 == -1) {
+            context.processService.getProcessPrivateEntity(context.processId, val?.privateEntity?.id).then(res => {
+              lengthPrivate++;
+              val.privateEntity["name"] = res.result.shortName;
+              context.stakeIssuesList.push(res.result);
+              val.issues.forEach(v => {
+                if (v.issueDescription != null && v.issueDescription != "") {
+                  v["name"] = val.privateEntity["name"];
+                  context.filterIssues.push(v);
+                }
+              });
+              if (lengthPrivate == issues.privateEntities.length) {
+                finishedPrivate = true;
+                if (finishedStake && finishedCorporate) {
+                  resolve(true);
+                }
+              }
+            });
+          } else {
+            lengthPrivate++;
+            val.privateEntity["name"] = context.stakeIssuesList[index1].shortName;
+            val.issues.forEach(v => {
+              if (v.issueDescription != null && v.issueDescription != "") {
+                v["name"] = val.privateEntity["name"];
+                context.filterIssues.push(v);
+              }
+            });
+            if (lengthPrivate == issues.privateEntities.length) {
+              finishedPrivate = true;
+              if (finishedStake && finishedCorporate) {
+                resolve(true);
+              }
+            }
+          }
+        });
+
       }
 
     }).finally(() => {
@@ -937,7 +1023,7 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
             if (found != undefined)
               val["name"] = context.merchant.legalName;
 
-            context.stakeholdersList.forEach(stake => {
+            context.stakeIssuesList.forEach(stake => { //antes estava stakeholdersList
               var foundStake = stake.documents.find(doc => doc.id == value.document.id);
               if (foundStake != undefined)
                 val["name"] = stake.shortName;
@@ -981,11 +1067,44 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
         this.queuesService.getProcessStakeholdersList(this.processId).then(result => {
           if (result.result.length > 0) {
             result.result.forEach(value => {
-              this.queuesService.getProcessStakeholderDetails(this.processId, value?.id).then(res => {
-                this.stakeholdersList.push(res.result);
-              });
+              if (context.stakesList.find(stake => stake.id == value.id) == null && context.stakeIssuesList.find(stake => stake.id == value.id) == null) {
+                this.queuesService.getProcessStakeholderDetails(this.processId, value?.id).then(res => {
+                  context.stakesList.push(res.result);
+                  context.stakeIssuesList.push(res.result);
+                });
+              }
             });
           }
+          this.processService.getProcessEntities(this.processId).then(result => {
+            if (result.result.length > 0) {
+              result.result.forEach(value => {
+                if (value.entityType === 'CorporateEntity') {
+                  if (context.stakesList.find(stake => stake.id == value.id) == null && context.stakeIssuesList.find(stake => stake.id == value.id) == null) {
+                    context.processService.getProcessCorporateEntity(context.processId, value.id).then(res => {
+                      context.stakesList.push(res.result);
+                      context.stakeIssuesList.push(res.result);
+                      var found = context.issues.corporateEntities.find(stake => stake.corporateEntity.id == res.result.id);
+                      if (found != undefined) {
+                        found.corporateEntity["name"] = res.result.shortName;
+                      }
+                    });
+                  }
+                }
+                if (value.entityType === 'PrivateEntity') {
+                  if (context.stakesList.find(stake => stake.id == value.id) == null && context.stakeIssuesList.find(stake => stake.id == value.id) == null) {
+                    context.processService.getProcessPrivateEntity(context.processId, value.id).then(res => {
+                      context.stakesList.push(res.result);
+                      context.stakeIssuesList.push(res.result);
+                      var found = context.issues.privateEntities.find(stake => stake.privateEntity.id == res.result.id);
+                      if (found != undefined) {
+                        found.privateEntity["name"] = res.result.shortName;
+                      }
+                    });
+                  }
+                }
+              });
+            }
+          });
         });
       });
     });
@@ -1050,8 +1169,8 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
     })
     if (this.queueName === 'eligibility' || this.queueName === 'risk' || this.queueName === 'compliance' || this.queueName === 'multipleClients') {
       this.processService.getStakeholdersFromProcess(this.processId).then(success => {
+        let length = 0;
         if (success.result.length > 0) {
-          let length = 0;
           success.result.forEach((stake, index) => {
             context.processService.getStakeholderByIdFromProcess(context.processId, stake.id).subscribe(res => {
               length++;
@@ -1077,6 +1196,36 @@ export class QueuesDetailComponent implements OnInit, AfterViewInit, OnDestroy {
             });
           });
         }
+        this.processService.getProcessEntities(this.processId).then(result => {
+          if (result.result.length > 0) {
+            result.result.forEach(value => {
+              if (value.entityType === 'CorporateEntity') {
+                if (context.stakesList.find(stake => stake.id == value.id) == null && context.stakeIssuesList.find(stake => stake.id == value.id) == null) {
+                  context.processService.getProcessCorporateEntity(context.processId, value.id).then(res => {
+                    context.stakesList.push(res.result);
+                    context.stakeIssuesList.push(res.result);
+                    var found = context.issues.corporateEntities.find(stake => stake.corporateEntity.id == res.result.id);
+                    if (found != undefined) {
+                      found.corporateEntity["name"] = res.result.shortName;
+                    }
+                  });
+                }
+              }
+              if (value.entityType === 'PrivateEntity') {
+                if (context.stakesList.find(stake => stake.id == value.id) == null && context.stakeIssuesList.find(stake => stake.id == value.id) == null) {
+                  context.processService.getProcessPrivateEntity(context.processId, value.id).then(res => {
+                    context.stakesList.push(res.result);
+                    context.stakeIssuesList.push(res.result);
+                    var found = context.issues.privateEntities.find(stake => stake.privateEntity.id == res.result.id);
+                    if (found != undefined) {
+                      found.privateEntity["name"] = res.result.shortName;
+                    }
+                  });
+                }
+              }
+            });
+          }
+        });
       });
     }
     if (this.queueName === 'negotiationAproval' || this.queueName === 'MCCTreatment' || this.queueName === 'validationSIBS') {

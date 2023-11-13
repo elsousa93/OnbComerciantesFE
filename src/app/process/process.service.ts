@@ -9,7 +9,7 @@ import { BankInformation, Client, Contacts, ForeignFiscalInformation, Headquarte
 import { HttpMethod } from '../enums/enum-data';
 import { LoadingService } from '../loading.service';
 import { AuthService } from '../services/auth.service';
-import { CorporateEntity, IStakeholders, PostCorporateEntity } from '../stakeholders/IStakeholders.interface';
+import { CorporateEntity, IStakeholders, PostCorporateEntity, PostPrivateEntity } from '../stakeholders/IStakeholders.interface';
 import { ShopDetailsAcquiring, ShopEquipment } from '../store/IStore.interface';
 import { PostDocument } from '../submission/document/ISubmission-document';
 import { SimplifiedReference } from '../submission/ISubmission.interface';
@@ -210,6 +210,11 @@ export class ProcessService {
     return this.API.callAPIAcquiring(HttpMethod.POST, url, corporate);
   }
 
+  addPrivateEntityToProcess(processId: string, privateEntity: PostPrivateEntity) {
+    var url = this.baseUrl + 'process/' + processId + '/private-entity';
+    return this.API.callAPIAcquiring(HttpMethod.POST, url, privateEntity);
+  }
+
   updateProcess(processId: string, process: any) {
     var url = this.baseUrl + 'process/' + processId;
     return this.API.callAPIAcquiring(HttpMethod.PUT, url, process);
@@ -273,6 +278,8 @@ export interface BusinessIssueViewModel {
   stakeholders?: StakeholderIssueViewModel[]
   shops?: ShopIssueViewModel[]
   documents?: DocumentIssueViewModel[]
+  privateEntities?: PrivateEntityIssueModel[]
+  corporateEntities?: CorporateEntityIssueModel[]
 }
 
 export enum IssueTypeEnum {
@@ -299,6 +306,16 @@ interface StakeholderIssueViewModel {
 
 interface ShopIssueViewModel {
   shop?: SimplifiedReference
+  issues?: IssueViewModel[]
+}
+
+interface CorporateEntityIssueModel {
+  corporateEntity?: SimplifiedReference
+  issues?: IssueViewModel[]
+}
+
+interface PrivateEntityIssueModel {
+  privateEntity?: SimplifiedReference
   issues?: IssueViewModel[]
 }
 

@@ -111,8 +111,12 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
     var context = this;
     var lengthStake = 0;
     var lengthStore = 0;
+    var lengthPrivate = 0;
+    var lengthCorporate = 0;
     var finishedStake = false;
     var finishedStore = false;
+    var finishedPrivate = false;
+    var finishedCorporate = false;
     context.filterIssues = [];
 
     let promise = new Promise((resolve, reject) => {
@@ -123,20 +127,18 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
       if (issues.stakeholders.length == 0) {
         finishedStake = true;
       }
+      if (issues.corporateEntities.length == 0) {
+        finishedCorporate = true;
+      }
+      if (issues.privateEntities.length == 0) {
+        finishedPrivate = true;
+      }
 
       issues.documents.forEach(val => {
         var found = context.docTypes.find(doc => doc.code == val.document.type);
         if (found != undefined)
           val.document.type = found.description;
       });
-      //issues.documents.forEach(value => {
-      //  value.issues.forEach(val => {
-      //    if (val.issueDescription != null && val.issueDescription != "") {
-      //      val["type"] = value.document.type;
-      //      //context.filterIssues.push(val);
-      //    }
-      //  });
-      //});
       issues.process.forEach(value => {
         if (value.issueDescription != null && value.issueDescription != "") {
           value["name"] = "Processo";
@@ -163,6 +165,7 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
           }
         });
       }
+      if (issues.shops.length > 0) {
         issues.shops.forEach(val => {
           var index = context.shopIssueList.findIndex(shop => shop.id == val?.shop?.id);
           if (index == -1) {
@@ -178,7 +181,7 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
               });
               if (lengthStore == issues.shops.length) {
                 finishedStore = true;
-                if (finishedStake) {
+                if (finishedStake && finishedPrivate) {
                   resolve(true);
                 }
               }
@@ -194,16 +197,18 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
             });
             if (lengthStore == issues.shops.length) {
               finishedStore = true;
-              if (finishedStake) {
+              if (finishedStake && finishedPrivate && finishedCorporate) {
                 resolve(true);
               }
             }
           }
 
         });
-      
-      issues.stakeholders.forEach(val => {
-        var index1 = context.stakeholdersList.findIndex(stake => stake.id == val?.stakeholder?.id);
+      }
+
+      if (issues.stakeholders.length > 0) {
+        issues.stakeholders.forEach(val => {
+          var index1 = context.stakeholdersList.findIndex(stake => stake.id == val?.stakeholder?.id);
           if (index1 == -1) {
             context.queuesService.getProcessStakeholderDetails(context.processId, val?.stakeholder?.id).then(res => {
               lengthStake++;
@@ -217,7 +222,7 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
               });
               if (lengthStake == issues.stakeholders.length) {
                 finishedStake = true;
-                if (finishedStore) {
+                if (finishedStore && finishedPrivate && finishedCorporate) {
                   resolve(true);
                 }
               }
@@ -233,12 +238,94 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
             });
             if (lengthStake == issues.stakeholders.length) {
               finishedStake = true;
-              if (finishedStore) {
+              if (finishedStore && finishedPrivate && finishedCorporate) {
                 resolve(true);
               }
             }
           }
         });
+      }
+
+      if (issues.privateEntities.length > 0) {
+        issues.privateEntities.forEach(val => {
+          var index1 = context.stakeholdersList.findIndex(stake => stake.id == val?.privateEntity?.id);
+          if (index1 == -1) {
+            context.processService.getProcessPrivateEntity(context.processId, val?.privateEntity?.id).then(res => {
+              lengthPrivate++;
+              val.privateEntity["name"] = res.result.shortName;
+              context.stakeholdersList.push(res.result);
+              val.issues.forEach(v => {
+                if (v.issueDescription != null && v.issueDescription != "") {
+                  v["name"] = val.privateEntity["name"];
+                  context.filterIssues.push(v);
+                }
+              });
+              if (lengthPrivate == issues.privateEntities.length) {
+                finishedPrivate = true;
+                if (finishedStore && finishedStake && finishedCorporate) {
+                  resolve(true);
+                }
+              }
+            });
+          } else {
+            lengthPrivate++;
+            val.privateEntity["name"] = context.stakeholdersList[index1].shortName;
+            val.issues.forEach(v => {
+              if (v.issueDescription != null && v.issueDescription != "") {
+                v["name"] = val.privateEntity["name"];
+                context.filterIssues.push(v);
+              }
+            });
+            if (lengthPrivate == issues.privateEntities.length) {
+              finishedPrivate = true;
+              if (finishedStore && finishedStake && finishedCorporate) {
+                resolve(true);
+              }
+            }
+          }
+        });
+      }
+
+      if (issues.corporateEntities.length > 0) {
+        issues.corporateEntities.forEach(val => {
+          var index1 = context.stakeholdersList.findIndex(stake => stake.id == val?.corporateEntity?.id);
+          if (index1 == -1) {
+            context.processService.getProcessCorporateEntity(context.processId, val?.corporateEntity?.id).then(res => {
+              lengthCorporate++;
+              val.corporateEntity["name"] = res.result.shortName;
+              context.stakeholdersList.push(res.result);
+              val.issues.forEach(v => {
+                if (v.issueDescription != null && v.issueDescription != "") {
+                  v["name"] = val.corporateEntity["name"];
+                  context.filterIssues.push(v);
+                }
+              });
+              if (lengthCorporate == issues.corporateEntities.length) {
+                finishedCorporate = true;
+                if (finishedStore && finishedStake && finishedPrivate) {
+                  resolve(true);
+                }
+              }
+            });
+          } else {
+            lengthCorporate++;
+            val.corporateEntity["name"] = context.stakeholdersList[index1].shortName;
+            val.issues.forEach(v => {
+              if (v.issueDescription != null && v.issueDescription != "") {
+                v["name"] = val.corporateEntity["name"];
+                context.filterIssues.push(v);
+              }
+            });
+            if (lengthCorporate == issues.corporateEntities.length) {
+              finishedCorporate = true;
+              if (finishedStore && finishedStake && finishedPrivate) {
+                resolve(true);
+              }
+            }
+          }
+        });
+      }
+
     }).finally(() => {
       issues.documents.forEach(value => {
         value.issues.forEach(val => {
@@ -356,13 +443,27 @@ export class DevolucaoComponent implements OnInit, AfterViewInit {
     this.processService.getProcessEntities(this.processId).then(result => {
       result.result.forEach(value => {
         if (value.entityType === 'CorporateEntity') {
-          context.processService.getProcessCorporateEntity(context.processId, value.id).then(res => {
-            context.stakeholdersList.push(res.result);
-          });
+          if (context.stakeholdersList.find(stake => stake.id == value.id) == null) {
+            context.processService.getProcessCorporateEntity(context.processId, value.id).then(res => {
+              context.stakeholdersList.push(res.result);
+            });
+          }
         }
         if (value.entityType === 'PrivateEntity') {
-          context.processService.getProcessPrivateEntity(context.processId, value.id).then(res => {
-            context.stakeholdersList.push(res.result);
+          if (context.stakeholdersList.find(stake => stake.id == value.id) == null) {
+            context.processService.getProcessPrivateEntity(context.processId, value.id).then(res => {
+              context.stakeholdersList.push(res.result);
+            });
+          }
+        }
+      });
+    });
+
+    this.processService.getStakeholdersFromProcess(this.processId).then(result => {
+      result.result.forEach(value => {
+        if (context.stakeholdersList.find(stake => stake.id == value.id) == null) {
+          context.processService.getStakeholderByIdFromProcess(context.processId, value.id).subscribe(res => {
+            context.stakeholdersList.push(res);
           });
         }
       });

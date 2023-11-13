@@ -19,5 +19,8 @@ export interface Configuration {
   redirectUrl: {
 
   }
+  TSC: {
+
+  }
 }
 export const configurationToken = new InjectionToken('Configuration');

@@ -95,6 +95,8 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
   merchantOutbound: any = null;
   stakeOutbound: any = null;
   shopOutbound: any = null;
+  corporateOutbound: any = null;
+  privateOutbound: any = null;
   processId: string;
   stakePurposeList: string[] = [];
   form: FormGroup;
@@ -286,6 +288,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
             });
 
             context.processService.getProcessEntities(context.processId).then(corporate => {
+              corporateLength = corporate.result.length;
               corporate.result.forEach(function (value, index) {
                 if (value.entityType == 'CorporateEntity') {
                   context.processService.getProcessCorporateEntity(context.processId, value.id).then(r => {
@@ -293,6 +296,39 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                     context.stakeholdersList.push(corp);
                     length++;
                     corp.documents.forEach(val => {
+                      var isAnnulled = context.documentListAux?.find(doc => doc.id == val.id)?.isAnnulled;
+                      var found = context.compsToShow.find(v => v.id == val.id);
+                      //if (found == undefined) {
+                      //  context.compsToShow.push({
+                      //    id: val.id,
+                      //    type: "pdf",
+                      //    expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                      //    stakeholder: corp.legalName,
+                      //    status: isAnnulled ? 'Anulado' : "Ativo",
+                      //    uploadDate: latest_date,
+                      //    file: val?.id as any,
+                      //    documentPurpose: val.purposes[0],
+                      //    documentType: val.documentType
+                      //  });
+                      //} else {
+                      //  found.stakeholder = corp.legalName;
+                      //  found.status = isAnnulled ? 'Anulado' : "Ativo";
+                      //}
+                    });
+                    if (length === storeLength + stakeLength + submissionDocLength + corporateLength) {
+                      resolve(null);
+                    }
+
+                  }, error => {
+                    this.logger.error(error, "", "Erro getting corporate entity");
+                  });
+                }
+                if (value.entityType == 'PrivateEntity') {
+                  context.processService.getProcessPrivateEntity(context.processId, value.id).then(r => {
+                    var priv = r.result;
+                    context.stakeholdersList.push(priv);
+                    length++;
+                    priv.documents.forEach(val => {
                       var isAnnulled = context.documentListAux?.find(doc => doc.id == val.id)?.isAnnulled;
                       var found = context.compsToShow.find(v => v.id == val.id);
                       //if (found == undefined) {
@@ -370,6 +406,19 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
             context.requiredDocuments.requiredDocumentPurposesCorporateEntity.forEach(corporate => {
               corporate.documentPurposes.forEach(val => {
+                if (val.documentState !== 'NotApplicable') {
+                  context.stakePurposeList.push(val.purpose);
+                  context.stakePurposeList = Array.from(new Set(context.stakePurposeList));
+                  if (val.documentState == 'NotExists')
+                    val["existsOutbound"] = false;
+                  else
+                    val["existsOutbound"] = true;
+                }
+              });
+            });
+
+            context.requiredDocuments.requiredDocumentPurposesPrivateEntity.forEach(value => {
+              value.documentPurposes.forEach(val => {
                 if (val.documentState !== 'NotApplicable') {
                   context.stakePurposeList.push(val.purpose);
                   context.stakePurposeList = Array.from(new Set(context.stakePurposeList));
@@ -546,6 +595,36 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                 });
               }
             }
+          });
+
+          this.processInfo.privateEntities.forEach(priv => {
+            if (priv.updateProcessAction != "Delete") {
+              context.stakeholdersList.push(priv);
+              if (priv.documents.length > 0) {
+                priv.documents.forEach(val => {
+                  if (val.updateProcessAction != "Delete") {
+                    var isAnnulled = context.documentListAux?.find(doc => doc.id == val.id)?.isAnnulled;
+                    var found = context.compsToShow.find(v => v.id == val.id);
+                    //if (found == undefined) {
+                    //  context.compsToShow.push({
+                    //    id: val.id,
+                    //    type: "pdf",
+                    //    expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                    //    stakeholder: corp.legalName,
+                    //    status: isAnnulled ? 'Anulado' : "Ativo",
+                    //    uploadDate: latest_date,
+                    //    file: val?.id as any,
+                    //    documentPurpose: val.purposes[0],
+                    //    documentType: val.documentType
+                    //  });
+                    //} else {
+                    //  found.stakeholder = corp.legalName;
+                    //  found.status = isAnnulled ? 'Anulado' : "Ativo";
+                    //}
+                  }
+                });
+              }
+            }
           })
 
           this.processInfo.documents.forEach(doc => {
@@ -583,6 +662,19 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
 
             context.requiredDocuments.requiredDocumentPurposesCorporateEntity.forEach(corporate => {
               corporate.documentPurposes.forEach(val => {
+                if (val.documentState !== 'NotApplicable') {
+                  context.stakePurposeList.push(val.purpose);
+                  context.stakePurposeList = Array.from(new Set(context.stakePurposeList));
+                  if (val.documentState == 'NotExists')
+                    val["existsOutbound"] = false;
+                  else
+                    val["existsOutbound"] = true;
+                }
+              });
+            });
+
+            context.requiredDocuments.requiredDocumentPurposesPrivateEntity.forEach(value => {
+              value.documentPurposes.forEach(val => {
                 if (val.documentState !== 'NotApplicable') {
                   context.stakePurposeList.push(val.purpose);
                   context.stakePurposeList = Array.from(new Set(context.stakePurposeList));
@@ -639,6 +731,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           var stakeLength = context.submission.stakeholders.length;
           var submissionDocLength = context.submission.documents.length;
           var corporateLength = context.submission.corporateEntities.length;
+          var privateLength = context.submission.privateEntities.length;
           var length = 0;
           this.logger.info('Get current submission: ' + JSON.stringify(result));
 
@@ -693,7 +786,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                     found.status = isAnnulled ? 'Anulado' : "Ativo";
                   }
                 });
-                if (length === storeLength + stakeLength + submissionDocLength + corporateLength) {
+                if (length === storeLength + stakeLength + submissionDocLength + corporateLength + privateLength) {
                   resolve(null);
                 }
               }, error => {
@@ -726,7 +819,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                     found.status = isAnnulled ? 'Anulado' : "Ativo";
                   }
                 }
-                if (length === storeLength + stakeLength + submissionDocLength + corporateLength) {
+                if (length === storeLength + stakeLength + submissionDocLength + corporateLength + privateLength) {
                   resolve(null);
                 }
               });
@@ -758,7 +851,41 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                     found.status = isAnnulled ? 'Anulado' : "Ativo";
                   }
                 });
-                if (length === storeLength + stakeLength + submissionDocLength + corporateLength) {
+                if (length === storeLength + stakeLength + submissionDocLength + corporateLength + privateLength) {
+                  resolve(null);
+                }
+              }, error => {
+                this.logger.error(error, "", "Erro getting stakeholder");
+              });
+            });
+
+            context.submission.privateEntities.forEach(privateEntity => {
+              context.stakeholderService.GetPrivateEntityById(context.submission.id, privateEntity.id, /*"8ed4a062-b943-51ad-4ea9-392bb0a23bac", "22195900002451", "fQkRbjO+7kGqtbjwnDMAag=="*/).then(result => {
+                context.logger.info("Get stakeholder outbound: " + JSON.stringify(result));
+                var priv = result.result;
+                context.stakeholdersList.push(priv);
+                length++;
+                priv.documents.forEach(val => {
+                  var isAnnulled = context.documentListAux?.find(doc => doc.id == val.id)?.isAnnulled;
+                  var found = context.compsToShow.find(v => v.id == val.id);
+                  if (found == undefined) {
+                    context.compsToShow.push({
+                      id: val.id,
+                      type: "pdf",
+                      expirationDate: context.datepipe.transform(val.validUntil, 'dd-MM-yyyy'),
+                      stakeholder: priv.shortName,
+                      status: isAnnulled ? "Anulado" : "Ativo",
+                      uploadDate: latest_date,
+                      file: val?.id,
+                      documentPurpose: val.purposes[0],
+                      documentType: val.documentType
+                    });
+                  } else {
+                    found.stakeholder = priv.shortName;
+                    found.status = isAnnulled ? 'Anulado' : "Ativo";
+                  }
+                });
+                if (length === storeLength + stakeLength + submissionDocLength + corporateLength + privateLength) {
                   resolve(null);
                 }
               }, error => {
@@ -780,7 +907,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                   documentPurpose: null,
                   documentType: doc.documentType
                 });
-                if (length === storeLength + stakeLength + submissionDocLength + corporateLength) {
+                if (length === storeLength + stakeLength + submissionDocLength + corporateLength + privateLength) {
                   resolve(null);
                 }
               });
@@ -795,17 +922,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
           context.requiredDocuments = result.result;
           context.requiredDocuments.requiredDocumentPurposesMerchants.forEach(merchant => {
             context.merchantOutbound = null;
-            merchant.documentPurposes.forEach(merchantDocPurposes => {
-              if (merchantDocPurposes.documentState === 'NotExists') {
-                if (context.submissionClient.clientId != null && context.submissionClient.clientId != "") {
-                  var exists = context.checkDocumentExists(context.submissionClient.clientId, merchantDocPurposes, 'merchant');
-                  merchantDocPurposes["existsOutbound"] = exists;
-                } else {
-                  var exists = context.checkDocumentExists(null, merchantDocPurposes, 'merchant');
-                  merchantDocPurposes["existsOutbound"] = exists;
-                }
-              }
-            });
+            context.findDocs(merchant, 'merchant');
           });
 
           context.requiredDocuments.requiredDocumentPurposesStakeholders.forEach(stakeholder => {
@@ -816,24 +933,7 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
               }
             });
             context.stakeOutbound = null;
-            stakeholder.documentPurposes.forEach(stakeholderDocPurposes => {
-              if (stakeholderDocPurposes.documentState === 'NotExists') {
-                var foundStake = context.stakeholdersList.find(s => s.id == stakeholder.entityId);
-                if (foundStake.clientId != "" && foundStake.clientId != null) {
-                  context.stakeholderService.SearchStakeholderByQuery(foundStake.clientId, "1010", "por mudar", "por mudar").then(stake => {
-                    context.logger.info("Search stakeholder: " + JSON.stringify(stake));
-                    var exists = context.checkDocumentExists(stake.result[0].stakeholderId, stakeholderDocPurposes, 'stakeholder');
-                    stakeholderDocPurposes["existsOutbound"] = exists;
-                  }, error => {
-                    var exists = context.checkDocumentExists(null, stakeholderDocPurposes, 'stakeholder');
-                    stakeholderDocPurposes["existsOutbound"] = exists;
-                  });
-                } else {
-                  var exists = context.checkDocumentExists(null, stakeholderDocPurposes, 'stakeholder');
-                  stakeholderDocPurposes["existsOutbound"] = exists;
-                }
-              }
-            });
+            context.findDocs(stakeholder, 'stakeholder');
           });
 
           context.requiredDocuments.requiredDocumentPurposesCorporateEntity.forEach(corporate => {
@@ -843,41 +943,178 @@ export class ComprovativosComponent implements OnInit, AfterViewInit {
                 context.stakePurposeList.push(corporateDocPurposes.purpose);
                 context.stakePurposeList = Array.from(new Set(context.stakePurposeList));
               }
-              if (corporateDocPurposes.documentState === 'NotExists') {
-                var foundCorporate = context.stakeholdersList.find(s => s.id == corporate.entityId);
-                if (foundCorporate.clientId != null && foundCorporate.clientId != "") {
-                  context.clientService.SearchClientByQuery(foundCorporate.clientId, "1010", "", "").subscribe(res => {
-                    var exists = context.checkDocumentExists(res[0].merchantId, corporateDocPurposes, 'corporateEntity');
-                    corporateDocPurposes["existsOutbound"] = exists;
-                  }, error => {
-                    var exists = context.checkDocumentExists(null, corporateDocPurposes, 'corporateEntity');
-                    corporateDocPurposes["existsOutbound"] = exists;
-                  });
-                } else {
-                  var exists = context.checkDocumentExists(null, corporateDocPurposes, 'corporateEntity');
-                  corporateDocPurposes["existsOutbound"] = exists;
-                }
+              context.corporateOutbound = null;
+              context.findDocs(corporate, 'corporate');
+            });
+          });
+
+          context.requiredDocuments.requiredDocumentPurposesPrivateEntity.forEach(priv => {
+            priv.documentPurposes.forEach(privateDocPurposes => {
+              if (privateDocPurposes.documentState !== 'NotApplicable') {
+                context.stakePurposeList.push(privateDocPurposes.purpose);
+                context.stakePurposeList = Array.from(new Set(context.stakePurposeList));
               }
+              context.privateOutbound = null;
+              context.findDocs(priv, 'private');
             });
           });
 
           context.requiredDocuments.requiredDocumentPurposesShops.forEach(shop => {
             context.shopOutbound = null;
-            shop.documentPurposes.forEach(shopDocPurposes => {
-              if (shopDocPurposes.documentState === 'NotExists') {
-                var foundShop = context.shopList.find(s => s.id == shop.entityId);
-                if (foundShop?.shopId != null && foundShop?.shopId != "") {
-                  var exists = context.checkDocumentExists(foundShop.shopId, shopDocPurposes, 'shop');
-                  shopDocPurposes["existsOutbound"] = exists;
-                } else {
-                  var exists = context.checkDocumentExists(null, shopDocPurposes, 'shop');
-                  shopDocPurposes["existsOutbound"] = exists;
-                }
-              }
-            });
+            context.findDocs(shop, 'shop');
           });
         });
       });
+    }
+  }
+
+  async findDocs(requiredDocumentPurposes: RequiredDocumentPurpose, type: string) {
+    var context = this;
+    if (type == 'merchant') {
+      for (let merchantDocPurposes of requiredDocumentPurposes.documentPurposes) {
+        if (merchantDocPurposes.documentState === 'NotExists') {
+          if (context.submissionClient.clientId != null && context.submissionClient.clientId != "") {
+            if (context.merchantOutbound == null) {
+              await context.clientService.GetClientByIdOutbound(context.submissionClient.clientId).then(client => {
+                this.logger.info("Get client outbound: " + JSON.stringify(client));
+                context.merchantOutbound = client;
+                if (context.merchantOutbound.documents != null && context.merchantOutbound.documents.length > 0) {
+                  merchantDocPurposes["existsOutbound"] = merchantDocPurposes.documentsTypeCodeFulfillPurpose
+                    .some(type => context.merchantOutbound.documents.find(elem => elem.documentType === type) != undefined);
+                }
+              }, error => {
+                context.logger.error(error, "", "Client doesn't exist on outbound");
+                merchantDocPurposes["existsOutbound"] = false;
+              });
+            } else {
+              if (context.merchantOutbound.documents != null && context.merchantOutbound.documents.length > 0) {
+                merchantDocPurposes["existsOutbound"] = merchantDocPurposes.documentsTypeCodeFulfillPurpose
+                  .some(type => context.merchantOutbound.documents.find(elem => elem.documentType === type) != undefined);
+              }
+            }
+          } else {
+            merchantDocPurposes["existsOutbound"] = false;
+          }
+        }
+      }
+    }
+    if (type == 'stakeholder') {
+      for (let stakeholderDocPurposes of requiredDocumentPurposes.documentPurposes) {
+        if (stakeholderDocPurposes.documentState === 'NotExists') {
+          var foundStake = context.stakeholdersList.find(s => s.id == requiredDocumentPurposes.entityId);
+          if (foundStake.clientId != "" && foundStake.clientId != null) {
+            if (context.stakeOutbound == null) {
+              await context.stakeholderService.getStakeholderByID(foundStake.clientId, "", "").then(stake => {
+                this.logger.info("Get stakeholder outbound: " + JSON.stringify(stake));
+                context.stakeOutbound = stake.result;
+                if (context.stakeOutbound.documents != null && context.stakeOutbound.documents.length > 0) {
+                  stakeholderDocPurposes["existsOutbound"] = stakeholderDocPurposes.documentsTypeCodeFulfillPurpose
+                    .some(type => context.stakeOutbound.documents.find(elem => elem.documentType === type) != undefined);
+                }
+              }, error => {
+                //var exists = context.checkDocumentExists(null, stakeholderDocPurposes, 'stakeholder');
+                stakeholderDocPurposes["existsOutbound"] = false;
+              });
+            } else {
+              //var exists = context.checkDocumentExists(null, stakeholderDocPurposes, 'stakeholder');
+              if (context.stakeOutbound.documents != null && context.stakeOutbound.documents.length > 0) {
+                stakeholderDocPurposes["existsOutbound"] = stakeholderDocPurposes.documentsTypeCodeFulfillPurpose
+                  .some(type => context.stakeOutbound.documents.find(elem => elem.documentType === type) != undefined);
+              }
+            }
+          } else {
+            stakeholderDocPurposes["existsOutbound"] = false;
+          }
+        }
+      }
+    }
+    if (type == 'corporate') {
+      for (let corporateDocPurposes of requiredDocumentPurposes.documentPurposes) {
+        if (corporateDocPurposes.documentState === 'NotExists') {
+          var foundCorporate = context.stakeholdersList.find(s => s.id == requiredDocumentPurposes.entityId);
+          if (foundCorporate.clientId != null && foundCorporate.clientId != "") {
+            if (context.corporateOutbound == null) {
+              await context.clientService.GetClientByIdOutbound(foundCorporate.clientId).then(client => {
+                this.logger.info("Get client outbound: " + JSON.stringify(client));
+                context.corporateOutbound = client;
+                if (context.corporateOutbound?.documents != null && context.corporateOutbound?.documents.length > 0) {
+                  corporateDocPurposes["existsOutbound"] = corporateDocPurposes.documentsTypeCodeFulfillPurpose
+                    .some(type => context.corporateOutbound?.documents?.find(elem => elem.documentType === type) != undefined);
+                }
+              }, error => {
+                context.logger.error(error, "", "Corporate doesn't exist on outbound");
+                corporateDocPurposes["existsOutbound"] = false;
+              });
+            } else {
+              if (context.corporateOutbound?.documents != null && context.corporateOutbound?.documents.length > 0) {
+                corporateDocPurposes["existsOutbound"] = corporateDocPurposes.documentsTypeCodeFulfillPurpose
+                  .some(type => context.corporateOutbound?.documents?.find(elem => elem.documentType === type) != undefined);
+              }
+            }
+          } else {
+            corporateDocPurposes["existsOutbound"] = false;
+          }
+        }
+      }
+    }
+    if (type == 'private') {
+      for (let privateDocPurposes of requiredDocumentPurposes.documentPurposes) {
+        if (privateDocPurposes.documentState === 'NotExists') {
+          var foundStake = context.stakeholdersList.find(s => s.id == requiredDocumentPurposes.entityId);
+          if (foundStake.clientId != "" && foundStake.clientId != null) {
+            if (context.privateOutbound == null) {
+              await context.stakeholderService.getStakeholderByID(foundStake.clientId, "", "").then(stake => {
+                this.logger.info("Get stakeholder outbound: " + JSON.stringify(stake));
+                context.privateOutbound = stake.result;
+                if (context.privateOutbound?.documents != null && context.privateOutbound?.documents?.length > 0) {
+                  privateDocPurposes["existsOutbound"] = privateDocPurposes.documentsTypeCodeFulfillPurpose
+                    .some(type => context.privateOutbound?.documents?.find(elem => elem.documentType === type) != undefined);
+                }
+              }, error => {
+                //var exists = context.checkDocumentExists(null, stakeholderDocPurposes, 'stakeholder');
+                privateDocPurposes["existsOutbound"] = false;
+              });
+            } else {
+              //var exists = context.checkDocumentExists(null, stakeholderDocPurposes, 'stakeholder');
+              if (context.privateOutbound?.documents != null && context.privateOutbound?.documents?.length > 0) {
+                privateDocPurposes["existsOutbound"] = privateDocPurposes.documentsTypeCodeFulfillPurpose
+                  .some(type => context.privateOutbound?.documents?.find(elem => elem.documentType === type) != undefined);
+              }
+            }
+          } else {
+            privateDocPurposes["existsOutbound"] = false;
+          }
+        }
+      }
+    }
+    if (type == 'shop') {
+      for (let shopDocPurposes of requiredDocumentPurposes.documentPurposes) {
+        if (shopDocPurposes.documentState === 'NotExists') {
+          var foundShop = context.shopList.find(s => s.id == requiredDocumentPurposes.entityId);
+          if (foundShop?.shopId != null && foundShop?.shopId != "") {
+            if (context.shopOutbound == null) {
+              await context.shopService.getShopInfoOutbound(context.submissionClient.clientId, foundShop.id, "", "").then(shop => {
+                context.shopOutbound = shop.result;
+                this.logger.info("Get shop outbound: " + JSON.stringify(shop.result));
+                if (context.shopOutbound.supportingDocuments != null && context.shopOutbound.supportingDocuments.length > 0) {
+                  shopDocPurposes["existsOutbound"] = shopDocPurposes.documentsTypeCodeFulfillPurpose
+                    .some(type => context.shopOutbound.supportingDocuments.find(elem => elem.documentType === type) != undefined);
+                }
+              }, error => {
+                context.logger.error(error, "", "Shop doesn't exist on outbound");
+                shopDocPurposes["existsOutbound"] = false;
+              });
+            } else {
+              if (context.shopOutbound.supportingDocuments != null && context.shopOutbound.supportingDocuments.length > 0) {
+                shopDocPurposes["existsOutbound"] = shopDocPurposes.documentsTypeCodeFulfillPurpose
+                  .some(type => context.shopOutbound.supportingDocuments.find(elem => elem.documentType === type) != undefined);
+              }
+            }
+          } else {
+            shopDocPurposes["existsOutbound"] = false;
+          }
+        }
+      }
     }
   }
 

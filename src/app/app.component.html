@@ -1,8 +1,8 @@
 <app-auth *ngIf="!hasAuthenticated && !expired"></app-auth>
 <app-expired *ngIf="expired"></app-expired>
 
-<app-pre-registration *ngIf="isPreRegistration"></app-pre-registration>
-<app-resume-journey *ngIf="isResumeJourney"></app-resume-journey>
+<app-pre-registration *ngIf="isPreRegistration && hasAuthenticated"></app-pre-registration>
+<app-resume-journey *ngIf="isResumeJourney && hasAuthenticated"></app-resume-journey>
 
 <app-nav-menu-presencial *ngIf="hasAuthenticated && !isPreRegistration && !isResumeJourney" (toggleNavEvent)="toggleSideNav($event)"
   (autoHide)="toggleAutoHide($event)"></app-nav-menu-presencial>

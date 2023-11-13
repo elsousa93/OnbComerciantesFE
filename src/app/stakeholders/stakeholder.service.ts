@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { IStakeholders, PostCorporateEntity } from './IStakeholders.interface';
+import { IStakeholders, PostCorporateEntity, PostPrivateEntity } from './IStakeholders.interface';
 import { LoggerService } from 'src/app/logger.service';
 import { HttpMethod } from '../enums/enum-data';
 import { RequestResponse, TreatedResponse } from '../table-info/ITable-info.interface';
@@ -105,6 +105,16 @@ export class StakeholderService {
     return this.http.post(this.baseUrl + 'submission/' + submissionId + '/stakeholder/' + stakeholderId + '/document', document);
   }
 
+  AddNewDocumentToProcessPrivateEntity(processId: string, privateId: string, document: PostDocument) {
+    var URL = this.baseUrl + "process/" + processId + "/private-entity/" + privateId + "/document";
+    return this.callAPIAcquiring(HttpMethod.POST, URL, document);
+  }
+
+  AddNewDocumentToProcessCorporateEntity(processId: string, corporateId: string, document: PostDocument) {
+    var URL = this.baseUrl + "process/" + processId + "/corporate-entity/" + corporateId + "/document";
+    return this.callAPIAcquiring(HttpMethod.POST, URL, document);
+  }
+
   GetCorporateEntityList(submissionId: string) {
     var URL = this.baseUrl + "submission/" + submissionId + "/corporate-entity";
     return this.callAPIAcquiring(HttpMethod.GET, URL);
@@ -127,6 +137,36 @@ export class StakeholderService {
 
   DeleteCorporateEntity(submissionId: string, corporateId: string) {
     var URL = this.baseUrl + "submission/" + submissionId + "/corporate-entity/" + corporateId;
+    return this.callAPIAcquiring(HttpMethod.DELETE, URL);
+  }
+
+  GetPrivateEntityList(submissionId: string) {
+    var URL = this.baseUrl + "submission/" + submissionId + "/private-entity";
+    return this.callAPIAcquiring(HttpMethod.GET, URL);
+  }
+
+  GetPrivateEntityById(submissionId: string, privateId: string) {
+    var URL = this.baseUrl + "submission/" + submissionId + "/private-entity/" + privateId;
+    return this.callAPIAcquiring(HttpMethod.GET, URL);
+  }
+
+  AddNewPrivateEntity(submissionId: string, privateEntity: PostPrivateEntity) {
+    var URL = this.baseUrl + "submission/" + submissionId + "/private-entity";
+    return this.callAPIAcquiring(HttpMethod.POST, URL, privateEntity);
+  }
+
+  UpdatePrivateEntity(submissionId: string, corporateId: string, privateEntity: PostPrivateEntity) {
+    var URL = this.baseUrl + "submission/" + submissionId + "/private-entity/" + corporateId;
+    return this.callAPIAcquiring(HttpMethod.PUT, URL, privateEntity);
+  }
+
+  UpdateProcessPrivateEntity(processId: string, corporateId: string, privateEntity: PostPrivateEntity) {
+    var URL = this.baseUrl + "process/" + processId + "/private-entity/" + corporateId;
+    return this.callAPIAcquiring(HttpMethod.PUT, URL, privateEntity);
+  }
+
+  DeletePrivateEntity(submissionId: string, privateId: string) {
+    var URL = this.baseUrl + "submission/" + submissionId + "/private-entity/" + privateId;
     return this.callAPIAcquiring(HttpMethod.DELETE, URL);
   }
 

@@ -15,17 +15,17 @@
     <ng-container matColumnDef="entityType">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.entityType'|translate|uppercase}}
       </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> {{(stakeholder.stakeholderAcquiring.signType != null && stakeholder.stakeholderAcquiring.signType !== '' ? 'stakeholder.particular' : 'stakeholder.corporate') |translate}} </mat-cell>
+      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> {{((stakeholder.stakeholderAcquiring.signType != null && stakeholder.stakeholderAcquiring.signType !== '') || stakeholder.stakeholderAcquiring['relation'] == 'Indireta' ? 'stakeholder.particular' : 'stakeholder.corporate') |translate}} </mat-cell>
     </ng-container>
     <ng-container matColumnDef="relationType">
       <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.relationType'|translate|uppercase}}
       </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> - </mat-cell>
+      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> {{(stakeholder?.stakeholderAcquiring['relation'] == 'Indireta' ? 'stakeholder.indirect' : 'stakeholder.direct') | translate}} </mat-cell>
     </ng-container>
-    <ng-container matColumnDef="elegible">
-      <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.elegible'|translate|uppercase}}
+    <ng-container matColumnDef="NIPCRelation">
+      <mat-header-cell *matHeaderCellDef mat-sort-header> {{'stakeholder.NIPCRelation'|translate|uppercase}}
       </mat-header-cell>
-      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> {{'generalKeywords.yes'|translate}}
+      <mat-cell *matCellDef="let stakeholder" style="display: inline-grid;"> {{ (stakeholder?.stakeholderAcquiring['relation'] != 'Indireta') ? submissionClient?.fiscalId : "-"}}
       </mat-cell>
     </ng-container>
     <ng-container matColumnDef="stakeholderAcquiring.stakeholderId">

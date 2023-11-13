@@ -134,3 +134,17 @@ export interface PostCorporateEntity {
   legalName?: string
   headquartersAddress?: FiscalAddress
 }
+
+export interface PostPrivateEntity {
+  clientId?: string
+  potentialClientIds?: string[]
+  fiscalId?: string
+  shortName?: string
+  identificationDocument?: IdentificationDocument;
+  fullName?: string
+  contactName?: string
+  directCapitalHeld?: number;
+  indirectCapitalHeld?: number;
+  isBeneficiary?: boolean;
+  fiscalAddress?: FiscalAddress
+}

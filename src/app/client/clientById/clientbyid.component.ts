@@ -1459,7 +1459,7 @@ export class ClientByIdComponent implements OnInit, AfterViewInit {
                         binary: result.binary,
                         fileType: "pdf"
                       },
-                      validUntil: doc.validUntil
+                      validUntil: doc.validUntil != null ? this.datepipe.transform(doc.validUntil, "yyyy-MM-dd") : null
                     } as SubmissionPostDocumentTemplate;
                     context.clientService.merchantPostDocument(submissionID, d).subscribe(result => {
                       context.logger.info('Added document to submission: ' + JSON.stringify(result));
