@@ -330,7 +330,7 @@ export class InfoDeclarativaStakeholderComponent implements OnInit, AfterViewIni
           }
         }
       } else {
-        if (this.currentStakeholder.stakeholderAcquiring?.signType != null) {
+        if (this.currentStakeholder?.stakeholderAcquiring?.signType != null) {
           this.openAccordeons();
           this.infoStakeholders.markAllAsTouched();
           this.snackBar.open(this.translate.instant('generalKeywords.formInvalid'), '', {

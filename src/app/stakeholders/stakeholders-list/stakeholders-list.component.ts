@@ -74,7 +74,8 @@ export class StakeholdersListComponent implements OnInit, AfterViewInit, OnChang
       else
         this.emitSelectedStakeholder(this.submissionStakeholders[0], 0, false);
     } else {
-      this.emitSelectedStakeholder(this.submissionStakeholders[0], 0, false);
+      if (this.submissionStakeholders.length > 0)
+        this.emitSelectedStakeholder(this.submissionStakeholders[0], 0, false);
     }
     this.visitedStakesEmitter.emit(this.visitedStakes);
   }

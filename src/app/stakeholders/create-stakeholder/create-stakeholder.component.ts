@@ -380,7 +380,7 @@ export class CreateStakeholderComponent implements OnInit, OnChanges {
       type: new FormControl('', Validators.required),
       documentType: new FormControl('', Validators.required),
       documentNumber: new FormControl('', Validators.required),
-      corporateRelation: new FormControl('')
+      corporateRelation: new FormControl('0000')
     });
 
     this.formNewStakeholder = new FormGroup({

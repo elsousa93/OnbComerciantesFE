@@ -26,10 +26,10 @@
               {{'generalKeywords.mandatoryParameter'|translate}}
             </div>
           </div>
-          <p class="titulo-form-simples mb-1" *ngIf="currentStakeholder?.stakeholderAcquiring?.signType != null && currentStakeholder?.stakeholderAcquiring?.signType !== '' && !currentStakeholder?.stakeholderAcquiring['isCorporate']" >
+          <p class="titulo-form-simples mb-1" *ngIf="!currentStakeholder?.stakeholderAcquiring['isCorporate']" > <!--currentStakeholder?.stakeholderAcquiring?.signType != null && currentStakeholder?.stakeholderAcquiring?.signType !== '' &&-->
             {{'citizenCard.updateData'|translate|uppercase}}*
           </p>
-          <nav class="navbar navbar-expand-lg navbar-light bg-light" *ngIf="currentStakeholder?.stakeholderAcquiring?.signType != null && currentStakeholder?.stakeholderAcquiring?.signType !== '' && !currentStakeholder?.stakeholderAcquiring['isCorporate']" >
+          <nav class="navbar navbar-expand-lg navbar-light bg-light" *ngIf="!currentStakeholder?.stakeholderAcquiring['isCorporate']" > <!--currentStakeholder?.stakeholderAcquiring?.signType != null && currentStakeholder?.stakeholderAcquiring?.signType !== '' &&-->
             <span class="navbar-text">
               <div class="form-check">
                 <input class="form-check-input" formControlName="flagRecolhaEletronica" name="flagRecolhaEletronica"

@@ -1158,21 +1158,24 @@ export class CommercialOfferListComponent implements OnInit {
     if (this.returned != 'consult') {
       let error = false;
       let tenant = this.authService.GetCurrentUser().tenant;
-      this.minTSCValue = this.configuration.getConfig().TSC[tenant]["minValue"];
-      this.maxTSCValue = this.configuration.getConfig().TSC[tenant]["maxValue"];
-      this.commissionAttributeList.forEach(commission => {
-        if (commission.percentageValue.finalValue < this.minTSCValue || commission.percentageValue.finalValue > this.maxTSCValue) {
-          error = true;
-        }
-      });
-      if (error) {
-        this.openAccordeons();
-        this.form.markAllAsTouched();
-        this.snackBar.open(this.translate.instant('commercialOffer.TSCError', { minValue: this.minTSCValue * 100, maxValue: this.maxTSCValue * 100 }), '', {
-          duration: 15000,
-          panelClass: ['snack-bar']
+      let tenantExists = this.configuration.getConfig().TSC[tenant];
+      if (tenantExists != null) {
+        this.minTSCValue = tenantExists["minValue"];
+        this.maxTSCValue = tenantExists["maxValue"];
+        this.commissionAttributeList.forEach(commission => {
+          if (commission.percentageValue.finalValue < this.minTSCValue || commission.percentageValue.finalValue > this.maxTSCValue) {
+            error = true;
+          }
         });
-        return;
+        if (error) {
+          this.openAccordeons();
+          this.form.markAllAsTouched();
+          this.snackBar.open(this.translate.instant('commercialOffer.TSCError', { minValue: this.minTSCValue * 100, maxValue: this.maxTSCValue * 100 }), '', {
+            duration: 15000,
+            panelClass: ['snack-bar']
+          });
+          return;
+        }
       }
       if (this.form.valid && !(this.storeEquipList.length == 0 && !this.userBanca && this.isUnicre) && this.commissionId !== '') {
         //estava aqui antes os valores do changedValue()

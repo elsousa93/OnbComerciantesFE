@@ -535,7 +535,7 @@ export class ClientCharacterizationComponent implements OnInit {
         this.processClient.secondaryEconomicActivity.push(value);
       });
       this.processClient.fiscalId = this.client?.fiscalId;
-      this.processClient.companyName = this.client?.legalName; //
+      this.processClient.companyName = this.client?.commercialName; //
       this.processClient.capitalStock.date = this.client?.shareCapital?.date; //
       this.processClient.capitalStock.capital = this.client?.shareCapital?.capital; //
       this.processClient.headquartersAddress.address = this.client?.headquartersAddress?.address;
